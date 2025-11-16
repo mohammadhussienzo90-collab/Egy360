@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Tours & Activities - Egy360{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Tours & Activities</h1>
+    
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <div class="col-md-3">
+            <div class="card sticky-top" style="top: 20px;">
+                <div class="card-body">
+                    <h5 class="card-title">Filter Tours</h5>
+                    <form method="get">
+                        <div class="mb-3">
+                            <label class="form-label">Tour Type</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="cultural" id="cultural">
+                                <label class="form-check-label" for="cultural">Cultural & Historical</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="adventure" id="adventure">
+                                <label class="form-check-label" for="adventure">Adventure</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="desert" id="desert">
+                                <label class="form-check-label" for="desert">Desert Safari</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="cruise" id="cruise">
+                                <label class="form-check-label" for="cruise">Nile Cruise</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="diving" id="diving">
+                                <label class="form-check-label" for="diving">Diving & Snorkeling</label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Duration</label>
+                            <select class="form-select" name="duration">
+                                <option value="">Any Duration</option>
+                                <option value="half">Half Day (< 6 hours)</option>
+                                <option value="full">Full Day (6-12 hours)</option>
+                                <option value="multi">Multi-Day</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Price Range</label>
+                            <input type="range" class="form-range" min="0" max="1000" value="500" id="priceRange">
+                            <div class="d-flex justify-content-between">
+                                <small>$0</small>
+                                <small id="priceValue">$500</small>
+                                <small>$1000+</small>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tours Grid -->
+        <div class="col-md-9">
+            <div class="row">
+                {% for tour in tours %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <img src="https://source.unsplash.com/400x250/?egypt,{{ tour.name|default:'pyramids' }}" 
+                             class="card-img-top" alt="{{ tour.name }}">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-primary">Cultural Tour</span>
+                                <div class="text-warning small">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    4.5
+                                </div>
+                            </div>
+                            <h5 class="card-title">{{ tour.name|default:"Amazing Pyramids Tour" }}</h5>
+                            <p class="card-text text-muted">
+                                <i class="fas fa-clock"></i> 8 hours | 
+                                <i class="fas fa-users"></i> Max 15 people | 
+                                <i class="fas fa-language"></i> English, Arabic
+                            </p>
+                            <p class="card-text">Explore the magnificent Pyramids of Giza, the enigmatic Sphinx, and the ancient treasures of Saqqara on this unforgettable journey through Egypt's pharaonic past.</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <span class="text-muted text-decoration-line-through">$120</span>
+                                    <h5 class="text-primary d-inline ms-2">$95</h5>
+                                    <small class="text-muted">/ person</small>
+                                </div>
+                                <a href="/tours/{{ tour.id }}/" class="btn btn-outline-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-route fa-4x text-muted mb-3"></i>
+                    <h4>No tours available</h4>
+                    <p class="text-muted">Check back later for exciting tour packages</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Price range slider
+    document.getElementById('priceRange').addEventListener('input', function(e) {
+        document.getElementById('priceValue').textContent = '$' + e.target.value;
+    });
+</script>
+{% endblock %}

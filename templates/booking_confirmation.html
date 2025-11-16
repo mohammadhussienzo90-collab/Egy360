@@ -1,0 +1,299 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - Egy360</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/booking_confirmation.css' %}">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="nav-logo">
+                <i class="fas fa-globe-africa"></i>
+                <span>EGY<strong>360</strong></span>
+            </a>
+
+            <div class="nav-steps">
+                <div class="step complete">
+                    <span class="step-number"><i class="fas fa-check"></i></span>
+                    <span class="step-label">Your Details</span>
+                </div>
+                <div class="step active">
+                    <span class="step-number">2</span>
+                    <span class="step-label">Confirmation</span>
+                </div>
+            </div>
+
+            <a href="{% url 'user-dashboard' %}" class="btn-dashboard">
+                <i class="fas fa-th-large"></i>
+                <span>My Dashboard</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="confirmation-container">
+
+        <!-- Success Animation -->
+        <div class="success-animation">
+            <div class="success-checkmark">
+                <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message">
+            <h1>🎉 Booking Confirmed!</h1>
+            <p>Your reservation has been successfully confirmed. We've sent a confirmation email to <strong id="confirmEmail">your@email.com</strong></p>
+        </div>
+
+        <!-- Booking Reference -->
+        <div class="reference-card">
+            <div class="reference-label">Booking Reference</div>
+            <div class="reference-number" id="bookingReference">BK12345678</div>
+            <button class="btn-copy" onclick="copyReference()">
+                <i class="fas fa-copy"></i> Copy
+            </button>
+        </div>
+
+        <!-- Booking Details Card -->
+        <div class="details-card">
+            <div class="card-header">
+                <h2>Booking Details</h2>
+                <span class="status-badge confirmed">Confirmed</span>
+            </div>
+
+            <div class="property-summary">
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" alt="Property" id="confirmImage">
+                <div class="property-info">
+                    <h3 id="confirmPropertyName">Cairo Pyramids Hotel</h3>
+                    <p class="property-location" id="confirmLocation">
+                        <i class="fas fa-map-marker-alt"></i> Giza, Cairo, Egypt
+                    </p>
+                    <div class="property-rating">
+                        <span class="rating-score">4.8</span>
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="booking-info-grid">
+                <div class="info-item" id="checkInInfo">
+                    <i class="fas fa-calendar-check"></i>
+                    <div>
+                        <label>Check-in</label>
+                        <strong id="checkInDate">Dec 25, 2024</strong>
+                        <span id="checkInTime">After 2:00 PM</span>
+                    </div>
+                </div>
+
+                <div class="info-item" id="checkOutInfo">
+                    <i class="fas fa-calendar-times"></i>
+                    <div>
+                        <label>Check-out</label>
+                        <strong id="checkOutDate">Dec 28, 2024</strong>
+                        <span id="checkOutTime">Before 12:00 PM</span>
+                    </div>
+                </div>
+
+                <div class="info-item" id="tourDateInfo" style="display: none;">
+                    <i class="fas fa-calendar-day"></i>
+                    <div>
+                        <label>Tour Date</label>
+                        <strong id="tourDate">Dec 25, 2024</strong>
+                        <span id="tourTime">9:00 AM</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <label>Guests</label>
+                        <strong id="guestCount">2 Guests</strong>
+                        <span id="roomType">Standard Room</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-moon"></i>
+                    <div>
+                        <label>Duration</label>
+                        <strong id="duration">3 Nights</strong>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div>
+                        <label>Total Price</label>
+                        <strong id="totalPrice" class="price-highlight">4,500 EGP</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guest Information -->
+            <div class="guest-info-section">
+                <h4>Guest Information</h4>
+                <div class="guest-details">
+                    <div class="detail-row">
+                        <span>Name:</span>
+                        <strong id="guestName">John Doe</strong>
+                    </div>
+                    <div class="detail-row">
+                        <span>Email:</span>
+                        <strong id="guestEmail">john.doe@email.com</strong>
+                    </div>
+                    <div class="detail-row">
+                        <span>Phone:</span>
+                        <strong id="guestPhone">+20 123 456 7890</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Special Requests -->
+            <div class="special-requests-section" id="specialRequestsSection" style="display: none;">
+                <h4>Special Requests</h4>
+                <ul class="requests-list" id="requestsList">
+                    <!-- Populated by JavaScript -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- What's Next Card -->
+        <div class="next-steps-card">
+            <h3><i class="fas fa-info-circle"></i> What's Next?</h3>
+            <div class="steps-timeline">
+                <div class="timeline-step">
+                    <div class="step-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="step-content">
+                        <strong>Check Your Email</strong>
+                        <p>We've sent a confirmation email with all the details</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="step-content">
+                        <strong>Prepare Your Documents</strong>
+                        <p>Bring a valid ID and your booking reference</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <strong>Arrive On Time</strong>
+                        <p>Check-in starts at 2:00 PM. Late check-in available upon request</p>
+                    </div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="step-icon">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <div class="step-content">
+                        <strong>Enjoy Your Stay</strong>
+                        <p>Have a wonderful time exploring Egypt!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="confirmation-actions">
+            <button class="btn-action btn-primary" onclick="downloadConfirmation()">
+                <i class="fas fa-download"></i>
+                Download Confirmation
+            </button>
+            <button class="btn-action btn-secondary" onclick="emailConfirmation()">
+                <i class="fas fa-envelope"></i>
+                Email to Me
+            </button>
+            <a href="{% url 'user-dashboard' %}" class="btn-action btn-secondary">
+                <i class="fas fa-th-large"></i>
+                View My Bookings
+            </a>
+        </div>
+
+        <!-- Support -->
+        <div class="support-banner">
+            <div class="support-content">
+                <div class="support-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <div class="support-text">
+                    <h4>Need Help?</h4>
+                    <p>Our support team is available 24/7 to assist you</p>
+                </div>
+                <div class="support-actions">
+                    <a href="#" class="support-link">
+                        <i class="fas fa-phone"></i> +20 123 456 7890
+                    </a>
+                    <a href="#" class="support-link">
+                        <i class="fas fa-comment"></i> Live Chat
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explore More -->
+        <div class="explore-more">
+            <h3>Continue Exploring Egypt</h3>
+            <p>Discover more amazing accommodations and tours</p>
+            <div class="explore-actions">
+                <a href="{% url 'accommodation-search' %}" class="explore-btn">
+                    <i class="fas fa-hotel"></i>
+                    Browse Accommodations
+                </a>
+                <a href="{% url 'tour-listing' %}" class="explore-btn">
+                    <i class="fas fa-map-marked-alt"></i>
+                    Explore Tours
+                </a>
+                <a href="{% url 'home' %}" class="explore-btn">
+                    <i class="fas fa-home"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/booking_confirmation.js' %}"></script>
+
+</body>
+</html>

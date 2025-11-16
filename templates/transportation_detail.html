@@ -1,0 +1,431 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ service.name }} - Egy360</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #f8f9fa;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, #CE1126 0%, #8B0000 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo-accent {
+            color: #FFD700;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #FFD700;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: #CE1126;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: #8B0000;
+        }
+
+        /* Service Detail */
+        .service-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .service-image-section {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #CE1126 0%, #FFD700 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: white;
+        }
+
+        .service-info {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .service-type-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: #FFD700;
+            color: #1a1a1a;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .service-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .service-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: #FFD700;
+            font-size: 1.2rem;
+        }
+
+        .service-description {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .service-features {
+            margin-bottom: 2rem;
+        }
+
+        .service-features h3 {
+            color: #CE1126;
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .feature-item i {
+            color: #CE1126;
+            font-size: 1.2rem;
+        }
+
+        .pricing-section {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-section h3 {
+            color: #CE1126;
+            margin-bottom: 1rem;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .price-value {
+            font-weight: 700;
+            color: #CE1126;
+        }
+
+        .book-button {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #CE1126 0%, #8B0000 100%);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: transform 0.3s;
+        }
+
+        .book-button:hover {
+            transform: scale(1.02);
+        }
+
+        /* Full Width Details */
+        .details-section {
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .details-section h2 {
+            color: #CE1126;
+            margin-bottom: 1.5rem;
+        }
+
+        .vehicle-specs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .spec-item {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .spec-item i {
+            font-size: 2rem;
+            color: #CE1126;
+            margin-bottom: 0.5rem;
+        }
+
+        .spec-item h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .spec-item p {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="nav-logo">
+                <i class="fas fa-globe-africa"></i>
+                <span>EGY</span><span class="logo-accent">360</span>
+            </a>
+
+            <div class="nav-menu">
+                <a href="{% url 'home' %}" class="nav-link">Home</a>
+                <a href="{% url 'accommodations:accommodation-search' %}" class="nav-link">Accommodations</a>
+                <a href="{% url 'tours:tour-listing' %}" class="nav-link">Tours</a>
+                <a href="{% url 'transportation:list' %}" class="nav-link active">Transportation</a>
+                <a href="{% url 'blog:list' %}" class="nav-link">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <a href="{% url 'transportation:list' %}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Transportation
+        </a>
+
+        <div class="service-detail">
+            <!-- Image Section -->
+            <div class="service-image-section">
+                {% if service.main_image %}
+                <img src="{{ service.main_image.url }}" alt="{{ service.name }}" class="main-image">
+                {% else %}
+                <div class="main-image">
+                    <i class="fas fa-car"></i>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Info Section -->
+            <div class="service-info">
+                <span class="service-type-badge">{{ service.get_service_type_display }}</span>
+
+                <h1 class="service-title">{{ service.name }}</h1>
+
+                <div class="service-rating">
+                    <i class="fas fa-star"></i>
+                    <span style="font-weight: 700;">{{ service.average_rating|floatformat:1 }}</span>
+                    <span style="color: #888; font-weight: 400;">({{ service.total_reviews }} reviews)</span>
+                </div>
+
+                <p class="service-description">{{ service.description }}</p>
+
+                <!-- Features -->
+                <div class="service-features">
+                    <h3><i class="fas fa-check-circle"></i> Features</h3>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-users"></i>
+                            <span>{{ service.max_passengers }} Passengers</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-suitcase"></i>
+                            <span>{{ service.max_luggage }} Luggage</span>
+                        </div>
+                        {% if service.has_ac %}
+                        <div class="feature-item">
+                            <i class="fas fa-snowflake"></i>
+                            <span>Air Conditioning</span>
+                        </div>
+                        {% endif %}
+                        {% if service.has_wifi %}
+                        <div class="feature-item">
+                            <i class="fas fa-wifi"></i>
+                            <span>WiFi Available</span>
+                        </div>
+                        {% endif %}
+                        {% if service.has_gps %}
+                        <div class="feature-item">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>GPS Tracking</span>
+                        </div>
+                        {% endif %}
+                        {% if service.has_child_seat %}
+                        <div class="feature-item">
+                            <i class="fas fa-baby"></i>
+                            <span>Child Seat</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="pricing-section">
+                    <h3><i class="fas fa-tag"></i> Pricing</h3>
+                    {% if service.fixed_price %}
+                    <div class="price-item">
+                        <span>Fixed Price:</span>
+                        <span class="price-value">${{ service.fixed_price }}</span>
+                    </div>
+                    {% endif %}
+                    {% if service.price_per_hour %}
+                    <div class="price-item">
+                        <span>Hourly Rate:</span>
+                        <span class="price-value">${{ service.price_per_hour }}/hour</span>
+                    </div>
+                    {% endif %}
+                    {% if service.price_per_km %}
+                    <div class="price-item">
+                        <span>Per Kilometer:</span>
+                        <span class="price-value">${{ service.price_per_km }}/km</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Book Button -->
+                <a href="#" class="book-button">
+                    <i class="fas fa-calendar-check"></i> Book Now
+                </a>
+            </div>
+
+            <!-- Vehicle Details -->
+            <div class="details-section">
+                <h2><i class="fas fa-car"></i> Vehicle Information</h2>
+
+                <div class="vehicle-specs">
+                    <div class="spec-item">
+                        <i class="fas fa-cogs"></i>
+                        <h4>Vehicle Model</h4>
+                        <p>{{ service.vehicle_model }}</p>
+                    </div>
+                    <div class="spec-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h4>Safety</h4>
+                        <p>Verified & Insured</p>
+                    </div>
+                    <div class="spec-item">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Status</h4>
+                        <p>{% if service.is_available %}Available{% else %}Not Available{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

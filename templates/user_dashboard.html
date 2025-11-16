@@ -1,0 +1,421 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - Egy360</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/user_dashboard.css' %}">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="nav-logo">
+                <i class="fas fa-globe-africa"></i>
+                <span>EGY<strong>360</strong></span>
+            </a>
+
+            <div class="nav-menu">
+                <a href="{% url 'home' %}" class="nav-link">Home</a>
+                <a href="{% url 'accommodation-search' %}" class="nav-link">Accommodations</a>
+                <a href="{% url 'tour-listing' %}" class="nav-link">Tours</a>
+                <a href="#" class="nav-link">Transportation</a>
+                <a href="{% url 'user-dashboard' %}" class="nav-link active">Dashboard</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn-secondary" onclick="logout()">Sign Out</button>
+            </div>
+
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <div class="sidebar-header">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <h3 id="userName">John Doe</h3>
+                        <p id="userEmail">john.doe@email.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="overview">
+                    <i class="fas fa-th-large"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="nav-item" data-section="bookings">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>My Bookings</span>
+                    <span class="badge" id="bookingsBadge">3</span>
+                </a>
+                <a href="#" class="nav-item" data-section="favorites">
+                    <i class="fas fa-heart"></i>
+                    <span>Favorites</span>
+                    <span class="badge" id="favoritesBadge">12</span>
+                </a>
+                <a href="#" class="nav-item" data-section="reviews">
+                    <i class="fas fa-star"></i>
+                    <span>My Reviews</span>
+                </a>
+                <a href="#" class="nav-item" data-section="profile">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="#" class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+
+            <!-- Overview Section -->
+            <section class="dashboard-section active" id="overview-section">
+                <div class="section-header">
+                    <h1>Welcome back, <span id="welcomeName">John</span>! 👋</h1>
+                    <p>Here's what's happening with your trips</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(227, 30, 36, 0.1); color: #E31E24;">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="upcomingTripsCount">2</h3>
+                            <p>Upcoming Trips</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="completedTripsCount">8</h3>
+                            <p>Completed Trips</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="favoritesCount">12</h3>
+                            <p>Favorites</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="reviewsCount">5</h3>
+                            <p>Reviews Written</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Bookings -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2>Upcoming Bookings</h2>
+                        <a href="#" class="link-view-all" onclick="switchSection('bookings'); return false;">View All</a>
+                    </div>
+                    <div class="bookings-list" id="upcomingBookingsList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Recent Favorites -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2>Your Favorites</h2>
+                        <a href="#" class="link-view-all" onclick="switchSection('favorites'); return false;">View All</a>
+                    </div>
+                    <div class="favorites-grid" id="recentFavorites">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bookings Section -->
+            <section class="dashboard-section" id="bookings-section">
+                <div class="section-header">
+                    <h1>My Bookings</h1>
+                    <p>Manage your reservations</p>
+                </div>
+
+                <!-- Booking Tabs -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="upcoming">Upcoming</button>
+                    <button class="tab-btn" data-tab="past">Past</button>
+                    <button class="tab-btn" data-tab="cancelled">Cancelled</button>
+                </div>
+
+                <!-- Upcoming Bookings Tab -->
+                <div class="tab-content active" id="upcoming-tab">
+                    <div class="bookings-list" id="allUpcomingBookings">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Past Bookings Tab -->
+                <div class="tab-content" id="past-tab">
+                    <div class="bookings-list" id="pastBookings">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Cancelled Bookings Tab -->
+                <div class="tab-content" id="cancelled-tab">
+                    <div class="bookings-list" id="cancelledBookings">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Favorites Section -->
+            <section class="dashboard-section" id="favorites-section">
+                <div class="section-header">
+                    <h1>My Favorites</h1>
+                    <p>Your saved accommodations and tours</p>
+                </div>
+
+                <div class="favorites-grid" id="allFavorites">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Reviews Section -->
+            <section class="dashboard-section" id="reviews-section">
+                <div class="section-header">
+                    <h1>My Reviews</h1>
+                    <p>Reviews you've written</p>
+                </div>
+
+                <div class="reviews-list" id="userReviews">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section class="dashboard-section" id="profile-section">
+                <div class="section-header">
+                    <h1>My Profile</h1>
+                    <p>Manage your personal information</p>
+                </div>
+
+                <div class="profile-content">
+                    <div class="profile-card">
+                        <div class="profile-avatar-section">
+                            <div class="profile-avatar-large" id="profileAvatarLarge">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <button class="btn-secondary">Change Photo</button>
+                        </div>
+
+                        <form class="profile-form" id="profileForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" id="firstName" value="John" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" id="lastName" value="Doe" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="email" value="john.doe@email.com" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phone" value="+20 123 456 7890">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Country</label>
+                                    <select id="country">
+                                        <option value="EG">Egypt</option>
+                                        <option value="US">United States</option>
+                                        <option value="UK">United Kingdom</option>
+                                        <option value="FR">France</option>
+                                        <option value="DE">Germany</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input type="text" id="city" value="Cairo">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Bio</label>
+                                <textarea id="bio" rows="4" placeholder="Tell us about yourself...">Travel enthusiast exploring Egypt's wonders!</textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="dashboard-section" id="settings-section">
+                <div class="section-header">
+                    <h1>Settings</h1>
+                    <p>Manage your account preferences</p>
+                </div>
+
+                <div class="settings-content">
+                    <!-- Security Settings -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-lock"></i> Security</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Password</strong>
+                                <p>Last changed 3 months ago</p>
+                            </div>
+                            <button class="btn-secondary" onclick="changePassword()">Change Password</button>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Two-Factor Authentication</strong>
+                                <p>Add an extra layer of security</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="twoFactor">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Notification Settings -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-bell"></i> Notifications</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Email Notifications</strong>
+                                <p>Receive booking confirmations and updates</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="emailNotifs" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Promotional Emails</strong>
+                                <p>Receive special offers and deals</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="promoEmails" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>SMS Notifications</strong>
+                                <p>Get text messages for important updates</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="smsNotifs">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Preferences -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-sliders-h"></i> Preferences</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Language</strong>
+                                <p>Choose your preferred language</p>
+                            </div>
+                            <select class="setting-select">
+                                <option value="en">English</option>
+                                <option value="ar">العربية</option>
+                                <option value="fr">Français</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Currency</strong>
+                                <p>Display prices in your currency</p>
+                            </div>
+                            <select class="setting-select">
+                                <option value="EGP">EGP - Egyptian Pound</option>
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Danger Zone -->
+                    <div class="settings-card danger-zone">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Delete Account</strong>
+                                <p>Permanently delete your account and all data</p>
+                            </div>
+                            <button class="btn-danger" onclick="deleteAccount()">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/user_dashboard.js' %}"></script>
+
+</body>
+</html>

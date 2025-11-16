@@ -1,0 +1,504 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ accommodation.name }} - Egy360</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/accommodation_detail.css' %}">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="nav-logo">
+                <i class="fas fa-globe-africa"></i>
+                <span>EGY<strong>360</strong></span>
+            </a>
+
+            <div class="nav-menu">
+                <a href="{% url 'home' %}" class="nav-link">Home</a>
+                <a href="{% url 'accommodation-search' %}" class="nav-link active">Accommodations</a>
+                <a href="#" class="nav-link">Tours</a>
+                <a href="#" class="nav-link">Transportation</a>
+                <a href="#" class="nav-link">About</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn-icon" onclick="toggleFavorite()">
+                    <i class="far fa-heart"></i>
+                </button>
+                <button class="btn-secondary" onclick="showAuthModal('signin')">Sign In</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="{% url 'accommodation-search' %}">Accommodations</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ accommodation.name }}</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+
+            <!-- Header Section -->
+            <section class="detail-header">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1 class="property-title">{{ accommodation.name }}</h1>
+                        <div class="property-meta">
+                            <div class="star-rating">
+                                <span id="starIcons">★★★★★</span>
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span id="locationText">Cairo, Egypt</span>
+                            </div>
+                            <div class="verified-badge" id="verifiedBadge">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Verified Property</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="rating-box">
+                            <div class="rating-score" id="ratingScore">9.2</div>
+                            <div class="rating-text">
+                                <strong>Excellent</strong>
+                                <span id="reviewCount">450 reviews</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Image Gallery -->
+            <section class="gallery-section">
+                <div class="gallery-grid">
+                    <div class="gallery-main" onclick="openLightbox(0)">
+                        <img id="mainImage" src="https://source.unsplash.com/800x600/?luxury,hotel,egypt" alt="Main Image">
+                    </div>
+                    <div class="gallery-thumbs">
+                        <div class="gallery-thumb" onclick="openLightbox(1)">
+                            <img src="https://source.unsplash.com/400x300/?hotel,room" alt="Room">
+                        </div>
+                        <div class="gallery-thumb" onclick="openLightbox(2)">
+                            <img src="https://source.unsplash.com/400x300/?hotel,lobby" alt="Lobby">
+                        </div>
+                        <div class="gallery-thumb" onclick="openLightbox(3)">
+                            <img src="https://source.unsplash.com/400x300/?hotel,pool" alt="Pool">
+                        </div>
+                        <div class="gallery-thumb gallery-more" onclick="openLightbox(4)">
+                            <img src="https://source.unsplash.com/400x300/?hotel,restaurant" alt="Restaurant">
+                            <div class="more-overlay">
+                                <i class="fas fa-images"></i>
+                                <span>Show all photos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+
+                <!-- Left Column -->
+                <div class="content-main">
+
+                    <!-- Quick Info -->
+                    <section class="section-card">
+                        <h2 class="section-title">Overview</h2>
+                        <div class="quick-info">
+                            <div class="info-item">
+                                <i class="fas fa-users"></i>
+                                <div>
+                                    <strong>Max Guests</strong>
+                                    <span id="maxGuests">4 guests</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-bed"></i>
+                                <div>
+                                    <strong>Bedrooms</strong>
+                                    <span id="bedrooms">2 bedrooms</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-bath"></i>
+                                <div>
+                                    <strong>Bathrooms</strong>
+                                    <span id="bathrooms">2 bathrooms</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-home"></i>
+                                <div>
+                                    <strong>Property Type</strong>
+                                    <span id="propertyType">Hotel</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Description -->
+                    <section class="section-card">
+                        <h2 class="section-title">About This Property</h2>
+                        <div class="description" id="propertyDescription">
+                            <p>Experience luxury and comfort at this stunning property located in the heart of Cairo. Perfect for both business and leisure travelers, our accommodation offers world-class amenities and exceptional service.</p>
+                            <p>Featuring modern rooms with elegant décor, you'll enjoy a peaceful retreat after exploring the vibrant city. Our property is conveniently located near major attractions, making it easy to explore everything Cairo has to offer.</p>
+                        </div>
+                    </section>
+
+                    <!-- Amenities -->
+                    <section class="section-card">
+                        <h2 class="section-title">Amenities & Services</h2>
+                        <div class="amenities-grid" id="amenitiesGrid">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </section>
+
+                    <!-- Safety Score -->
+                    <section class="section-card">
+                        <h2 class="section-title">Safety & Security</h2>
+                        <div class="safety-section">
+                            <div class="safety-score-large">
+                                <div class="score-circle">
+                                    <svg class="score-svg" viewBox="0 0 100 100">
+                                        <circle class="score-bg" cx="50" cy="50" r="45"></circle>
+                                        <circle class="score-fill" cx="50" cy="50" r="45" id="scoreCircle"></circle>
+                                    </svg>
+                                    <div class="score-number" id="safetyScoreNumber">95</div>
+                                </div>
+                                <div class="score-label">Safety Score</div>
+                            </div>
+                            <div class="safety-features">
+                                <div class="safety-item">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <div>
+                                        <strong>24/7 Security</strong>
+                                        <p>Professional security staff on-site</p>
+                                    </div>
+                                </div>
+                                <div class="safety-item">
+                                    <i class="fas fa-video"></i>
+                                    <div>
+                                        <strong>CCTV Surveillance</strong>
+                                        <p>Comprehensive camera coverage</p>
+                                    </div>
+                                </div>
+                                <div class="safety-item">
+                                    <i class="fas fa-first-aid"></i>
+                                    <div>
+                                        <strong>First Aid</strong>
+                                        <p>Medical assistance available</p>
+                                    </div>
+                                </div>
+                                <div class="safety-item">
+                                    <i class="fas fa-fire-extinguisher"></i>
+                                    <div>
+                                        <strong>Fire Safety</strong>
+                                        <p>Modern fire prevention systems</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Room Types -->
+                    <section class="section-card">
+                        <h2 class="section-title">Available Rooms</h2>
+                        <div class="rooms-list" id="roomsList">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </section>
+
+                    <!-- Reviews -->
+                    <section class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">Guest Reviews</h2>
+                            <div class="review-summary">
+                                <div class="review-score">
+                                    <span class="score-large" id="overallScore">9.2</span>
+                                    <div class="score-details">
+                                        <strong>Excellent</strong>
+                                        <span id="totalReviews">450 reviews</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-categories">
+                            <div class="review-category">
+                                <span>Cleanliness</span>
+                                <div class="category-bar">
+                                    <div class="bar-fill" style="width: 92%"></div>
+                                </div>
+                                <span class="category-score">9.2</span>
+                            </div>
+                            <div class="review-category">
+                                <span>Staff</span>
+                                <div class="category-bar">
+                                    <div class="bar-fill" style="width: 95%"></div>
+                                </div>
+                                <span class="category-score">9.5</span>
+                            </div>
+                            <div class="review-category">
+                                <span>Location</span>
+                                <div class="category-bar">
+                                    <div class="bar-fill" style="width: 90%"></div>
+                                </div>
+                                <span class="category-score">9.0</span>
+                            </div>
+                            <div class="review-category">
+                                <span>Value</span>
+                                <div class="category-bar">
+                                    <div class="bar-fill" style="width: 88%"></div>
+                                </div>
+                                <span class="category-score">8.8</span>
+                            </div>
+                        </div>
+
+                        <div class="reviews-list" id="reviewsList">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+
+                        <button class="btn-secondary btn-full" onclick="loadMoreReviews()">
+                            Load More Reviews
+                        </button>
+                    </section>
+
+                    <!-- Location -->
+                    <section class="section-card">
+                        <h2 class="section-title">Location</h2>
+                        <div class="location-info">
+                            <p><i class="fas fa-map-marker-alt"></i> <span id="fullAddress">Cairo, Egypt</span></p>
+                        </div>
+                        <div class="map-placeholder">
+                            <i class="fas fa-map"></i>
+                            <p>Interactive map coming soon</p>
+                        </div>
+                    </section>
+
+                    <!-- House Rules -->
+                    <section class="section-card">
+                        <h2 class="section-title">House Rules</h2>
+                        <div class="rules-grid">
+                            <div class="rule-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Check-in</strong>
+                                    <span>After 2:00 PM</span>
+                                </div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Check-out</strong>
+                                    <span>Before 12:00 PM</span>
+                                </div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-ban-smoking"></i>
+                                <div>
+                                    <strong>Smoking</strong>
+                                    <span>Non-smoking property</span>
+                                </div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-paw"></i>
+                                <div>
+                                    <strong>Pets</strong>
+                                    <span>Not allowed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Cancellation Policy -->
+                    <section class="section-card">
+                        <h2 class="section-title">Cancellation Policy</h2>
+                        <div class="policy-content">
+                            <p><strong>Free cancellation</strong> up to 48 hours before check-in</p>
+                            <p>Cancel within 48 hours of check-in and get a 50% refund</p>
+                            <p>No refund for same-day cancellations or no-shows</p>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- Right Column - Booking Card -->
+                <aside class="content-sidebar">
+                    <div class="booking-card sticky">
+                        <div class="booking-header">
+                            <div class="booking-price">
+                                <span class="price-amount" id="bookingPrice">2,500</span>
+                                <span class="price-currency">EGP</span>
+                                <span class="price-period">/night</span>
+                            </div>
+                            <div class="booking-rating">
+                                <i class="fas fa-star"></i>
+                                <span id="sidebarRating">9.2</span>
+                                <span class="rating-count">(<span id="sidebarReviewCount">450</span>)</span>
+                            </div>
+                        </div>
+
+                        <form class="booking-form" id="bookingForm">
+                            <div class="form-group">
+                                <label>Check-in</label>
+                                <input type="date" id="bookCheckIn" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Check-out</label>
+                                <input type="date" id="bookCheckOut" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Guests</label>
+                                <select id="bookGuests" required>
+                                    <option value="1">1 guest</option>
+                                    <option value="2" selected>2 guests</option>
+                                    <option value="3">3 guests</option>
+                                    <option value="4">4 guests</option>
+                                </select>
+                            </div>
+
+                            <div class="price-breakdown">
+                                <div class="price-row">
+                                    <span><span id="pricePerNight">2,500</span> EGP × <span id="numNights">1</span> night</span>
+                                    <span id="subtotal">2,500 EGP</span>
+                                </div>
+                                <div class="price-row">
+                                    <span>Service fee</span>
+                                    <span id="serviceFee">250 EGP</span>
+                                </div>
+                                <div class="price-divider"></div>
+                                <div class="price-row total">
+                                    <strong>Total</strong>
+                                    <strong id="totalPrice">2,750 EGP</strong>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-primary btn-full">
+                                Reserve Now
+                            </button>
+
+                            <p class="booking-note">You won't be charged yet</p>
+                        </form>
+
+                        <div class="booking-highlights">
+                            <div class="highlight-item">
+                                <i class="fas fa-award"></i>
+                                <span>Best Price Guarantee</span>
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-undo"></i>
+                                <span>Free Cancellation</span>
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Secure Payment</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+
+            <!-- Similar Properties -->
+            <section class="similar-section">
+                <h2 class="section-title">Similar Properties</h2>
+                <div class="similar-grid" id="similarGrid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-globe-africa"></i>
+                        <span>EGY<strong>360</strong></span>
+                    </div>
+                    <p>Discover Egypt's wonders with confidence and safety</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="#">About Us</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Careers</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="#">Help Center</a>
+                        <a href="#">Safety</a>
+                        <a href="#">Terms</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Egy360. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <button class="lightbox-close" onclick="closeLightbox()">
+            <i class="fas fa-times"></i>
+        </button>
+        <button class="lightbox-prev" onclick="prevImage()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="lightbox-next" onclick="nextImage()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="lightbox-content">
+            <img id="lightboxImage" src="" alt="Property Image">
+            <div class="lightbox-counter">
+                <span id="lightboxCounter">1 / 10</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="modal-overlay" onclick="closeAuthModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAuthModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="authModalContent"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/accommodation_detail.js' %}"></script>
+
+</body>
+</html>

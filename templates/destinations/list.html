@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Destinations - Egy360{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Egyptian Destinations</h1>
+    
+    <!-- Popular Cities -->
+    <section class="mb-5">
+        <h2 class="mb-4">Popular Cities</h2>
+        <div class="row">
+            {% for city in cities %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="https://source.unsplash.com/400x300/?{{ city.name }},egypt" 
+                         class="card-img-top" alt="{{ city.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ city.name }}</h5>
+                        <p class="card-text">{{ city.description|truncatewords:20 }}</p>
+                        <a href="/destinations/city/{{ city.slug }}/" class="btn btn-primary">Explore {{ city.name }}</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center">No destinations available at the moment.</p>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <!-- Must-See Attractions -->
+    <section>
+        <h2 class="mb-4">Must-See Attractions</h2>
+        <div class="row">
+            {% for attraction in attractions %}
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="https://source.unsplash.com/200x150/?{{ attraction.name }}" 
+                                 class="img-fluid rounded-start" alt="{{ attraction.name }}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ attraction.name }}</h5>
+                                <p class="card-text">
+                                    <i class="fas fa-map-marker-alt"></i> {{ attraction.city.name }}
+                                </p>
+                                <p class="card-text">{{ attraction.description|truncatewords:15 }}</p>
+                                <a href="/destinations/attraction/{{ attraction.slug }}/" class="btn btn-sm btn-outline-primary">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

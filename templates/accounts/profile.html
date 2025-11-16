@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - Egy360{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Sidebar -->
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="https://ui-avatars.com/api/?name={{ user.first_name }}+{{ user.last_name }}&size=120&background=c41e3a&color=fff" 
+                         class="rounded-circle mb-3" alt="Profile">
+                    <h5>{{ user.first_name }} {{ user.last_name }}</h5>
+                    <p class="text-muted">{{ user.email }}</p>
+                    <div class="d-grid gap-2">
+                        <a href="/accounts/profile/edit/" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="list-group mt-3">
+                <a href="/accounts/profile/" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="/bookings/" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar"></i> My Bookings
+                </a>
+                <a href="/reviews/" class="list-group-item list-group-item-action">
+                    <i class="fas fa-star"></i> My Reviews
+                </a>
+                <a href="/accounts/settings/" class="list-group-item list-group-item-action">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="/accounts/logout/" class="list-group-item list-group-item-action text-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <!-- Profile Information -->
+            <div class="card">
+                <div class="card-header">
+                    <h4>Profile Information</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="text-muted">First Name</label>
+                            <p>{{ user.first_name|default:"Not provided" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted">Last Name</label>
+                            <p>{{ user.last_name|default:"Not provided" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="text-muted">Email</label>
+                            <p>{{ user.email }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted">Phone</label>
+                            <p>{{ profile.phone|default:"Not provided" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="text-muted">Date of Birth</label>
+                            <p>{{ profile.date_of_birth|default:"Not provided" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted">Nationality</label>
+                            <p>{{ profile.nationality|default:"Not provided" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="text-muted">Member Since</label>
+                            <p>{{ user.date_joined|date:"F Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Verification Status -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h4>Verification Status</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            {% if profile.email_verified %}
+                            <i class="fas fa-check-circle text-success fa-3x mb-2"></i>
+                            <p>Email Verified</p>
+                            {% else %}
+                            <i class="fas fa-times-circle text-danger fa-3x mb-2"></i>
+                            <p>Email Not Verified</p>
+                            <button class="btn btn-sm btn-outline-primary">Verify Now</button>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4 text-center">
+                            {% if profile.phone_verified %}
+                            <i class="fas fa-check-circle text-success fa-3x mb-2"></i>
+                            <p>Phone Verified</p>
+                            {% else %}
+                            <i class="fas fa-times-circle text-danger fa-3x mb-2"></i>
+                            <p>Phone Not Verified</p>
+                            <button class="btn btn-sm btn-outline-primary">Verify Now</button>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4 text-center">
+                            {% if profile.identity_verified %}
+                            <i class="fas fa-check-circle text-success fa-3x mb-2"></i>
+                            <p>Identity Verified</p>
+                            {% else %}
+                            <i class="fas fa-times-circle text-danger fa-3x mb-2"></i>
+                            <p>Identity Not Verified</p>
+                            <button class="btn btn-sm btn-outline-primary">Verify Now</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
