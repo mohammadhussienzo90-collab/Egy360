@@ -36,13 +36,13 @@ class Command(BaseCommand):
         self.create_tours()
         self.create_blog_content()
 
-        self.stdout.write(self.style.SUCCESS('\n✅ All data created successfully!'))
+        self.stdout.write(self.style.SUCCESS('\n[SUCCESS] All data created successfully!'))
         self.stdout.write(self.style.SUCCESS('Summary:'))
-        self.stdout.write(f'  - Cities: {City.objects.count()}'))
-        self.stdout.write(f'  - Attractions: {Attraction.objects.count()}'))
-        self.stdout.write(f'  - Accommodations: {Accommodation.objects.count()}'))
-        self.stdout.write(f'  - Tours: {Tour.objects.count()}'))
-        self.stdout.write(f'  - Blog Posts: {BlogPost.objects.count()}'))
+        self.stdout.write(f'  - Cities: {City.objects.count()}')
+        self.stdout.write(f'  - Attractions: {Attraction.objects.count()}')
+        self.stdout.write(f'  - Accommodations: {Accommodation.objects.count()}')
+        self.stdout.write(f'  - Tours: {Tour.objects.count()}')
+        self.stdout.write(f'  - Blog Posts: {BlogPost.objects.count()}')
 
     def create_admin_user(self):
         if not User.objects.filter(username='admin').exists():
@@ -51,9 +51,9 @@ class Command(BaseCommand):
                 email='admin@egytravel360.com',
                 password='admin123'  # Change this!
             )
-            self.stdout.write(self.style.SUCCESS('✅ Admin user created (username: admin, password: admin123)'))
+            self.stdout.write(self.style.SUCCESS('[SUCCESS] Admin user created (username: admin, password: admin123)'))
         else:
-            self.stdout.write('ℹ️  Admin user already exists')
+            self.stdout.write('[INFO] Admin user already exists')
 
     def create_amenities(self):
         amenities = [
@@ -64,10 +64,20 @@ class Command(BaseCommand):
             'Rooftop Terrace', 'Hot Tub', 'Sauna', '24-Hour Front Desk'
         ]
 
+        icon_map = {
+            'Free WiFi': 'fa-wifi', 'Swimming Pool': 'fa-swimming-pool', 'Restaurant': 'fa-utensils',
+            'Bar': 'fa-cocktail', 'Spa': 'fa-spa', 'Gym': 'fa-dumbbell', 'Room Service': 'fa-concierge-bell',
+            'Air Conditioning': 'fa-snowflake', 'Parking': 'fa-parking', 'Airport Shuttle': 'fa-bus',
+            'Beach Access': 'fa-umbrella-beach', 'Business Center': 'fa-briefcase', '24/7 Reception': 'fa-clock',
+            'Laundry Service': 'fa-tshirt', 'Pet Friendly': 'fa-paw', 'Family Rooms': 'fa-home',
+            'Non-Smoking Rooms': 'fa-smoking-ban', 'Safe': 'fa-lock', 'Mini Bar': 'fa-glass-martini',
+            'TV': 'fa-tv', 'Balcony': 'fa-door-open', 'Kitchen': 'fa-blender', 'Hot Tub': 'fa-hot-tub',
+            'Garden': 'fa-tree'
+        }
         for name in amenities:
-            Amenity.objects.get_or_create(name=name, slug=slugify(name))
+            Amenity.objects.get_or_create(name=name, defaults={'icon': icon_map.get(name, 'fa-check')})
 
-        self.stdout.write(self.style.SUCCESS(f'✅ Created {len(amenities)} amenities'))
+        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Created {len(amenities)} amenities'))
 
     def create_country_and_cities(self):
         # Create Egypt
@@ -138,7 +148,7 @@ class Command(BaseCommand):
                 }
             )
 
-        self.stdout.write(self.style.SUCCESS(f'✅ Created {len(cities_data)} cities'))
+        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Created {len(cities_data)} cities'))
 
     def create_attractions(self):
         attractions_data = {
@@ -200,12 +210,14 @@ class Command(BaseCommand):
                         'slug': slugify(name),
                         'description': desc,
                         'is_must_see': is_must_see,
-                        'annual_visitors': visitors
+                        'attraction_type': 'historical' if 'Pyramid' in name or 'Temple' in name else 'archaeological',
+                        'address': city_name,
+                        'is_family_friendly': True
                     }
                 )
                 total_attractions += 1
 
-        self.stdout.write(self.style.SUCCESS(f'✅ Created {total_attractions} attractions'))
+        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Created {total_attractions} attractions'))
 
     def create_accommodations(self):
         # Get amenities
@@ -309,7 +321,7 @@ class Command(BaseCommand):
                     accommodation.amenities.set(selected_amenities)
                     total_accommodations += 1
 
-        self.stdout.write(self.style.SUCCESS(f'✅ Created {total_accommodations} accommodations'))
+        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Created {total_accommodations} accommodations'))
 
     def create_tours(self):
         tours_data = [
@@ -437,17 +449,18 @@ class Command(BaseCommand):
                 # Create itinerary for multi-day tours
                 for day in range(1, days + 1):
                     if day < len(highlights):
+                        overnight = f'Hotel in {tour.city.name if hasattr(tour, "city") else "destination"}' if (nights > 0 and day < days) else ''
                         TourItinerary.objects.create(
                             tour=tour,
-                            day_number=day,
+                            day=day,
                             title=f'Day {day}',
                             description=highlights[day-1] if day <= len(highlights) else f'Day {day} activities',
                             meals_included='Breakfast, Lunch' if day > 1 else 'Lunch',
-                            accommodation_included=nights > 0 and day < days
+                            overnight_location=overnight
                         )
                 total_tours += 1
 
-        self.stdout.write(self.style.SUCCESS(f'✅ Created {total_tours} tours'))
+        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Created {total_tours} tours'))
 
     def create_blog_content(self):
         # Create blog categories
@@ -782,7 +795,7 @@ Egypt is generally safe for tourists, but following these guidelines ensures a w
 
 Egypt welcomes millions of tourists annually, and the vast majority have wonderful, safe experiences. Following these guidelines helps ensure you'll be one of them!
 
-**Welcome to Egypt - Ahlan wa Sahlan!** 🇪🇬
+**Welcome to Egypt - Ahlan wa Sahlan!**
             '''),
 
             # Other guides
@@ -850,14 +863,14 @@ Book your Nile cruise through Egy360 for best rates and verified operators!
                 defaults={
                     'slug': slugify(title),
                     'content': content,
-                    'excerpt': content[:200] + '...',
+                    'excerpt': content[:300] if len(content) > 300 else content,
                     'category': category,
                     'author': admin_user,
-                    'is_published': True,
+                    'status': 'published',
                     'published_at': datetime.now(),
                 }
             )
             if created:
                 total_posts += 1
 
-        self.stdout.write(self.style.SUCCESS(f'✅ Created {total_posts} blog posts'))
+        self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Created {total_posts} blog posts'))
