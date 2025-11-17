@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Frequently Asked Questions | Egy360</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: #ffffff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #c41e3a;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #c41e3a;
+        }
+
+        .page-header {
+            background: linear-gradient(rgba(196, 30, 58, 0.9), rgba(26, 26, 26, 0.9));
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .faq-category {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .faq-category h2 {
+            color: #c41e3a;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: start;
+            gap: 0.8rem;
+        }
+
+        .faq-question i {
+            color: #c41e3a;
+            margin-top: 0.2rem;
+        }
+
+        .faq-answer {
+            color: #666;
+            line-height: 1.7;
+            padding-left: 2rem;
+        }
+
+        .contact-box {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b1529 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .contact-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-box a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid white;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">Egy360</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/tours/">Tours</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <h1>Frequently Asked Questions</h1>
+        <p>Find answers to common questions about booking with Egy360</p>
+    </header>
+
+    <div class="container">
+        <!-- Booking Questions -->
+        <div class="faq-category">
+            <h2><i class="fas fa-calendar-check"></i> Booking & Reservations</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>How do I make a booking on Egy360?</span>
+                </div>
+                <div class="faq-answer">
+                    Browse accommodations or tours, select your preferred option, choose your dates and number of guests,
+                    then proceed to checkout. You'll receive instant confirmation via email once payment is processed.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Do I need to create an account to book?</span>
+                </div>
+                <div class="faq-answer">
+                    While you can browse without an account, creating one allows you to track bookings, save favorites,
+                    leave reviews, and enjoy faster checkout on future bookings.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>How far in advance should I book?</span>
+                </div>
+                <div class="faq-answer">
+                    For best availability, we recommend booking at least 2-4 weeks in advance, especially during peak
+                    season (October-April). Popular hotels and tours can fill up quickly.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Will I receive confirmation of my booking?</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! You'll receive an immediate email confirmation with your booking reference number, accommodation/tour
+                    details, and all relevant information. Keep this email for your records.
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Questions -->
+        <div class="faq-category">
+            <h2><i class="fas fa-credit-card"></i> Payment & Pricing</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>What payment methods do you accept?</span>
+                </div>
+                <div class="faq-answer">
+                    We accept major credit cards (Visa, Mastercard, American Express), debit cards, and secure online
+                    payment methods through Stripe. All transactions are encrypted and secure.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Are prices shown in Egyptian Pounds or USD?</span>
+                </div>
+                <div class="faq-answer">
+                    Prices are displayed in Egyptian Pounds (EGP). International visitors can pay with their credit cards,
+                    and the amount will be converted to their home currency by their bank.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Are there any hidden fees?</span>
+                </div>
+                <div class="faq-answer">
+                    No! The price you see is the price you pay. No hidden booking fees, service charges, or surprise costs.
+                    We believe in transparent pricing.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>When will my credit card be charged?</span>
+                </div>
+                <div class="faq-answer">
+                    Your card is charged immediately upon booking confirmation. For some accommodations and tours,
+                    you may have the option to pay a deposit or the full amount at the property.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Do you offer best price guarantee?</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! We work directly with hotels and tour operators to offer competitive rates. If you find a lower
+                    price for the same accommodation or tour within 24 hours of booking, contact us for a refund of the difference.
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancellation & Refunds -->
+        <div class="faq-category">
+            <h2><i class="fas fa-undo"></i> Cancellation & Refunds</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>What is your cancellation policy?</span>
+                </div>
+                <div class="faq-answer">
+                    Cancellation policies vary by accommodation and tour. Most offer free cancellation up to 24-48 hours
+                    before check-in/tour date. Always check the specific cancellation terms before booking.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>How do I cancel my booking?</span>
+                </div>
+                <div class="faq-answer">
+                    Log into your account, go to "My Bookings," select the booking you wish to cancel, and click "Cancel Booking."
+                    Follow the prompts to complete the cancellation. Confirmation will be sent via email.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>When will I receive my refund?</span>
+                </div>
+                <div class="faq-answer">
+                    Refunds are processed within 5-10 business days after cancellation approval. The funds will be returned
+                    to the original payment method. Bank processing times may vary.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Can I modify my booking instead of cancelling?</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! Many accommodations and tours allow date changes. Contact us through your booking page, and we'll
+                    help you modify your reservation based on availability.
+                </div>
+            </div>
+        </div>
+
+        <!-- Safety & Security -->
+        <div class="faq-category">
+            <h2><i class="fas fa-shield-alt"></i> Safety & Security</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Is Egypt safe for tourists?</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! Egypt is generally very safe for tourists, especially in major tourist areas. Tourist police are
+                    present at all attractions. We also provide comprehensive safety tips in our travel guides.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>How does Egy360 verify hotels and tour operators?</span>
+                </div>
+                <div class="faq-answer">
+                    We personally inspect every property and meet with tour operators. We verify licenses, check facilities,
+                    read reviews, and ensure compliance with safety standards before listing on our platform.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Is my payment information secure?</span>
+                </div>
+                <div class="faq-answer">
+                    Absolutely! We use industry-standard SSL encryption and partner with Stripe, a globally trusted payment
+                    processor. We never store your full credit card details on our servers.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>What if I encounter problems during my stay/tour?</span>
+                </div>
+                <div class="faq-answer">
+                    Contact our 24/7 customer support immediately. We'll work with you and the service provider to resolve
+                    any issues. Your satisfaction is our priority.
+                </div>
+            </div>
+        </div>
+
+        <!-- Visa & Travel Requirements -->
+        <div class="faq-category">
+            <h2><i class="fas fa-passport"></i> Visa & Travel Requirements</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Do I need a visa to visit Egypt?</span>
+                </div>
+                <div class="faq-answer">
+                    Most nationalities require a visa. Many can obtain e-visa online before travel or visa-on-arrival at
+                    Egyptian airports. Check your country's specific requirements before booking.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>What documents do I need to bring?</span>
+                </div>
+                <div class="faq-answer">
+                    Valid passport (6 months validity), visa, booking confirmations, travel insurance (recommended),
+                    and any necessary vaccination certificates. Keep copies of important documents.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Do I need travel insurance?</span>
+                </div>
+                <div class="faq-answer">
+                    While not mandatory, we highly recommend travel insurance covering medical emergencies, trip cancellation,
+                    and lost luggage. Better safe than sorry!
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Box -->
+        <div class="contact-box">
+            <h3>Still Have Questions?</h3>
+            <p>Our friendly team is here to help!</p>
+            <p style="margin-top: 1rem;">
+                Email: <a href="mailto:info@egytravel360.com">info@egytravel360.com</a><br>
+                Or visit our <a href="/contact/">Contact Page</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
