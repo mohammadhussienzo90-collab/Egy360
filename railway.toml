@@ -2,6 +2,6 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn Egy360.wsgi --log-file -"
+startCommand = "chmod +x startup.sh && ./startup.sh"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
