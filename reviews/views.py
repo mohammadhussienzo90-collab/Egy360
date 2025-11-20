@@ -25,7 +25,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db import transaction
 from django.contrib.contenttypes.models import ContentType
 
-from .models import ReviewRating, ReviewImage, ReviewResponse, ReviewReport
+from .models import Review, ReviewImage, ReviewResponse, ReviewReport
 from .serializers import (
     ReviewListSerializer,
     ReviewDetailSerializer,
@@ -73,7 +73,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     - report: Report inappropriate review
     - top_rated: Get highest rated reviews
     """
-    queryset = ReviewRating.objects.filter(is_approved=True)
+    queryset = Review.objects.filter(is_approved=True)
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['rating', 'is_verified_purchase', 'is_approved']
@@ -192,7 +192,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
         Returns all reviews written by authenticated user
         """
-        my_reviews = ReviewRating.objects.filter(reviewer=request.user)
+        my_reviews = Review.objects.filter(reviewer=request.user)
 
         page = self.paginate_queryset(my_reviews)
         if page is not None:

@@ -36,6 +36,6 @@ class BlogDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = self.object.comments.filter(is_approved=True)
+        context['comments'] = self.object.comments.filter(status='approved')
         context['recent_posts'] = BlogPost.objects.exclude(id=self.object.id)[:5]
         return context
