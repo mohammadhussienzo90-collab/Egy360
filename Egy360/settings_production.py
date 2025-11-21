@@ -85,6 +85,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
+                'core.context_processors.analytics',
             ],
         },
     },
@@ -297,6 +298,7 @@ STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default='')
 
 # API Keys
 GOOGLE_MAPS_API_KEY = config('GOOGLE_MAPS_API_KEY', default='')
+GOOGLE_ANALYTICS_ID = config('GOOGLE_ANALYTICS_ID', default='')
 
 # WhiteNoise settings
 WHITENOISE_USE_FINDERS = True
