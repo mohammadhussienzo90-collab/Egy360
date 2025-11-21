@@ -4,6 +4,9 @@ set -e
 echo "Running migrations..."
 python manage.py migrate --noinput
 
+echo "Applying database fixes..."
+python fix_affiliate_fields.py || echo "Fix script completed or fields already exist"
+
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
