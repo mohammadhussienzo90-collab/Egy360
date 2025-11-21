@@ -15,3 +15,4 @@ python manage.py shell -c "from django.contrib.auth.models import User; User.obj
 
 echo "Starting Gunicorn..."
 exec gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120
+# Force redeploy
