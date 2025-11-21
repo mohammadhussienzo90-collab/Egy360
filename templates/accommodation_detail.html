@@ -25,14 +25,14 @@
     <!-- Navigation Bar -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="{% url 'home' %}" class="nav-logo">
+            <a href="{% url 'homepage' %}" class="nav-logo">
                 <i class="fas fa-globe-africa"></i>
                 <span>EGY<strong>360</strong></span>
             </a>
 
             <div class="nav-menu">
-                <a href="{% url 'home' %}" class="nav-link">Home</a>
-                <a href="{% url 'accommodation:search' %}" class="nav-link active">Accommodations</a>
+                <a href="{% url 'homepage' %}" class="nav-link">Home</a>
+                <a href="{% url 'accommodations:search' %}" class="nav-link active">Accommodations</a>
                 <a href="#" class="nav-link">Tours</a>
                 <a href="#" class="nav-link">Transportation</a>
                 <a href="#" class="nav-link">About</a>
@@ -50,9 +50,9 @@
     <!-- Breadcrumb -->
     <div class="breadcrumb">
         <div class="container">
-            <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+            <a href="{% url 'homepage' %}"><i class="fas fa-home"></i> Home</a>
             <i class="fas fa-chevron-right"></i>
-            <a href="{% url 'accommodation:search' %}">Accommodations</a>
+            <a href="{% url 'accommodations:search' %}">Accommodations</a>
             <i class="fas fa-chevron-right"></i>
             <span>{{ accommodation.name }}</span>
         </div>
@@ -97,23 +97,39 @@
             <section class="gallery-section">
                 <div class="gallery-grid">
                     <div class="gallery-main" onclick="openLightbox(0)">
-                        <img id="mainImage" src="https://source.unsplash.com/800x600/?luxury,hotel,egypt" alt="Main Image">
+                        {% if accommodation.main_image %}
+                            <img id="mainImage" src="{{ accommodation.main_image.url }}" alt="{{ accommodation.name }}">
+                        {% else %}
+                            <div style="width:100%; height:100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display:flex; align-items:center; justify-content:center; color:white; font-size:2rem; font-weight:bold;">
+                                <div style="text-align:center;">
+                                    <i class="fas fa-hotel" style="font-size:4rem; margin-bottom:1rem;"></i>
+                                    <p>{{ accommodation.name }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="gallery-thumbs">
                         <div class="gallery-thumb" onclick="openLightbox(1)">
-                            <img src="https://source.unsplash.com/400x300/?hotel,room" alt="Room">
+                            <div style="width:100%; height:100%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display:flex; align-items:center; justify-content:center; color:white;">
+                                <i class="fas fa-bed" style="font-size:2rem;"></i>
+                            </div>
                         </div>
                         <div class="gallery-thumb" onclick="openLightbox(2)">
-                            <img src="https://source.unsplash.com/400x300/?hotel,lobby" alt="Lobby">
+                            <div style="width:100%; height:100%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display:flex; align-items:center; justify-content:center; color:white;">
+                                <i class="fas fa-swimming-pool" style="font-size:2rem;"></i>
+                            </div>
                         </div>
                         <div class="gallery-thumb" onclick="openLightbox(3)">
-                            <img src="https://source.unsplash.com/400x300/?hotel,pool" alt="Pool">
+                            <div style="width:100%; height:100%; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); display:flex; align-items:center; justify-content:center; color:white;">
+                                <i class="fas fa-utensils" style="font-size:2rem;"></i>
+                            </div>
                         </div>
                         <div class="gallery-thumb gallery-more" onclick="openLightbox(4)">
-                            <img src="https://source.unsplash.com/400x300/?hotel,restaurant" alt="Restaurant">
-                            <div class="more-overlay">
-                                <i class="fas fa-images"></i>
-                                <span>Show all photos</span>
+                            <div style="width:100%; height:100%; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); display:flex; align-items:center; justify-content:center; color:white;">
+                                <div class="more-overlay">
+                                    <i class="fas fa-images"></i>
+                                    <span>More photos coming soon</span>
+                                </div>
                             </div>
                         </div>
                     </div>
