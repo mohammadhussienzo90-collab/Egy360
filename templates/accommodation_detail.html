@@ -381,47 +381,60 @@
                             </div>
                         </div>
 
-                        <form class="booking-form" id="bookingForm">
-                            <div class="form-group">
-                                <label>Check-in</label>
-                                <input type="date" id="bookCheckIn" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Check-out</label>
-                                <input type="date" id="bookCheckOut" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Guests</label>
-                                <select id="bookGuests" required>
-                                    <option value="1">1 guest</option>
-                                    <option value="2" selected>2 guests</option>
-                                    <option value="3">3 guests</option>
-                                    <option value="4">4 guests</option>
-                                </select>
-                            </div>
+                        {% if accommodation.has_booking_options %}
+                            <div class="booking-options">
+                                {% if accommodation.booking_com_url %}
+                                <a href="{{ accommodation.booking_com_url }}"
+                                   target="_blank"
+                                   rel="noopener nofollow"
+                                   class="btn-primary btn-full booking-btn"
+                                   onclick="trackBookingClick('booking.com', '{{ accommodation.name }}')">
+                                    <i class="fas fa-external-link-alt"></i> Book on Booking.com
+                                </a>
+                                {% endif %}
 
-                            <div class="price-breakdown">
-                                <div class="price-row">
-                                    <span><span id="pricePerNight">2,500</span> EGP × <span id="numNights">1</span> night</span>
-                                    <span id="subtotal">2,500 EGP</span>
-                                </div>
-                                <div class="price-row">
-                                    <span>Service fee</span>
-                                    <span id="serviceFee">250 EGP</span>
-                                </div>
-                                <div class="price-divider"></div>
-                                <div class="price-row total">
-                                    <strong>Total</strong>
-                                    <strong id="totalPrice">2,750 EGP</strong>
-                                </div>
+                                {% if accommodation.agoda_url %}
+                                <a href="{{ accommodation.agoda_url }}"
+                                   target="_blank"
+                                   rel="noopener nofollow"
+                                   class="btn-secondary btn-full booking-btn"
+                                   onclick="trackBookingClick('agoda', '{{ accommodation.name }}')">
+                                    <i class="fas fa-external-link-alt"></i> Book on Agoda
+                                </a>
+                                {% endif %}
+
+                                {% if accommodation.hotels_com_url %}
+                                <a href="{{ accommodation.hotels_com_url }}"
+                                   target="_blank"
+                                   rel="noopener nofollow"
+                                   class="btn-secondary btn-full booking-btn"
+                                   onclick="trackBookingClick('hotels.com', '{{ accommodation.name }}')">
+                                    <i class="fas fa-external-link-alt"></i> Book on Hotels.com
+                                </a>
+                                {% endif %}
+
+                                {% if accommodation.direct_booking_url %}
+                                <a href="{{ accommodation.direct_booking_url }}"
+                                   target="_blank"
+                                   rel="noopener nofollow"
+                                   class="btn-secondary btn-full booking-btn"
+                                   onclick="trackBookingClick('direct', '{{ accommodation.name }}')">
+                                    <i class="fas fa-hotel"></i> Book Direct
+                                </a>
+                                {% endif %}
+
+                                <p class="booking-note" style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
+                                    <i class="fas fa-shield-alt"></i> Best rates guaranteed • Free cancellation on most rooms
+                                </p>
                             </div>
-
-                            <button type="submit" class="btn-primary btn-full">
-                                Reserve Now
-                            </button>
-
-                            <p class="booking-note">You won't be charged yet</p>
-                        </form>
+                        {% else %}
+                            <div class="booking-options">
+                                <a href="{% url 'homepage' %}" class="btn-primary btn-full">
+                                    <i class="fas fa-search"></i> Find Available Dates
+                                </a>
+                                <p class="booking-note">Contact hotel directly for booking inquiries</p>
+                            </div>
+                        {% endif %}
 
                         <div class="booking-highlights">
                             <div class="highlight-item">
@@ -517,6 +530,82 @@
 
     <!-- JavaScript -->
     <script src="{% static 'js/accommodation_detail.js' %}"></script>
+    <script>
+        // Track booking button clicks for affiliate commission
+        function trackBookingClick(platform, hotelName) {
+            // Send to Google Analytics (if configured)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'booking_click', {
+                    'platform': platform,
+                    'hotel_name': hotelName,
+                    'event_category': 'affiliate',
+                    'event_label': platform + ' - ' + hotelName
+                });
+            }
+
+            // Log to console for debugging
+            console.log('Booking click tracked:', platform, hotelName);
+
+            // Could also send to your own analytics endpoint
+            // fetch('/api/track-booking-click/', {
+            //     method: 'POST',
+            //     headers: {'Content-Type': 'application/json'},
+            //     body: JSON.stringify({platform, hotel_name: hotelName})
+            // });
+        }
+    </script>
+    <style>
+        /* Booking button styles */
+        .booking-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1rem 0;
+        }
+
+        .booking-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: none;
+        }
+
+        .booking-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            border-color: #c41e3a;
+            color: #c41e3a;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-note {
+            text-align: center;
+            color: #666;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+    </style>
 
 </body>
 </html>
