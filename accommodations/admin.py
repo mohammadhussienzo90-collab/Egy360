@@ -27,7 +27,11 @@ class AccommodationAdmin(admin.ModelAdmin):
             'fields': ('is_featured', 'is_verified', 'is_active')
         }),
         ('Media', {
-            'fields': ('main_image',)
+            'fields': ('main_image', 'image_url')
+        }),
+        ('Affiliate Links (Monetization)', {
+            'fields': ('booking_com_id', 'booking_com_url', 'agoda_url', 'hotels_com_url', 'direct_booking_url', 'commission_rate', 'total_bookings', 'total_commission_earned'),
+            'description': 'Add affiliate links to earn commission from bookings'
         }),
     )
 
