@@ -139,16 +139,17 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # WhiteNoise configuration for efficient static file serving
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-# Cloudinary configuration for media storage
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': config('CLOUDINARY_API_KEY'),
-    'API_SECRET': config('CLOUDINARY_API_SECRET'),
-}
+# Cloudinary configuration for media storage (temporarily disabled)
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+#     'API_KEY': config('CLOUDINARY_API_KEY'),
+#     'API_SECRET': config('CLOUDINARY_API_SECRET'),
+# }
 
-# Media files stored in Cloudinary
+# Media files - Using URL field approach instead of file uploads
 MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_ROOT = BASE_DIR / 'media'
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
