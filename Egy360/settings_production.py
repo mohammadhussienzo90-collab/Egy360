@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'django_filters',
-    'cloudinary_storage',
-    'cloudinary',
+    # 'cloudinary_storage',  # Disabled - using image_url field instead
+    # 'cloudinary',
 
     # Your apps
     'accounts',
