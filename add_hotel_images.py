@@ -47,13 +47,14 @@ EGYPT_HOTEL_IMAGES = [
 
 def assign_images():
     """Assign images to hotels based on location and type"""
-    accommodations = Accommodation.objects.filter(image_url='')
+    from django.db.models import Q
+    accommodations = Accommodation.objects.filter(Q(image_url='') | Q(image_url__isnull=True))
+
+    print(f"Found {accommodations.count()} accommodations without images")
 
     if not accommodations.exists():
         print("✅ All accommodations already have images!")
         return
-
-    print(f"Found {accommodations.count()} accommodations without images")
 
     # Combine all images
     all_images = HOTEL_IMAGES + EGYPT_HOTEL_IMAGES
