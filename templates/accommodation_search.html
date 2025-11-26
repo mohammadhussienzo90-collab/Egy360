@@ -320,7 +320,7 @@
                 const card = `
                     <div class="result-card">
                         <div class="result-image">
-                            <img src="${acc.image}" alt="${acc.name}" onerror="this.src='https://via.placeholder.com/350x200?text=No+Image'">
+                            <img src="${acc.image_url || acc.main_image || 'https://via.placeholder.com/350x200?text=No+Image'}" alt="${acc.name}" onerror="this.src='https://via.placeholder.com/350x200?text=No+Image'">
                         </div>
                         <div class="result-content">
                             <div class="result-header">
