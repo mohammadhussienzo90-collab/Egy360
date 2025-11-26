@@ -21,4 +21,4 @@ python create_superuser_production.py || echo "Superuser creation completed or a
 
 echo "Starting Gunicorn..."
 exec gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120
-# Force redeploy
+# Force redeploy to clear bytecode cache
