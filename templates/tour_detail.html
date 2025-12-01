@@ -25,13 +25,13 @@
     <!-- Navigation Bar -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="{% url 'home' %}" class="nav-logo">
+            <a href="{% url 'homepage' %}" class="nav-logo">
                 <i class="fas fa-globe-africa"></i>
                 <span class="logo-text">EGY</span><span class="logo-accent">360</span>
             </a>
 
             <div class="nav-menu">
-                <a href="{% url 'home' %}" class="nav-link">Home</a>
+                <a href="{% url 'homepage' %}" class="nav-link">Home</a>
                 <a href="{% url 'accommodations:accommodation-search' %}" class="nav-link">Accommodations</a>
                 <a href="{% url 'tours:tour-listing' %}" class="nav-link active">Tours</a>
                 <a href="#" class="nav-link">Transportation</a>
@@ -50,7 +50,7 @@
     <!-- Breadcrumb -->
     <div class="breadcrumb">
         <div class="container">
-            <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+            <a href="{% url 'homepage' %}"><i class="fas fa-home"></i> Home</a>
             <i class="fas fa-chevron-right"></i>
             <a href="{% url 'tours:tour-listing' %}">Tours</a>
             <i class="fas fa-chevron-right"></i>
