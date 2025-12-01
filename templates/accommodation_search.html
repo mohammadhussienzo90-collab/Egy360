@@ -301,7 +301,8 @@
                 description: "{{ acc.description|escapejs }}",
                 address: "{{ acc.address|escapejs }}",
                 price: {{ acc.price_per_night }},
-                image: "{{ acc.main_image|escapejs }}",
+                image_url: "{{ acc.image_url|escapejs }}",
+                main_image: "{{ acc.main_image|escapejs }}",
                 slug: "{{ acc.slug|escapejs }}"
             }{% if not forloop.last %},{% endif %}
             {% endfor %}
