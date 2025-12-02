@@ -8,11 +8,8 @@ find . -type f -name "*.pyc" -delete 2>/dev/null || true
 echo "Running migrations..."
 python manage.py migrate --noinput
 
-echo "Applying database fixes..."
-python fix_affiliate_fields.py || echo "Fix script completed or fields already exist"
-
-echo "Adding hotel images..."
-python add_hotel_images.py || echo "Images already added or error occurred"
+echo "Fixing database schema and populating images..."
+python manage.py fix_and_populate_images || echo "Database fix completed or already applied"
 
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
