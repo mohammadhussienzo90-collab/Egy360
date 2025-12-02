@@ -26,14 +26,65 @@
     })();
     </script>
 
-    <!-- Google Analytics -->
+    <!-- Google Analytics GA4 -->
     {% if GOOGLE_ANALYTICS_ID %}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_ID }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '{{ GOOGLE_ANALYTICS_ID }}');
+        gtag('config', '{{ GOOGLE_ANALYTICS_ID }}', {
+            'send_page_view': true,
+            'page_title': document.title,
+            'page_location': window.location.href
+        });
+
+        // Track affiliate link clicks
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track Booking.com clicks
+            document.querySelectorAll('a[href*="booking.com"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    gtag('event', 'affiliate_click', {
+                        'event_category': 'Affiliate',
+                        'event_label': 'Booking.com',
+                        'value': link.getAttribute('data-accommodation-id') || '0'
+                    });
+                });
+            });
+
+            // Track Agoda clicks
+            document.querySelectorAll('a[href*="agoda.com"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    gtag('event', 'affiliate_click', {
+                        'event_category': 'Affiliate',
+                        'event_label': 'Agoda',
+                        'value': link.getAttribute('data-accommodation-id') || '0'
+                    });
+                });
+            });
+
+            // Track Hotels.com clicks
+            document.querySelectorAll('a[href*="hotels.com"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    gtag('event', 'affiliate_click', {
+                        'event_category': 'Affiliate',
+                        'event_label': 'Hotels.com',
+                        'value': link.getAttribute('data-accommodation-id') || '0'
+                    });
+                });
+            });
+
+            // Track Travelpayouts clicks
+            document.querySelectorAll('a[href*="tp.media"], a[href*="travelpayouts"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    gtag('event', 'affiliate_click', {
+                        'event_category': 'Affiliate',
+                        'event_label': 'Travelpayouts',
+                        'value': link.getAttribute('data-tour-id') || '0'
+                    });
+                });
+            });
+        });
     </script>
     {% endif %}
 

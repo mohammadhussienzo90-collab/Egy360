@@ -76,6 +76,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
+                'core.context_processors.analytics',
             ],
         },
     },
@@ -178,6 +179,9 @@ MESSAGE_TAGS = {
 
 # Custom settings
 SITE_ID = 1
+
+# Google Analytics
+GOOGLE_ANALYTICS_ID = os.environ.get('GOOGLE_ANALYTICS_ID', '')
 
 # Logging
 LOGGING = {
