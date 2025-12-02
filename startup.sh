@@ -11,6 +11,9 @@ python manage.py migrate --noinput
 echo "Fixing database schema and populating images..."
 python manage.py fix_and_populate_images || echo "Database fix completed or already applied"
 
+echo "Running standalone image population script..."
+python populate_images_production.py || echo "Image population completed or error occurred"
+
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
