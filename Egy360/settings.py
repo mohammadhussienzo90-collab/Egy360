@@ -181,7 +181,7 @@ MESSAGE_TAGS = {
 SITE_ID = 1
 
 # Google Analytics
-GOOGLE_ANALYTICS_ID = os.environ.get('GOOGLE_ANALYTICS_ID', '')
+GOOGLE_ANALYTICS_ID = os.environ.get('GOOGLE_ANALYTICS_ID', 'G-GETCTXF3PV')
 
 # Logging
 LOGGING = {
