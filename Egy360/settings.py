@@ -180,7 +180,7 @@ MESSAGE_TAGS = {
 # Custom settings
 SITE_ID = 1
 
-# Google Analytics
+# Google Analytics - GA4 tracking for 360egy.com
 GOOGLE_ANALYTICS_ID = os.environ.get('GOOGLE_ANALYTICS_ID', 'G-GETCTXF3PV')
 
 # Logging
