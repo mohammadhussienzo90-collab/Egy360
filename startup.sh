@@ -25,4 +25,4 @@ python create_superuser_production.py || echo "Superuser creation completed or a
 
 echo "Starting Gunicorn..."
 exec gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120
-# Force redeploy - Dec 2 2025 - fix images
+# Force redeploy - Dec 10 2025 - Google Analytics tracking MUST be live
