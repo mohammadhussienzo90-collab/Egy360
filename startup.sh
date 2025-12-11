@@ -20,6 +20,9 @@ python manage.py collectstatic --noinput
 echo "Checking if database needs population..."
 python manage.py populate_comprehensive_data || echo "Database already populated or error occurred"
 
+echo "Populating blog content..."
+python populate_blog_content.py || echo "Blog content population completed or error occurred"
+
 echo "Creating superuser..."
 python create_superuser_production.py || echo "Superuser creation completed or already exists"
 
