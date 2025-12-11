@@ -1,4 +1,4 @@
-# FORCE DEPLOY Dec 11 2025 - Blog content population on production
+# FORCE DEPLOY Dec 11 2025 20:54 - Blog content population CRITICAL FIX
 [build]
 builder = "nixpacks"
 
