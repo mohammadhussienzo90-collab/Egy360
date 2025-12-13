@@ -219,7 +219,7 @@ Cairo is overwhelming, chaotic, and absolutely magical. Embrace the chaos, stay 
 **Need help planning your Cairo trip? Book verified tours and hotels through Egy360 - scam-free guaranteed!**
 ''',
             'tags': 'Cairo, Travel Guide, Egypt, Pyramids, Tourism',
-            'meta_description': 'Complete guide to visiting Cairo, Egypt. Everything you need to know about attractions, accommodation, transportation, safety, and budget planning for your Cairo adventure.',
+            'meta_description': 'Complete guide to visiting Cairo: attractions, hotels, transport, safety tips, budget planning. Everything you need for your Cairo adventure.',
             'meta_keywords': 'Cairo travel guide, visiting Cairo, Egypt tourism, Pyramids of Giza, Egyptian Museum, Cairo tips',
             'is_featured': True,
             'views_count': 1250,
@@ -386,7 +386,7 @@ Most Egyptians are genuinely warm and hospitable. These scams are run by a small
 **Travel Smart:** Book your Egypt accommodations and tours through Egy360 - we verify every provider to protect you from scams!
 ''',
             'tags': 'Egypt, Scams, Safety, Tourist Scams, Travel Tips, Cairo',
-            'meta_description': 'Learn about the 10 most common tourist scams in Egypt and how to avoid them. Essential safety guide for travelers visiting Cairo, Luxor, and other Egyptian destinations.',
+            'meta_description': 'Learn the 10 most common tourist scams in Egypt and how to avoid them. Essential safety guide for travelers to Cairo, Luxor, and Egypt.',
             'meta_keywords': 'Egypt scams, tourist scams Egypt, Cairo scams, Egypt safety, avoid scams Egypt',
             'is_featured': True,
             'views_count': 2134,
@@ -647,7 +647,7 @@ No matter when you visit, Egypt's ancient wonders are waiting! Plan smart and en
 **Ready to book?** Find verified accommodations and tours on Egy360 - scam-free, guaranteed!
 ''',
             'tags': 'Egypt, Weather, Best Time to Visit, Travel Planning, Egypt Weather',
-            'meta_description': 'Complete month-by-month guide to the best time to visit Egypt. Learn about weather, crowds, prices, and special events for your perfect Egyptian vacation.',
+            'meta_description': 'Month-by-month guide to visiting Egypt. Weather, crowds, prices, and special events to plan your perfect Egyptian vacation.',
             'meta_keywords': 'best time visit Egypt, Egypt weather, when to visit Egypt, Egypt travel seasons, Egypt climate',
             'is_featured': False,
             'views_count': 987,
@@ -930,7 +930,7 @@ Egyptian street food is one of the country's greatest pleasures. It's delicious,
 **Hungry for more?** Check out Egy360's verified restaurant recommendations for both street food and sit-down dining across Egypt!
 ''',
             'tags': 'Egyptian Food, Street Food, Cairo Food, Koshari, Egyptian Cuisine',
-            'meta_description': 'Complete guide to Egyptian street food - what to eat, where to find it, prices, and safety tips. Discover koshari, ta\'ameya, ful, and more delicious Egyptian dishes.',
+            'meta_description': 'Guide to Egyptian street food: what to eat, where to find it, prices, safety tips. Koshari, ta\'ameya, ful, and more delicious dishes.',
             'meta_keywords': 'Egyptian street food, koshari, Egyptian food guide, Cairo food, ta\'ameya, ful medames',
             'is_featured': True,
             'views_count': 1567,

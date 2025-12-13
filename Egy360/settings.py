@@ -18,7 +18,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.railway.app', '*']
 
 # Application definition
 INSTALLED_APPS = [
-    # Django core apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,24 +25,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # Third-party apps
-    'rest_framework',
-    'corsheaders',
-    'django_filters',
+    # Cloudinary - ADD THESE LINES
+    'cloudinary_storage',
+    'cloudinary',
     
     # Your apps
-    'accounts',
+    'blog',
     'accommodations',
     'tours',
-    'destinations',
-    'bookings',
-    'reviews',
-    'payments',
     'transportation',
-    'blog',
-    'api',
-    'dashboard',
-    'core',
+    'bookings',
+    'payments',
+    'reviews',
+    'destinations',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -205,3 +200,17 @@ LOGGING = {
 # WhiteNoise settings
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = True
+
+# Cloudinary Configuration
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
+
+# Use Cloudinary for media storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
