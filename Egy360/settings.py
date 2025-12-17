@@ -25,20 +25,29 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # Cloudinary - ADD THESE LINES
+    # Cloudinary
     'cloudinary_storage',
     'cloudinary',
-    
+
+    # Third-party apps
+    'rest_framework',
+    'django_filters',
+    'corsheaders',
+
     # Your apps
-    'blog',
+    'accounts',
     'accommodations',
-    'tours',
-    'transportation',
+    'api',
+    'blog',
     'bookings',
+    'core',
+    'dashboard',
+    'destinations',
+    'home',
     'payments',
     'reviews',
-    'destinations',
-    'users',
+    'tours',
+    'transportation',
 ]
 
 MIDDLEWARE = [
@@ -201,16 +210,19 @@ LOGGING = {
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = True
 
-# Cloudinary Configuration
+# Cloudinary Configuration - ADD AT VERY BOTTOM
+import os
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-# Use Cloudinary for media storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

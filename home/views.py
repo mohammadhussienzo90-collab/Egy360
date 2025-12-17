@@ -16,7 +16,7 @@ import json
 # Import models from other apps as needed
 from accommodations.models import Accommodation
 from tours.models import Tour
-from destinations.models import Destination
+from destinations.models import City
 
 
 def home(request):
@@ -28,16 +28,16 @@ def home(request):
         'featured_accommodations': Accommodation.objects.filter(
             is_featured=True,
             is_active=True
-        )[:6] if 'accommodations.Accommodation' in dir() else [],
+        )[:6],
 
         'featured_tours': Tour.objects.filter(
             is_featured=True,
             is_active=True
-        )[:6] if 'tours.Tour' in dir() else [],
+        )[:6],
 
-        'popular_destinations': Destination.objects.filter(
+        'popular_destinations': City.objects.filter(
             is_popular=True
-        )[:8] if 'destinations.Destination' in dir() else [],
+        )[:8],
 
         'page_title': 'Egy360 - Discover Egypt Safely',
         'meta_description': 'Egypt\'s premier tourism platform. Find verified accommodations, tours, and transportation at the best prices.',
@@ -230,12 +230,12 @@ def search_autocomplete(request):
 
         if search_type in ['all', 'destinations']:
             # Add destination suggestions
-            destinations = Destination.objects.filter(
+            cities = City.objects.filter(
                 name__icontains=query
-            ).values('name', 'country')[:5]
+            ).select_related('country').values('name', 'country__name')[:5]
             suggestions.extend([
-                {'type': 'destination', 'name': d['name'], 'country': d['country']}
-                for d in destinations
+                {'type': 'destination', 'name': c['name'], 'country': c['country__name']}
+                for c in cities
             ])
 
     return JsonResponse({'suggestions': suggestions})
@@ -245,9 +245,8 @@ def search_autocomplete(request):
 def get_platform_stats(request):
     """Get platform statistics for display"""
     stats = {
-        'total_accommodations': Accommodation.objects.filter(
-            is_active=True).count() if 'accommodations.Accommodation' in dir() else 250,
-        'total_tours': Tour.objects.filter(is_active=True).count() if 'tours.Tour' in dir() else 150,
+        'total_accommodations': Accommodation.objects.filter(is_active=True).count(),
+        'total_tours': Tour.objects.filter(is_active=True).count(),
         'total_bookings': 5000,  # You can get this from bookings model
         'happy_customers': 50000,
     }
