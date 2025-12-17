@@ -269,9 +269,16 @@ def book_tour(request, slug):
         tour.booking_count += 1
         tour.save()
 
+        # Send confirmation email
+        try:
+            from core.email import send_booking_confirmation
+            send_booking_confirmation(booking, booking_type='tour')
+        except Exception:
+            pass  # Don't fail the booking if email fails
+
         return JsonResponse({
             'success': True,
-            'message': 'Booking submitted successfully!',
+            'message': 'Booking submitted successfully! Check your email for confirmation.',
             'booking_id': booking.id,
             'total_price': str(total_price)
         })

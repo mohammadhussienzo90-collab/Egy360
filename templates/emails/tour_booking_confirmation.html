@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - Egy360</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background: #fff; }
+        .header { background: #2c3e50; color: #fff; padding: 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .content { padding: 30px; }
+        .booking-details { background: #f9f9f9; padding: 20px; border-radius: 5px; margin: 20px 0; }
+        .booking-details h3 { margin-top: 0; color: #2c3e50; }
+        .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: #666; }
+        .detail-value { font-weight: bold; color: #333; }
+        .total-row { background: #2c3e50; color: #fff; padding: 15px; margin: 20px 0; border-radius: 5px; text-align: center; }
+        .total-row .amount { font-size: 24px; font-weight: bold; }
+        .status-badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+        .status-pending { background: #f39c12; color: #fff; }
+        .status-confirmed { background: #27ae60; color: #fff; }
+        .footer { background: #f4f4f4; padding: 20px; text-align: center; color: #666; font-size: 12px; }
+        .btn { display: inline-block; padding: 12px 30px; background: #e74c3c; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Egy360</h1>
+            <p>Your Egypt Travel Partner</p>
+        </div>
+
+        <div class="content">
+            <h2>Booking Confirmation</h2>
+
+            <p>Dear {{ user_name }},</p>
+
+            <p>Thank you for booking with Egy360! Your tour booking has been received and is being processed.</p>
+
+            <div class="booking-details">
+                <h3>{{ tour.name }}</h3>
+
+                <div class="detail-row">
+                    <span class="detail-label">Booking Status:</span>
+                    <span class="status-badge status-{{ booking.status }}">{{ status }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Tour Date:</span>
+                    <span class="detail-value">{{ booking_date }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Duration:</span>
+                    <span class="detail-value">{{ tour.duration_days }} days / {{ tour.duration_nights }} nights</span>
+                </div>
+
+                <div class="detail-row">
+                    <span class="detail-label">Adults:</span>
+                    <span class="detail-value">{{ adults }}</span>
+                </div>
+
+                {% if children > 0 %}
+                <div class="detail-row">
+                    <span class="detail-label">Children:</span>
+                    <span class="detail-value">{{ children }}</span>
+                </div>
+                {% endif %}
+
+                <div class="detail-row">
+                    <span class="detail-label">Departure City:</span>
+                    <span class="detail-value">{{ tour.departure_city }}</span>
+                </div>
+            </div>
+
+            <div class="total-row">
+                <p style="margin: 0;">Total Amount</p>
+                <p class="amount" style="margin: 5px 0;">${{ total_price }}</p>
+            </div>
+
+            <p>We will contact you shortly to confirm your booking and provide additional details.</p>
+
+            <p>If you have any questions, please don't hesitate to contact us at <a href="mailto:support@360egy.com">support@360egy.com</a></p>
+
+            <p style="text-align: center; margin-top: 30px;">
+                <a href="https://360egy.com/dashboard/bookings/" class="btn">View My Bookings</a>
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Egy360. All rights reserved.</p>
+            <p>360egy.com - Your Trusted Egypt Travel Partner</p>
+        </div>
+    </div>
+</body>
+</html>

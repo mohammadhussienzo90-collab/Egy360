@@ -207,6 +207,12 @@ def cancel_booking(request, booking_id):
         if booking:
             booking.status = 'cancelled'
             booking.save()
+            # Send cancellation email
+            try:
+                from core.email import send_booking_status_update
+                send_booking_status_update(booking, booking_type='tour')
+            except Exception:
+                pass
             return JsonResponse({
                 'success': True,
                 'message': 'Booking cancelled successfully.'
@@ -223,6 +229,12 @@ def cancel_booking(request, booking_id):
         if booking:
             booking.status = 'cancelled'
             booking.save()
+            # Send cancellation email
+            try:
+                from core.email import send_booking_status_update
+                send_booking_status_update(booking, booking_type='accommodation')
+            except Exception:
+                pass
             return JsonResponse({
                 'success': True,
                 'message': 'Booking cancelled successfully.'

@@ -204,7 +204,14 @@ def newsletter_subscribe(request):
                 })
 
         # Create new subscription
-        NewsletterSubscription.objects.create(email=email, name=name)
+        subscription = NewsletterSubscription.objects.create(email=email, name=name)
+
+        # Send welcome email
+        try:
+            from core.email import send_newsletter_welcome
+            send_newsletter_welcome(subscription)
+        except Exception:
+            pass  # Don't fail if email fails
 
         return JsonResponse({
             'success': True,

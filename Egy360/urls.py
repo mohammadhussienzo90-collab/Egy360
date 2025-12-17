@@ -18,7 +18,10 @@ urlpatterns = [
     # Admin
     path('admin/', admin.site.urls),
 
-    # Main apps - with error handling
+    # Home app (about, contact, FAQ, newsletter, etc.)
+    path('', include('home.urls')),
+
+    # Main apps
     path('accommodations/', include('accommodations.urls')),
     path('tours/', include('tours.urls')),
     path('destinations/', include('destinations.urls')),
