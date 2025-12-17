@@ -11,12 +11,15 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 import json
 
 # Import models from other apps as needed
 from accommodations.models import Accommodation
 from tours.models import Tour
 from destinations.models import City
+from .models import NewsletterSubscription, ContactMessage, FAQItem
 
 
 def home(request):
@@ -129,29 +132,22 @@ def terms_of_service(request):
 
 
 def faq(request):
-    """FAQ page"""
-    faqs = [
-        {
-            'question': 'Is Egy360 safe to use?',
-            'answer': 'Yes! All our partners are verified and we guarantee secure transactions.'
-        },
-        {
-            'question': 'How do I book accommodations?',
-            'answer': 'Simply search for your destination, select dates, and choose from verified options.'
-        },
-        {
-            'question': 'What payment methods do you accept?',
-            'answer': 'We accept all major credit cards, debit cards, and PayPal.'
-        },
-        {
-            'question': 'Can I cancel my booking?',
-            'answer': 'Yes, you can cancel up to 24 hours before your booking for a full refund.'
-        },
-    ]
+    """FAQ page with database-driven content"""
+    # Get FAQs from database, grouped by category
+    faqs = FAQItem.objects.filter(is_active=True)
+
+    # Group FAQs by category
+    faq_categories = {}
+    for faq_item in faqs:
+        category = faq_item.get_category_display()
+        if category not in faq_categories:
+            faq_categories[category] = []
+        faq_categories[category].append(faq_item)
 
     return render(request, 'faq.html', {
         'page_title': 'Frequently Asked Questions - Egy360',
-        'faqs': faqs,
+        'faq_categories': faq_categories,
+        'faqs': faqs,  # Also pass flat list for backwards compatibility
     })
 
 
@@ -171,30 +167,57 @@ def error_403(request, exception):
     return render(request, '403.html', status=403)
 
 
-# API endpoint for newsletter subscription (example)
+# API endpoint for newsletter subscription
 @require_http_methods(["POST"])
 def newsletter_subscribe(request):
     """Handle newsletter subscription via AJAX"""
     try:
         data = json.loads(request.body)
-        email = data.get('email')
+        email = data.get('email', '').strip().lower()
+        name = data.get('name', '').strip()
 
         if not email:
-            return JsonResponse({'success': False, 'error': 'Email is required'})
+            return JsonResponse({'success': False, 'error': 'Email is required'}, status=400)
 
-        # TODO: Add email to newsletter service (MailChimp, SendGrid, etc.)
-        # For now, just return success
+        # Validate email format
+        try:
+            validate_email(email)
+        except ValidationError:
+            return JsonResponse({'success': False, 'error': 'Please enter a valid email address'}, status=400)
+
+        # Check if already subscribed
+        existing = NewsletterSubscription.objects.filter(email=email).first()
+        if existing:
+            if existing.is_active:
+                return JsonResponse({
+                    'success': True,
+                    'message': 'You are already subscribed to our newsletter!'
+                })
+            else:
+                # Reactivate subscription
+                existing.is_active = True
+                existing.unsubscribed_at = None
+                existing.save()
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Welcome back! Your subscription has been reactivated.'
+                })
+
+        # Create new subscription
+        NewsletterSubscription.objects.create(email=email, name=name)
 
         return JsonResponse({
             'success': True,
             'message': 'Successfully subscribed to newsletter!'
         })
 
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'error': 'Invalid request format'}, status=400)
     except Exception as e:
         return JsonResponse({
             'success': False,
             'error': 'An error occurred. Please try again.'
-        })
+        }, status=500)
 
 
 # Quick search autocomplete API
