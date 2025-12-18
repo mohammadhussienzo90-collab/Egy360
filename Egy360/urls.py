@@ -5,14 +5,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.shortcuts import render
 
-def homepage_view(request):
-    """Render the main homepage template"""
-    return render(request, 'home.html')
+from home.views import home as homepage_view
 
 urlpatterns = [
-    # Homepage
+    # Homepage (uses home app's home view for dynamic content)
     path('', homepage_view, name='homepage'),
 
     # Admin

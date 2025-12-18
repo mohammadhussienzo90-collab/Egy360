@@ -1,417 +1,474 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<script data-noptimize="1" data-cfasync="false" data-wpfc-render="false">
-  (function () {
-      var script = document.createElement("script");
-      script.async = 1;
-      script.src = 'https://tpembars.com/NDc3ODk3.js?t=477897';
-      document.head.appendChild(script);
-  })();
+{% extends 'base.html' %}
+
+{% block title %}Egy360 - Discover Egypt Safely | Best Hotels & Tours{% endblock %}
+
+{% block description %}{{ meta_description|default:"Discover Egypt with confidence. Find verified 8.0+ rated hotels, curated tours, and safe transportation. Book pyramids tours, Nile cruises, and Red Sea resorts." }}{% endblock %}
+
+{% block keywords %}Egypt tourism, Egypt hotels, Cairo hotels, Luxor tours, Nile cruise, pyramids tour, Red Sea resorts, Egypt travel guide, safe Egypt travel{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Search -->
+<section class="hero-section py-5" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1600&q=80'); background-size: cover; background-position: center; min-height: 500px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center text-white">
+                <h1 class="display-4 fw-bold mb-3">Discover Egypt Safely</h1>
+                <p class="lead mb-4">Verified hotels rated 8.0+, curated tours, and trusted transportation. Travel Egypt with confidence.</p>
+
+                <!-- Search Box -->
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-4">
+                        <ul class="nav nav-pills justify-content-center mb-4" id="searchTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="hotels-tab" data-bs-toggle="pill" data-bs-target="#hotels-search" type="button">
+                                    <i class="fas fa-hotel me-2"></i>Hotels
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tours-tab" data-bs-toggle="pill" data-bs-target="#tours-search" type="button">
+                                    <i class="fas fa-map-marked-alt me-2"></i>Tours
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="searchTabsContent">
+                            <!-- Hotels Search -->
+                            <div class="tab-pane fade show active" id="hotels-search" role="tabpanel">
+                                <form action="{% url 'accommodations:search' %}" method="GET" class="row g-3">
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control form-control-lg" name="city" placeholder="Where in Egypt?" list="cities">
+                                        <datalist id="cities">
+                                            <option value="Cairo">
+                                            <option value="Luxor">
+                                            <option value="Aswan">
+                                            <option value="Hurghada">
+                                            <option value="Sharm El Sheikh">
+                                            <option value="Alexandria">
+                                            <option value="Dahab">
+                                            <option value="Marsa Alam">
+                                        </datalist>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-select form-select-lg" name="type">
+                                            <option value="">All Types</option>
+                                            <option value="hotel">Hotels</option>
+                                            <option value="resort">Resorts</option>
+                                            <option value="cruise">Nile Cruises</option>
+                                            <option value="camp">Desert Camps</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                                            <i class="fas fa-search me-2"></i>Search
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Tours Search -->
+                            <div class="tab-pane fade" id="tours-search" role="tabpanel">
+                                <form action="{% url 'tours:list' %}" method="GET" class="row g-3">
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control form-control-lg" name="q" placeholder="Search tours...">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-select form-select-lg" name="type">
+                                            <option value="">All Tour Types</option>
+                                            <option value="cultural">Cultural & Historical</option>
+                                            <option value="adventure">Adventure</option>
+                                            <option value="desert">Desert Safari</option>
+                                            <option value="cruise">Nile Cruise</option>
+                                            <option value="diving">Diving & Snorkeling</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                                            <i class="fas fa-search me-2"></i>Search
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trust Badges -->
+<section class="bg-light py-3">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-2">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <span class="fw-bold">8.0+ Rated Only</span>
+            </div>
+            <div class="col-md-3 col-6 mb-2">
+                <i class="fas fa-shield-alt text-primary me-2"></i>
+                <span class="fw-bold">Verified Properties</span>
+            </div>
+            <div class="col-md-3 col-6 mb-2">
+                <i class="fas fa-lock text-warning me-2"></i>
+                <span class="fw-bold">Secure Booking</span>
+            </div>
+            <div class="col-md-3 col-6 mb-2">
+                <i class="fas fa-headset text-info me-2"></i>
+                <span class="fw-bold">24/7 Support</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Accommodations -->
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold">Top-Rated Hotels in Egypt</h2>
+                <p class="text-muted mb-0">Handpicked accommodations rated 8.0 and above</p>
+            </div>
+            <a href="{% url 'accommodations:search' %}" class="btn btn-outline-primary">View All <i class="fas fa-arrow-right ms-2"></i></a>
+        </div>
+
+        <div class="row g-4">
+            {% for accommodation in featured_accommodations %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if accommodation.image_url %}
+                    <img src="{{ accommodation.image_url }}" class="card-img-top" alt="{{ accommodation.name }}" style="height: 200px; object-fit: cover;">
+                    {% elif accommodation.main_image %}
+                    <img src="{{ accommodation.main_image.url }}" class="card-img-top" alt="{{ accommodation.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80" class="card-img-top" alt="{{ accommodation.name }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <span class="badge bg-success fs-6">{{ accommodation.average_rating|default:"8.5" }} <i class="fas fa-star"></i></span>
+                    </div>
+
+                    {% if accommodation.is_featured %}
+                    <div class="position-absolute top-0 start-0 m-2">
+                        <span class="badge bg-warning text-dark">Featured</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ accommodation.name }}</h5>
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-map-marker-alt me-1"></i>{{ accommodation.city }}
+                            {% if accommodation.star_rating %}
+                            <span class="ms-2">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= accommodation.star_rating %}
+                                    <i class="fas fa-star text-warning small"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                            {% endif %}
+                        </p>
+                        <p class="text-muted small">{{ accommodation.accommodation_type|title }}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                <span class="text-muted small">From</span>
+                                <span class="fs-5 fw-bold text-primary">${{ accommodation.price_per_night }}</span>
+                                <span class="text-muted small">/night</span>
+                            </div>
+                            <a href="{% url 'accommodations:detail' accommodation.slug %}" class="btn btn-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-hotel fa-3x text-muted mb-3"></i>
+                <p class="text-muted">Featured accommodations coming soon!</p>
+                <a href="{% url 'accommodations:search' %}" class="btn btn-primary">Browse All Hotels</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Popular Destinations -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Popular Destinations</h2>
+            <p class="text-muted">Explore the best of Egypt</p>
+        </div>
+
+        <div class="row g-4">
+            {% for city in popular_destinations %}
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'accommodations:by-city' city.name %}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 destination-card">
+                        {% if city.main_image %}
+                        <img src="{{ city.main_image.url }}" class="card-img-top" alt="{{ city.name }}" style="height: 150px; object-fit: cover;">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=400&q=80" class="card-img-top" alt="{{ city.name }}" style="height: 150px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-dark mb-1">{{ city.name }}</h5>
+                            <p class="text-muted small mb-0">{{ city.attractions.count|default:0 }} attractions</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <!-- Default destinations if none in database -->
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'accommodations:by-city' 'Cairo' %}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm destination-card">
+                        <img src="https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=400&q=80" class="card-img-top" alt="Cairo" style="height: 150px; object-fit: cover;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-dark mb-1">Cairo</h5>
+                            <p class="text-muted small mb-0">Pyramids & Museums</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'accommodations:by-city' 'Luxor' %}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm destination-card">
+                        <img src="https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=400&q=80" class="card-img-top" alt="Luxor" style="height: 150px; object-fit: cover;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-dark mb-1">Luxor</h5>
+                            <p class="text-muted small mb-0">Ancient Temples</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'accommodations:by-city' 'Hurghada' %}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm destination-card">
+                        <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=80" class="card-img-top" alt="Hurghada" style="height: 150px; object-fit: cover;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-dark mb-1">Hurghada</h5>
+                            <p class="text-muted small mb-0">Red Sea Resorts</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <a href="{% url 'accommodations:by-city' 'Sharm El Sheikh' %}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm destination-card">
+                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80" class="card-img-top" alt="Sharm El Sheikh" style="height: 150px; object-fit: cover;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-dark mb-1">Sharm El Sheikh</h5>
+                            <p class="text-muted small mb-0">Diving Paradise</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Tours -->
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold">Popular Tours & Experiences</h2>
+                <p class="text-muted mb-0">Unforgettable adventures across Egypt</p>
+            </div>
+            <a href="{% url 'tours:list' %}" class="btn btn-outline-primary">View All <i class="fas fa-arrow-right ms-2"></i></a>
+        </div>
+
+        <div class="row g-4">
+            {% for tour in featured_tours %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if tour.main_image %}
+                    <img src="{{ tour.main_image.url }}" class="card-img-top" alt="{{ tour.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=400&q=80" class="card-img-top" alt="{{ tour.name }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+
+                    <div class="position-absolute top-0 start-0 m-2">
+                        <span class="badge bg-primary">{{ tour.duration_days }} Days</span>
+                    </div>
+
+                    {% if tour.average_rating %}
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <span class="badge bg-success">{{ tour.average_rating }} <i class="fas fa-star"></i></span>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ tour.name }}</h5>
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-map-marker-alt me-1"></i>{{ tour.departure_city }}
+                            <span class="badge bg-light text-dark ms-2">{{ tour.get_tour_type_display }}</span>
+                        </p>
+                        <p class="card-text small text-muted">{{ tour.description|truncatewords:20 }}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                <span class="text-muted small">From</span>
+                                <span class="fs-5 fw-bold text-primary">${{ tour.price_per_person }}</span>
+                                <span class="text-muted small">/person</span>
+                            </div>
+                            <a href="{% url 'tours:detail' tour.slug %}" class="btn btn-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-map-marked-alt fa-3x text-muted mb-3"></i>
+                <p class="text-muted">Featured tours coming soon!</p>
+                <a href="{% url 'tours:list' %}" class="btn btn-primary">Browse All Tours</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-5 bg-dark text-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Why Book with Egy360?</h2>
+            <p class="text-white-50">Travel Egypt with confidence</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-check-double fa-2x"></i>
+                    </div>
+                    <h4>Quality Guaranteed</h4>
+                    <p class="text-white-50">We only list accommodations rated 8.0+ on Booking.com. No surprises, no disappointments.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-user-shield fa-2x"></i>
+                    </div>
+                    <h4>Scam Protection</h4>
+                    <p class="text-white-50">Every tour operator and service is verified. We protect you from common tourist scams.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-dollar-sign fa-2x"></i>
+                    </div>
+                    <h4>Best Prices</h4>
+                    <p class="text-white-50">Compare prices across multiple booking platforms. Get the best deal every time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="py-5 bg-primary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center text-white">
+                <h3 class="fw-bold mb-3">Get Exclusive Travel Deals</h3>
+                <p class="mb-4">Subscribe to our newsletter for special offers, travel tips, and insider guides to Egypt.</p>
+                <form id="newsletter-form" class="row g-2 justify-content-center">
+                    <div class="col-8">
+                        <input type="email" class="form-control form-control-lg" id="newsletter-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-warning btn-lg w-100">Subscribe</button>
+                    </div>
+                </form>
+                <p class="small mt-2 mb-0 opacity-75">No spam, unsubscribe anytime</p>
+                <div id="newsletter-message" class="mt-2"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-3">
+                <h2 class="fw-bold text-primary mb-0">500+</h2>
+                <p class="text-muted mb-0">Verified Hotels</p>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <h2 class="fw-bold text-primary mb-0">100+</h2>
+                <p class="text-muted mb-0">Curated Tours</p>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <h2 class="fw-bold text-primary mb-0">50K+</h2>
+                <p class="text-muted mb-0">Happy Travelers</p>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <h2 class="fw-bold text-primary mb-0">4.8</h2>
+                <p class="text-muted mb-0">Average Rating</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .destination-card:hover {
+        transform: translateY(-5px);
+        transition: transform 0.3s ease;
+    }
+
+    .nav-pills .nav-link {
+        color: #666;
+        border-radius: 50px;
+        padding: 10px 20px;
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: var(--primary-color);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Newsletter subscription
+document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById('newsletter-email').value;
+    const messageDiv = document.getElementById('newsletter-message');
+    const button = this.querySelector('button');
+
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+    fetch('{% url "home:newsletter-subscribe" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ email: email })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            messageDiv.innerHTML = '<div class="alert alert-success py-2">' + data.message + '</div>';
+            document.getElementById('newsletter-email').value = '';
+        } else {
+            messageDiv.innerHTML = '<div class="alert alert-danger py-2">' + data.error + '</div>';
+        }
+    })
+    .catch(error => {
+        messageDiv.innerHTML = '<div class="alert alert-danger py-2">An error occurred. Please try again.</div>';
+    })
+    .finally(() => {
+        button.disabled = false;
+        button.innerHTML = 'Subscribe';
+    });
+});
 </script>
-
-    <!-- Google Analytics GA4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GETCTXF3PV"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-GETCTXF3PV', {
-            'send_page_view': true,
-            'page_title': document.title,
-            'page_location': window.location.href
-        });
-
-        // Track affiliate link clicks
-        document.addEventListener('DOMContentLoaded', function() {
-            // Track Booking.com clicks
-            document.querySelectorAll('a[href*="booking.com"]').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    gtag('event', 'affiliate_click', {
-                        'event_category': 'Affiliate',
-                        'event_label': 'Booking.com',
-                        'value': link.getAttribute('data-accommodation-id') || '0'
-                    });
-                });
-            });
-
-            // Track Agoda clicks
-            document.querySelectorAll('a[href*="agoda.com"]').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    gtag('event', 'affiliate_click', {
-                        'event_category': 'Affiliate',
-                        'event_label': 'Agoda',
-                        'value': link.getAttribute('data-accommodation-id') || '0'
-                    });
-                });
-            });
-
-            // Track Hotels.com clicks
-            document.querySelectorAll('a[href*="hotels.com"]').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    gtag('event', 'affiliate_click', {
-                        'event_category': 'Affiliate',
-                        'event_label': 'Hotels.com',
-                        'value': link.getAttribute('data-accommodation-id') || '0'
-                    });
-                });
-            });
-
-            // Track Travelpayouts clicks
-            document.querySelectorAll('a[href*="tp.media"], a[href*="travelpayouts"]').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    gtag('event', 'affiliate_click', {
-                        'event_category': 'Affiliate',
-                        'event_label': 'Travelpayouts',
-                        'value': link.getAttribute('data-tour-id') || '0'
-                    });
-                });
-            });
-        });
-    </script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Egy360 - Discover Egypt</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
-            color: #333;
-        }
-
-        /* Navigation */
-        .navbar {
-            background: #ffffff;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #c41e3a;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #1a1a1a;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #c41e3a;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(26, 26, 26, 0.6), rgba(26, 26, 26, 0.6)),
-                        url('https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 6rem 2rem;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
-
-        .cta-button {
-            background: #c41e3a;
-            color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: inline-block;
-            transition: all 0.3s;
-            border: 2px solid #c41e3a;
-        }
-
-        .cta-button:hover {
-            background: #ffffff;
-            color: #c41e3a;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(196, 30, 58, 0.3);
-        }
-
-        /* Features Section */
-        .features {
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: #ffffff;
-            margin-bottom: 3rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: #ffffff;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(196, 30, 58, 0.2);
-            border-color: #c41e3a;
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            color: #c41e3a;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card h3 {
-            color: #1a1a1a;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card p {
-            color: #666666;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-link {
-            color: #c41e3a;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-
-        .feature-link:hover {
-            color: #1a1a1a;
-        }
-
-        /* Stats Section */
-        .stats {
-            background: #c41e3a;
-            color: white;
-            padding: 3rem 2rem;
-            margin: 4rem 0;
-        }
-
-        .stats-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .stat-item h3 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-item p {
-            font-size: 1.1rem;
-            opacity: 0.95;
-        }
-
-        /* Footer */
-        .footer {
-            background: #1a1a1a;
-            color: #ffffff;
-            padding: 2rem;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
-        .footer p {
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            list-style: none;
-            margin-top: 1rem;
-        }
-
-        .footer-links a {
-            color: #ffffff;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: #c41e3a;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-                font-size: 0.9rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">🇪🇬 Egy360</a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/accommodations/">Accommodations</a></li>
-                <li><a href="/tours/">Tours</a></li>
-                <li><a href="/transportation/">Transportation</a></li>
-                <li><a href="/blog/">Blog</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>🇪🇬 Welcome to Egy360</h1>
-        <p>Your trusted guide to authentic Egyptian experiences</p>
-        <a href="/tours/" class="cta-button">Explore Tours</a>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features">
-        <h2 class="section-title">Discover Egypt with Confidence</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-hotel"></i>
-                </div>
-                <h3>Verified Accommodations</h3>
-                <p>Stay in trusted hotels, resorts, and guesthouses across Egypt. Every property is verified for safety and quality.</p>
-                <a href="/accommodations/" class="feature-link">Browse Stays →</a>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-map-marked-alt"></i>
-                </div>
-                <h3>Curated Tours</h3>
-                <p>Experience Egypt's wonders with expert guides. From pyramids to diving, we've got you covered.</p>
-                <a href="/tours/" class="feature-link">View Tours →</a>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-car"></i>
-                </div>
-                <h3>Safe Transportation</h3>
-                <p>Travel safely with our verified transportation services. Airport transfers and private cars available.</p>
-                <a href="/transportation/" class="feature-link">Book Transport →</a>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3>Scam Protection</h3>
-                <p>We verify every service to protect you from tourist scams. Travel with peace of mind.</p>
-                <a href="/blog/" class="feature-link">Learn More →</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="stats-container">
-            <div class="stat-item">
-                <h3>500+</h3>
-                <p>Verified Properties</p>
-            </div>
-            <div class="stat-item">
-                <h3>100+</h3>
-                <p>Curated Tours</p>
-            </div>
-            <div class="stat-item">
-                <h3>10K+</h3>
-                <p>Happy Travelers</p>
-            </div>
-            <div class="stat-item">
-                <h3>4.8/5</h3>
-                <p>Average Rating</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2024 Egy360. Protecting tourists from scams since 2024.</p>
-        <ul class="footer-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/accommodations/">Accommodations</a></li>
-            <li><a href="/tours/">Tours</a></li>
-            <li><a href="/transportation/">Transportation</a></li>
-            <li><a href="/blog/">Blog</a></li>
-        </ul>
-    </footer>
-</body>
-</html>
+{% endblock %}
