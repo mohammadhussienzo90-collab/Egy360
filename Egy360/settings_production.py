@@ -43,16 +43,17 @@ INSTALLED_APPS = [
     # Your apps
     'accounts',
     'accommodations',
-    'tours',
-    'destinations',
-    'bookings',
-    'reviews',
-    'payments',
-    'transportation',
-    'blog',
     'api',
-    'dashboard',
+    'blog',
+    'bookings',
     'core',
+    'dashboard',
+    'destinations',
+    'home',
+    'payments',
+    'reviews',
+    'tours',
+    'transportation',
 ]
 
 MIDDLEWARE = [
