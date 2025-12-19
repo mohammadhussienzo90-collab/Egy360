@@ -1,353 +1,373 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accommodations - Egy360</title>
-    <!-- Template version: 2.0 - Image fix deployed -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends 'base.html' %}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-        }
+{% block title %}{{ page_title|default:"Hotels & Accommodations in Egypt" }} - Egy360{% endblock %}
 
-        /* Navigation */
-        .navbar {
-            background: #ffffff;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+{% block description %}Find verified hotels, resorts, and accommodations in Egypt. All properties rated 8.0+ on Booking.com. Search Cairo, Luxor, Hurghada, Sharm El Sheikh and more.{% endblock %}
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #c41e3a;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #1a1a1a;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #c41e3a;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* Header */
-        .page-header {
-            background: #ffffff;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            border-left: 5px solid #c41e3a;
-        }
-
-        .page-header h1 {
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
-        }
-
-        .results-info {
-            color: #666666;
-            font-size: 1rem;
-        }
-
-        /* Results Grid */
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .result-card {
-            background: #ffffff;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .result-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(196, 30, 58, 0.2);
-            border-color: #c41e3a;
-        }
-
-        .result-image {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            background: #1a1a1a;
-        }
-
-        .result-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .result-card:hover .result-image img {
-            transform: scale(1.1);
-        }
-
-        .result-content {
-            padding: 1.5rem;
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 0.5rem;
-        }
-
-        .result-title {
-            color: #1a1a1a;
-            font-size: 1.3rem;
-            margin: 0;
-        }
-
-        .result-type {
-            background: #c41e3a;
-            color: #ffffff;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
-
-        .result-location {
-            color: #666666;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .result-location i {
-            color: #c41e3a;
-        }
-
-        .result-description {
-            color: #666666;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .result-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1rem;
-            border-top: 2px solid #f5f5f5;
-        }
-
-        .result-price {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .price-amount {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #c41e3a;
-        }
-
-        .price-unit {
-            font-size: 0.8rem;
-            color: #666666;
-        }
-
-        .btn-view-details {
-            background: #c41e3a;
-            color: #ffffff;
-            padding: 0.7rem 1.5rem;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            border: 2px solid #c41e3a;
-        }
-
-        .btn-view-details:hover {
-            background: #ffffff;
-            color: #c41e3a;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(196, 30, 58, 0.3);
-        }
-
-        /* Loading State */
-        .loading-state {
-            text-align: center;
-            padding: 3rem;
-            background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .loading-spinner {
-            border: 4px solid #f5f5f5;
-            border-top: 4px solid #c41e3a;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .results-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-links {
-                gap: 1rem;
-            }
-
-            .result-header {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">🇪🇬 Egy360</a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/accommodations/">Accommodations</a></li>
-                <li><a href="/tours/">Tours</a></li>
-                <li><a href="/transportation/">Transportation</a></li>
-                <li><a href="/blog/">Blog</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Main Container -->
+{% block content %}
+<!-- Page Header -->
+<section class="bg-primary text-white py-4">
     <div class="container">
-        <!-- Header -->
-        <div class="page-header">
-            <h1>🏨 Find Your Perfect Stay in Egypt</h1>
-            <p class="results-info">
-                <span id="totalResults">{{ total_results }}</span> accommodations available
-            </p>
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-2">
+                    {% if city %}
+                        Hotels in {{ city }}
+                    {% elif type_display %}
+                        {{ type_display }}s in Egypt
+                    {% else %}
+                        Hotels & Accommodations
+                    {% endif %}
+                </h1>
+                <p class="mb-0 opacity-75">
+                    <i class="fas fa-check-circle me-1"></i> Only verified properties rated 8.0+ on Booking.com
+                </p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <span class="badge bg-warning text-dark fs-6">{{ total_results }} propert{{ total_results|pluralize:"y,ies" }} found</span>
+            </div>
         </div>
-
-        <!-- Loading State -->
-        <div id="loadingState" class="loading-state">
-            <div class="loading-spinner"></div>
-            <p>Loading accommodations...</p>
-        </div>
-
-        <!-- Results Grid -->
-        <div id="resultsGrid" class="results-grid"></div>
     </div>
+</section>
 
-    <!-- Display accommodations server-side -->
-    <script>
-        // Pass Django data to JavaScript
-        const accommodationsData = [
-            {% for acc in accommodations %}
-            {
-                id: {{ acc.id }},
-                name: "{{ acc.name|escapejs }}",
-                city: "{{ acc.city|escapejs }}",
-                type: "{{ acc.accommodation_type|escapejs }}",
-                description: "{{ acc.description|escapejs }}",
-                address: "{{ acc.address|escapejs }}",
-                price: {{ acc.price_per_night }},
-                image_url: "{{ acc.image_url|escapejs }}",
-                main_image: "{{ acc.main_image|escapejs }}",
-                slug: "{{ acc.slug|escapejs }}"
-            }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
-
-        // Display accommodations
-        const resultsGrid = document.getElementById('resultsGrid');
-        const loadingState = document.getElementById('loadingState');
-        const totalResultsSpan = document.getElementById('totalResults');
-
-        if (accommodationsData.length > 0) {
-            loadingState.style.display = 'none';
-            totalResultsSpan.textContent = accommodationsData.length;
-
-            accommodationsData.forEach(acc => {
-                const card = `
-                    <div class="result-card">
-                        <div class="result-image">
-                            <img src="${acc.image_url || acc.main_image || 'https://via.placeholder.com/350x200?text=No+Image'}" alt="${acc.name}" onerror="this.src='https://via.placeholder.com/350x200?text=No+Image'">
+<div class="container py-4">
+    <div class="row">
+        <!-- Filters Sidebar -->
+        <div class="col-lg-3 mb-4">
+            <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filters</h5>
+                </div>
+                <div class="card-body">
+                    <form method="get" id="filter-form">
+                        <!-- Search -->
+                        <div class="mb-3">
+                            <label for="q" class="form-label fw-bold">Search</label>
+                            <input type="text" class="form-control" id="q" name="q"
+                                   value="{{ current_filters.q }}" placeholder="Hotel name or keyword...">
                         </div>
-                        <div class="result-content">
-                            <div class="result-header">
-                                <h3 class="result-title">${acc.name}</h3>
-                                <div class="result-type">${acc.type}</div>
-                            </div>
-                            <p class="result-location">
-                                <i class="fas fa-map-marker-alt"></i> ${acc.city}
-                            </p>
-                            <p class="result-description">${acc.description.substring(0, 120)}...</p>
-                            <div class="result-footer">
-                                <div class="result-price">
-                                    <span class="price-amount">${acc.price} EGP</span>
-                                    <span class="price-unit">per night</span>
+
+                        <!-- City -->
+                        <div class="mb-3">
+                            <label for="city" class="form-label fw-bold">City</label>
+                            <select class="form-select" name="city" id="city">
+                                <option value="">All Cities</option>
+                                {% for city_name in cities %}
+                                <option value="{{ city_name }}" {% if current_filters.city == city_name %}selected{% endif %}>
+                                    {{ city_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Type -->
+                        <div class="mb-3">
+                            <label for="type" class="form-label fw-bold">Accommodation Type</label>
+                            <select class="form-select" name="type" id="type">
+                                <option value="">All Types</option>
+                                {% for type_code, type_name in accommodation_types %}
+                                <option value="{{ type_code }}" {% if current_filters.type == type_code %}selected{% endif %}>
+                                    {{ type_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Star Rating -->
+                        <div class="mb-3">
+                            <label for="min_stars" class="form-label fw-bold">Minimum Stars</label>
+                            <select class="form-select" name="min_stars" id="min_stars">
+                                <option value="">Any</option>
+                                <option value="5" {% if current_filters.min_stars == "5" %}selected{% endif %}>5 Stars</option>
+                                <option value="4" {% if current_filters.min_stars == "4" %}selected{% endif %}>4+ Stars</option>
+                                <option value="3" {% if current_filters.min_stars == "3" %}selected{% endif %}>3+ Stars</option>
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Price per Night (USD)</label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" class="form-control" name="min_price"
+                                           value="{{ current_filters.min_price }}" placeholder="Min" min="0">
                                 </div>
-                                <a href="/accommodations/${acc.slug}/" class="btn-view-details">View Details</a>
+                                <div class="col-6">
+                                    <input type="number" class="form-control" name="max_price"
+                                           value="{{ current_filters.max_price }}" placeholder="Max" min="0">
+                                </div>
+                            </div>
+                            {% if price_range.min_price and price_range.max_price %}
+                            <small class="text-muted">Range: ${{ price_range.min_price|floatformat:0 }} - ${{ price_range.max_price|floatformat:0 }}</small>
+                            {% endif %}
+                        </div>
+
+                        <!-- Amenities -->
+                        {% if amenities %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Amenities</label>
+                            {% for amenity in amenities|slice:":8" %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="amenities"
+                                       value="{{ amenity.id }}" id="amenity_{{ amenity.id }}"
+                                       {% if amenity.id|stringformat:"s" in current_filters.amenities %}checked{% endif %}>
+                                <label class="form-check-label" for="amenity_{{ amenity.id }}">
+                                    <i class="{{ amenity.icon|default:'fas fa-check' }} me-1"></i>{{ amenity.name }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-primary w-100 mb-2">
+                            <i class="fas fa-search me-2"></i>Apply Filters
+                        </button>
+                        <a href="{% url 'accommodations:search' %}" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-times me-2"></i>Clear All
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="col-lg-9">
+            <!-- Sort and View Options -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <p class="mb-0">
+                                Showing <strong>{{ page_obj.start_index|default:1 }}-{{ page_obj.end_index|default:total_results }}</strong>
+                                of <strong>{{ total_results }}</strong> results
+                            </p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <label class="me-2">Sort by:</label>
+                            <select class="form-select form-select-sm d-inline-block w-auto" id="sort-select" name="sort" onchange="updateSort(this.value)">
+                                <option value="" {% if not current_filters.sort %}selected{% endif %}>Featured</option>
+                                <option value="price_low" {% if current_filters.sort == "price_low" %}selected{% endif %}>Price: Low to High</option>
+                                <option value="price_high" {% if current_filters.sort == "price_high" %}selected{% endif %}>Price: High to Low</option>
+                                <option value="rating" {% if current_filters.sort == "rating" %}selected{% endif %}>Highest Rated</option>
+                                <option value="stars" {% if current_filters.sort == "stars" %}selected{% endif %}>Star Rating</option>
+                                <option value="newest" {% if current_filters.sort == "newest" %}selected{% endif %}>Newest</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accommodation Cards -->
+            {% for accommodation in accommodations %}
+            <div class="card border-0 shadow-sm mb-3 accommodation-card">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <div class="position-relative h-100">
+                            {% if accommodation.image_url %}
+                            <img src="{{ accommodation.image_url }}" class="img-fluid rounded-start h-100 w-100"
+                                 alt="{{ accommodation.name }}" style="object-fit: cover; min-height: 200px;">
+                            {% elif accommodation.main_image %}
+                            <img src="{{ accommodation.main_image.url }}" class="img-fluid rounded-start h-100 w-100"
+                                 alt="{{ accommodation.name }}" style="object-fit: cover; min-height: 200px;">
+                            {% else %}
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80"
+                                 class="img-fluid rounded-start h-100 w-100" alt="{{ accommodation.name }}"
+                                 style="object-fit: cover; min-height: 200px;">
+                            {% endif %}
+
+                            {% if accommodation.is_featured %}
+                            <span class="position-absolute top-0 start-0 m-2 badge bg-warning text-dark">
+                                <i class="fas fa-star me-1"></i>Featured
+                            </span>
+                            {% endif %}
+
+                            {% if accommodation.is_verified %}
+                            <span class="position-absolute top-0 end-0 m-2 badge bg-success">
+                                <i class="fas fa-check-circle me-1"></i>Verified
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body d-flex flex-column h-100">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h5 class="card-title mb-1">{{ accommodation.name }}</h5>
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-map-marker-alt me-1"></i>{{ accommodation.city }}
+                                        {% if accommodation.star_rating %}
+                                        <span class="ms-2">
+                                            {% for i in "12345"|make_list %}
+                                                {% if forloop.counter <= accommodation.star_rating %}
+                                                <i class="fas fa-star text-warning small"></i>
+                                                {% else %}
+                                                <i class="far fa-star text-warning small"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                {% if accommodation.average_rating %}
+                                <div class="text-end">
+                                    <span class="badge bg-success fs-6">{{ accommodation.average_rating }}</span>
+                                    <small class="d-block text-muted">Guest Rating</small>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <p class="text-muted small mb-2">
+                                <span class="badge bg-light text-dark">{{ accommodation.get_accommodation_type_display }}</span>
+                            </p>
+
+                            <p class="card-text text-muted small flex-grow-1">
+                                {{ accommodation.description|truncatewords:30 }}
+                            </p>
+
+                            {% if accommodation.amenities.all %}
+                            <div class="mb-2">
+                                {% for amenity in accommodation.amenities.all|slice:":4" %}
+                                <span class="badge bg-light text-dark me-1">
+                                    <i class="{{ amenity.icon|default:'fas fa-check' }} me-1"></i>{{ amenity.name }}
+                                </span>
+                                {% endfor %}
+                                {% if accommodation.amenities.count > 4 %}
+                                <span class="badge bg-light text-dark">+{{ accommodation.amenities.count|add:"-4" }} more</span>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+
+                            <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+                                <div>
+                                    <small class="text-muted">From</small>
+                                    <span class="fs-4 fw-bold text-primary">${{ accommodation.price_per_night|floatformat:0 }}</span>
+                                    <small class="text-muted">/ night</small>
+                                </div>
+                                <div>
+                                    <a href="{% url 'accommodations:detail' accommodation.slug %}" class="btn btn-primary">
+                                        View Details <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                `;
-                resultsGrid.innerHTML += card;
-            });
-        } else {
-            loadingState.innerHTML = '<p>No accommodations found.</p>';
+                </div>
+            </div>
+            {% empty %}
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-search fa-4x text-muted mb-3"></i>
+                    <h4>No accommodations found</h4>
+                    <p class="text-muted mb-4">Try adjusting your filters or search criteria</p>
+                    <a href="{% url 'accommodations:search' %}" class="btn btn-primary">
+                        <i class="fas fa-redo me-2"></i>Clear Filters
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% for key, value in current_filters.items %}{% if value and key != 'amenities' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="fas fa-chevron-left"></i> Previous</span>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% for key, value in current_filters.items %}{% if value and key != 'amenities' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% for key, value in current_filters.items %}{% if value and key != 'amenities' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next <i class="fas fa-chevron-right"></i></span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Trust Section -->
+<section class="bg-light py-4">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-3">
+                <i class="fas fa-shield-alt text-primary fa-2x mb-2"></i>
+                <h6>Verified Properties</h6>
+                <p class="text-muted small mb-0">All accommodations verified and rated 8.0+</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <i class="fas fa-dollar-sign text-success fa-2x mb-2"></i>
+                <h6>Best Price Guarantee</h6>
+                <p class="text-muted small mb-0">Compare prices across booking platforms</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <i class="fas fa-headset text-warning fa-2x mb-2"></i>
+                <h6>24/7 Support</h6>
+                <p class="text-muted small mb-0">Our team is here to help you</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .accommodation-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        transition: all 0.3s ease;
+    }
+
+    .accommodation-card {
+        transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+        .accommodation-card .row {
+            flex-direction: column;
         }
-    </script>
-</body>
-</html>
+        .accommodation-card .col-md-4 {
+            max-height: 200px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateSort(value) {
+    const url = new URL(window.location.href);
+    if (value) {
+        url.searchParams.set('sort', value);
+    } else {
+        url.searchParams.delete('sort');
+    }
+    url.searchParams.delete('page');
+    window.location.href = url.toString();
+}
+</script>
+{% endblock %}

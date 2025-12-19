@@ -1,611 +1,347 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ accommodation.name }} - Egy360</title>
+{% extends 'base.html' %}
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+{% block title %}{{ accommodation.name }} - {{ accommodation.city }} | Egy360{% endblock %}
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+{% block description %}{{ accommodation.description|truncatewords:30 }} Book {{ accommodation.name }} in {{ accommodation.city }}, Egypt. Rated {{ accommodation.average_rating|default:"8.5" }}/10 on Booking.com.{% endblock %}
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/accommodation_detail.css' %}">
-</head>
-<body>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="{% url 'homepage' %}" class="nav-logo">
-                <i class="fas fa-globe-africa"></i>
-                <span>EGY<strong>360</strong></span>
-            </a>
-
-            <div class="nav-menu">
-                <a href="{% url 'homepage' %}" class="nav-link">Home</a>
-                <a href="{% url 'accommodations:search' %}" class="nav-link active">Accommodations</a>
-                <a href="#" class="nav-link">Tours</a>
-                <a href="#" class="nav-link">Transportation</a>
-                <a href="#" class="nav-link">About</a>
-            </div>
-
-            <div class="nav-actions">
-                <button class="btn-icon" onclick="toggleFavorite()">
-                    <i class="far fa-heart"></i>
-                </button>
-                <button class="btn-secondary" onclick="showAuthModal('signin')">Sign In</button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-        <div class="container">
-            <a href="{% url 'homepage' %}"><i class="fas fa-home"></i> Home</a>
-            <i class="fas fa-chevron-right"></i>
-            <a href="{% url 'accommodations:search' %}">Accommodations</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>{{ accommodation.name }}</span>
-        </div>
+{% block content %}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="bg-light py-2">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'accommodations:search' %}">Hotels</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'accommodations:by-city' accommodation.city %}">{{ accommodation.city }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ accommodation.name }}</li>
+        </ol>
     </div>
+</nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-
-            <!-- Header Section -->
-            <section class="detail-header">
-                <div class="header-content">
-                    <div class="header-left">
-                        <h1 class="property-title">{{ accommodation.name }}</h1>
-                        <div class="property-meta">
-                            <div class="star-rating">
-                                <span id="starIcons">★★★★★</span>
-                            </div>
-                            <div class="location">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span id="locationText">Cairo, Egypt</span>
-                            </div>
-                            <div class="verified-badge" id="verifiedBadge">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Verified Property</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="header-right">
-                        <div class="rating-box">
-                            <div class="rating-score" id="ratingScore">9.2</div>
-                            <div class="rating-text">
-                                <strong>Excellent</strong>
-                                <span id="reviewCount">450 reviews</span>
-                            </div>
-                        </div>
+<div class="container py-4">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h1 class="h2 mb-2">{{ accommodation.name }}</h1>
+                    <p class="text-muted mb-2">
+                        <i class="fas fa-map-marker-alt text-primary me-1"></i>{{ accommodation.city }}, {{ accommodation.address }}
+                        {% if accommodation.star_rating %}
+                        <span class="ms-3">
+                            {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= accommodation.star_rating %}
+                                <i class="fas fa-star text-warning"></i>
+                                {% else %}
+                                <i class="far fa-star text-warning"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="ms-1">{{ accommodation.star_rating }}-star {{ accommodation.get_accommodation_type_display }}</span>
+                        </span>
+                        {% endif %}
+                    </p>
+                    <div>
+                        {% if accommodation.is_featured %}
+                        <span class="badge bg-warning text-dark me-2"><i class="fas fa-star me-1"></i>Featured</span>
+                        {% endif %}
+                        {% if accommodation.is_verified %}
+                        <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Verified Property</span>
+                        {% endif %}
                     </div>
                 </div>
-            </section>
+                {% if accommodation.average_rating %}
+                <div class="text-center">
+                    <div class="bg-success text-white rounded px-3 py-2">
+                        <span class="fs-3 fw-bold">{{ accommodation.average_rating }}</span>
+                    </div>
+                    <small class="text-muted">Guest Rating</small>
+                </div>
+                {% endif %}
+            </div>
 
             <!-- Image Gallery -->
-            <section class="gallery-section">
-                <div class="gallery-grid">
-                    <div class="gallery-main" onclick="openLightbox(0)">
+            <div class="mb-4">
+                <div class="row g-2">
+                    <div class="col-12">
                         {% if accommodation.image_url %}
-                            <img id="mainImage" src="{{ accommodation.image_url }}" alt="{{ accommodation.name }}">
+                        <img src="{{ accommodation.image_url }}" class="img-fluid rounded w-100" alt="{{ accommodation.name }}" style="height: 400px; object-fit: cover;">
                         {% elif accommodation.main_image %}
-                            <img id="mainImage" src="{{ accommodation.main_image.url }}" alt="{{ accommodation.name }}">
+                        <img src="{{ accommodation.main_image.url }}" class="img-fluid rounded w-100" alt="{{ accommodation.name }}" style="height: 400px; object-fit: cover;">
                         {% else %}
-                            <div style="width:100%; height:100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display:flex; align-items:center; justify-content:center; color:white; font-size:2rem; font-weight:bold;">
-                                <div style="text-align:center;">
-                                    <i class="fas fa-hotel" style="font-size:4rem; margin-bottom:1rem;"></i>
-                                    <p>{{ accommodation.name }}</p>
-                                </div>
+                        <div class="bg-secondary d-flex align-items-center justify-content-center rounded" style="height: 400px;">
+                            <div class="text-center text-white">
+                                <i class="fas fa-hotel fa-4x mb-3"></i>
+                                <h4>{{ accommodation.name }}</h4>
                             </div>
+                        </div>
                         {% endif %}
                     </div>
-                    <div class="gallery-thumbs">
-                        <div class="gallery-thumb" onclick="openLightbox(1)">
-                            <div style="width:100%; height:100%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display:flex; align-items:center; justify-content:center; color:white;">
-                                <i class="fas fa-bed" style="font-size:2rem;"></i>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">About This Property</h2>
+                    <p class="text-muted">{{ accommodation.description }}</p>
+                </div>
+            </div>
+
+            <!-- Amenities -->
+            {% if amenities %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Amenities & Services</h2>
+                    <div class="row g-3">
+                        {% for amenity in amenities %}
+                        <div class="col-6 col-md-4">
+                            <div class="d-flex align-items-center">
+                                <i class="{{ amenity.icon|default:'fas fa-check' }} text-primary me-2"></i>
+                                <span>{{ amenity.name }}</span>
                             </div>
                         </div>
-                        <div class="gallery-thumb" onclick="openLightbox(2)">
-                            <div style="width:100%; height:100%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display:flex; align-items:center; justify-content:center; color:white;">
-                                <i class="fas fa-swimming-pool" style="font-size:2rem;"></i>
-                            </div>
-                        </div>
-                        <div class="gallery-thumb" onclick="openLightbox(3)">
-                            <div style="width:100%; height:100%; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); display:flex; align-items:center; justify-content:center; color:white;">
-                                <i class="fas fa-utensils" style="font-size:2rem;"></i>
-                            </div>
-                        </div>
-                        <div class="gallery-thumb gallery-more" onclick="openLightbox(4)">
-                            <div style="width:100%; height:100%; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); display:flex; align-items:center; justify-content:center; color:white;">
-                                <div class="more-overlay">
-                                    <i class="fas fa-images"></i>
-                                    <span>More photos coming soon</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Rooms -->
+            {% if rooms %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Available Rooms</h2>
+                    {% for room in rooms %}
+                    <div class="border rounded p-3 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                {% if room.image %}
+                                <img src="{{ room.image.url }}" class="img-fluid rounded" alt="{{ room.name }}">
+                                {% else %}
+                                <div class="bg-light d-flex align-items-center justify-content-center rounded" style="height: 100px;">
+                                    <i class="fas fa-bed fa-2x text-muted"></i>
                                 </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="mb-1">{{ room.name }}</h6>
+                                <p class="text-muted small mb-2">{{ room.description|truncatewords:20 }}</p>
+                                <div class="small">
+                                    <span class="me-3"><i class="fas fa-users me-1"></i>{{ room.max_guests }} guests</span>
+                                    <span class="me-3"><i class="fas fa-bed me-1"></i>{{ room.bed_type }}</span>
+                                    {% if room.has_breakfast %}
+                                    <span class="text-success"><i class="fas fa-coffee me-1"></i>Breakfast included</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <div class="fs-4 fw-bold text-primary">${{ room.price_per_night|floatformat:0 }}</div>
+                                <small class="text-muted">per night</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Reviews -->
+            {% if reviews %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Guest Reviews</h2>
+                    {% for review in reviews %}
+                    <div class="border-bottom pb-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <strong>{{ review.user.first_name|default:review.user.username }}</strong>
+                                <small class="text-muted ms-2">{{ review.created_at|date:"M Y" }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ review.rating }}/5</span>
+                        </div>
+                        <p class="text-muted mb-0">{{ review.comment }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Location -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Location</h2>
+                    <p class="text-muted">
+                        <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                        {{ accommodation.address }}, {{ accommodation.city }}, Egypt
+                    </p>
+                    <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-map fa-3x mb-2"></i>
+                            <p>Map available on booking platform</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- House Rules -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">House Rules</h2>
+                    <div class="row g-3">
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 bg-light rounded">
+                                <i class="fas fa-clock text-primary fa-2x mb-2"></i>
+                                <div class="fw-bold">Check-in</div>
+                                <small class="text-muted">{{ accommodation.check_in_time|default:"2:00 PM" }}</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 bg-light rounded">
+                                <i class="fas fa-clock text-primary fa-2x mb-2"></i>
+                                <div class="fw-bold">Check-out</div>
+                                <small class="text-muted">{{ accommodation.check_out_time|default:"12:00 PM" }}</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 bg-light rounded">
+                                <i class="fas fa-ban-smoking text-primary fa-2x mb-2"></i>
+                                <div class="fw-bold">Smoking</div>
+                                <small class="text-muted">{% if accommodation.smoking_allowed %}Allowed{% else %}Not allowed{% endif %}</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="text-center p-3 bg-light rounded">
+                                <i class="fas fa-paw text-primary fa-2x mb-2"></i>
+                                <div class="fw-bold">Pets</div>
+                                <small class="text-muted">{% if accommodation.pets_allowed %}Allowed{% else %}Not allowed{% endif %}</small>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
 
-            <!-- Content Grid -->
-            <div class="content-grid">
-
-                <!-- Left Column -->
-                <div class="content-main">
-
-                    <!-- Quick Info -->
-                    <section class="section-card">
-                        <h2 class="section-title">Overview</h2>
-                        <div class="quick-info">
-                            <div class="info-item">
-                                <i class="fas fa-users"></i>
-                                <div>
-                                    <strong>Max Guests</strong>
-                                    <span id="maxGuests">4 guests</span>
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <i class="fas fa-bed"></i>
-                                <div>
-                                    <strong>Bedrooms</strong>
-                                    <span id="bedrooms">2 bedrooms</span>
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <i class="fas fa-bath"></i>
-                                <div>
-                                    <strong>Bathrooms</strong>
-                                    <span id="bathrooms">2 bathrooms</span>
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <i class="fas fa-home"></i>
-                                <div>
-                                    <strong>Property Type</strong>
-                                    <span id="propertyType">Hotel</span>
-                                </div>
-                            </div>
+        <!-- Sidebar - Booking Card -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <span class="fs-3 fw-bold text-primary">${{ accommodation.price_per_night|floatformat:0 }}</span>
+                            <span class="text-muted">/ night</span>
                         </div>
-                    </section>
-
-                    <!-- Description -->
-                    <section class="section-card">
-                        <h2 class="section-title">About This Property</h2>
-                        <div class="description" id="propertyDescription">
-                            <p>Experience luxury and comfort at this stunning property located in the heart of Cairo. Perfect for both business and leisure travelers, our accommodation offers world-class amenities and exceptional service.</p>
-                            <p>Featuring modern rooms with elegant décor, you'll enjoy a peaceful retreat after exploring the vibrant city. Our property is conveniently located near major attractions, making it easy to explore everything Cairo has to offer.</p>
+                        {% if accommodation.average_rating %}
+                        <div class="text-end">
+                            <span class="badge bg-success fs-6">{{ accommodation.average_rating }}</span>
+                            <small class="d-block text-muted">rating</small>
                         </div>
-                    </section>
+                        {% endif %}
+                    </div>
 
-                    <!-- Amenities -->
-                    <section class="section-card">
-                        <h2 class="section-title">Amenities & Services</h2>
-                        <div class="amenities-grid" id="amenitiesGrid">
-                            <!-- Will be populated by JavaScript -->
-                        </div>
-                    </section>
-
-                    <!-- Safety Score -->
-                    <section class="section-card">
-                        <h2 class="section-title">Safety & Security</h2>
-                        <div class="safety-section">
-                            <div class="safety-score-large">
-                                <div class="score-circle">
-                                    <svg class="score-svg" viewBox="0 0 100 100">
-                                        <circle class="score-bg" cx="50" cy="50" r="45"></circle>
-                                        <circle class="score-fill" cx="50" cy="50" r="45" id="scoreCircle"></circle>
-                                    </svg>
-                                    <div class="score-number" id="safetyScoreNumber">95</div>
-                                </div>
-                                <div class="score-label">Safety Score</div>
-                            </div>
-                            <div class="safety-features">
-                                <div class="safety-item">
-                                    <i class="fas fa-shield-alt"></i>
-                                    <div>
-                                        <strong>24/7 Security</strong>
-                                        <p>Professional security staff on-site</p>
-                                    </div>
-                                </div>
-                                <div class="safety-item">
-                                    <i class="fas fa-video"></i>
-                                    <div>
-                                        <strong>CCTV Surveillance</strong>
-                                        <p>Comprehensive camera coverage</p>
-                                    </div>
-                                </div>
-                                <div class="safety-item">
-                                    <i class="fas fa-first-aid"></i>
-                                    <div>
-                                        <strong>First Aid</strong>
-                                        <p>Medical assistance available</p>
-                                    </div>
-                                </div>
-                                <div class="safety-item">
-                                    <i class="fas fa-fire-extinguisher"></i>
-                                    <div>
-                                        <strong>Fire Safety</strong>
-                                        <p>Modern fire prevention systems</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Room Types -->
-                    <section class="section-card">
-                        <h2 class="section-title">Available Rooms</h2>
-                        <div class="rooms-list" id="roomsList">
-                            <!-- Will be populated by JavaScript -->
-                        </div>
-                    </section>
-
-                    <!-- Reviews -->
-                    <section class="section-card">
-                        <div class="section-header">
-                            <h2 class="section-title">Guest Reviews</h2>
-                            <div class="review-summary">
-                                <div class="review-score">
-                                    <span class="score-large" id="overallScore">9.2</span>
-                                    <div class="score-details">
-                                        <strong>Excellent</strong>
-                                        <span id="totalReviews">450 reviews</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="review-categories">
-                            <div class="review-category">
-                                <span>Cleanliness</span>
-                                <div class="category-bar">
-                                    <div class="bar-fill" style="width: 92%"></div>
-                                </div>
-                                <span class="category-score">9.2</span>
-                            </div>
-                            <div class="review-category">
-                                <span>Staff</span>
-                                <div class="category-bar">
-                                    <div class="bar-fill" style="width: 95%"></div>
-                                </div>
-                                <span class="category-score">9.5</span>
-                            </div>
-                            <div class="review-category">
-                                <span>Location</span>
-                                <div class="category-bar">
-                                    <div class="bar-fill" style="width: 90%"></div>
-                                </div>
-                                <span class="category-score">9.0</span>
-                            </div>
-                            <div class="review-category">
-                                <span>Value</span>
-                                <div class="category-bar">
-                                    <div class="bar-fill" style="width: 88%"></div>
-                                </div>
-                                <span class="category-score">8.8</span>
-                            </div>
-                        </div>
-
-                        <div class="reviews-list" id="reviewsList">
-                            <!-- Will be populated by JavaScript -->
-                        </div>
-
-                        <button class="btn-secondary btn-full" onclick="loadMoreReviews()">
-                            Load More Reviews
-                        </button>
-                    </section>
-
-                    <!-- Location -->
-                    <section class="section-card">
-                        <h2 class="section-title">Location</h2>
-                        <div class="location-info">
-                            <p><i class="fas fa-map-marker-alt"></i> <span id="fullAddress">Cairo, Egypt</span></p>
-                        </div>
-                        <div class="map-placeholder">
-                            <i class="fas fa-map"></i>
-                            <p>Interactive map coming soon</p>
-                        </div>
-                    </section>
-
-                    <!-- House Rules -->
-                    <section class="section-card">
-                        <h2 class="section-title">House Rules</h2>
-                        <div class="rules-grid">
-                            <div class="rule-item">
-                                <i class="fas fa-clock"></i>
-                                <div>
-                                    <strong>Check-in</strong>
-                                    <span>After 2:00 PM</span>
-                                </div>
-                            </div>
-                            <div class="rule-item">
-                                <i class="fas fa-clock"></i>
-                                <div>
-                                    <strong>Check-out</strong>
-                                    <span>Before 12:00 PM</span>
-                                </div>
-                            </div>
-                            <div class="rule-item">
-                                <i class="fas fa-ban-smoking"></i>
-                                <div>
-                                    <strong>Smoking</strong>
-                                    <span>Non-smoking property</span>
-                                </div>
-                            </div>
-                            <div class="rule-item">
-                                <i class="fas fa-paw"></i>
-                                <div>
-                                    <strong>Pets</strong>
-                                    <span>Not allowed</span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Cancellation Policy -->
-                    <section class="section-card">
-                        <h2 class="section-title">Cancellation Policy</h2>
-                        <div class="policy-content">
-                            <p><strong>Free cancellation</strong> up to 48 hours before check-in</p>
-                            <p>Cancel within 48 hours of check-in and get a 50% refund</p>
-                            <p>No refund for same-day cancellations or no-shows</p>
-                        </div>
-                    </section>
-
-                </div>
-
-                <!-- Right Column - Booking Card -->
-                <aside class="content-sidebar">
-                    <div class="booking-card sticky">
-                        <div class="booking-header">
-                            <div class="booking-price">
-                                <span class="price-amount" id="bookingPrice">2,500</span>
-                                <span class="price-currency">EGP</span>
-                                <span class="price-period">/night</span>
-                            </div>
-                            <div class="booking-rating">
-                                <i class="fas fa-star"></i>
-                                <span id="sidebarRating">9.2</span>
-                                <span class="rating-count">(<span id="sidebarReviewCount">450</span>)</span>
-                            </div>
-                        </div>
-
-                        {% if accommodation.has_booking_options %}
-                            <div class="booking-options">
-                                {% if accommodation.booking_com_url %}
-                                <a href="{{ accommodation.booking_com_url }}"
-                                   target="_blank"
-                                   rel="noopener nofollow"
-                                   class="btn-primary btn-full booking-btn"
-                                   onclick="trackBookingClick('booking.com', '{{ accommodation.name }}')">
-                                    <i class="fas fa-external-link-alt"></i> Book on Booking.com
-                                </a>
-                                {% endif %}
-
-                                {% if accommodation.agoda_url %}
-                                <a href="{{ accommodation.agoda_url }}"
-                                   target="_blank"
-                                   rel="noopener nofollow"
-                                   class="btn-secondary btn-full booking-btn"
-                                   onclick="trackBookingClick('agoda', '{{ accommodation.name }}')">
-                                    <i class="fas fa-external-link-alt"></i> Book on Agoda
-                                </a>
-                                {% endif %}
-
-                                {% if accommodation.hotels_com_url %}
-                                <a href="{{ accommodation.hotels_com_url }}"
-                                   target="_blank"
-                                   rel="noopener nofollow"
-                                   class="btn-secondary btn-full booking-btn"
-                                   onclick="trackBookingClick('hotels.com', '{{ accommodation.name }}')">
-                                    <i class="fas fa-external-link-alt"></i> Book on Hotels.com
-                                </a>
-                                {% endif %}
-
-                                {% if accommodation.direct_booking_url %}
-                                <a href="{{ accommodation.direct_booking_url }}"
-                                   target="_blank"
-                                   rel="noopener nofollow"
-                                   class="btn-secondary btn-full booking-btn"
-                                   onclick="trackBookingClick('direct', '{{ accommodation.name }}')">
-                                    <i class="fas fa-hotel"></i> Book Direct
-                                </a>
-                                {% endif %}
-
-                                <p class="booking-note" style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
-                                    <i class="fas fa-shield-alt"></i> Best rates guaranteed • Free cancellation on most rooms
-                                </p>
-                            </div>
-                        {% else %}
-                            <div class="booking-options">
-                                <a href="{% url 'homepage' %}" class="btn-primary btn-full">
-                                    <i class="fas fa-search"></i> Find Available Dates
-                                </a>
-                                <p class="booking-note">Contact hotel directly for booking inquiries</p>
-                            </div>
+                    <!-- Booking Options -->
+                    <div class="d-grid gap-2 mb-3">
+                        {% if primary_booking_url %}
+                        <a href="{{ primary_booking_url }}" target="_blank" rel="noopener nofollow"
+                           class="btn btn-primary btn-lg" data-accommodation-id="{{ accommodation.id }}">
+                            <i class="fas fa-external-link-alt me-2"></i>Book Now
+                        </a>
                         {% endif %}
 
-                        <div class="booking-highlights">
-                            <div class="highlight-item">
-                                <i class="fas fa-award"></i>
-                                <span>Best Price Guarantee</span>
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-undo"></i>
-                                <span>Free Cancellation</span>
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>Secure Payment</span>
-                            </div>
+                        {% for option in booking_options %}
+                        <a href="{{ option.url }}" target="_blank" rel="noopener nofollow"
+                           class="btn btn-outline-primary" data-accommodation-id="{{ accommodation.id }}">
+                            <i class="fas fa-external-link-alt me-2"></i>{{ option.platform }}
+                            {% if option.price %}<span class="float-end">${{ option.price }}</span>{% endif %}
+                        </a>
+                        {% endfor %}
+
+                        {% if not primary_booking_url and not booking_options %}
+                        <a href="{% url 'accommodations:search' %}?city={{ accommodation.city }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-search me-2"></i>Check Availability
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="border-top pt-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-award text-warning me-2"></i>
+                            <span class="small">Best Price Guarantee</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-undo text-success me-2"></i>
+                            <span class="small">Free Cancellation Available</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shield-alt text-primary me-2"></i>
+                            <span class="small">Secure Booking</span>
                         </div>
                     </div>
-                </aside>
-
-            </div>
-
-            <!-- Similar Properties -->
-            <section class="similar-section">
-                <h2 class="section-title">Similar Properties</h2>
-                <div class="similar-grid" id="similarGrid">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-            </section>
-
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-logo">
-                        <i class="fas fa-globe-africa"></i>
-                        <span>EGY<strong>360</strong></span>
-                    </div>
-                    <p>Discover Egypt's wonders with confidence and safety</p>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Company</h4>
-                        <a href="#">About Us</a>
-                        <a href="#">Contact</a>
-                        <a href="#">Careers</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Support</h4>
-                        <a href="#">Help Center</a>
-                        <a href="#">Safety</a>
-                        <a href="#">Terms</a>
-                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Egy360. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
 
-    <!-- Lightbox Modal -->
-    <div class="lightbox-modal" id="lightboxModal">
-        <button class="lightbox-close" onclick="closeLightbox()">
-            <i class="fas fa-times"></i>
-        </button>
-        <button class="lightbox-prev" onclick="prevImage()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="lightbox-next" onclick="nextImage()">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-        <div class="lightbox-content">
-            <img id="lightboxImage" src="" alt="Property Image">
-            <div class="lightbox-counter">
-                <span id="lightboxCounter">1 / 10</span>
+            <!-- Contact Card -->
+            <div class="card border-0 shadow-sm mt-3">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Need Help?</h5>
+                    <p class="text-muted small">Have questions about this property? Contact us and we'll help you find the perfect stay.</p>
+                    <a href="{% url 'home:contact' %}" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-envelope me-2"></i>Contact Us
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Auth Modal -->
-    <div class="auth-modal" id="authModal">
-        <div class="modal-overlay" onclick="closeAuthModal()"></div>
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeAuthModal()">
-                <i class="fas fa-times"></i>
-            </button>
-            <div id="authModalContent"></div>
+    <!-- Similar Properties -->
+    {% if similar_accommodations %}
+    <section class="mt-5">
+        <h2 class="h4 mb-4">Similar Properties You Might Like</h2>
+        <div class="row g-4">
+            {% for similar in similar_accommodations %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if similar.image_url %}
+                    <img src="{{ similar.image_url }}" class="card-img-top" alt="{{ similar.name }}" style="height: 150px; object-fit: cover;">
+                    {% elif similar.main_image %}
+                    <img src="{{ similar.main_image.url }}" class="card-img-top" alt="{{ similar.name }}" style="height: 150px; object-fit: cover;">
+                    {% else %}
+                    <div class="bg-secondary d-flex align-items-center justify-content-center" style="height: 150px;">
+                        <i class="fas fa-hotel fa-2x text-white"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{ similar.name }}</h6>
+                        <p class="text-muted small mb-2">
+                            <i class="fas fa-map-marker-alt me-1"></i>{{ similar.city }}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-primary">${{ similar.price_per_night|floatformat:0 }}</span>
+                            <a href="{% url 'accommodations:detail' similar.slug %}" class="btn btn-sm btn-outline-primary">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-    </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}
 
-    <!-- JavaScript -->
-    <script src="{% static 'js/accommodation_detail.js' %}"></script>
-    <script>
-        // Track booking button clicks for affiliate commission
-        function trackBookingClick(platform, hotelName) {
-            // Send to Google Analytics (if configured)
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'booking_click', {
-                    'platform': platform,
-                    'hotel_name': hotelName,
-                    'event_category': 'affiliate',
-                    'event_label': platform + ' - ' + hotelName
-                });
-            }
-
-            // Log to console for debugging
-            console.log('Booking click tracked:', platform, hotelName);
-
-            // Could also send to your own analytics endpoint
-            // fetch('/api/track-booking-click/', {
-            //     method: 'POST',
-            //     headers: {'Content-Type': 'application/json'},
-            //     body: JSON.stringify({platform, hotel_name: hotelName})
-            // });
+{% block extra_js %}
+<script>
+// Track affiliate clicks for analytics
+document.querySelectorAll('a[target="_blank"]').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        const accommodationId = this.getAttribute('data-accommodation-id');
+        if (accommodationId && typeof gtag !== 'undefined') {
+            gtag('event', 'booking_click', {
+                'event_category': 'Affiliate',
+                'event_label': '{{ accommodation.name }}',
+                'value': accommodationId
+            });
         }
-    </script>
-    <style>
-        /* Booking button styles */
-        .booking-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            padding: 1rem 0;
-        }
-
-        .booking-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 1rem;
-            font-weight: 600;
-            font-size: 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            border: none;
-        }
-
-        .booking-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
-        }
-
-        .btn-secondary {
-            background: #f8f9fa;
-            color: #333;
-            border: 2px solid #dee2e6;
-        }
-
-        .btn-secondary:hover {
-            background: #e9ecef;
-            border-color: #c41e3a;
-            color: #c41e3a;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .booking-note {
-            text-align: center;
-            color: #666;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-
-        .btn-full {
-            width: 100%;
-        }
-    </style>
-
-</body>
-</html>
+    });
+});
+</script>
+{% endblock %}

@@ -1,551 +1,386 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ tour.name }} - Egy360</title>
+{% extends 'base.html' %}
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+{% block title %}{{ tour.name }} - Egypt Tours | Egy360{% endblock %}
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+{% block description %}{{ tour.description|truncatewords:30 }} {{ tour.duration_days }}-day tour from {{ tour.departure_city }}. Starting at ${{ tour.price_per_person }}/person.{% endblock %}
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/tour_detail.css' %}">
-</head>
-<body>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="{% url 'homepage' %}" class="nav-logo">
-                <i class="fas fa-globe-africa"></i>
-                <span class="logo-text">EGY</span><span class="logo-accent">360</span>
-            </a>
-
-            <div class="nav-menu">
-                <a href="{% url 'homepage' %}" class="nav-link">Home</a>
-                <a href="{% url 'accommodations:accommodation-search' %}" class="nav-link">Accommodations</a>
-                <a href="{% url 'tours:tour-listing' %}" class="nav-link active">Tours</a>
-                <a href="#" class="nav-link">Transportation</a>
-                <a href="#" class="nav-link">About</a>
-            </div>
-
-            <div class="nav-actions">
-                <button class="btn-icon" onclick="toggleFavorite()">
-                    <i class="far fa-heart"></i>
-                </button>
-                <button class="btn-secondary" onclick="showAuthModal('signin')">Sign In</button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-        <div class="container">
-            <a href="{% url 'homepage' %}"><i class="fas fa-home"></i> Home</a>
-            <i class="fas fa-chevron-right"></i>
-            <a href="{% url 'tours:tour-listing' %}">Tours</a>
-            <i class="fas fa-chevron-right"></i>
-            <span id="breadcrumbTourName">Tour Details</span>
-        </div>
+{% block content %}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="bg-light py-2">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tours:list' %}">Tours</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tours:by-type' tour.tour_type %}">{{ tour.get_tour_type_display }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ tour.name }}</li>
+        </ol>
     </div>
+</nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
+<div class="container py-4">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h1 class="h2 mb-2">{{ tour.name }}</h1>
+                    <p class="text-muted mb-2">
+                        <i class="fas fa-map-marker-alt text-primary me-1"></i>{{ tour.departure_city }}
+                        <span class="badge bg-primary ms-2">{{ tour.get_tour_type_display }}</span>
+                        <span class="badge bg-secondary ms-1">{{ tour.get_difficulty_level_display }}</span>
+                    </p>
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <span><i class="fas fa-clock text-primary me-1"></i>{{ tour.duration_days }} Day{{ tour.duration_days|pluralize }}</span>
+                        <span><i class="fas fa-users text-primary me-1"></i>Max {{ tour.max_group_size }} people</span>
+                        {% if tour.is_featured %}
+                        <span class="badge bg-warning text-dark"><i class="fas fa-star me-1"></i>Featured</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if tour.average_rating %}
+                <div class="text-center">
+                    <div class="bg-success text-white rounded px-3 py-2">
+                        <span class="fs-3 fw-bold">{{ tour.average_rating }}</span>
+                    </div>
+                    <small class="text-muted">{{ tour.booking_count }} bookings</small>
+                </div>
+                {% endif %}
+            </div>
 
-            <!-- Header Section -->
-            <section class="detail-header">
-                <div class="header-content">
-                    <div class="header-left">
-                        <h1 class="tour-title" id="tourTitle">Pyramids of Giza & Sphinx Tour</h1>
-                        <div class="tour-meta">
-                            <div class="tour-category" id="tourCategory">
-                                <i class="fas fa-tag"></i>
-                                <span>Historical Tour</span>
-                            </div>
-                            <div class="tour-location" id="tourLocation">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>Giza, Egypt</span>
-                            </div>
-                            <div class="tour-duration" id="tourDuration">
-                                <i class="fas fa-clock"></i>
-                                <span>4 hours</span>
-                            </div>
-                            <div class="tour-difficulty" id="tourDifficulty">
-                                <i class="fas fa-hiking"></i>
-                                <span>Easy</span>
-                            </div>
+            <!-- Image -->
+            <div class="mb-4">
+                {% if tour.main_image %}
+                <img src="{{ tour.main_image.url }}" class="img-fluid rounded w-100" alt="{{ tour.name }}" style="height: 400px; object-fit: cover;">
+                {% else %}
+                <div class="bg-secondary d-flex align-items-center justify-content-center rounded" style="height: 400px;">
+                    <div class="text-center text-white">
+                        <i class="fas fa-hiking fa-4x mb-3"></i>
+                        <h4>{{ tour.name }}</h4>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Highlights -->
+            {% if tour.highlights %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Tour Highlights</h2>
+                    <div class="bg-light p-3 rounded">
+                        {{ tour.highlights|linebreaks }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Description -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">About This Tour</h2>
+                    <p class="text-muted">{{ tour.description }}</p>
+                </div>
+            </div>
+
+            <!-- Itinerary -->
+            {% if itinerary %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Day-by-Day Itinerary</h2>
+                    {% for day in itinerary %}
+                    <div class="border-start border-primary border-3 ps-3 mb-4">
+                        <h6 class="text-primary mb-1">Day {{ day.day }}: {{ day.title }}</h6>
+                        <p class="text-muted small mb-2">{{ day.description }}</p>
+                        {% if day.meals %}
+                        <small class="text-success"><i class="fas fa-utensils me-1"></i>Meals: {{ day.meals }}</small>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- What's Included/Excluded -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">What's Included</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-success"><i class="fas fa-check-circle me-1"></i>Included</h6>
+                            <ul class="list-unstyled">
+                                {% for item in includes %}
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>{{ item }}</li>
+                                {% empty %}
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Professional guide</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Transportation</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Entrance fees</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-danger"><i class="fas fa-times-circle me-1"></i>Not Included</h6>
+                            <ul class="list-unstyled">
+                                {% for item in excludes %}
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>{{ item }}</li>
+                                {% empty %}
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Personal expenses</li>
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Tips (optional)</li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
-                    <div class="header-right">
-                        <div class="rating-box">
-                            <div class="rating-score" id="ratingScore">9.5</div>
-                            <div class="rating-text">
-                                <strong>Excellent</strong>
-                                <span id="reviewCount">1,250 reviews</span>
+                </div>
+            </div>
+
+            <!-- Important Info -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Important Information</h2>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-language text-primary me-3 mt-1"></i>
+                                <div>
+                                    <strong>Languages</strong>
+                                    <p class="text-muted small mb-0">
+                                        {% for lang in languages %}{{ lang }}{% if not forloop.last %}, {% endif %}{% empty %}English{% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-map-signs text-primary me-3 mt-1"></i>
+                                <div>
+                                    <strong>Destinations</strong>
+                                    <p class="text-muted small mb-0">
+                                        {% for dest in destinations %}{{ dest }}{% if not forloop.last %}, {% endif %}{% empty %}{{ tour.departure_city }}{% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-undo text-primary me-3 mt-1"></i>
+                                <div>
+                                    <strong>Cancellation Policy</strong>
+                                    <p class="text-muted small mb-0">Free cancellation up to 24 hours before</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-child text-primary me-3 mt-1"></i>
+                                <div>
+                                    <strong>Child Policy</strong>
+                                    <p class="text-muted small mb-0">Children under {{ tour.min_age|default:5 }} free, discounts available</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- Image Gallery -->
-            <section class="gallery-section">
-                <div class="gallery-grid">
-                    <div class="gallery-main" onclick="openLightbox(0)">
-                        <img id="mainImage" src="https://source.unsplash.com/800x600/?pyramids,giza,egypt" alt="Main Image">
-                    </div>
-                    <div class="gallery-thumbs">
-                        <div class="gallery-thumb" onclick="openLightbox(1)">
-                            <img src="https://source.unsplash.com/400x300/?sphinx,egypt" alt="Sphinx">
-                        </div>
-                        <div class="gallery-thumb" onclick="openLightbox(2)">
-                            <img src="https://source.unsplash.com/400x300/?pyramid,inside" alt="Inside">
-                        </div>
-                        <div class="gallery-thumb" onclick="openLightbox(3)">
-                            <img src="https://source.unsplash.com/400x300/?camel,pyramids" alt="Camel">
-                        </div>
-                        <div class="gallery-thumb gallery-more" onclick="openLightbox(4)">
-                            <img src="https://source.unsplash.com/400x300/?giza,sunset" alt="Sunset">
-                            <div class="more-overlay">
-                                <i class="fas fa-images"></i>
-                                <span>Show all photos</span>
+            <!-- Reviews -->
+            {% if reviews %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Traveler Reviews</h2>
+                    {% for review in reviews %}
+                    <div class="border-bottom pb-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <strong>{{ review.user.first_name|default:review.user.username }}</strong>
+                                <small class="text-muted ms-2">{{ review.created_at|date:"M Y" }}</small>
                             </div>
+                            <span class="badge bg-success">{{ review.rating }}/5</span>
                         </div>
+                        <p class="text-muted mb-0">{{ review.comment }}</p>
                     </div>
+                    {% endfor %}
                 </div>
-            </section>
+            </div>
+            {% endif %}
+        </div>
 
-            <!-- Content Grid -->
-            <div class="content-grid">
-
-                <!-- Left Column -->
-                <div class="content-main">
-
-                    <!-- Tour Highlights -->
-                    <section class="section-card">
-                        <h2 class="section-title">Tour Highlights</h2>
-                        <ul class="highlights-list" id="highlightsList">
-                            <li><i class="fas fa-check"></i> Visit the Great Pyramid of Giza</li>
-                            <li><i class="fas fa-check"></i> See the mysterious Sphinx up close</li>
-                            <li><i class="fas fa-check"></i> Explore all three pyramids</li>
-                            <li><i class="fas fa-check"></i> Learn from expert Egyptologist guide</li>
-                            <li><i class="fas fa-check"></i> Photo opportunities at the best spots</li>
-                        </ul>
-                    </section>
-
-                    <!-- Description -->
-                    <section class="section-card">
-                        <h2 class="section-title">About This Tour</h2>
-                        <div class="description" id="tourDescription">
-                            <p>Experience the wonder of ancient Egypt on this guided tour of the Pyramids of Giza and the Great Sphinx. Walk in the footsteps of pharaohs as you explore these magnificent structures that have stood for over 4,500 years.</p>
-                            <p>Your expert guide will share fascinating stories and historical insights about how these incredible monuments were built and their significance in ancient Egyptian culture. You'll have plenty of time to take photos and marvel at these UNESCO World Heritage sites.</p>
+        <!-- Sidebar - Booking Card -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <small class="text-muted">From</small>
+                            <span class="fs-3 fw-bold text-primary">${{ tour.price_per_person|floatformat:0 }}</span>
+                            <span class="text-muted">/ person</span>
                         </div>
-                    </section>
-
-                    <!-- Itinerary -->
-                    <section class="section-card">
-                        <h2 class="section-title">Tour Itinerary</h2>
-                        <div class="itinerary" id="itinerary">
-                            <!-- Will be populated by JavaScript -->
+                        {% if tour.average_rating %}
+                        <div class="text-end">
+                            <span class="badge bg-success fs-6">{{ tour.average_rating }}</span>
+                            <small class="d-block text-muted">rating</small>
                         </div>
-                    </section>
+                        {% endif %}
+                    </div>
 
-                    <!-- What's Included/Excluded -->
-                    <section class="section-card">
-                        <h2 class="section-title">What's Included</h2>
-                        <div class="inclusions-grid">
-                            <div class="inclusions-column">
-                                <h3><i class="fas fa-check-circle"></i> Included</h3>
-                                <ul class="inclusions-list" id="includedList">
-                                    <li>Professional Egyptologist guide</li>
-                                    <li>Air-conditioned transportation</li>
-                                    <li>Hotel pickup and drop-off</li>
-                                    <li>All entrance fees</li>
-                                    <li>Bottled water</li>
-                                </ul>
-                            </div>
-                            <div class="inclusions-column">
-                                <h3><i class="fas fa-times-circle"></i> Not Included</h3>
-                                <ul class="exclusions-list" id="excludedList">
-                                    <li>Food and drinks</li>
-                                    <li>Gratuities (optional)</li>
-                                    <li>Personal expenses</li>
-                                    <li>Entry inside the pyramids (extra fee)</li>
-                                </ul>
-                            </div>
+                    {% if child_price %}
+                    <p class="small text-muted mb-3">
+                        <i class="fas fa-child me-1"></i>Children: ${{ child_price|floatformat:0 }}/person ({{ tour.child_discount }}% off)
+                    </p>
+                    {% endif %}
+
+                    <!-- Booking Form -->
+                    <form id="booking-form" method="post" action="{% url 'tours:book' tour.slug %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="tour_date" class="form-label">Tour Date</label>
+                            <input type="date" class="form-control" id="tour_date" name="tour_date" required
+                                   min="{% now 'Y-m-d' %}">
                         </div>
-                    </section>
-
-                    <!-- Meeting Point -->
-                    <section class="section-card">
-                        <h2 class="section-title">Meeting Point & Pickup</h2>
-                        <div class="meeting-info">
-                            <div class="info-box">
-                                <i class="fas fa-map-pin"></i>
-                                <div>
-                                    <strong>Meeting Point</strong>
-                                    <p id="meetingPoint">Giza Pyramids Entrance</p>
-                                </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label for="adults" class="form-label">Adults</label>
+                                <select class="form-select" id="adults" name="adults" required>
+                                    {% for i in "12345678" %}
+                                    <option value="{{ forloop.counter }}" {% if forloop.counter == 2 %}selected{% endif %}>{{ forloop.counter }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
-                            <div class="info-box">
-                                <i class="fas fa-car"></i>
-                                <div>
-                                    <strong>Pickup Service</strong>
-                                    <p id="pickupInfo">Free pickup from Cairo and Giza hotels</p>
-                                </div>
-                            </div>
-                            <div class="info-box">
-                                <i class="fas fa-clock"></i>
-                                <div>
-                                    <strong>Start Time</strong>
-                                    <p id="startTime">9:00 AM (flexible)</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Important Information -->
-                    <section class="section-card">
-                        <h2 class="section-title">Important Information</h2>
-                        <div class="important-info">
-                            <div class="info-item">
-                                <i class="fas fa-info-circle"></i>
-                                <div>
-                                    <strong>What to Bring</strong>
-                                    <p>Comfortable shoes, sun hat, sunscreen, camera</p>
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                <div>
-                                    <strong>Not Suitable For</strong>
-                                    <p>Wheelchair users, people with mobility issues</p>
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <i class="fas fa-language"></i>
-                                <div>
-                                    <strong>Languages Offered</strong>
-                                    <p id="languages">English, Arabic, French, German, Spanish</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Cancellation Policy -->
-                    <section class="section-card">
-                        <h2 class="section-title">Cancellation Policy</h2>
-                        <div class="policy-content">
-                            <p><strong>Free cancellation</strong> up to 24 hours before the tour</p>
-                            <p>Cancel within 24 hours: 50% refund</p>
-                            <p>No-show: No refund</p>
-                            <p>Weather-related cancellations: Full refund or reschedule</p>
-                        </div>
-                    </section>
-
-                    <!-- Tour Guide -->
-                    <section class="section-card">
-                        <h2 class="section-title">Your Tour Guide</h2>
-                        <div class="guide-profile">
-                            <div class="guide-avatar">
-                                <i class="fas fa-user-tie"></i>
-                            </div>
-                            <div class="guide-info">
-                                <h3 id="guideName">Ahmed Hassan</h3>
-                                <p class="guide-title">Licensed Egyptologist</p>
-                                <p class="guide-bio" id="guideBio">
-                                    Ahmed has been guiding tours for over 10 years and holds a degree in Egyptology.
-                                    His passion for ancient history and engaging storytelling make every tour unforgettable.
-                                </p>
-                                <div class="guide-stats">
-                                    <span><i class="fas fa-star"></i> 4.9/5 rating</span>
-                                    <span><i class="fas fa-users"></i> 2,500+ tours</span>
-                                    <span><i class="fas fa-language"></i> 4 languages</span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Reviews -->
-                    <section class="section-card">
-                        <div class="section-header">
-                            <h2 class="section-title">Traveler Reviews</h2>
-                            <div class="review-summary">
-                                <div class="review-score">
-                                    <span class="score-large" id="overallScore">9.5</span>
-                                    <div class="score-details">
-                                        <strong>Excellent</strong>
-                                        <span id="totalReviews">1,250 reviews</span>
-                                    </div>
-                                </div>
+                            <div class="col-6">
+                                <label for="children" class="form-label">Children</label>
+                                <select class="form-select" id="children" name="children">
+                                    <option value="0">0</option>
+                                    {% for i in "12345" %}
+                                    <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
 
-                        <div class="review-categories">
-                            <div class="review-category">
-                                <span>Value for Money</span>
-                                <div class="category-bar">
-                                    <div class="bar-fill" style="width: 95%"></div>
-                                </div>
-                                <span class="category-score">9.5</span>
-                            </div>
-                            <div class="review-category">
-                                <span>Guide Quality</span>
-                                <div class="category-bar">
-                                    <div class="bar-fill" style="width: 98%"></div>
-                                </div>
-                                <span class="category-score">9.8</span>
-                            </div>
-                            <div class="review-category">
-                                <span>Organization</span>
-                                <div class="category-bar">
-                                    <div class="bar-fill" style="width: 93%"></div>
-                                </div>
-                                <span class="category-score">9.3</span>
-                            </div>
-                            <div class="review-category">
-                                <span>Experience</span>
-                                <div class="category-bar">
-                                    <div class="bar-fill" style="width: 96%"></div>
-                                </div>
-                                <span class="category-score">9.6</span>
-                            </div>
-                        </div>
-
-                        <div class="reviews-list" id="reviewsList">
-                            <!-- Will be populated by JavaScript -->
-                        </div>
-
-                        <button class="btn-secondary btn-full" onclick="loadMoreReviews()">
-                            Load More Reviews
+                        {% if user.is_authenticated %}
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mb-2">
+                            <i class="fas fa-calendar-check me-2"></i>Book Now
                         </button>
-                    </section>
+                        {% else %}
+                        <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-primary btn-lg w-100 mb-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login to Book
+                        </a>
+                        {% endif %}
 
-                    <!-- FAQs -->
-                    <section class="section-card">
-                        <h2 class="section-title">Frequently Asked Questions</h2>
-                        <div class="faq-list">
-                            <div class="faq-item">
-                                <button class="faq-question" onclick="toggleFAQ(this)">
-                                    <span>Can I go inside the pyramids?</span>
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
-                                <div class="faq-answer">
-                                    <p>Entry inside the Great Pyramid is possible but requires an additional ticket (not included in tour price). Your guide can arrange this if you're interested.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question" onclick="toggleFAQ(this)">
-                                    <span>Is this tour suitable for children?</span>
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
-                                <div class="faq-answer">
-                                    <p>Yes! This tour is family-friendly and suitable for children of all ages. The guide can adapt the tour to keep younger travelers engaged.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question" onclick="toggleFAQ(this)">
-                                    <span>What should I wear?</span>
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
-                                <div class="faq-answer">
-                                    <p>Wear comfortable walking shoes, light clothing, and bring a hat and sunscreen. The site is exposed to the sun with limited shade.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question" onclick="toggleFAQ(this)">
-                                    <span>How much walking is involved?</span>
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
-                                <div class="faq-answer">
-                                    <p>Moderate walking is required. The site is large and you'll be walking on sandy terrain. It's rated as "Easy" difficulty for most fitness levels.</p>
-                                </div>
-                            </div>
+                        <p class="text-center small text-muted mb-0">
+                            <i class="fas fa-lock me-1"></i>Secure booking - Pay later option available
+                        </p>
+                    </form>
+
+                    <hr>
+
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <i class="fas fa-undo text-success mb-1"></i>
+                            <small class="d-block text-muted">Free Cancel</small>
                         </div>
-                    </section>
-
-                </div>
-
-                <!-- Right Column - Booking Card -->
-                <aside class="content-sidebar">
-                    <div class="booking-card sticky">
-                        <div class="booking-header">
-                            <div class="booking-price">
-                                <span class="price-label">From</span>
-                                <span class="price-amount" id="bookingPrice">800</span>
-                                <span class="price-currency">EGP</span>
-                                <span class="price-period">/person</span>
-                            </div>
-                            <div class="booking-rating">
-                                <i class="fas fa-star"></i>
-                                <span id="sidebarRating">9.5</span>
-                                <span class="rating-count">(<span id="sidebarReviewCount">1,250</span>)</span>
-                            </div>
+                        <div class="col-4">
+                            <i class="fas fa-mobile-alt text-success mb-1"></i>
+                            <small class="d-block text-muted">Mobile Ticket</small>
                         </div>
-
-                        <form class="booking-form" id="bookingForm">
-                            <div class="form-group">
-                                <label>Select Date</label>
-                                <input type="date" id="bookDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Start Time</label>
-                                <select id="bookTime" required>
-                                    <option value="09:00">9:00 AM</option>
-                                    <option value="10:00">10:00 AM</option>
-                                    <option value="14:00">2:00 PM</option>
-                                    <option value="15:00">3:00 PM</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Number of Travelers</label>
-                                <select id="bookTravelers" required>
-                                    <option value="1">1 traveler</option>
-                                    <option value="2" selected>2 travelers</option>
-                                    <option value="3">3 travelers</option>
-                                    <option value="4">4 travelers</option>
-                                    <option value="5">5 travelers</option>
-                                    <option value="6">6+ travelers</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Language</label>
-                                <select id="bookLanguage" required>
-                                    <option value="english" selected>English</option>
-                                    <option value="arabic">Arabic</option>
-                                    <option value="french">French</option>
-                                    <option value="german">German</option>
-                                    <option value="spanish">Spanish</option>
-                                </select>
-                            </div>
-
-                            <div class="price-breakdown">
-                                <div class="price-row">
-                                    <span><span id="pricePerPerson">800</span> EGP × <span id="numTravelers">2</span> travelers</span>
-                                    <span id="subtotal">1,600 EGP</span>
-                                </div>
-                                <div class="price-row">
-                                    <span>Service fee</span>
-                                    <span id="serviceFee">160 EGP</span>
-                                </div>
-                                <div class="price-divider"></div>
-                                <div class="price-row total">
-                                    <strong>Total</strong>
-                                    <strong id="totalPrice">1,760 EGP</strong>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn-primary btn-full">
-                                Book This Tour
-                            </button>
-
-                            <p class="booking-note">Reserve now & pay later</p>
-                        </form>
-
-                        <div class="booking-highlights">
-                            <div class="highlight-item">
-                                <i class="fas fa-undo"></i>
-                                <span>Free Cancellation</span>
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-mobile-alt"></i>
-                                <span>Mobile Ticket</span>
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Instant Confirmation</span>
-                            </div>
+                        <div class="col-4">
+                            <i class="fas fa-check-circle text-success mb-1"></i>
+                            <small class="d-block text-muted">Instant Confirm</small>
                         </div>
-                    </div>
-                </aside>
-
-            </div>
-
-            <!-- Similar Tours -->
-            <section class="similar-section">
-                <h2 class="section-title">Similar Tours You Might Like</h2>
-                <div class="similar-grid" id="similarGrid">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-            </section>
-
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-logo">
-                        <i class="fas fa-globe-africa"></i>
-                        <span class="logo-text">EGY</span><span class="logo-accent">360</span>
-                    </div>
-                    <p>Discover Egypt's wonders with confidence and safety</p>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Company</h4>
-                        <a href="#">About Us</a>
-                        <a href="#">Contact</a>
-                        <a href="#">Careers</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Support</h4>
-                        <a href="#">Help Center</a>
-                        <a href="#">Safety</a>
-                        <a href="#">Terms</a>
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Egy360. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
 
-    <!-- Lightbox Modal -->
-    <div class="lightbox-modal" id="lightboxModal">
-        <button class="lightbox-close" onclick="closeLightbox()">
-            <i class="fas fa-times"></i>
-        </button>
-        <button class="lightbox-prev" onclick="prevImage()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="lightbox-next" onclick="nextImage()">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-        <div class="lightbox-content">
-            <img id="lightboxImage" src="" alt="Tour Image">
-            <div class="lightbox-counter">
-                <span id="lightboxCounter">1 / 8</span>
+            <!-- Contact Card -->
+            <div class="card border-0 shadow-sm mt-3">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Need Help?</h5>
+                    <p class="text-muted small">Have questions about this tour? We're here to help.</p>
+                    <a href="{% url 'home:contact' %}" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-envelope me-2"></i>Contact Us
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Auth Modal -->
-    <div class="auth-modal" id="authModal">
-        <div class="modal-overlay" onclick="closeAuthModal()"></div>
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeAuthModal()">
-                <i class="fas fa-times"></i>
-            </button>
-            <div id="authModalContent"></div>
+    <!-- Similar Tours -->
+    {% if similar_tours %}
+    <section class="mt-5">
+        <h2 class="h4 mb-4">Similar Tours You Might Like</h2>
+        <div class="row g-4">
+            {% for similar in similar_tours %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if similar.main_image %}
+                    <img src="{{ similar.main_image.url }}" class="card-img-top" alt="{{ similar.name }}" style="height: 150px; object-fit: cover;">
+                    {% else %}
+                    <div class="bg-secondary d-flex align-items-center justify-content-center" style="height: 150px;">
+                        <i class="fas fa-hiking fa-2x text-white"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{ similar.name }}</h6>
+                        <p class="text-muted small mb-2">
+                            <i class="fas fa-clock me-1"></i>{{ similar.duration_days }} days
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-primary">${{ similar.price_per_person|floatformat:0 }}</span>
+                            <a href="{% url 'tours:detail' similar.slug %}" class="btn btn-sm btn-outline-primary">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-    </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}
 
-    <!-- JavaScript -->
-    <script src="{% static 'js/tour_detail.js' %}"></script>
+{% block extra_js %}
+<script>
+// Handle booking form submission with AJAX
+document.getElementById('booking-form').addEventListener('submit', function(e) {
+    {% if user.is_authenticated %}
+    e.preventDefault();
 
-</body>
-</html>
+    const formData = {
+        tour_date: document.getElementById('tour_date').value,
+        adults: document.getElementById('adults').value,
+        children: document.getElementById('children').value,
+        contact_name: '{{ user.get_full_name|escapejs }}',
+        contact_email: '{{ user.email|escapejs }}'
+    };
+
+    fetch(this.action, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Booking confirmed! Check your email for details.');
+            window.location.href = '{% url "dashboard:bookings" %}';
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        alert('An error occurred. Please try again.');
+    });
+    {% endif %}
+});
+
+// Track booking click for analytics
+if (typeof gtag !== 'undefined') {
+    gtag('event', 'view_tour', {
+        'event_category': 'Tours',
+        'event_label': '{{ tour.name|escapejs }}',
+        'value': {{ tour.price_per_person }}
+    });
+}
+</script>
+{% endblock %}

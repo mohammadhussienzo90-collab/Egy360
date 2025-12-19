@@ -1,336 +1,323 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tours - Egy360</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends 'base.html' %}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-        }
+{% block title %}{{ page_title|default:"Tours & Experiences in Egypt" }} - Egy360{% endblock %}
 
-        /* Navigation */
-        .navbar {
-            background: #ffffff;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+{% block description %}Explore Egypt with our curated tours. Pyramids, Nile cruises, desert safaris, and more. Book verified tour operators with the best prices.{% endblock %}
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #c41e3a;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #1a1a1a;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #c41e3a;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* Header */
-        .page-header {
-            background: #ffffff;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            border-left: 5px solid #c41e3a;
-        }
-
-        .page-header h1 {
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
-        }
-
-        .results-info {
-            color: #666666;
-            font-size: 1rem;
-        }
-
-        /* Results Grid */
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .result-card {
-            background: #ffffff;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .result-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(196, 30, 58, 0.2);
-            border-color: #c41e3a;
-        }
-
-        .result-image {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            background: #1a1a1a;
-        }
-
-        .result-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .result-card:hover .result-image img {
-            transform: scale(1.1);
-        }
-
-        .result-content {
-            padding: 1.5rem;
-        }
-
-        .result-title {
-            color: #1a1a1a;
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .result-description {
-            color: #666666;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .tour-meta {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .tour-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            color: #666666;
-            font-size: 0.9rem;
-        }
-
-        .tour-meta i {
-            color: #c41e3a;
-        }
-
-        .result-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1rem;
-            border-top: 2px solid #f5f5f5;
-        }
-
-        .result-price {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .price-amount {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #c41e3a;
-        }
-
-        .price-unit {
-            font-size: 0.8rem;
-            color: #666666;
-        }
-
-        .btn-view-details {
-            background: #c41e3a;
-            color: #ffffff;
-            padding: 0.7rem 1.5rem;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            border: 2px solid #c41e3a;
-        }
-
-        .btn-view-details:hover {
-            background: #ffffff;
-            color: #c41e3a;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(196, 30, 58, 0.3);
-        }
-
-        /* Loading State */
-        .loading-state {
-            text-align: center;
-            padding: 3rem;
-            background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .loading-spinner {
-            border: 4px solid #f5f5f5;
-            border-top: 4px solid #c41e3a;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .results-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-links {
-                gap: 1rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">🇪🇬 Egy360</a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/accommodations/">Accommodations</a></li>
-                <li><a href="/tours/">Tours</a></li>
-                <li><a href="/transportation/">Transportation</a></li>
-                <li><a href="/blog/">Blog</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Main Container -->
+{% block content %}
+<!-- Page Header -->
+<section class="bg-primary text-white py-4">
     <div class="container">
-        <!-- Header -->
-        <div class="page-header">
-            <h1>🎯 Discover Amazing Tours in Egypt</h1>
-            <p class="results-info">
-                <span id="totalResults">{{ total_results }}</span> tours available
-            </p>
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-2">
+                    {% if type_display %}
+                        {{ type_display }} Tours
+                    {% elif destination %}
+                        Tours to {{ destination }}
+                    {% else %}
+                        Tours & Experiences
+                    {% endif %}
+                </h1>
+                <p class="mb-0 opacity-75">
+                    <i class="fas fa-star me-1"></i> Curated experiences with verified tour operators
+                </p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <span class="badge bg-warning text-dark fs-6">{{ total_results }} tour{{ total_results|pluralize }} found</span>
+            </div>
         </div>
-
-        <!-- Loading State -->
-        <div id="loadingState" class="loading-state">
-            <div class="loading-spinner"></div>
-            <p>Loading tours...</p>
-        </div>
-
-        <!-- Results Grid -->
-        <div id="resultsGrid" class="results-grid"></div>
     </div>
+</section>
 
-    <!-- Display tours server-side -->
-    <script>
-        // Pass Django data to JavaScript
-        const toursData = [
-            {% for tour in tours %}
-            {
-                id: {{ tour.id }},
-                name: "{{ tour.name|escapejs }}",
-                description: "{{ tour.description|escapejs }}",
-                duration: {{ tour.duration_days }},
-                price: {{ tour.price_per_person }},
-                maxGroup: {{ tour.max_group_size }},
-                difficulty: "{{ tour.difficulty_level|escapejs }}",
-                image: "{{ tour.main_image|escapejs }}",
-                slug: "{{ tour.slug|escapejs }}"
-            }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
-
-        // Display tours
-        const resultsGrid = document.getElementById('resultsGrid');
-        const loadingState = document.getElementById('loadingState');
-        const totalResultsSpan = document.getElementById('totalResults');
-
-        if (toursData.length > 0) {
-            loadingState.style.display = 'none';
-            totalResultsSpan.textContent = toursData.length;
-
-            toursData.forEach(tour => {
-                const card = `
-                    <div class="result-card">
-                        <div class="result-image">
-                            <img src="${tour.image}" alt="${tour.name}" onerror="this.src='https://via.placeholder.com/350x200?text=No+Image'">
+<div class="container py-4">
+    <div class="row">
+        <!-- Filters Sidebar -->
+        <div class="col-lg-3 mb-4">
+            <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filters</h5>
+                </div>
+                <div class="card-body">
+                    <form method="get" id="filter-form">
+                        <!-- Search -->
+                        <div class="mb-3">
+                            <label for="q" class="form-label fw-bold">Search</label>
+                            <input type="text" class="form-control" id="q" name="q"
+                                   value="{{ current_filters.q }}" placeholder="Tour name or destination...">
                         </div>
-                        <div class="result-content">
-                            <h3 class="result-title">${tour.name}</h3>
-                            <p class="result-description">${tour.description.substring(0, 100)}...</p>
-                            <div class="tour-meta">
-                                <span><i class="fas fa-clock"></i> ${tour.duration} day${tour.duration > 1 ? 's' : ''}</span>
-                                <span><i class="fas fa-users"></i> Max ${tour.maxGroup}</span>
-                                <span><i class="fas fa-chart-line"></i> ${tour.difficulty}</span>
-                            </div>
-                            <div class="result-footer">
-                                <div class="result-price">
-                                    <span class="price-amount">$${tour.price}</span>
-                                    <span class="price-unit">per person</span>
+
+                        <!-- Tour Type -->
+                        <div class="mb-3">
+                            <label for="type" class="form-label fw-bold">Tour Type</label>
+                            <select class="form-select" name="type" id="type">
+                                <option value="">All Types</option>
+                                {% for type_code, type_name in tour_types %}
+                                <option value="{{ type_code }}" {% if current_filters.type == type_code %}selected{% endif %}>
+                                    {{ type_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Difficulty -->
+                        <div class="mb-3">
+                            <label for="difficulty" class="form-label fw-bold">Difficulty Level</label>
+                            <select class="form-select" name="difficulty" id="difficulty">
+                                <option value="">Any Level</option>
+                                {% for diff_code, diff_name in difficulty_levels %}
+                                <option value="{{ diff_code }}" {% if current_filters.difficulty == diff_code %}selected{% endif %}>
+                                    {{ diff_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Duration -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Duration (Days)</label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" class="form-control" name="min_days"
+                                           value="{{ current_filters.min_days }}" placeholder="Min" min="1">
                                 </div>
-                                <a href="/tours/${tour.slug}/" class="btn-view-details">View Details</a>
+                                <div class="col-6">
+                                    <input type="number" class="form-control" name="max_days"
+                                           value="{{ current_filters.max_days }}" placeholder="Max" min="1">
+                                </div>
+                            </div>
+                            {% if duration_range.min_days and duration_range.max_days %}
+                            <small class="text-muted">Range: {{ duration_range.min_days }} - {{ duration_range.max_days }} days</small>
+                            {% endif %}
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Price per Person (USD)</label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" class="form-control" name="min_price"
+                                           value="{{ current_filters.min_price }}" placeholder="Min" min="0">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control" name="max_price"
+                                           value="{{ current_filters.max_price }}" placeholder="Max" min="0">
+                                </div>
+                            </div>
+                            {% if price_range.min_price and price_range.max_price %}
+                            <small class="text-muted">Range: ${{ price_range.min_price|floatformat:0 }} - ${{ price_range.max_price|floatformat:0 }}</small>
+                            {% endif %}
+                        </div>
+
+                        <!-- Departure City -->
+                        {% if departure_cities %}
+                        <div class="mb-3">
+                            <label for="departure" class="form-label fw-bold">Departure City</label>
+                            <select class="form-select" name="departure" id="departure">
+                                <option value="">Any City</option>
+                                {% for city in departure_cities %}
+                                <option value="{{ city }}" {% if current_filters.departure == city %}selected{% endif %}>
+                                    {{ city }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-primary w-100 mb-2">
+                            <i class="fas fa-search me-2"></i>Apply Filters
+                        </button>
+                        <a href="{% url 'tours:list' %}" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-times me-2"></i>Clear All
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="col-lg-9">
+            <!-- Sort and View Options -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <p class="mb-0">
+                                Showing <strong>{{ page_obj.start_index|default:1 }}-{{ page_obj.end_index|default:total_results }}</strong>
+                                of <strong>{{ total_results }}</strong> results
+                            </p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <label class="me-2">Sort by:</label>
+                            <select class="form-select form-select-sm d-inline-block w-auto" id="sort-select" onchange="updateSort(this.value)">
+                                <option value="" {% if not current_filters.sort %}selected{% endif %}>Featured</option>
+                                <option value="price_low" {% if current_filters.sort == "price_low" %}selected{% endif %}>Price: Low to High</option>
+                                <option value="price_high" {% if current_filters.sort == "price_high" %}selected{% endif %}>Price: High to Low</option>
+                                <option value="rating" {% if current_filters.sort == "rating" %}selected{% endif %}>Highest Rated</option>
+                                <option value="duration_short" {% if current_filters.sort == "duration_short" %}selected{% endif %}>Shortest Duration</option>
+                                <option value="duration_long" {% if current_filters.sort == "duration_long" %}selected{% endif %}>Longest Duration</option>
+                                <option value="popular" {% if current_filters.sort == "popular" %}selected{% endif %}>Most Popular</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tour Cards -->
+            <div class="row g-4">
+                {% for tour in tours %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm tour-card">
+                        <div class="position-relative">
+                            {% if tour.main_image %}
+                            <img src="{{ tour.main_image.url }}" class="card-img-top" alt="{{ tour.name }}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                            <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=400&q=80"
+                                 class="card-img-top" alt="{{ tour.name }}" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+
+                            <span class="position-absolute top-0 start-0 m-2 badge bg-primary">
+                                {{ tour.duration_days }} Day{{ tour.duration_days|pluralize }}
+                            </span>
+
+                            {% if tour.is_featured %}
+                            <span class="position-absolute top-0 end-0 m-2 badge bg-warning text-dark">
+                                <i class="fas fa-star me-1"></i>Featured
+                            </span>
+                            {% endif %}
+
+                            {% if tour.average_rating %}
+                            <span class="position-absolute bottom-0 end-0 m-2 badge bg-success">
+                                {{ tour.average_rating }} <i class="fas fa-star"></i>
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ tour.name }}</h5>
+                            <p class="text-muted small mb-2">
+                                <i class="fas fa-map-marker-alt me-1"></i>{{ tour.departure_city }}
+                                <span class="badge bg-light text-dark ms-2">{{ tour.get_tour_type_display }}</span>
+                            </p>
+                            <p class="card-text text-muted small flex-grow-1">
+                                {{ tour.description|truncatewords:20 }}
+                            </p>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="me-3"><i class="fas fa-users text-primary me-1"></i>Max {{ tour.max_group_size }}</span>
+                                <span class="badge bg-light text-dark">{{ tour.get_difficulty_level_display }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+                                <div>
+                                    <small class="text-muted">From</small>
+                                    <span class="fs-5 fw-bold text-primary">${{ tour.price_per_person|floatformat:0 }}</span>
+                                    <small class="text-muted">/person</small>
+                                </div>
+                                <a href="{% url 'tours:detail' tour.slug %}" class="btn btn-primary btn-sm">
+                                    View Details
+                                </a>
                             </div>
                         </div>
                     </div>
-                `;
-                resultsGrid.innerHTML += card;
-            });
-        } else {
-            loadingState.innerHTML = '<p>No tours found.</p>';
-        }
-    </script>
-</body>
-</html>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center py-5">
+                            <i class="fas fa-search fa-4x text-muted mb-3"></i>
+                            <h4>No tours found</h4>
+                            <p class="text-muted mb-4">Try adjusting your filters or search criteria</p>
+                            <a href="{% url 'tours:list' %}" class="btn btn-primary">
+                                <i class="fas fa-redo me-2"></i>Clear Filters
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% for key, value in current_filters.items %}{% if value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="fas fa-chevron-left"></i> Previous</span>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% for key, value in current_filters.items %}{% if value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% for key, value in current_filters.items %}{% if value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next <i class="fas fa-chevron-right"></i></span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Tour Types Section -->
+<section class="bg-light py-4">
+    <div class="container">
+        <h5 class="mb-3">Explore by Tour Type</h5>
+        <div class="d-flex flex-wrap gap-2">
+            {% for type_code, type_name in tour_types %}
+            <a href="{% url 'tours:by-type' type_code %}" class="btn btn-outline-primary btn-sm">
+                {{ type_name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .tour-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        transition: all 0.3s ease;
+    }
+
+    .tour-card {
+        transition: all 0.3s ease;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateSort(value) {
+    const url = new URL(window.location.href);
+    if (value) {
+        url.searchParams.set('sort', value);
+    } else {
+        url.searchParams.delete('sort');
+    }
+    url.searchParams.delete('page');
+    window.location.href = url.toString();
+}
+</script>
+{% endblock %}
