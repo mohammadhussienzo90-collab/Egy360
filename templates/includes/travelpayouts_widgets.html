@@ -1,0 +1,139 @@
+{% comment %}
+Travelpayouts Widget Templates
+Include these in pages where you want to show hotel/flight search widgets.
+Marker ID: 477897
+{% endcomment %}
+
+{% comment %} Hotel Search Form Widget {% endcomment %}
+{% if widget_type == 'hotel_search' %}
+<div class="tp-hotel-search-widget mb-4">
+    <div id="tp-hotel-widget-{{ widget_id|default:'main' }}"></div>
+    <script async
+        src="//www.travelpayouts.com/widgets/aaab92999c6d9ae66fc52e1e6e04411e.js?v=2459"
+        charset="UTF-8"
+        data-marker="477897"
+        data-host="search.hotellook.com"
+        data-locale="en"
+        data-currency="USD"
+        {% if destination_iata %}data-destination="{{ destination_iata }}"{% endif %}
+    ></script>
+</div>
+{% endif %}
+
+{% comment %} Hotels Map Widget {% endcomment %}
+{% if widget_type == 'hotel_map' %}
+<div class="tp-hotel-map-widget mb-4">
+    <script async
+        src="//www.travelpayouts.com/blissey/scripts.js?marker=477897&host=search.hotellook.com"
+        data-powered-by="false"
+        {% if city_coordinates %}data-coordinates="{{ city_coordinates }}"{% endif %}
+        data-width="100%"
+        data-height="400"
+        data-zoom="12"
+        charset="UTF-8"
+    ></script>
+</div>
+{% endif %}
+
+{% comment %} Popular Hotels Selection Widget {% endcomment %}
+{% if widget_type == 'popular_hotels' %}
+<div class="tp-popular-hotels-widget mb-4">
+    <script async
+        src="//www.travelpayouts.com/blissey/scripts.js?iata={{ destination_iata|default:'CAI' }}&type=full&currency=usd&host=search.hotellook.com&marker=477897&limit={{ limit|default:'6' }}"
+        charset="UTF-8"
+    ></script>
+</div>
+{% endif %}
+
+{% comment %} Inline Hotel Search Form (Custom Styled) {% endcomment %}
+{% if widget_type == 'hotel_search_inline' %}
+<div class="card border-0 shadow-sm p-4 mb-4 bg-primary text-white">
+    <h4 class="mb-3"><i class="fas fa-search me-2"></i>Search Hotels via Hotellook</h4>
+    <form id="tp-search-form" class="row g-3">
+        <div class="col-md-4">
+            <label for="tp-destination" class="form-label">Destination</label>
+            <select class="form-select" id="tp-destination" required>
+                <option value="CAI">Cairo, Egypt</option>
+                <option value="LXR">Luxor, Egypt</option>
+                <option value="ASW">Aswan, Egypt</option>
+                <option value="HRG">Hurghada, Egypt</option>
+                <option value="SSH">Sharm El Sheikh, Egypt</option>
+                <option value="ALY">Alexandria, Egypt</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="tp-checkin" class="form-label">Check-in</label>
+            <input type="date" class="form-control" id="tp-checkin" required>
+        </div>
+        <div class="col-md-3">
+            <label for="tp-checkout" class="form-label">Check-out</label>
+            <input type="date" class="form-control" id="tp-checkout" required>
+        </div>
+        <div class="col-md-2">
+            <label for="tp-guests" class="form-label">Guests</label>
+            <select class="form-select" id="tp-guests">
+                <option value="2">2</option>
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-warning btn-lg w-100">
+                <i class="fas fa-search me-2"></i>Search Hotels
+            </button>
+        </div>
+    </form>
+    <script>
+    document.getElementById('tp-search-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var dest = document.getElementById('tp-destination').value;
+        var checkin = document.getElementById('tp-checkin').value;
+        var checkout = document.getElementById('tp-checkout').value;
+        var guests = document.getElementById('tp-guests').value;
+
+        // Format dates as dd-mm-yyyy for Hotellook
+        var checkinParts = checkin.split('-');
+        var checkoutParts = checkout.split('-');
+        var checkinFormatted = checkinParts[2] + '-' + checkinParts[1] + '-' + checkinParts[0];
+        var checkoutFormatted = checkoutParts[2] + '-' + checkoutParts[1] + '-' + checkoutParts[0];
+
+        var url = 'https://search.hotellook.com/hotels?destination=' + dest +
+                  '&checkIn=' + checkinFormatted +
+                  '&checkOut=' + checkoutFormatted +
+                  '&adults=' + guests +
+                  '&marker=477897';
+
+        // Track click
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'hotel_search', {
+                'event_category': 'Travelpayouts',
+                'event_label': dest
+            });
+        }
+
+        window.open(url, '_blank');
+    });
+
+    // Set minimum dates
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementById('tp-checkin').setAttribute('min', today);
+    document.getElementById('tp-checkout').setAttribute('min', today);
+    </script>
+</div>
+{% endif %}
+
+{% comment %} Viator Tours Widget (if using Viator via Travelpayouts) {% endcomment %}
+{% if widget_type == 'tours' %}
+<div class="tp-tours-widget mb-4">
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Book Tours & Activities</strong>
+        <p class="mb-2">Explore curated tours and activities in Egypt through our trusted partners.</p>
+        <a href="https://tp.media/click?shmarker=477897&pression_mode=fix&trs=262019&u={{ request.build_absolute_uri }}&campaign_id=97"
+           target="_blank" rel="noopener" class="btn btn-primary">
+            <i class="fas fa-external-link-alt me-2"></i>Browse Tours on Viator
+        </a>
+    </div>
+</div>
+{% endif %}
