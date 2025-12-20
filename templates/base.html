@@ -154,6 +154,142 @@
             padding: 40px 0;
             margin-top: 80px;
         }
+
+        /* Mobile Responsive Enhancements */
+        @media (max-width: 991.98px) {
+            .navbar-brand {
+                font-size: 1.4rem;
+            }
+
+            .navbar-collapse {
+                background: rgba(139, 18, 38, 0.98);
+                padding: 1rem;
+                margin-top: 0.5rem;
+                border-radius: 8px;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 0.75rem 1rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .navbar-nav .btn {
+                margin-top: 0.5rem;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            /* Improve touch targets */
+            .btn {
+                min-height: 44px;
+                padding: 0.625rem 1rem;
+            }
+
+            .btn-sm {
+                min-height: 38px;
+            }
+
+            /* Better typography on mobile */
+            h1, .h1 { font-size: 1.75rem; }
+            h2, .h2 { font-size: 1.5rem; }
+            h3, .h3 { font-size: 1.25rem; }
+            .display-4 { font-size: 2rem; }
+            .lead { font-size: 1rem; }
+
+            /* Improved card spacing */
+            .card-body {
+                padding: 1rem;
+            }
+
+            /* Hero section mobile optimization */
+            .hero-section {
+                min-height: 350px;
+                padding: 2rem 0;
+            }
+
+            /* Full-width buttons on mobile */
+            .card .btn-primary,
+            .card .btn-outline-primary {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+
+            /* Footer mobile layout */
+            footer .col-md-4 {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            footer .d-flex.gap-3 {
+                justify-content: center;
+            }
+
+            /* Badge mobile sizing */
+            .badge {
+                font-size: 0.7rem;
+                padding: 0.35em 0.65em;
+            }
+
+            /* Form inputs mobile */
+            .form-control, .form-select {
+                font-size: 16px; /* Prevents iOS zoom */
+            }
+
+            /* Sticky sidebar mobile */
+            .sticky-top {
+                position: relative !important;
+                top: 0 !important;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            /* Extra small devices */
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            /* Tighter spacing */
+            .py-5 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+            .py-4 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+
+            /* Cards full width */
+            .row.g-4 > [class*="col-"] {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+
+            /* Price display mobile */
+            .fs-3 { font-size: 1.5rem !important; }
+            .fs-4 { font-size: 1.25rem !important; }
+            .fs-5 { font-size: 1.1rem !important; }
+        }
+
+        /* Safe area padding for notched phones */
+        @supports(padding: max(0px)) {
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+
+            footer {
+                padding-bottom: max(40px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Touch device hover fix */
+        @media (hover: none) {
+            .card:hover {
+                transform: none;
+            }
+
+            .tour-card:hover,
+            .accommodation-card:hover,
+            .destination-card:hover {
+                transform: none;
+            }
+        }
     </style>
 
     {% block extra_css %}{% endblock %}
