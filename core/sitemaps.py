@@ -73,13 +73,13 @@ class CitySitemap(Sitemap):
     priority = 0.8
 
     def items(self):
-        return City.objects.filter(is_active=True)
+        return City.objects.all()
 
     def lastmod(self, obj):
         return obj.updated_at if hasattr(obj, 'updated_at') else None
 
     def location(self, obj):
-        return reverse('destinations:city-detail', kwargs={'slug': obj.slug})
+        return reverse('destinations:city_detail', kwargs={'slug': obj.slug})
 
 
 # Dictionary of all sitemaps for use in urls.py
