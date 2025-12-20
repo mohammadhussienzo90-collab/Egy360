@@ -6,8 +6,6 @@ from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 from accommodations.models import Accommodation
 from tours.models import Tour
-from blog.models import BlogPost
-from destinations.models import City
 
 
 class StaticViewSitemap(Sitemap):
@@ -52,41 +50,9 @@ class TourSitemap(Sitemap):
         return reverse('tours:detail', kwargs={'slug': obj.slug})
 
 
-class BlogSitemap(Sitemap):
-    """Sitemap for blog posts"""
-    changefreq = 'weekly'
-    priority = 0.7
-
-    def items(self):
-        return BlogPost.objects.filter(status='published')
-
-    def lastmod(self, obj):
-        return obj.updated_at
-
-    def location(self, obj):
-        return reverse('blog:detail', kwargs={'slug': obj.slug})
-
-
-class CitySitemap(Sitemap):
-    """Sitemap for destination cities"""
-    changefreq = 'weekly'
-    priority = 0.8
-
-    def items(self):
-        return City.objects.all()
-
-    def lastmod(self, obj):
-        return obj.updated_at if hasattr(obj, 'updated_at') else None
-
-    def location(self, obj):
-        return reverse('destinations:city_detail', kwargs={'slug': obj.slug})
-
-
 # Dictionary of all sitemaps for use in urls.py
 sitemaps = {
     'static': StaticViewSitemap,
     'accommodations': AccommodationSitemap,
     'tours': TourSitemap,
-    'blog': BlogSitemap,
-    'cities': CitySitemap,
 }
