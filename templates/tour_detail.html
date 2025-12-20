@@ -4,6 +4,47 @@
 
 {% block description %}{{ tour.description|truncatewords:30 }} {{ tour.duration_days }}-day tour from {{ tour.departure_city }}. Starting at ${{ tour.price_per_person }}/person.{% endblock %}
 
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TouristTrip",
+    "name": "{{ tour.name|escapejs }}",
+    "description": "{{ tour.description|truncatewords:50|escapejs }}",
+    "touristType": "{{ tour.get_tour_type_display|escapejs }}",
+    "offers": {
+        "@type": "Offer",
+        "price": "{{ tour.price_per_person }}",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+    },
+    "provider": {
+        "@type": "TravelAgency",
+        "name": "Egy360",
+        "url": "https://360egy.com"
+    },
+    "itinerary": {
+        "@type": "ItemList",
+        "numberOfItems": {{ tour.duration_days }},
+        "itemListElement": [
+            {% for dest in destinations %}
+            {
+                "@type": "ListItem",
+                "position": {{ forloop.counter }},
+                "name": "{{ dest|escapejs }}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }{% if tour.average_rating %},
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ tour.average_rating }}",
+        "ratingCount": "{{ tour.booking_count|default:1 }}"
+    }{% endif %}
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <!-- Breadcrumb -->
 <nav aria-label="breadcrumb" class="bg-light py-2">

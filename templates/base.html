@@ -26,6 +26,36 @@
     })();
     </script>
 
+    <!-- Structured Data - Organization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TravelAgency",
+        "name": "Egy360",
+        "alternateName": "360egy",
+        "url": "https://360egy.com",
+        "logo": "https://360egy.com/static/images/logo.png",
+        "description": "Your trusted platform for Egyptian tourism. Discover verified hotels, tours, and transportation across Egypt.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "EG",
+            "addressLocality": "Cairo"
+        },
+        "areaServed": {
+            "@type": "Country",
+            "name": "Egypt"
+        },
+        "sameAs": [
+            "https://www.facebook.com/egy360",
+            "https://www.instagram.com/egy360",
+            "https://twitter.com/egy360"
+        ],
+        "priceRange": "$$"
+    }
+    </script>
+
+    {% block structured_data %}{% endblock %}
+
     <!-- Google Analytics GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GETCTXF3PV"></script>
     <script>

@@ -4,6 +4,49 @@
 
 {% block description %}{{ accommodation.description|truncatewords:30 }} Book {{ accommodation.name }} in {{ accommodation.city }}, Egypt. Rated {{ accommodation.average_rating|default:"8.5" }}/10 on Booking.com.{% endblock %}
 
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "{% if accommodation.accommodation_type == 'hotel' %}Hotel{% elif accommodation.accommodation_type == 'resort' %}Resort{% else %}LodgingBusiness{% endif %}",
+    "name": "{{ accommodation.name|escapejs }}",
+    "description": "{{ accommodation.description|truncatewords:50|escapejs }}",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ accommodation.address|escapejs }}",
+        "addressLocality": "{{ accommodation.city|escapejs }}",
+        "addressCountry": "EG"
+    },
+    {% if accommodation.latitude and accommodation.longitude %}
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": {{ accommodation.latitude }},
+        "longitude": {{ accommodation.longitude }}
+    },
+    {% endif %}
+    "priceRange": "${{ accommodation.price_per_night|floatformat:0 }}+",
+    {% if accommodation.star_rating %}
+    "starRating": {
+        "@type": "Rating",
+        "ratingValue": "{{ accommodation.star_rating }}"
+    },
+    {% endif %}
+    {% if accommodation.average_rating %}
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ accommodation.average_rating }}",
+        "bestRating": "10",
+        "worstRating": "1"
+    },
+    {% endif %}
+    {% if accommodation.image_url %}
+    "image": "{{ accommodation.image_url }}",
+    {% endif %}
+    "url": "https://360egy.com{% url 'accommodations:detail' accommodation.slug %}"
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <!-- Breadcrumb -->
 <nav aria-label="breadcrumb" class="bg-light py-2">

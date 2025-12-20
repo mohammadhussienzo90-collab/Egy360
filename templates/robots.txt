@@ -1,0 +1,20 @@
+# robots.txt for 360egy.com
+# Egy360 - Egyptian Tourism Platform
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://360egy.com/sitemap.xml
+
+# Disallow admin and internal paths
+Disallow: /admin/
+Disallow: /accounts/password/
+Disallow: /api/
+Disallow: /dashboard/
+
+# Allow search engines to crawl static files
+Allow: /static/
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
