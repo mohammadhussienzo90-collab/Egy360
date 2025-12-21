@@ -23,6 +23,15 @@ python manage.py populate_comprehensive_data || echo "Database already populated
 echo "Populating blog content..."
 python populate_blog_content.py || echo "Blog content population completed or error occurred"
 
+echo "Populating affiliate URLs for accommodations..."
+python manage.py populate_affiliate_urls || echo "Accommodation affiliate URLs completed or error occurred"
+
+echo "Populating affiliate URLs for tours..."
+python manage.py populate_tour_affiliate_urls || echo "Tour affiliate URLs completed or error occurred"
+
+echo "Creating SEO blog posts..."
+python manage.py create_seo_posts || echo "SEO blog posts completed or error occurred"
+
 echo "Creating superuser..."
 python create_superuser_production.py || echo "Superuser creation completed or already exists"
 
