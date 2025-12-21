@@ -53,6 +53,17 @@ class Tour(models.Model):
 
     # Images
     main_image = models.ImageField(upload_to='tours/', null=True, blank=True)
+    image_url = models.URLField(max_length=500, blank=True, null=True, help_text="Direct URL to tour image")
+
+    # Affiliate Links (for monetization)
+    viator_url = models.URLField(max_length=500, blank=True, null=True, help_text="Viator affiliate URL")
+    getyourguide_url = models.URLField(max_length=500, blank=True, null=True, help_text="GetYourGuide affiliate URL")
+    travelpayouts_url = models.URLField(max_length=500, blank=True, null=True, help_text="Travelpayouts tours URL")
+
+    # Commission tracking
+    commission_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0, help_text="Expected commission % (e.g., 8.0 for 8%)")
+    total_affiliate_clicks = models.IntegerField(default=0, help_text="Total clicks to affiliate links")
+    total_commission_earned = models.DecimalField(max_digits=10, decimal_places=2, default=0, help_text="Total commission earned ($)")
 
     # Status
     is_featured = models.BooleanField(default=False)
@@ -72,6 +83,31 @@ class Tour(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_primary_affiliate_url(self):
+        """Returns the primary affiliate booking URL (prioritizes Viator)"""
+        if self.viator_url:
+            return self.viator_url
+        elif self.getyourguide_url:
+            return self.getyourguide_url
+        elif self.travelpayouts_url:
+            return self.travelpayouts_url
+        return None
+
+    def has_affiliate_options(self):
+        """Check if any affiliate links are available"""
+        return bool(self.viator_url or self.getyourguide_url or self.travelpayouts_url)
+
+    def get_all_affiliate_options(self):
+        """Returns all available affiliate options as a list of dicts"""
+        options = []
+        if self.viator_url:
+            options.append({'platform': 'Viator', 'url': self.viator_url, 'commission': '8%'})
+        if self.getyourguide_url:
+            options.append({'platform': 'GetYourGuide', 'url': self.getyourguide_url, 'commission': '8%'})
+        if self.travelpayouts_url:
+            options.append({'platform': 'Travelpayouts', 'url': self.travelpayouts_url, 'commission': '5%'})
+        return options
 
 class TourItinerary(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='itinerary')

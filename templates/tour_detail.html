@@ -313,6 +313,30 @@
 
                     <hr>
 
+                    <!-- Affiliate Partner Booking Options -->
+                    {% if tour.has_affiliate_options %}
+                    <div class="mb-3">
+                        <p class="small text-muted mb-2"><i class="fas fa-external-link-alt me-1"></i>Or book through our trusted partners:</p>
+                        <div class="d-grid gap-2">
+                            {% if tour.viator_url %}
+                            <a href="{{ tour.viator_url }}" target="_blank" rel="noopener nofollow"
+                               class="btn btn-outline-success btn-sm affiliate-link" data-tour-id="{{ tour.id }}" data-platform="Viator">
+                                <i class="fas fa-globe me-2"></i>Book on Viator
+                                <span class="badge bg-success ms-2">8% off</span>
+                            </a>
+                            {% endif %}
+                            {% if tour.getyourguide_url %}
+                            <a href="{{ tour.getyourguide_url }}" target="_blank" rel="noopener nofollow"
+                               class="btn btn-outline-primary btn-sm affiliate-link" data-tour-id="{{ tour.id }}" data-platform="GetYourGuide">
+                                <i class="fas fa-compass me-2"></i>Book on GetYourGuide
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <hr>
+
                     <div class="row text-center">
                         <div class="col-4">
                             <i class="fas fa-undo text-success mb-1"></i>
@@ -423,5 +447,20 @@ if (typeof gtag !== 'undefined') {
         'value': {{ tour.price_per_person }}
     });
 }
+
+// Track affiliate link clicks
+document.querySelectorAll('.affiliate-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        const tourId = this.getAttribute('data-tour-id');
+        const platform = this.getAttribute('data-platform');
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'affiliate_click', {
+                'event_category': 'Affiliate',
+                'event_label': platform + ' - {{ tour.name|escapejs }}',
+                'value': tourId
+            });
+        }
+    });
+});
 </script>
 {% endblock %}
