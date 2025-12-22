@@ -20,6 +20,12 @@ python manage.py collectstatic --noinput
 echo "Checking if database needs population..."
 python manage.py populate_comprehensive_data || echo "Database already populated or error occurred"
 
+echo "Populating real Egyptian hotels..."
+python manage.py populate_real_hotels || echo "Real hotels population completed or error occurred"
+
+echo "Populating real Egyptian tours..."
+python manage.py populate_real_tours || echo "Real tours population completed or error occurred"
+
 echo "Populating blog content..."
 python populate_blog_content.py || echo "Blog content population completed or error occurred"
 
@@ -37,4 +43,4 @@ python create_superuser_production.py || echo "Superuser creation completed or a
 
 echo "Starting Gunicorn..."
 exec gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120
-# Force redeploy - Dec 22 2024 - Auth system with social login and 2FA
+# Force redeploy - Dec 22 2024 - Real Egyptian hotels and tours data
