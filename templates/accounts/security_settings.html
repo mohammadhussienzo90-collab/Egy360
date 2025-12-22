@@ -1,0 +1,592 @@
+{% extends 'base.html' %}
+
+{% block title %}Security Settings - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .security-container {
+        min-height: calc(100vh - 200px);
+        background: #f5f7fa;
+        padding: 40px 0;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .page-header p {
+        margin: 10px 0 0;
+        opacity: 0.9;
+    }
+
+    .security-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: #f8f9fa;
+        padding: 20px 25px;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-header h5 {
+        margin: 0;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .card-header .badge {
+        font-size: 0.85rem;
+        padding: 8px 15px;
+        border-radius: 20px;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    /* Security Items */
+    .security-item {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #f0f0f0;
+        transition: background 0.3s ease;
+    }
+
+    .security-item:last-child {
+        border-bottom: none;
+    }
+
+    .security-item:hover {
+        background: #f8f9fa;
+    }
+
+    .security-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        font-size: 1.3rem;
+    }
+
+    .security-icon.enabled {
+        background: linear-gradient(135deg, #00C851, #007E33);
+        color: white;
+    }
+
+    .security-icon.disabled {
+        background: #f0f0f0;
+        color: #999;
+    }
+
+    .security-icon.warning {
+        background: linear-gradient(135deg, #ffbb33, #ff8800);
+        color: white;
+    }
+
+    .security-info {
+        flex: 1;
+    }
+
+    .security-info h6 {
+        margin: 0 0 5px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .security-info p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .security-action {
+        margin-left: 20px;
+    }
+
+    .security-action .btn {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+
+    /* Social Account Cards */
+    .social-account-card {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
+
+    .social-account-card.connected {
+        border-color: #00C851;
+        background: #f0fff4;
+    }
+
+    .social-account-card .provider-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 1.2rem;
+    }
+
+    .provider-google {
+        background: #f0f0f0;
+        color: #4285f4;
+    }
+
+    .provider-facebook {
+        background: #1877f2;
+        color: white;
+    }
+
+    .provider-apple {
+        background: #000;
+        color: white;
+    }
+
+    .social-account-info {
+        flex: 1;
+    }
+
+    .social-account-info h6 {
+        margin: 0 0 3px;
+        font-weight: 600;
+    }
+
+    .social-account-info p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    /* Backup Codes Section */
+    .backup-codes-info {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: #fff9e6;
+        border-radius: 12px;
+        border: 1px solid #ffcc00;
+    }
+
+    .backup-codes-info i {
+        font-size: 2rem;
+        color: #ffaa00;
+        margin-right: 20px;
+    }
+
+    .backup-codes-info .info-text {
+        flex: 1;
+    }
+
+    .backup-codes-info h6 {
+        margin: 0 0 5px;
+        color: #333;
+    }
+
+    .backup-codes-info p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    /* Session Card */
+    .session-card {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
+
+    .session-card.current {
+        background: #e8f5e9;
+        border: 1px solid #4caf50;
+    }
+
+    .session-icon {
+        width: 45px;
+        height: 45px;
+        background: white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .session-info {
+        flex: 1;
+    }
+
+    .session-info h6 {
+        margin: 0 0 3px;
+        font-weight: 600;
+    }
+
+    .session-info p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    /* Password Strength */
+    .password-info {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+    }
+
+    .password-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        color: white;
+        font-size: 1.3rem;
+    }
+
+    .password-details {
+        flex: 1;
+    }
+
+    .password-details h6 {
+        margin: 0 0 5px;
+    }
+
+    .password-details p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .security-container {
+            padding: 20px 0;
+        }
+
+        .security-item {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .security-icon {
+            margin-right: 0;
+            margin-bottom: 15px;
+        }
+
+        .security-action {
+            margin-left: 0;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .security-action .btn {
+            width: 100%;
+        }
+
+        .social-account-card {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .provider-icon {
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="security-container">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-shield-alt me-3"></i>Security Settings</h1>
+            <p>Manage your account security and privacy settings</p>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Two-Factor Authentication -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-lock me-2"></i>Two-Factor Authentication</h5>
+                        {% if two_factor_enabled %}
+                        <span class="badge bg-success">Enabled</span>
+                        {% else %}
+                        <span class="badge bg-warning text-dark">Not Enabled</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <div class="security-item">
+                            <div class="security-icon {% if two_factor_enabled %}enabled{% else %}disabled{% endif %}">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="security-info">
+                                <h6>Authenticator App</h6>
+                                <p>
+                                    {% if two_factor_enabled and two_factor_method == 'totp' %}
+                                    Active - Using authenticator app for verification
+                                    {% else %}
+                                    Use an app like Google Authenticator for secure login codes
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="security-action">
+                                {% if two_factor_enabled %}
+                                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#disable2faModal">
+                                    <i class="fas fa-times me-2"></i>Disable
+                                </button>
+                                {% else %}
+                                <a href="{% url 'accounts:setup_2fa' %}" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Enable
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if two_factor_enabled %}
+                        <div class="security-item">
+                            <div class="security-icon warning">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <div class="security-info">
+                                <h6>Backup Codes</h6>
+                                <p>{{ backup_codes_count }} backup codes remaining</p>
+                            </div>
+                            <div class="security-action">
+                                <a href="{% url 'accounts:backup_codes' %}" class="btn btn-outline-primary">
+                                    <i class="fas fa-eye me-2"></i>View Codes
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Phone Verification -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-phone me-2"></i>Phone Verification</h5>
+                        {% if phone_verified %}
+                        <span class="badge bg-success">Verified</span>
+                        {% else %}
+                        <span class="badge bg-secondary">Not Verified</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <div class="security-item">
+                            <div class="security-icon {% if phone_verified %}enabled{% else %}disabled{% endif %}">
+                                <i class="fas fa-sms"></i>
+                            </div>
+                            <div class="security-info">
+                                <h6>Phone Number</h6>
+                                <p>
+                                    {% if phone_masked %}
+                                    {{ phone_masked }} {% if phone_verified %}<span class="text-success">(Verified)</span>{% endif %}
+                                    {% else %}
+                                    No phone number added
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="security-action">
+                                <a href="{% url 'accounts:update_profile' %}" class="btn btn-outline-primary">
+                                    <i class="fas fa-edit me-2"></i>Update
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connected Accounts -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-link me-2"></i>Connected Accounts</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Google -->
+                        <div class="social-account-card {% if 'google' in social_accounts|join:',' %}connected{% endif %}">
+                            <div class="provider-icon provider-google">
+                                <i class="fab fa-google"></i>
+                            </div>
+                            <div class="social-account-info">
+                                <h6>Google</h6>
+                                <p>{% for acc in social_accounts %}{% if acc.provider == 'google' %}Connected as {{ acc.extra_data.email }}{% endif %}{% empty %}Not connected{% endfor %}</p>
+                            </div>
+                            <a href="{% url 'socialaccount_connections' %}" class="btn btn-sm btn-outline-secondary">
+                                Manage
+                            </a>
+                        </div>
+
+                        <!-- Facebook -->
+                        <div class="social-account-card {% if 'facebook' in social_accounts|join:',' %}connected{% endif %}">
+                            <div class="provider-icon provider-facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </div>
+                            <div class="social-account-info">
+                                <h6>Facebook</h6>
+                                <p>{% for acc in social_accounts %}{% if acc.provider == 'facebook' %}Connected{% endif %}{% empty %}Not connected{% endfor %}</p>
+                            </div>
+                            <a href="{% url 'socialaccount_connections' %}" class="btn btn-sm btn-outline-secondary">
+                                Manage
+                            </a>
+                        </div>
+
+                        <!-- Apple -->
+                        <div class="social-account-card {% if 'apple' in social_accounts|join:',' %}connected{% endif %}">
+                            <div class="provider-icon provider-apple">
+                                <i class="fab fa-apple"></i>
+                            </div>
+                            <div class="social-account-info">
+                                <h6>Apple</h6>
+                                <p>{% for acc in social_accounts %}{% if acc.provider == 'apple' %}Connected{% endif %}{% empty %}Not connected{% endfor %}</p>
+                            </div>
+                            <a href="{% url 'socialaccount_connections' %}" class="btn btn-sm btn-outline-secondary">
+                                Manage
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-key me-2"></i>Password</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="password-info">
+                            <div class="password-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="password-details">
+                                <h6>Password</h6>
+                                <p>Last changed: Unknown</p>
+                            </div>
+                            <a href="{% url 'accounts:password_reset' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-key me-2"></i>Change Password
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Security Tips -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-lightbulb me-2"></i>Security Tips</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Enable two-factor authentication
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Use a strong, unique password
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Verify your phone number
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Keep backup codes safe
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Review connected accounts
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Account Actions -->
+                <div class="security-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cog me-2"></i>Account Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="{% url 'accounts:profile' %}" class="btn btn-outline-primary w-100 mb-3">
+                            <i class="fas fa-user me-2"></i>View Profile
+                        </a>
+                        <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger w-100">
+                            <i class="fas fa-sign-out-alt me-2"></i>Sign Out
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Disable 2FA Modal -->
+<div class="modal fade" id="disable2faModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Disable Two-Factor Authentication</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="{% url 'accounts:disable_2fa' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Disabling 2FA will make your account less secure. Are you sure?
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Enter your password to confirm:</label>
+                        <input type="password" class="form-control" name="password" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Disable 2FA</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

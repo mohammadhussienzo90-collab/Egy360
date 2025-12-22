@@ -1,64 +1,606 @@
 {% extends 'base.html' %}
+{% load socialaccount %}
 
 {% block title %}Sign Up - Egy360{% endblock %}
 
+{% block extra_css %}
+<style>
+    .auth-container {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 40px 0;
+    }
+
+    .auth-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .auth-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .auth-header h2 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .auth-header p {
+        margin: 10px 0 0;
+        opacity: 0.9;
+    }
+
+    .auth-body {
+        padding: 30px;
+    }
+
+    /* Social Login Buttons */
+    .social-login-section {
+        margin-bottom: 25px;
+    }
+
+    .social-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin-bottom: 12px;
+        text-decoration: none;
+        border: 2px solid transparent;
+    }
+
+    .social-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+
+    .social-btn i {
+        margin-right: 12px;
+        font-size: 1.2rem;
+    }
+
+    .btn-google {
+        background: white;
+        color: #333;
+        border-color: #ddd;
+    }
+
+    .btn-google:hover {
+        background: #f8f9fa;
+        color: #333;
+        border-color: #4285f4;
+    }
+
+    .btn-facebook {
+        background: #1877f2;
+        color: white;
+    }
+
+    .btn-facebook:hover {
+        background: #166fe5;
+        color: white;
+    }
+
+    .btn-apple {
+        background: #000;
+        color: white;
+    }
+
+    .btn-apple:hover {
+        background: #333;
+        color: white;
+    }
+
+    /* Divider */
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 25px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: #e0e0e0;
+    }
+
+    .divider span {
+        padding: 0 15px;
+        color: #888;
+        font-size: 0.9rem;
+    }
+
+    /* Form Styling */
+    .form-floating {
+        margin-bottom: 20px;
+    }
+
+    .form-floating .form-control {
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        padding: 1rem 0.75rem;
+        height: auto;
+    }
+
+    .form-floating .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(196, 30, 58, 0.15);
+    }
+
+    .form-floating label {
+        padding: 1rem 0.75rem;
+    }
+
+    /* Phone Input */
+    .phone-input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .country-select {
+        width: 100px;
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        padding: 12px;
+    }
+
+    .phone-input {
+        flex: 1;
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        padding: 12px;
+    }
+
+    .phone-input:focus, .country-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(196, 30, 58, 0.15);
+        outline: none;
+    }
+
+    /* Password Strength Indicator */
+    .password-strength {
+        margin-top: -15px;
+        margin-bottom: 20px;
+    }
+
+    .strength-bar {
+        height: 4px;
+        background: #e0e0e0;
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 5px;
+    }
+
+    .strength-bar-fill {
+        height: 100%;
+        width: 0%;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+
+    .strength-weak { background: #ff4444; width: 25%; }
+    .strength-fair { background: #ffbb33; width: 50%; }
+    .strength-good { background: #00C851; width: 75%; }
+    .strength-strong { background: #007E33; width: 100%; }
+
+    .strength-text {
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .text-weak { color: #ff4444; }
+    .text-fair { color: #ffbb33; }
+    .text-good { color: #00C851; }
+    .text-strong { color: #007E33; }
+
+    /* Password Requirements */
+    .password-requirements {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .password-requirements p {
+        margin-bottom: 10px;
+        font-weight: 500;
+        color: #666;
+    }
+
+    .requirement {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        font-size: 0.85rem;
+        color: #888;
+    }
+
+    .requirement i {
+        margin-right: 8px;
+        font-size: 0.9rem;
+    }
+
+    .requirement.met {
+        color: #00C851;
+    }
+
+    .requirement.met i {
+        color: #00C851;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(196, 30, 58, 0.3);
+    }
+
+    /* Links */
+    .auth-links {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .auth-links a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+
+    /* Terms Checkbox */
+    .terms-section {
+        margin-bottom: 20px;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .form-check-label a {
+        color: var(--primary-color);
+    }
+
+    /* Benefits Section */
+    .benefits-section {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 25px;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .benefit-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .benefit-item i {
+        color: var(--primary-color);
+        margin-right: 10px;
+    }
+
+    .benefit-item span {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    /* Error Messages */
+    .error-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .error-list li {
+        margin-bottom: 5px;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .auth-card {
+            margin: 0 15px;
+            border-radius: 15px;
+        }
+
+        .auth-header, .auth-body {
+            padding: 20px;
+        }
+
+        .social-btn {
+            padding: 10px 15px;
+            font-size: 0.95rem;
+        }
+
+        .phone-input-group {
+            flex-direction: column;
+        }
+
+        .country-select {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <div class="card shadow">
-                <div class="card-body p-5">
-                    <h3 class="text-center mb-4">Create Your Account</h3>
-                    <p class="text-center text-muted mb-4">Join Egy360 to start planning your Egyptian adventure</p>
-                    
-                    <form method="post">
-                        {% csrf_token %}
-                        
-                        {% if form.errors %}
-                        <div class="alert alert-danger">
-                            {{ form.errors }}
-                        </div>
-                        {% endif %}
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
-                            {{ form.username }}
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.email.id_for_label }}" class="form-label">Email Address</label>
-                            {{ form.email }}
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
-                            {{ form.password1 }}
-                            <small class="text-muted">At least 8 characters with numbers and letters</small>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password</label>
-                            {{ form.password2 }}
-                        </div>
-                        
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
-                            <label class="form-check-label" for="terms">
-                                I agree to the <a href="/terms/">Terms & Conditions</a>
-                            </label>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
-                    </form>
-                    
-                    <hr class="my-4">
-                    
-                    <div class="text-center">
-                        <p class="mb-0">Already have an account? <a href="/accounts/login/">Login</a></p>
+<div class="auth-container">
+    <div class="container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2><i class="fas fa-user-plus me-2"></i>Create Account</h2>
+                <p>Join Egy360 and explore Egypt</p>
+            </div>
+
+            <div class="auth-body">
+                <!-- Benefits Section -->
+                <div class="benefits-section">
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Access exclusive hotel deals and tours</span>
                     </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Save favorites and track bookings</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Get personalized travel recommendations</span>
+                    </div>
+                </div>
+
+                <!-- Social Login Section -->
+                <div class="social-login-section">
+                    <a href="{% provider_login_url 'google' %}" class="social-btn btn-google">
+                        <i class="fab fa-google"></i>
+                        Sign up with Google
+                    </a>
+                    <a href="{% provider_login_url 'facebook' %}" class="social-btn btn-facebook">
+                        <i class="fab fa-facebook-f"></i>
+                        Sign up with Facebook
+                    </a>
+                    <a href="{% provider_login_url 'apple' %}" class="social-btn btn-apple">
+                        <i class="fab fa-apple"></i>
+                        Sign up with Apple
+                    </a>
+                </div>
+
+                <div class="divider">
+                    <span>or sign up with email</span>
+                </div>
+
+                <!-- Registration Form -->
+                <form method="post" id="registerForm">
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <ul class="error-list mb-0">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="username" name="username"
+                               placeholder="Username" required value="{{ form.username.value|default:'' }}">
+                        <label for="username"><i class="fas fa-user me-2"></i>Username</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="email" class="form-control" id="email" name="email"
+                               placeholder="Email Address" required value="{{ form.email.value|default:'' }}">
+                        <label for="email"><i class="fas fa-envelope me-2"></i>Email Address</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-phone me-2"></i>Phone Number (Optional)</label>
+                        <div class="phone-input-group">
+                            <select class="form-select country-select" name="country_code" id="countryCode">
+                                <option value="+20" selected>+20</option>
+                                <option value="+1">+1</option>
+                                <option value="+44">+44</option>
+                                <option value="+971">+971</option>
+                                <option value="+966">+966</option>
+                                <option value="+49">+49</option>
+                                <option value="+33">+33</option>
+                            </select>
+                            <input type="tel" class="form-control phone-input" id="phoneNumber" name="phone_number"
+                                   placeholder="Enter phone number">
+                        </div>
+                        <small class="text-muted">For account security and OTP login</small>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="password1" name="password1"
+                               placeholder="Password" required>
+                        <label for="password1"><i class="fas fa-lock me-2"></i>Password</label>
+                    </div>
+
+                    <!-- Password Strength Indicator -->
+                    <div class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-bar-fill" id="strengthBar"></div>
+                        </div>
+                        <span class="strength-text" id="strengthText"></span>
+                    </div>
+
+                    <!-- Password Requirements -->
+                    <div class="password-requirements">
+                        <p><i class="fas fa-shield-alt me-2"></i>Password must have:</p>
+                        <div class="requirement" id="req-length">
+                            <i class="fas fa-circle"></i>
+                            <span>At least 8 characters</span>
+                        </div>
+                        <div class="requirement" id="req-letter">
+                            <i class="fas fa-circle"></i>
+                            <span>At least one letter</span>
+                        </div>
+                        <div class="requirement" id="req-number">
+                            <i class="fas fa-circle"></i>
+                            <span>At least one number</span>
+                        </div>
+                        <div class="requirement" id="req-special">
+                            <i class="fas fa-circle"></i>
+                            <span>At least one special character (!@#$%^&*)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="password2" name="password2"
+                               placeholder="Confirm Password" required>
+                        <label for="password2"><i class="fas fa-lock me-2"></i>Confirm Password</label>
+                    </div>
+
+                    <div class="terms-section form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                        <label class="form-check-label" for="terms">
+                            I agree to the <a href="/terms/" target="_blank">Terms of Service</a> and
+                            <a href="/privacy/" target="_blank">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-submit">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </button>
+                </form>
+
+                <div class="auth-links">
+                    <p class="mb-0">Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const password1 = document.getElementById('password1');
+    const password2 = document.getElementById('password2');
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+
+    // Password requirements elements
+    const reqLength = document.getElementById('req-length');
+    const reqLetter = document.getElementById('req-letter');
+    const reqNumber = document.getElementById('req-number');
+    const reqSpecial = document.getElementById('req-special');
+
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        let requirements = {
+            length: password.length >= 8,
+            letter: /[a-zA-Z]/.test(password),
+            number: /\d/.test(password),
+            special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+        };
+
+        // Update requirement indicators
+        updateRequirement(reqLength, requirements.length);
+        updateRequirement(reqLetter, requirements.letter);
+        updateRequirement(reqNumber, requirements.number);
+        updateRequirement(reqSpecial, requirements.special);
+
+        // Calculate strength
+        if (requirements.length) strength++;
+        if (requirements.letter) strength++;
+        if (requirements.number) strength++;
+        if (requirements.special) strength++;
+
+        // Update strength bar and text
+        strengthBar.className = 'strength-bar-fill';
+        strengthText.className = 'strength-text';
+
+        if (password.length === 0) {
+            strengthBar.classList.add('');
+            strengthText.textContent = '';
+        } else if (strength === 1) {
+            strengthBar.classList.add('strength-weak');
+            strengthText.classList.add('text-weak');
+            strengthText.textContent = 'Weak password';
+        } else if (strength === 2) {
+            strengthBar.classList.add('strength-fair');
+            strengthText.classList.add('text-fair');
+            strengthText.textContent = 'Fair password';
+        } else if (strength === 3) {
+            strengthBar.classList.add('strength-good');
+            strengthText.classList.add('text-good');
+            strengthText.textContent = 'Good password';
+        } else if (strength === 4) {
+            strengthBar.classList.add('strength-strong');
+            strengthText.classList.add('text-strong');
+            strengthText.textContent = 'Strong password';
+        }
+    }
+
+    function updateRequirement(element, isMet) {
+        if (isMet) {
+            element.classList.add('met');
+            element.querySelector('i').className = 'fas fa-check-circle';
+        } else {
+            element.classList.remove('met');
+            element.querySelector('i').className = 'fas fa-circle';
+        }
+    }
+
+    password1.addEventListener('input', function() {
+        checkPasswordStrength(this.value);
+    });
+
+    // Password match validation
+    password2.addEventListener('input', function() {
+        if (this.value !== password1.value) {
+            this.setCustomValidity('Passwords do not match');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+});
+</script>
 {% endblock %}

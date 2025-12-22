@@ -1,0 +1,422 @@
+{% extends 'base.html' %}
+
+{% block title %}Backup Codes - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .backup-container {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 40px 0;
+    }
+
+    .backup-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 550px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .backup-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .backup-header h2 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .backup-header p {
+        margin: 10px 0 0;
+        opacity: 0.9;
+    }
+
+    .backup-body {
+        padding: 30px;
+    }
+
+    .warning-banner {
+        background: #fff9e6;
+        border: 1px solid #ffcc00;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .warning-banner i {
+        font-size: 1.5rem;
+        color: #ffaa00;
+        margin-right: 15px;
+        margin-top: 3px;
+    }
+
+    .warning-banner p {
+        margin: 0;
+        color: #666;
+    }
+
+    .warning-banner strong {
+        color: #333;
+    }
+
+    /* Backup Codes Grid */
+    .codes-container {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+    }
+
+    .codes-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .backup-code {
+        background: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+        text-align: center;
+        border: 2px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+
+    .backup-code:hover {
+        border-color: var(--primary-color);
+        background: #fef5f7;
+    }
+
+    .backup-code.used {
+        background: #f0f0f0;
+        color: #999;
+        text-decoration: line-through;
+    }
+
+    /* Actions */
+    .actions {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .actions .btn {
+        flex: 1;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 500;
+    }
+
+    .btn-copy {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+    }
+
+    .btn-copy:hover {
+        background: #8b1226;
+        color: white;
+    }
+
+    .btn-download {
+        background: white;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+    }
+
+    .btn-download:hover {
+        background: #fef5f7;
+    }
+
+    .btn-print {
+        background: white;
+        color: #666;
+        border: 2px solid #ddd;
+    }
+
+    .btn-print:hover {
+        background: #f8f9fa;
+        border-color: #999;
+    }
+
+    /* Info Section */
+    .info-section {
+        background: #e8f5e9;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+
+    .info-section h6 {
+        color: #2e7d32;
+        margin-bottom: 10px;
+    }
+
+    .info-section ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .info-section li {
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    /* Success Banner for First Time */
+    .success-banner {
+        background: #e8f5e9;
+        border: 1px solid #4caf50;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+    }
+
+    .success-banner i {
+        font-size: 2rem;
+        color: #4caf50;
+        margin-right: 15px;
+    }
+
+    .success-banner h5 {
+        margin: 0 0 5px;
+        color: #2e7d32;
+    }
+
+    .success-banner p {
+        margin: 0;
+        color: #555;
+    }
+
+    /* Done Button */
+    .btn-done {
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        border: none;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .btn-done:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(196, 30, 58, 0.3);
+        color: white;
+    }
+
+    /* Regenerate Section */
+    .regenerate-section {
+        border-top: 1px solid #e0e0e0;
+        padding-top: 20px;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .regenerate-section p {
+        color: #666;
+        margin-bottom: 15px;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .backup-card {
+            margin: 0 15px;
+            border-radius: 15px;
+        }
+
+        .backup-header, .backup-body {
+            padding: 20px;
+        }
+
+        .codes-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .actions {
+            flex-direction: column;
+        }
+    }
+
+    /* Print Styles */
+    @media print {
+        .backup-container {
+            background: white;
+            padding: 0;
+        }
+
+        .backup-card {
+            box-shadow: none;
+            max-width: 100%;
+        }
+
+        .backup-header {
+            background: black;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .actions, .regenerate-section, .btn-done {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="backup-container">
+    <div class="container">
+        <div class="backup-card">
+            <div class="backup-header">
+                <h2><i class="fas fa-key me-2"></i>Backup Codes</h2>
+                <p>Save these codes in a secure place</p>
+            </div>
+
+            <div class="backup-body">
+                {% if first_time %}
+                <div class="success-banner">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h5>Two-Factor Authentication Enabled!</h5>
+                        <p>Save these backup codes - you'll need them if you lose access to your authenticator app.</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="warning-banner">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <p><strong>Important:</strong> Each backup code can only be used once. Store them securely and keep them private. Treat these codes like passwords.</p>
+                    </div>
+                </div>
+
+                <div class="codes-container">
+                    <div class="codes-grid" id="codesGrid">
+                        {% for code in backup_codes %}
+                        <div class="backup-code">{{ code }}</div>
+                        {% empty %}
+                        <div class="text-center text-muted py-3" style="grid-column: span 2;">
+                            No backup codes available. Generate new codes below.
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% if backup_codes %}
+                <div class="actions">
+                    <button type="button" class="btn btn-copy" onclick="copyCodes()">
+                        <i class="fas fa-copy me-2"></i>Copy All
+                    </button>
+                    <button type="button" class="btn btn-download" onclick="downloadCodes()">
+                        <i class="fas fa-download me-2"></i>Download
+                    </button>
+                    <button type="button" class="btn btn-print" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>Print
+                    </button>
+                </div>
+                {% endif %}
+
+                <div class="info-section">
+                    <h6><i class="fas fa-info-circle me-2"></i>How to use backup codes:</h6>
+                    <ul>
+                        <li>Use a backup code when you can't access your authenticator app</li>
+                        <li>Enter the code exactly as shown, including the hyphen</li>
+                        <li>Each code can only be used once</li>
+                        <li>Generate new codes when you run low</li>
+                    </ul>
+                </div>
+
+                <a href="{% url 'accounts:security_settings' %}" class="btn btn-done">
+                    <i class="fas fa-check me-2"></i>Done
+                </a>
+
+                <div class="regenerate-section">
+                    <p>Need new backup codes?</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="fas fa-redo me-2"></i>Generate New Codes
+                        </button>
+                    </form>
+                    <small class="text-muted mt-2 d-block">This will invalidate all existing codes</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyCodes() {
+    const codes = [];
+    document.querySelectorAll('.backup-code').forEach(el => {
+        if (!el.classList.contains('used')) {
+            codes.push(el.textContent.trim());
+        }
+    });
+
+    const text = "Egy360 Backup Codes\n" +
+                 "==================\n\n" +
+                 codes.join('\n') +
+                 "\n\n" +
+                 "Store these codes securely!";
+
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.btn-copy');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+        btn.classList.add('btn-success');
+        btn.classList.remove('btn-copy');
+
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-copy');
+        }, 2000);
+    });
+}
+
+function downloadCodes() {
+    const codes = [];
+    document.querySelectorAll('.backup-code').forEach(el => {
+        if (!el.classList.contains('used')) {
+            codes.push(el.textContent.trim());
+        }
+    });
+
+    const text = "Egy360 Backup Codes\n" +
+                 "==================\n\n" +
+                 "Generated: " + new Date().toLocaleDateString() + "\n\n" +
+                 codes.join('\n') +
+                 "\n\n" +
+                 "IMPORTANT: Store these codes securely!\n" +
+                 "Each code can only be used once.";
+
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'egy360-backup-codes.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+</script>
+{% endblock %}

@@ -3,6 +3,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
+import random
+import string
 
 
 class UserProfile(models.Model):
@@ -30,6 +33,26 @@ class UserProfile(models.Model):
     phone_verified = models.BooleanField(default=False)
     identity_verified = models.BooleanField(default=False)
 
+    # Phone OTP fields
+    phone_otp = models.CharField(max_length=6, blank=True, null=True)
+    phone_otp_created = models.DateTimeField(blank=True, null=True)
+    phone_otp_attempts = models.IntegerField(default=0)
+
+    # Two-Factor Authentication
+    two_factor_enabled = models.BooleanField(default=False)
+    two_factor_method = models.CharField(
+        max_length=20,
+        choices=[('totp', 'Authenticator App'), ('sms', 'SMS')],
+        blank=True,
+        null=True
+    )
+    backup_codes = models.JSONField(default=list, blank=True)
+
+    # Security settings
+    last_login_ip = models.GenericIPAddressField(blank=True, null=True)
+    last_login_device = models.CharField(max_length=255, blank=True, null=True)
+    trusted_devices = models.JSONField(default=list, blank=True)
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -49,6 +72,73 @@ class UserProfile(models.Model):
             self.phone_verified,
             self.identity_verified
         ])
+
+    def generate_otp(self):
+        """Generate a 6-digit OTP code"""
+        self.phone_otp = ''.join(random.choices(string.digits, k=6))
+        self.phone_otp_created = timezone.now()
+        self.phone_otp_attempts = 0
+        self.save()
+        return self.phone_otp
+
+    def verify_otp(self, otp_code):
+        """Verify the OTP code"""
+        if not self.phone_otp or not self.phone_otp_created:
+            return False, "No OTP code generated"
+
+        # Check if OTP is expired (5 minutes)
+        time_diff = timezone.now() - self.phone_otp_created
+        if time_diff.total_seconds() > 300:
+            self.phone_otp = None
+            self.phone_otp_created = None
+            self.save()
+            return False, "OTP code has expired"
+
+        # Check attempts limit
+        if self.phone_otp_attempts >= 3:
+            self.phone_otp = None
+            self.phone_otp_created = None
+            self.save()
+            return False, "Too many attempts. Please request a new code"
+
+        self.phone_otp_attempts += 1
+        self.save()
+
+        if self.phone_otp == otp_code:
+            self.phone_otp = None
+            self.phone_otp_created = None
+            self.phone_verified = True
+            self.save()
+            return True, "OTP verified successfully"
+
+        return False, "Invalid OTP code"
+
+    def generate_backup_codes(self):
+        """Generate 10 backup codes for 2FA"""
+        codes = []
+        for _ in range(10):
+            code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+            code = f"{code[:4]}-{code[4:]}"
+            codes.append(code)
+        self.backup_codes = codes
+        self.save()
+        return codes
+
+    def verify_backup_code(self, code):
+        """Verify and consume a backup code"""
+        if code in self.backup_codes:
+            self.backup_codes.remove(code)
+            self.save()
+            return True
+        return False
+
+    def get_masked_phone(self):
+        """Return masked phone number for display"""
+        if not self.phone:
+            return None
+        if len(self.phone) > 4:
+            return f"***-***-{self.phone[-4:]}"
+        return "***-***-****"
 
 
 

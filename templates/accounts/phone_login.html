@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+
+{% block title %}Phone Login - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 40px 0;
+    }
+
+    .auth-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 450px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .auth-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .auth-header h2 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .auth-header p {
+        margin: 10px 0 0;
+        opacity: 0.9;
+    }
+
+    .auth-body {
+        padding: 30px;
+    }
+
+    .phone-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .phone-icon i {
+        font-size: 2rem;
+        color: white;
+    }
+
+    .info-text {
+        text-align: center;
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    /* Phone Input */
+    .phone-input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .country-select {
+        width: 120px;
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        padding: 14px 12px;
+        font-size: 1rem;
+        background: white;
+    }
+
+    .country-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(196, 30, 58, 0.15);
+        outline: none;
+    }
+
+    .phone-input {
+        flex: 1;
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        padding: 14px;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+
+    .phone-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(196, 30, 58, 0.15);
+        outline: none;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        border: none;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(196, 30, 58, 0.3);
+        color: white;
+    }
+
+    .btn-submit:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* Security Note */
+    .security-note {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    .security-note i {
+        color: var(--primary-color);
+        margin-right: 10px;
+    }
+
+    .security-note p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    /* Links */
+    .auth-links {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .auth-links a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+
+    /* Country Code List */
+    .country-codes {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .auth-card {
+            margin: 0 15px;
+            border-radius: 15px;
+        }
+
+        .auth-header, .auth-body {
+            padding: 20px;
+        }
+
+        .phone-input-group {
+            flex-direction: column;
+        }
+
+        .country-select {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2><i class="fas fa-mobile-alt me-2"></i>Phone Login</h2>
+                <p>Sign in with your phone number</p>
+            </div>
+
+            <div class="auth-body">
+                <div class="phone-icon">
+                    <i class="fas fa-sms"></i>
+                </div>
+
+                <p class="info-text">
+                    Enter your phone number and we'll send you a one-time verification code via SMS.
+                </p>
+
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" id="phoneLoginForm">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold"><i class="fas fa-phone me-2"></i>Phone Number</label>
+                        <div class="phone-input-group">
+                            <select class="country-select" name="country_code" id="countryCode">
+                                <option value="+20">+20 EG</option>
+                                <option value="+1">+1 US</option>
+                                <option value="+44">+44 UK</option>
+                                <option value="+971">+971 UAE</option>
+                                <option value="+966">+966 SA</option>
+                                <option value="+49">+49 DE</option>
+                                <option value="+33">+33 FR</option>
+                                <option value="+39">+39 IT</option>
+                                <option value="+34">+34 ES</option>
+                                <option value="+61">+61 AU</option>
+                                <option value="+81">+81 JP</option>
+                                <option value="+86">+86 CN</option>
+                                <option value="+91">+91 IN</option>
+                                <option value="+7">+7 RU</option>
+                                <option value="+55">+55 BR</option>
+                            </select>
+                            <input type="tel" class="phone-input" name="phone_number" id="phoneNumber"
+                                   placeholder="Enter phone number" required
+                                   pattern="[0-9]{8,15}" title="Please enter a valid phone number">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-submit" id="submitBtn">
+                        <i class="fas fa-paper-plane me-2"></i>Send Verification Code
+                    </button>
+                </form>
+
+                <div class="security-note">
+                    <p>
+                        <i class="fas fa-shield-alt"></i>
+                        Your phone number is kept secure and only used for account verification.
+                        Standard SMS rates may apply.
+                    </p>
+                </div>
+
+                <div class="auth-links">
+                    <p class="mb-2">
+                        <a href="{% url 'accounts:login' %}">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Login
+                        </a>
+                    </p>
+                    <p class="mb-0">
+                        Don't have an account? <a href="{% url 'accounts:register' %}">Create one</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const phoneInput = document.getElementById('phoneNumber');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Format phone number as user types
+    phoneInput.addEventListener('input', function(e) {
+        // Remove non-numeric characters
+        let value = this.value.replace(/\D/g, '');
+        this.value = value;
+
+        // Enable/disable submit button based on phone length
+        if (value.length >= 8) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
+    });
+
+    // Form submission
+    document.getElementById('phoneLoginForm').addEventListener('submit', function(e) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+    });
+});
+</script>
+{% endblock %}

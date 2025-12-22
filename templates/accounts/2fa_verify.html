@@ -1,0 +1,552 @@
+{% extends 'base.html' %}
+
+{% block title %}Two-Factor Verification - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 40px 0;
+    }
+
+    .auth-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 450px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .auth-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .auth-header h2 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .auth-header p {
+        margin: 10px 0 0;
+        opacity: 0.9;
+    }
+
+    .auth-body {
+        padding: 30px;
+    }
+
+    .security-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #00C851, #007E33);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .security-icon i {
+        font-size: 2rem;
+        color: white;
+    }
+
+    .info-text {
+        text-align: center;
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    /* Method Tabs */
+    .method-tabs {
+        display: flex;
+        margin-bottom: 25px;
+        background: #f5f5f5;
+        border-radius: 10px;
+        padding: 5px;
+    }
+
+    .method-tab {
+        flex: 1;
+        padding: 12px 15px;
+        text-align: center;
+        border: none;
+        background: transparent;
+        border-radius: 8px;
+        font-weight: 500;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .method-tab.active {
+        background: white;
+        color: var(--primary-color);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .method-tab:hover:not(.active) {
+        color: var(--primary-color);
+    }
+
+    .method-tab i {
+        display: block;
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* OTP Input */
+    .otp-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .otp-input {
+        width: 50px;
+        height: 60px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .otp-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(196, 30, 58, 0.15);
+        outline: none;
+    }
+
+    .otp-input.filled {
+        border-color: #00C851;
+        background: #f0fff4;
+    }
+
+    .otp-input.error {
+        border-color: #ff4444;
+        background: #fff5f5;
+        animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+
+    /* SMS Section */
+    .sms-section {
+        text-align: center;
+    }
+
+    .phone-display {
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+
+    .send-sms-btn {
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-weight: 500;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        border: none;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(196, 30, 58, 0.3);
+        color: white;
+    }
+
+    .btn-submit:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Backup Code */
+    .backup-code-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #666;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .backup-code-link:hover {
+        color: var(--primary-color);
+    }
+
+    /* Remember Device */
+    .remember-device {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    /* Links */
+    .auth-links {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .auth-links a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .auth-card {
+            margin: 0 15px;
+            border-radius: 15px;
+        }
+
+        .auth-header, .auth-body {
+            padding: 20px;
+        }
+
+        .otp-input {
+            width: 45px;
+            height: 55px;
+            font-size: 1.3rem;
+        }
+
+        .method-tab {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2><i class="fas fa-lock me-2"></i>Verify Your Identity</h2>
+                <p>Enter your two-factor authentication code</p>
+            </div>
+
+            <div class="auth-body">
+                <div class="security-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+
+                <p class="info-text">
+                    Your account is protected with two-factor authentication.
+                    Choose a verification method below.
+                </p>
+
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Method Tabs -->
+                <div class="method-tabs">
+                    <button class="method-tab active" data-tab="authenticator">
+                        <i class="fas fa-mobile-alt"></i>
+                        Authenticator
+                    </button>
+                    <button class="method-tab" data-tab="sms">
+                        <i class="fas fa-sms"></i>
+                        SMS Code
+                    </button>
+                    <button class="method-tab" data-tab="backup">
+                        <i class="fas fa-key"></i>
+                        Backup Code
+                    </button>
+                </div>
+
+                <!-- Authenticator Tab -->
+                <div class="tab-content active" id="authenticator-tab">
+                    <form method="post" id="authForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="method" value="totp">
+                        <input type="hidden" name="otp_code" id="otpHiddenAuth">
+
+                        <p class="text-center text-muted mb-3">
+                            Enter the code from your authenticator app
+                        </p>
+
+                        <div class="otp-container" id="authOtpContainer">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" autofocus>
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        </div>
+
+                        <div class="remember-device">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberDevice" name="remember_device">
+                                <label class="form-check-label" for="rememberDevice">
+                                    Don't ask again on this device for 30 days
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit" id="authVerifyBtn" disabled>
+                            <i class="fas fa-check-circle me-2"></i>Verify & Sign In
+                        </button>
+                    </form>
+                </div>
+
+                <!-- SMS Tab -->
+                <div class="tab-content" id="sms-tab">
+                    <form method="post" id="smsForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="method" value="sms">
+                        <input type="hidden" name="otp_code" id="otpHiddenSms">
+
+                        <div class="sms-section">
+                            <p class="text-muted mb-3">
+                                We'll send a verification code to your phone
+                            </p>
+                            <p class="phone-display">{{ phone_masked|default:"***-***-1234" }}</p>
+
+                            <button type="button" class="btn btn-outline-primary send-sms-btn mb-4" id="sendSmsBtn" onclick="sendSmsCode()">
+                                <i class="fas fa-paper-plane me-2"></i>Send SMS Code
+                            </button>
+                        </div>
+
+                        <div id="smsCodeSection" style="display: none;">
+                            <p class="text-center text-muted mb-3">
+                                Enter the code we sent to your phone
+                            </p>
+
+                            <div class="otp-container" id="smsOtpContainer">
+                                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            </div>
+
+                            <div class="remember-device">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberDeviceSms" name="remember_device">
+                                    <label class="form-check-label" for="rememberDeviceSms">
+                                        Don't ask again on this device for 30 days
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-submit" id="smsVerifyBtn" disabled>
+                                <i class="fas fa-check-circle me-2"></i>Verify & Sign In
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Backup Code Tab -->
+                <div class="tab-content" id="backup-tab">
+                    <form method="post" id="backupForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="method" value="backup">
+
+                        <p class="text-center text-muted mb-3">
+                            Enter one of your backup codes
+                        </p>
+
+                        <div class="mb-4">
+                            <input type="text" class="form-control form-control-lg text-center"
+                                   name="backup_code" id="backupCodeInput"
+                                   placeholder="XXXX-XXXX"
+                                   style="letter-spacing: 3px; font-family: monospace; font-size: 1.3rem;">
+                        </div>
+
+                        <div class="remember-device">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberDeviceBackup" name="remember_device">
+                                <label class="form-check-label" for="rememberDeviceBackup">
+                                    Don't ask again on this device for 30 days
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit" id="backupVerifyBtn">
+                            <i class="fas fa-check-circle me-2"></i>Verify & Sign In
+                        </button>
+                    </form>
+
+                    <p class="text-center text-muted mt-3" style="font-size: 0.85rem;">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Backup codes can only be used once
+                    </p>
+                </div>
+
+                <div class="auth-links">
+                    <p class="mb-0">
+                        <a href="{% url 'accounts:login' %}">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Login
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching
+    const tabs = document.querySelectorAll('.method-tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+
+            tabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+
+            this.classList.add('active');
+            document.getElementById(targetTab + '-tab').classList.add('active');
+
+            // Focus first input in active tab
+            const firstInput = document.getElementById(targetTab + '-tab').querySelector('input');
+            if (firstInput) firstInput.focus();
+        });
+    });
+
+    // Setup OTP inputs for authenticator
+    setupOtpInputs('authOtpContainer', 'otpHiddenAuth', 'authVerifyBtn');
+
+    // Setup OTP inputs for SMS
+    setupOtpInputs('smsOtpContainer', 'otpHiddenSms', 'smsVerifyBtn');
+});
+
+function setupOtpInputs(containerId, hiddenId, btnId) {
+    const container = document.getElementById(containerId);
+    const otpInputs = container.querySelectorAll('.otp-input');
+    const otpHidden = document.getElementById(hiddenId);
+    const verifyBtn = document.getElementById(btnId);
+
+    otpInputs.forEach((input, index) => {
+        input.addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+
+            if (this.value.length === 1) {
+                this.classList.add('filled');
+                if (index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+            } else {
+                this.classList.remove('filled');
+            }
+
+            updateOTPValue();
+        });
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                otpInputs[index - 1].focus();
+            }
+        });
+
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+
+            pastedData.split('').forEach((char, i) => {
+                if (otpInputs[i]) {
+                    otpInputs[i].value = char;
+                    otpInputs[i].classList.add('filled');
+                }
+            });
+
+            updateOTPValue();
+        });
+    });
+
+    function updateOTPValue() {
+        const otp = Array.from(otpInputs).map(input => input.value).join('');
+        otpHidden.value = otp;
+        verifyBtn.disabled = otp.length !== 6;
+    }
+}
+
+function sendSmsCode() {
+    const btn = document.getElementById('sendSmsBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+
+    // Simulate SMS sending (replace with actual AJAX call)
+    setTimeout(function() {
+        btn.innerHTML = '<i class="fas fa-check me-2"></i>Code Sent!';
+        btn.classList.remove('btn-outline-primary');
+        btn.classList.add('btn-success');
+
+        document.getElementById('smsCodeSection').style.display = 'block';
+
+        // Focus first SMS OTP input
+        document.querySelector('#smsOtpContainer .otp-input').focus();
+
+        // Reset button after delay
+        setTimeout(function() {
+            btn.innerHTML = '<i class="fas fa-redo me-2"></i>Resend Code';
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-primary');
+            btn.disabled = false;
+        }, 60000); // 1 minute cooldown
+    }, 2000);
+}
+</script>
+{% endblock %}
