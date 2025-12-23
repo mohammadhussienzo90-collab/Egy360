@@ -127,179 +127,283 @@
     <style>
         :root {
             --primary-color: #c41e3a;
+            --primary-dark: #9a1830;
             --secondary-color: #ffd700;
             --dark-color: #1a1a1a;
             --light-bg: #f8f9fa;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--dark-color);
+            overflow-x: hidden;
         }
 
+        /* Modern Navbar */
         .navbar {
-            background: linear-gradient(135deg, var(--primary-color), #8b1226);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 0.75rem 0;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            padding: 0.5rem 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.2);
         }
 
         .navbar-brand {
             font-size: 1.8rem;
-            font-weight: bold;
+            font-weight: 800;
             color: var(--secondary-color) !important;
-        }
-
-        .hero-section {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-                        url('https://source.unsplash.com/1600x900/?egypt,pyramids');
-            background-size: cover;
-            background-position: center;
-            min-height: 400px;
             display: flex;
             align-items: center;
-            color: white;
-            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand i {
+            font-size: 1.5rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .navbar-nav .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn-signup {
+            background: var(--secondary-color);
+            color: #333 !important;
+            font-weight: 600;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+
+        .btn-signup:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+        }
+
+        /* Mobile Menu */
+        .navbar-toggler {
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         }
 
         .card {
             border: none;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            transition: var(--transition);
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: var(--transition);
         }
 
         .btn-primary:hover {
-            background-color: #8b1226;
-            border-color: #8b1226;
+            background: linear-gradient(135deg, var(--primary-dark), #7a1020);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(196,30,58,0.3);
         }
 
+        /* Modern Footer */
         footer {
-            background-color: var(--dark-color);
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
             color: white;
-            padding: 40px 0;
-            margin-top: 80px;
+            padding: 60px 0 30px;
+            margin-top: 0;
         }
 
-        /* Mobile Responsive Enhancements */
+        footer h5 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        footer a {
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: var(--secondary-color) !important;
+            padding-left: 5px;
+        }
+
+        footer .social-links a {
+            display: inline-flex;
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        footer .social-links a:hover {
+            background: var(--secondary-color);
+            color: #333 !important;
+            transform: translateY(-3px);
+            padding-left: 0;
+        }
+
+        /* Mobile Responsive */
         @media (max-width: 991.98px) {
             .navbar-brand {
-                font-size: 1.4rem;
+                font-size: 1.5rem;
             }
 
             .navbar-collapse {
-                background: rgba(139, 18, 38, 0.98);
-                padding: 1rem;
-                margin-top: 0.5rem;
-                border-radius: 8px;
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 85%;
+                max-width: 320px;
+                height: 100vh;
+                background: linear-gradient(180deg, var(--primary-color), var(--primary-dark));
+                padding: 2rem 1.5rem;
+                transition: left 0.3s ease;
+                z-index: 1050;
+                overflow-y: auto;
+            }
+
+            .navbar-collapse.show {
+                left: 0;
+            }
+
+            .mobile-menu-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 1049;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .mobile-menu-overlay.show {
+                display: block;
+                opacity: 1;
+            }
+
+            .navbar-nav {
+                margin-top: 2rem;
             }
 
             .navbar-nav .nav-link {
-                padding: 0.75rem 1rem;
+                padding: 1rem;
+                font-size: 1.1rem;
                 border-bottom: 1px solid rgba(255,255,255,0.1);
+                border-radius: 0;
             }
 
             .navbar-nav .btn {
-                margin-top: 0.5rem;
+                margin-top: 1rem;
                 width: 100%;
+                justify-content: center;
+            }
+
+            .mobile-menu-close {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: rgba(255,255,255,0.1);
+                border: none;
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                font-size: 1.25rem;
+                cursor: pointer;
             }
         }
 
         @media (max-width: 767.98px) {
-            /* Improve touch targets */
             .btn {
-                min-height: 44px;
-                padding: 0.625rem 1rem;
+                min-height: 48px;
+                padding: 0.75rem 1.25rem;
             }
 
             .btn-sm {
-                min-height: 38px;
+                min-height: 40px;
             }
 
-            /* Better typography on mobile */
             h1, .h1 { font-size: 1.75rem; }
             h2, .h2 { font-size: 1.5rem; }
             h3, .h3 { font-size: 1.25rem; }
-            .display-4 { font-size: 2rem; }
-            .lead { font-size: 1rem; }
 
-            /* Improved card spacing */
             .card-body {
-                padding: 1rem;
+                padding: 1.25rem;
             }
 
-            /* Hero section mobile optimization */
-            .hero-section {
-                min-height: 350px;
-                padding: 2rem 0;
-            }
-
-            /* Full-width buttons on mobile */
-            .card .btn-primary,
-            .card .btn-outline-primary {
-                width: 100%;
-                margin-top: 0.5rem;
-            }
-
-            /* Footer mobile layout */
-            footer .col-md-4 {
+            footer {
+                padding: 40px 0 20px;
                 text-align: center;
+            }
+
+            footer .col-md-4 {
                 margin-bottom: 2rem;
             }
 
-            footer .d-flex.gap-3 {
+            footer .social-links {
                 justify-content: center;
             }
 
-            /* Badge mobile sizing */
-            .badge {
-                font-size: 0.7rem;
-                padding: 0.35em 0.65em;
-            }
-
-            /* Form inputs mobile */
             .form-control, .form-select {
-                font-size: 16px; /* Prevents iOS zoom */
-            }
-
-            /* Sticky sidebar mobile */
-            .sticky-top {
-                position: relative !important;
-                top: 0 !important;
+                font-size: 16px;
+                min-height: 48px;
             }
         }
 
         @media (max-width: 575.98px) {
-            /* Extra small devices */
             .container {
                 padding-left: 1rem;
                 padding-right: 1rem;
             }
 
-            /* Tighter spacing */
-            .py-5 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
-            .py-4 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
-
-            /* Cards full width */
-            .row.g-4 > [class*="col-"] {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
+            .navbar-brand {
+                font-size: 1.3rem;
             }
 
-            /* Price display mobile */
-            .fs-3 { font-size: 1.5rem !important; }
-            .fs-4 { font-size: 1.25rem !important; }
-            .fs-5 { font-size: 1.1rem !important; }
+            .navbar-brand i {
+                font-size: 1.2rem;
+            }
         }
 
-        /* Safe area padding for notched phones */
+        /* Safe area for notched phones */
         @supports(padding: max(0px)) {
             body {
                 padding-left: env(safe-area-inset-left);
@@ -307,21 +411,41 @@
             }
 
             footer {
-                padding-bottom: max(40px, env(safe-area-inset-bottom));
+                padding-bottom: max(30px, env(safe-area-inset-bottom));
             }
         }
 
-        /* Touch device hover fix */
+        /* Touch device adjustments */
         @media (hover: none) {
             .card:hover {
                 transform: none;
             }
 
-            .tour-card:hover,
-            .accommodation-card:hover,
-            .destination-card:hover {
+            .btn:hover {
                 transform: none;
             }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        .page-loading {
+            position: fixed;
+            inset: 0;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+
+        .page-loading.loaded {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 
@@ -372,7 +496,7 @@
                         <a class="nav-link text-white" href="/accounts/login/">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-warning btn-sm ms-2" href="/accounts/register/">Sign Up</a>
+                        <a class="btn btn-signup ms-2" href="/accounts/register/">Sign Up</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -398,33 +522,62 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5 class="text-warning">Egy360</h5>
-                    <p>Your trusted platform for Egyptian tourism. Discover the wonders of ancient Egypt with verified accommodations, tours, and transportation.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5 class="text-warning">Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="/about/" class="text-white-50">About Us</a></li>
-                        <li><a href="/contact/" class="text-white-50">Contact</a></li>
-                        <li><a href="/terms/" class="text-white-50">Terms & Conditions</a></li>
-                        <li><a href="/privacy/" class="text-white-50">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5 class="text-warning">Connect With Us</h5>
-                    <div class="d-flex gap-3">
-                        <a href="#" class="text-white-50"><i class="fab fa-facebook fa-2x"></i></a>
-                        <a href="#" class="text-white-50"><i class="fab fa-twitter fa-2x"></i></a>
-                        <a href="#" class="text-white-50"><i class="fab fa-instagram fa-2x"></i></a>
-                        <a href="#" class="text-white-50"><i class="fab fa-youtube fa-2x"></i></a>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="text-warning mb-3">
+                        <i class="fas fa-ankh me-2"></i>Egy360
+                    </h5>
+                    <p class="text-white-50 mb-4">Your trusted platform for Egyptian tourism. Discover the wonders of ancient Egypt with verified accommodations, tours, and transportation.</p>
+                    <div class="social-links d-flex gap-2">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-warning">Explore</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/destinations/" class="text-white-50">Destinations</a></li>
+                        <li class="mb-2"><a href="/accommodations/" class="text-white-50">Hotels</a></li>
+                        <li class="mb-2"><a href="/tours/" class="text-white-50">Tours</a></li>
+                        <li class="mb-2"><a href="/blog/" class="text-white-50">Travel Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-warning">Company</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/about/" class="text-white-50">About Us</a></li>
+                        <li class="mb-2"><a href="/contact/" class="text-white-50">Contact</a></li>
+                        <li class="mb-2"><a href="/faq/" class="text-white-50">FAQ</a></li>
+                        <li class="mb-2"><a href="/careers/" class="text-white-50">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-warning">Legal</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/terms/" class="text-white-50">Terms</a></li>
+                        <li class="mb-2"><a href="/privacy/" class="text-white-50">Privacy</a></li>
+                        <li class="mb-2"><a href="/cookies/" class="text-white-50">Cookies</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-warning">Support</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/help/" class="text-white-50">Help Center</a></li>
+                        <li class="mb-2"><a href="/contact/" class="text-white-50">Contact Us</a></li>
+                        <li class="mb-2"><span class="text-white-50"><i class="fas fa-envelope me-2"></i>info@360egy.com</span></li>
+                    </ul>
+                </div>
             </div>
-            <hr class="bg-white-50">
-            <div class="text-center">
-                <p class="mb-0">&copy; 2024 Egy360. All rights reserved. Made with ❤️ for Egypt</p>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0 text-white-50">&copy; 2024 Egy360. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <span class="text-white-50">Made with <i class="fas fa-heart text-danger"></i> for Egypt</span>
+                </div>
             </div>
         </div>
     </footer>

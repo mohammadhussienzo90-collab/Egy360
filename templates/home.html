@@ -7,36 +7,48 @@
 {% block keywords %}Egypt tourism, Egypt hotels, Cairo hotels, Luxor tours, Nile cruise, pyramids tour, Red Sea resorts, Egypt travel guide, safe Egypt travel{% endblock %}
 
 {% block content %}
-<!-- Hero Section with Search -->
-<section class="hero-section py-5" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1600&q=80'); background-size: cover; background-position: center; min-height: 500px;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center text-white">
-                <h1 class="display-4 fw-bold mb-3">Discover Egypt Safely</h1>
-                <p class="lead mb-4">Verified hotels rated 8.0+, curated tours, and trusted transportation. Travel Egypt with confidence.</p>
+<!-- Hero Section with Animated Background -->
+<section class="hero-section-new">
+    <div class="hero-overlay"></div>
+    <div class="hero-particles" id="particles"></div>
+    <div class="container position-relative">
+        <div class="row justify-content-center align-items-center min-vh-75">
+            <div class="col-lg-10 text-center text-white">
+                <span class="hero-badge animate-fade-in">Trusted by 50,000+ Travelers</span>
+                <h1 class="hero-title animate-slide-up">Discover the Magic of <span class="text-gradient">Egypt</span></h1>
+                <p class="hero-subtitle animate-slide-up-delay">Verified hotels rated 8.0+, expertly curated tours, and trusted transportation. Travel Egypt with complete confidence.</p>
 
-                <!-- Search Box -->
-                <div class="card shadow-lg border-0">
-                    <div class="card-body p-4">
-                        <ul class="nav nav-pills justify-content-center mb-4" id="searchTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="hotels-tab" data-bs-toggle="pill" data-bs-target="#hotels-search" type="button">
-                                    <i class="fas fa-hotel me-2"></i>Hotels
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="tours-tab" data-bs-toggle="pill" data-bs-target="#tours-search" type="button">
-                                    <i class="fas fa-map-marked-alt me-2"></i>Tours
-                                </button>
-                            </li>
-                        </ul>
+                <!-- Modern Search Box -->
+                <div class="search-box-modern animate-scale-in">
+                    <ul class="nav nav-pills search-tabs justify-content-center mb-4" id="searchTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="hotels-tab" data-bs-toggle="pill" data-bs-target="#hotels-search" type="button">
+                                <i class="fas fa-hotel me-2"></i>Hotels
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tours-tab" data-bs-toggle="pill" data-bs-target="#tours-search" type="button">
+                                <i class="fas fa-compass me-2"></i>Tours
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="experiences-tab" data-bs-toggle="pill" data-bs-target="#experiences-search" type="button">
+                                <i class="fas fa-star me-2"></i>Experiences
+                            </button>
+                        </li>
+                    </ul>
 
-                        <div class="tab-content" id="searchTabsContent">
-                            <!-- Hotels Search -->
-                            <div class="tab-pane fade show active" id="hotels-search" role="tabpanel">
-                                <form action="{% url 'accommodations:search' %}" method="GET" class="row g-3">
-                                    <div class="col-md-5">
-                                        <input type="text" class="form-control form-control-lg" name="city" placeholder="Where in Egypt?" list="cities">
+                    <div class="tab-content" id="searchTabsContent">
+                        <!-- Hotels Search -->
+                        <div class="tab-pane fade show active" id="hotels-search" role="tabpanel">
+                            <form action="{% url 'accommodations:search' %}" method="GET" class="search-form">
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-lg-5 col-md-12">
+                                        <label class="search-label">Where to?</label>
+                                        <div class="input-icon-wrapper">
+                                            <i class="fas fa-map-marker-alt input-icon"></i>
+                                            <input type="text" class="form-control search-input" name="city" placeholder="Cairo, Luxor, Hurghada..." list="cities">
+                                        </div>
                                         <datalist id="cities">
                                             <option value="Cairo">
                                             <option value="Luxor">
@@ -48,342 +60,374 @@
                                             <option value="Marsa Alam">
                                         </datalist>
                                     </div>
-                                    <div class="col-md-4">
-                                        <select class="form-select form-select-lg" name="type">
-                                            <option value="">All Types</option>
-                                            <option value="hotel">Hotels</option>
-                                            <option value="resort">Resorts</option>
-                                            <option value="cruise">Nile Cruises</option>
-                                            <option value="camp">Desert Camps</option>
-                                        </select>
+                                    <div class="col-lg-4 col-md-8">
+                                        <label class="search-label">Type</label>
+                                        <div class="input-icon-wrapper">
+                                            <i class="fas fa-building input-icon"></i>
+                                            <select class="form-select search-input" name="type">
+                                                <option value="">All Accommodations</option>
+                                                <option value="hotel">Hotels</option>
+                                                <option value="resort">Resorts</option>
+                                                <option value="cruise">Nile Cruises</option>
+                                                <option value="camp">Desert Camps</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <div class="col-lg-3 col-md-4">
+                                        <button type="submit" class="btn btn-search w-100">
                                             <i class="fas fa-search me-2"></i>Search
                                         </button>
                                     </div>
-                                </form>
-                            </div>
-
-                            <!-- Tours Search -->
-                            <div class="tab-pane fade" id="tours-search" role="tabpanel">
-                                <form action="{% url 'tours:list' %}" method="GET" class="row g-3">
-                                    <div class="col-md-5">
-                                        <input type="text" class="form-control form-control-lg" name="q" placeholder="Search tours...">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <select class="form-select form-select-lg" name="type">
-                                            <option value="">All Tour Types</option>
-                                            <option value="cultural">Cultural & Historical</option>
-                                            <option value="adventure">Adventure</option>
-                                            <option value="desert">Desert Safari</option>
-                                            <option value="cruise">Nile Cruise</option>
-                                            <option value="diving">Diving & Snorkeling</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button type="submit" class="btn btn-primary btn-lg w-100">
-                                            <i class="fas fa-search me-2"></i>Search
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
+
+                        <!-- Tours Search -->
+                        <div class="tab-pane fade" id="tours-search" role="tabpanel">
+                            <form action="{% url 'tours:list' %}" method="GET" class="search-form">
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-lg-5 col-md-12">
+                                        <label class="search-label">What are you looking for?</label>
+                                        <div class="input-icon-wrapper">
+                                            <i class="fas fa-search input-icon"></i>
+                                            <input type="text" class="form-control search-input" name="q" placeholder="Pyramids, Nile Cruise, Desert Safari...">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-8">
+                                        <label class="search-label">Tour Type</label>
+                                        <div class="input-icon-wrapper">
+                                            <i class="fas fa-route input-icon"></i>
+                                            <select class="form-select search-input" name="type">
+                                                <option value="">All Tours</option>
+                                                <option value="cultural">Cultural & Historical</option>
+                                                <option value="adventure">Adventure</option>
+                                                <option value="desert">Desert Safari</option>
+                                                <option value="cruise">Nile Cruise</option>
+                                                <option value="diving">Diving & Snorkeling</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4">
+                                        <button type="submit" class="btn btn-search w-100">
+                                            <i class="fas fa-search me-2"></i>Find Tours
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Experiences Search -->
+                        <div class="tab-pane fade" id="experiences-search" role="tabpanel">
+                            <form action="{% url 'tours:list' %}" method="GET" class="search-form">
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-lg-9 col-md-8">
+                                        <label class="search-label">Find unique experiences</label>
+                                        <div class="input-icon-wrapper">
+                                            <i class="fas fa-magic input-icon"></i>
+                                            <input type="text" class="form-control search-input" name="q" placeholder="Hot air balloon, Cooking class, Felucca ride...">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4">
+                                        <button type="submit" class="btn btn-search w-100">
+                                            <i class="fas fa-search me-2"></i>Explore
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="hero-stats animate-fade-in-delay">
+                    <div class="stat-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>8.0+ Rated Only</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Verified Properties</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <i class="fas fa-headset"></i>
+                        <span>24/7 Support</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
-
-<!-- Trust Badges -->
-<section class="bg-light py-3">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-md-3 col-6 mb-2">
-                <i class="fas fa-check-circle text-success me-2"></i>
-                <span class="fw-bold">8.0+ Rated Only</span>
-            </div>
-            <div class="col-md-3 col-6 mb-2">
-                <i class="fas fa-shield-alt text-primary me-2"></i>
-                <span class="fw-bold">Verified Properties</span>
-            </div>
-            <div class="col-md-3 col-6 mb-2">
-                <i class="fas fa-lock text-warning me-2"></i>
-                <span class="fw-bold">Secure Booking</span>
-            </div>
-            <div class="col-md-3 col-6 mb-2">
-                <i class="fas fa-headset text-info me-2"></i>
-                <span class="fw-bold">24/7 Support</span>
-            </div>
-        </div>
+    <div class="hero-scroll-indicator">
+        <i class="fas fa-chevron-down"></i>
     </div>
 </section>
 
 <!-- Featured Accommodations -->
-<section class="py-5">
+<section class="section-modern py-5">
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="fw-bold">Top-Rated Hotels in Egypt</h2>
-                <p class="text-muted mb-0">Handpicked accommodations rated 8.0 and above</p>
+        <div class="section-header">
+            <div class="section-title-wrapper">
+                <span class="section-tag">Handpicked for You</span>
+                <h2 class="section-title">Top-Rated Hotels in Egypt</h2>
+                <p class="section-subtitle">Curated accommodations rated 8.0 and above</p>
             </div>
-            <a href="{% url 'accommodations:search' %}" class="btn btn-outline-primary">View All <i class="fas fa-arrow-right ms-2"></i></a>
+            <a href="{% url 'accommodations:search' %}" class="btn btn-outline-modern">
+                View All <i class="fas fa-arrow-right ms-2"></i>
+            </a>
         </div>
 
         <div class="row g-4">
             {% for accommodation in featured_accommodations %}
             <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    {% if accommodation.image_url %}
-                    <img src="{{ accommodation.image_url }}" class="card-img-top" alt="{{ accommodation.name }}" style="height: 200px; object-fit: cover;">
-                    {% elif accommodation.main_image %}
-                    <img src="{{ accommodation.main_image.url }}" class="card-img-top" alt="{{ accommodation.name }}" style="height: 200px; object-fit: cover;">
-                    {% else %}
-                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80" class="card-img-top" alt="{{ accommodation.name }}" style="height: 200px; object-fit: cover;">
-                    {% endif %}
-
-                    <div class="position-absolute top-0 end-0 m-2">
-                        <span class="badge bg-success fs-6">{{ accommodation.average_rating|default:"8.5" }} <i class="fas fa-star"></i></span>
+                <div class="card card-modern h-100">
+                    <div class="card-image-wrapper">
+                        {% if accommodation.image_url %}
+                        <img src="{{ accommodation.image_url }}" class="card-img-top" alt="{{ accommodation.name }}" loading="lazy">
+                        {% elif accommodation.main_image %}
+                        <img src="{{ accommodation.main_image.url }}" class="card-img-top" alt="{{ accommodation.name }}" loading="lazy">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80" class="card-img-top" alt="{{ accommodation.name }}" loading="lazy">
+                        {% endif %}
+                        <div class="card-overlay">
+                            <a href="{% url 'accommodations:detail' accommodation.slug %}" class="btn btn-overlay">Quick View</a>
+                        </div>
+                        <div class="card-badges">
+                            <span class="badge badge-rating"><i class="fas fa-star"></i> {{ accommodation.average_rating|default:"8.5" }}</span>
+                            {% if accommodation.is_featured %}
+                            <span class="badge badge-featured">Featured</span>
+                            {% endif %}
+                        </div>
                     </div>
-
-                    {% if accommodation.is_featured %}
-                    <div class="position-absolute top-0 start-0 m-2">
-                        <span class="badge bg-warning text-dark">Featured</span>
-                    </div>
-                    {% endif %}
-
                     <div class="card-body">
-                        <h5 class="card-title">{{ accommodation.name }}</h5>
-                        <p class="text-muted mb-2">
-                            <i class="fas fa-map-marker-alt me-1"></i>{{ accommodation.city }}
+                        <div class="card-location">
+                            <i class="fas fa-map-marker-alt"></i> {{ accommodation.city }}
                             {% if accommodation.star_rating %}
-                            <span class="ms-2">
+                            <span class="stars ms-2">
                                 {% for i in "12345"|make_list %}
                                     {% if forloop.counter <= accommodation.star_rating %}
-                                    <i class="fas fa-star text-warning small"></i>
+                                    <i class="fas fa-star"></i>
                                     {% endif %}
                                 {% endfor %}
                             </span>
                             {% endif %}
-                        </p>
-                        <p class="text-muted small">{{ accommodation.accommodation_type|title }}</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div>
-                                <span class="text-muted small">From</span>
-                                <span class="fs-5 fw-bold text-primary">${{ accommodation.price_per_night }}</span>
-                                <span class="text-muted small">/night</span>
+                        </div>
+                        <h5 class="card-title-modern">{{ accommodation.name }}</h5>
+                        <p class="card-type">{{ accommodation.accommodation_type|title }}</p>
+                        <div class="card-footer-modern">
+                            <div class="card-price">
+                                <span class="price-label">From</span>
+                                <span class="price-value">${{ accommodation.price_per_night }}</span>
+                                <span class="price-unit">/night</span>
                             </div>
-                            <a href="{% url 'accommodations:detail' accommodation.slug %}" class="btn btn-primary btn-sm">View Details</a>
+                            <a href="{% url 'accommodations:detail' accommodation.slug %}" class="btn btn-book">Book Now</a>
                         </div>
                     </div>
                 </div>
             </div>
             {% empty %}
             <div class="col-12 text-center py-5">
-                <i class="fas fa-hotel fa-3x text-muted mb-3"></i>
-                <p class="text-muted">Featured accommodations coming soon!</p>
-                <a href="{% url 'accommodations:search' %}" class="btn btn-primary">Browse All Hotels</a>
+                <div class="empty-state">
+                    <i class="fas fa-hotel"></i>
+                    <h4>Featured Hotels Coming Soon</h4>
+                    <p>We're curating the best accommodations for you</p>
+                    <a href="{% url 'accommodations:search' %}" class="btn btn-primary-modern">Browse All Hotels</a>
+                </div>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Popular Destinations -->
-<section class="py-5 bg-light">
+<!-- Popular Destinations - Horizontal Scroll on Mobile -->
+<section class="section-destinations py-5">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold">Popular Destinations</h2>
-            <p class="text-muted">Explore the best of Egypt</p>
+        <div class="section-header text-center">
+            <span class="section-tag">Explore Egypt</span>
+            <h2 class="section-title">Popular Destinations</h2>
+            <p class="section-subtitle">From ancient wonders to beach paradises</p>
         </div>
 
-        <div class="row g-4">
-            {% for city in popular_destinations %}
-            <div class="col-md-4 col-lg-3">
-                <a href="{% url 'accommodations:by-city' city.name %}" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm h-100 destination-card">
-                        {% if city.main_image %}
-                        <img src="{{ city.main_image.url }}" class="card-img-top" alt="{{ city.name }}" style="height: 150px; object-fit: cover;">
-                        {% else %}
-                        <img src="https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=400&q=80" class="card-img-top" alt="{{ city.name }}" style="height: 150px; object-fit: cover;">
-                        {% endif %}
-                        <div class="card-body text-center">
-                            <h5 class="card-title text-dark mb-1">{{ city.name }}</h5>
-                            <p class="text-muted small mb-0">{{ city.attractions.count|default:0 }} attractions</p>
-                        </div>
+        <div class="destinations-wrapper">
+            <div class="destinations-scroll">
+                {% for city in popular_destinations %}
+                <a href="{% url 'accommodations:by-city' city.name %}" class="destination-card-modern">
+                    {% if city.main_image %}
+                    <img src="{{ city.main_image.url }}" alt="{{ city.name }}" loading="lazy">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=400&q=80" alt="{{ city.name }}" loading="lazy">
+                    {% endif %}
+                    <div class="destination-overlay">
+                        <h4>{{ city.name }}</h4>
+                        <span>{{ city.attractions.count|default:0 }} attractions</span>
                     </div>
                 </a>
-            </div>
-            {% empty %}
-            <!-- Default destinations if none in database -->
-            <div class="col-md-4 col-lg-3">
-                <a href="{% url 'accommodations:by-city' 'Cairo' %}" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm destination-card">
-                        <img src="https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=400&q=80" class="card-img-top" alt="Cairo" style="height: 150px; object-fit: cover;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title text-dark mb-1">Cairo</h5>
-                            <p class="text-muted small mb-0">Pyramids & Museums</p>
-                        </div>
+                {% empty %}
+                <!-- Default Destinations -->
+                <a href="{% url 'accommodations:by-city' 'Cairo' %}" class="destination-card-modern">
+                    <img src="https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=400&q=80" alt="Cairo" loading="lazy">
+                    <div class="destination-overlay">
+                        <h4>Cairo</h4>
+                        <span>Pyramids & Museums</span>
                     </div>
                 </a>
-            </div>
-            <div class="col-md-4 col-lg-3">
-                <a href="{% url 'accommodations:by-city' 'Luxor' %}" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm destination-card">
-                        <img src="https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=400&q=80" class="card-img-top" alt="Luxor" style="height: 150px; object-fit: cover;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title text-dark mb-1">Luxor</h5>
-                            <p class="text-muted small mb-0">Ancient Temples</p>
-                        </div>
+                <a href="{% url 'accommodations:by-city' 'Luxor' %}" class="destination-card-modern">
+                    <img src="https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=400&q=80" alt="Luxor" loading="lazy">
+                    <div class="destination-overlay">
+                        <h4>Luxor</h4>
+                        <span>Ancient Temples</span>
                     </div>
                 </a>
-            </div>
-            <div class="col-md-4 col-lg-3">
-                <a href="{% url 'accommodations:by-city' 'Hurghada' %}" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm destination-card">
-                        <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=80" class="card-img-top" alt="Hurghada" style="height: 150px; object-fit: cover;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title text-dark mb-1">Hurghada</h5>
-                            <p class="text-muted small mb-0">Red Sea Resorts</p>
-                        </div>
+                <a href="{% url 'accommodations:by-city' 'Aswan' %}" class="destination-card-modern">
+                    <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=400&q=80" alt="Aswan" loading="lazy">
+                    <div class="destination-overlay">
+                        <h4>Aswan</h4>
+                        <span>Nubian Culture</span>
                     </div>
                 </a>
-            </div>
-            <div class="col-md-4 col-lg-3">
-                <a href="{% url 'accommodations:by-city' 'Sharm El Sheikh' %}" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm destination-card">
-                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80" class="card-img-top" alt="Sharm El Sheikh" style="height: 150px; object-fit: cover;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title text-dark mb-1">Sharm El Sheikh</h5>
-                            <p class="text-muted small mb-0">Diving Paradise</p>
-                        </div>
+                <a href="{% url 'accommodations:by-city' 'Hurghada' %}" class="destination-card-modern">
+                    <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=80" alt="Hurghada" loading="lazy">
+                    <div class="destination-overlay">
+                        <h4>Hurghada</h4>
+                        <span>Red Sea Resorts</span>
                     </div>
                 </a>
+                <a href="{% url 'accommodations:by-city' 'Sharm El Sheikh' %}" class="destination-card-modern">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80" alt="Sharm El Sheikh" loading="lazy">
+                    <div class="destination-overlay">
+                        <h4>Sharm El Sheikh</h4>
+                        <span>Diving Paradise</span>
+                    </div>
+                </a>
+                <a href="{% url 'accommodations:by-city' 'Alexandria' %}" class="destination-card-modern">
+                    <img src="https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=400&q=80" alt="Alexandria" loading="lazy">
+                    <div class="destination-overlay">
+                        <h4>Alexandria</h4>
+                        <span>Mediterranean Coast</span>
+                    </div>
+                </a>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 </section>
 
 <!-- Featured Tours -->
-<section class="py-5">
+<section class="section-modern section-alt py-5">
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="fw-bold">Popular Tours & Experiences</h2>
-                <p class="text-muted mb-0">Unforgettable adventures across Egypt</p>
+        <div class="section-header">
+            <div class="section-title-wrapper">
+                <span class="section-tag">Unforgettable Adventures</span>
+                <h2 class="section-title">Popular Tours & Experiences</h2>
+                <p class="section-subtitle">Explore Egypt with expert guides</p>
             </div>
-            <a href="{% url 'tours:list' %}" class="btn btn-outline-primary">View All <i class="fas fa-arrow-right ms-2"></i></a>
+            <a href="{% url 'tours:list' %}" class="btn btn-outline-modern">
+                View All <i class="fas fa-arrow-right ms-2"></i>
+            </a>
         </div>
 
         <div class="row g-4">
             {% for tour in featured_tours %}
             <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    {% if tour.main_image %}
-                    <img src="{{ tour.main_image.url }}" class="card-img-top" alt="{{ tour.name }}" style="height: 200px; object-fit: cover;">
-                    {% else %}
-                    <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=400&q=80" class="card-img-top" alt="{{ tour.name }}" style="height: 200px; object-fit: cover;">
-                    {% endif %}
-
-                    <div class="position-absolute top-0 start-0 m-2">
-                        <span class="badge bg-primary">{{ tour.duration_days }} Days</span>
+                <div class="card card-modern card-tour h-100">
+                    <div class="card-image-wrapper">
+                        {% if tour.image_url %}
+                        <img src="{{ tour.image_url }}" class="card-img-top" alt="{{ tour.name }}" loading="lazy">
+                        {% elif tour.main_image %}
+                        <img src="{{ tour.main_image.url }}" class="card-img-top" alt="{{ tour.name }}" loading="lazy">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=400&q=80" class="card-img-top" alt="{{ tour.name }}" loading="lazy">
+                        {% endif %}
+                        <div class="card-overlay">
+                            <a href="{% url 'tours:detail' tour.slug %}" class="btn btn-overlay">View Details</a>
+                        </div>
+                        <div class="card-badges">
+                            <span class="badge badge-duration"><i class="fas fa-clock"></i> {{ tour.duration_days }} Days</span>
+                            {% if tour.average_rating %}
+                            <span class="badge badge-rating"><i class="fas fa-star"></i> {{ tour.average_rating }}</span>
+                            {% endif %}
+                        </div>
                     </div>
-
-                    {% if tour.average_rating %}
-                    <div class="position-absolute top-0 end-0 m-2">
-                        <span class="badge bg-success">{{ tour.average_rating }} <i class="fas fa-star"></i></span>
-                    </div>
-                    {% endif %}
-
                     <div class="card-body">
-                        <h5 class="card-title">{{ tour.name }}</h5>
-                        <p class="text-muted mb-2">
-                            <i class="fas fa-map-marker-alt me-1"></i>{{ tour.departure_city }}
-                            <span class="badge bg-light text-dark ms-2">{{ tour.get_tour_type_display }}</span>
-                        </p>
-                        <p class="card-text small text-muted">{{ tour.description|truncatewords:20 }}</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div>
-                                <span class="text-muted small">From</span>
-                                <span class="fs-5 fw-bold text-primary">${{ tour.price_per_person }}</span>
-                                <span class="text-muted small">/person</span>
+                        <div class="card-location">
+                            <i class="fas fa-map-marker-alt"></i> {{ tour.departure_city }}
+                            <span class="badge badge-type ms-2">{{ tour.get_tour_type_display }}</span>
+                        </div>
+                        <h5 class="card-title-modern">{{ tour.name }}</h5>
+                        <p class="card-description">{{ tour.description|truncatewords:15 }}</p>
+                        <div class="card-footer-modern">
+                            <div class="card-price">
+                                <span class="price-label">From</span>
+                                <span class="price-value">${{ tour.price_per_person }}</span>
+                                <span class="price-unit">/person</span>
                             </div>
-                            <a href="{% url 'tours:detail' tour.slug %}" class="btn btn-primary btn-sm">View Details</a>
+                            <a href="{% url 'tours:detail' tour.slug %}" class="btn btn-book">Book Tour</a>
                         </div>
                     </div>
                 </div>
             </div>
             {% empty %}
             <div class="col-12 text-center py-5">
-                <i class="fas fa-map-marked-alt fa-3x text-muted mb-3"></i>
-                <p class="text-muted">Featured tours coming soon!</p>
-                <a href="{% url 'tours:list' %}" class="btn btn-primary">Browse All Tours</a>
+                <div class="empty-state">
+                    <i class="fas fa-compass"></i>
+                    <h4>Featured Tours Coming Soon</h4>
+                    <p>Exciting adventures are being prepared</p>
+                    <a href="{% url 'tours:list' %}" class="btn btn-primary-modern">Browse All Tours</a>
+                </div>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Partner Booking Options -->
-<section class="py-5 bg-light">
+<!-- Booking Partners -->
+<section class="section-partners py-5">
     <div class="container">
-        <div class="text-center mb-4">
-            <h2 class="fw-bold">Book Through Our Trusted Partners</h2>
-            <p class="text-muted">Compare prices and find the best deals across multiple platforms</p>
+        <div class="section-header text-center">
+            <span class="section-tag">Compare & Save</span>
+            <h2 class="section-title">Book Through Trusted Partners</h2>
+            <p class="section-subtitle">Find the best deals across multiple platforms</p>
         </div>
 
         <div class="row g-4">
-            <!-- Hotels via Hotellook -->
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
-                    <div class="card-body text-white p-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="bg-white text-primary rounded-circle p-3 me-3">
-                                <i class="fas fa-hotel fa-2x"></i>
-                            </div>
-                            <div>
-                                <h4 class="mb-1">Hotels & Resorts</h4>
-                                <p class="mb-0 opacity-75">via Hotellook</p>
-                            </div>
-                        </div>
-                        <p class="mb-3">Compare prices from Booking.com, Agoda, Hotels.com and 70+ sites in one search.</p>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="fas fa-check-circle me-2"></i>Best price guarantee</li>
-                            <li class="mb-2"><i class="fas fa-check-circle me-2"></i>Free cancellation options</li>
-                            <li><i class="fas fa-check-circle me-2"></i>No hidden fees</li>
+            <div class="col-lg-6">
+                <div class="partner-card partner-hotels">
+                    <div class="partner-icon">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <div class="partner-content">
+                        <h3>Hotels & Resorts</h3>
+                        <p class="partner-via">via Hotellook</p>
+                        <p class="partner-desc">Compare prices from Booking.com, Agoda, Hotels.com and 70+ sites</p>
+                        <ul class="partner-features">
+                            <li><i class="fas fa-check"></i> Best price guarantee</li>
+                            <li><i class="fas fa-check"></i> Free cancellation</li>
+                            <li><i class="fas fa-check"></i> No hidden fees</li>
                         </ul>
                         <a href="https://search.hotellook.com/?marker=477897&locationId=12153&locale=en&currency=usd"
-                           target="_blank" rel="noopener" class="btn btn-warning btn-lg w-100">
-                            <i class="fas fa-search me-2"></i>Search Hotels in Egypt
+                           target="_blank" rel="noopener" class="btn btn-partner">
+                            <i class="fas fa-search me-2"></i>Search Hotels
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Tours via Viator -->
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    <div class="card-body text-white p-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="bg-white text-primary rounded-circle p-3 me-3">
-                                <i class="fas fa-globe-africa fa-2x"></i>
-                            </div>
-                            <div>
-                                <h4 class="mb-1">Tours & Activities</h4>
-                                <p class="mb-0 opacity-75">via Viator</p>
-                            </div>
-                        </div>
-                        <p class="mb-3">Book world-class experiences from pyramids tours to desert safaris with trusted operators.</p>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="fas fa-check-circle me-2"></i>Skip-the-line tickets</li>
-                            <li class="mb-2"><i class="fas fa-check-circle me-2"></i>Expert local guides</li>
-                            <li><i class="fas fa-check-circle me-2"></i>24-hour cancellation</li>
+            <div class="col-lg-6">
+                <div class="partner-card partner-tours">
+                    <div class="partner-icon">
+                        <i class="fas fa-globe-africa"></i>
+                    </div>
+                    <div class="partner-content">
+                        <h3>Tours & Activities</h3>
+                        <p class="partner-via">via Viator</p>
+                        <p class="partner-desc">World-class experiences from pyramids tours to desert safaris</p>
+                        <ul class="partner-features">
+                            <li><i class="fas fa-check"></i> Skip-the-line tickets</li>
+                            <li><i class="fas fa-check"></i> Expert local guides</li>
+                            <li><i class="fas fa-check"></i> 24-hour cancellation</li>
                         </ul>
                         <a href="https://tp.media/click?shmarker=477897&pression_mode=fix&trs=262019&campaign_id=97&searchType=1&city=Cairo,Egypt"
-                           target="_blank" rel="noopener" class="btn btn-warning btn-lg w-100">
-                            <i class="fas fa-compass me-2"></i>Explore Tours in Egypt
+                           target="_blank" rel="noopener" class="btn btn-partner">
+                            <i class="fas fa-compass me-2"></i>Explore Tours
                         </a>
                     </div>
                 </div>
@@ -393,39 +437,39 @@
 </section>
 
 <!-- Why Choose Us -->
-<section class="py-5 bg-dark text-white">
+<section class="section-why py-5">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold">Why Book with Egy360?</h2>
-            <p class="text-white-50">Travel Egypt with confidence</p>
+        <div class="section-header text-center">
+            <span class="section-tag">Why Egy360</span>
+            <h2 class="section-title">Travel Egypt with Confidence</h2>
         </div>
 
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="text-center">
-                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                        <i class="fas fa-check-double fa-2x"></i>
+                <div class="why-card">
+                    <div class="why-icon why-icon-primary">
+                        <i class="fas fa-check-double"></i>
                     </div>
                     <h4>Quality Guaranteed</h4>
-                    <p class="text-white-50">We only list accommodations rated 8.0+ on Booking.com. No surprises, no disappointments.</p>
+                    <p>We only list accommodations rated 8.0+ on Booking.com. No surprises, no disappointments.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="text-center">
-                    <div class="bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                        <i class="fas fa-user-shield fa-2x"></i>
+                <div class="why-card">
+                    <div class="why-icon why-icon-warning">
+                        <i class="fas fa-user-shield"></i>
                     </div>
                     <h4>Scam Protection</h4>
-                    <p class="text-white-50">Every tour operator and service is verified. We protect you from common tourist scams.</p>
+                    <p>Every tour operator and service is verified. We protect you from common tourist scams.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="text-center">
-                    <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                        <i class="fas fa-dollar-sign fa-2x"></i>
+                <div class="why-card">
+                    <div class="why-icon why-icon-success">
+                        <i class="fas fa-dollar-sign"></i>
                     </div>
                     <h4>Best Prices</h4>
-                    <p class="text-white-50">Compare prices across multiple booking platforms. Get the best deal every time.</p>
+                    <p>Compare prices across multiple booking platforms. Get the best deal every time.</p>
                 </div>
             </div>
         </div>
@@ -433,46 +477,56 @@
 </section>
 
 <!-- Newsletter -->
-<section class="py-5 bg-primary">
+<section class="section-newsletter py-5">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-6 text-center text-white">
-                <h3 class="fw-bold mb-3">Get Exclusive Travel Deals</h3>
-                <p class="mb-4">Subscribe to our newsletter for special offers, travel tips, and insider guides to Egypt.</p>
-                <form id="newsletter-form" class="row g-2 justify-content-center">
-                    <div class="col-8">
-                        <input type="email" class="form-control form-control-lg" id="newsletter-email" placeholder="Enter your email" required>
-                    </div>
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-warning btn-lg w-100">Subscribe</button>
-                    </div>
-                </form>
-                <p class="small mt-2 mb-0 opacity-75">No spam, unsubscribe anytime</p>
-                <div id="newsletter-message" class="mt-2"></div>
+        <div class="newsletter-card">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+                    <h3>Get Exclusive Travel Deals</h3>
+                    <p>Subscribe for special offers, travel tips, and insider guides to Egypt</p>
+                </div>
+                <div class="col-lg-6">
+                    <form id="newsletter-form" class="newsletter-form">
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="newsletter-email" placeholder="Enter your email" required>
+                            <button type="submit" class="btn btn-newsletter">Subscribe</button>
+                        </div>
+                        <small>No spam, unsubscribe anytime</small>
+                    </form>
+                    <div id="newsletter-message" class="mt-2"></div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Stats -->
-<section class="py-4 bg-light">
+<section class="section-stats py-4">
     <div class="container">
         <div class="row text-center">
-            <div class="col-md-3 col-6 mb-3">
-                <h2 class="fw-bold text-primary mb-0">500+</h2>
-                <p class="text-muted mb-0">Verified Hotels</p>
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <span class="stat-number" data-count="500">0</span>+
+                    <span class="stat-label">Verified Hotels</span>
+                </div>
             </div>
-            <div class="col-md-3 col-6 mb-3">
-                <h2 class="fw-bold text-primary mb-0">100+</h2>
-                <p class="text-muted mb-0">Curated Tours</p>
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <span class="stat-number" data-count="100">0</span>+
+                    <span class="stat-label">Curated Tours</span>
+                </div>
             </div>
-            <div class="col-md-3 col-6 mb-3">
-                <h2 class="fw-bold text-primary mb-0">50K+</h2>
-                <p class="text-muted mb-0">Happy Travelers</p>
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <span class="stat-number" data-count="50">0</span>K+
+                    <span class="stat-label">Happy Travelers</span>
+                </div>
             </div>
-            <div class="col-md-3 col-6 mb-3">
-                <h2 class="fw-bold text-primary mb-0">4.8</h2>
-                <p class="text-muted mb-0">Average Rating</p>
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <span class="stat-number">4.8</span>
+                    <span class="stat-label">Average Rating</span>
+                </div>
             </div>
         </div>
     </div>
@@ -481,104 +535,800 @@
 
 {% block extra_css %}
 <style>
-    .destination-card:hover {
-        transform: translateY(-5px);
-        transition: transform 0.3s ease;
-    }
+/* ========================================
+   MODERN UI STYLES - EGY360
+   ======================================== */
 
-    .nav-pills .nav-link {
-        color: #666;
-        border-radius: 50px;
-        padding: 10px 20px;
-    }
+/* CSS Variables */
+:root {
+    --primary: #c41e3a;
+    --primary-dark: #9a1830;
+    --primary-light: #e8435a;
+    --secondary: #ffd700;
+    --accent: #1e3c72;
+    --gradient-primary: linear-gradient(135deg, #c41e3a 0%, #9a1830 100%);
+    --gradient-accent: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    --gradient-gold: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.16);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    .nav-pills .nav-link.active {
-        background-color: var(--primary-color);
-    }
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
-    /* Mobile optimizations for homepage */
-    @media (max-width: 767.98px) {
-        /* Hero section mobile */
-        .hero-section .display-4 {
-            font-size: 1.75rem;
-        }
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-        .hero-section .lead {
-            font-size: 0.95rem;
-        }
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
 
-        /* Search tabs mobile */
-        .nav-pills .nav-link {
-            padding: 8px 12px;
-            font-size: 0.9rem;
-        }
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
 
-        /* Search form mobile stacking */
-        #hotels-search .row > div,
-        #tours-search .row > div {
-            margin-bottom: 0.5rem;
-        }
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
 
-        /* Partner cards mobile */
-        .partner-card .card-body {
-            padding: 1.25rem;
-        }
+.animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+.animate-fade-in-delay { animation: fadeIn 0.8s ease-out 0.4s forwards; opacity: 0; }
+.animate-slide-up { animation: slideUp 0.8s ease-out forwards; }
+.animate-slide-up-delay { animation: slideUp 0.8s ease-out 0.2s forwards; opacity: 0; }
+.animate-scale-in { animation: scaleIn 0.6s ease-out 0.4s forwards; opacity: 0; }
 
-        .partner-card h4 {
-            font-size: 1.1rem;
-        }
+/* ========================================
+   HERO SECTION
+   ======================================== */
+.hero-section-new {
+    position: relative;
+    min-height: 100vh;
+    background: url('https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1920&q=85') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
 
-        .partner-card ul {
-            font-size: 0.9rem;
-        }
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+}
 
-        /* Stats section mobile */
-        .stats-section h2 {
-            font-size: 1.5rem;
-        }
+.hero-particles {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,215,0,0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: float 20s ease-in-out infinite;
+}
 
-        /* Trust badges mobile */
-        .trust-badges span {
-            font-size: 0.85rem;
-        }
+.min-vh-75 { min-height: 75vh; }
 
-        /* Newsletter mobile */
-        #newsletter-form .col-8 {
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
+.hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.2);
+}
 
-        #newsletter-form .col-4 {
-            width: 100%;
-        }
-    }
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+}
 
-    @media (max-width: 575.98px) {
-        /* Extra small screen adjustments */
-        .hero-section {
-            min-height: auto;
-            padding: 2rem 0;
-        }
+.text-gradient {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
-        .hero-section .display-4 {
-            font-size: 1.5rem;
-        }
+.hero-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
 
-        /* Featured section titles */
-        .d-flex.justify-content-between {
-            flex-direction: column;
-            gap: 1rem;
-        }
+/* Search Box */
+.search-box-modern {
+    background: rgba(255,255,255,0.98);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    max-width: 900px;
+    margin: 0 auto;
+}
 
-        .d-flex.justify-content-between .btn {
-            align-self: flex-start;
-        }
+.search-tabs .nav-link {
+    color: #666;
+    border-radius: 50px;
+    padding: 10px 24px;
+    font-weight: 500;
+    border: 2px solid transparent;
+    transition: var(--transition);
+}
 
-        /* Destination cards 2 per row on very small screens */
-        .destination-card img {
-            height: 120px !important;
-        }
-    }
+.search-tabs .nav-link:hover {
+    color: var(--primary);
+    background: rgba(196,30,58,0.05);
+}
+
+.search-tabs .nav-link.active {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.search-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+.input-icon-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.search-input {
+    padding-left: 45px;
+    height: 50px;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(196,30,58,0.1);
+}
+
+.btn-search {
+    height: 50px;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-search:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(196,30,58,0.3);
+    color: white;
+}
+
+/* Hero Stats */
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.95rem;
+}
+
+.stat-item i {
+    color: var(--secondary);
+}
+
+.stat-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255,255,255,0.3);
+}
+
+.hero-scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    animation: pulse 2s infinite;
+    font-size: 1.5rem;
+}
+
+/* ========================================
+   SECTIONS
+   ======================================== */
+.section-modern {
+    background: white;
+}
+
+.section-alt {
+    background: #f8f9fa;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.section-tag {
+    display: inline-block;
+    background: rgba(196,30,58,0.1);
+    color: var(--primary);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.section-subtitle {
+    color: #666;
+    margin-bottom: 0;
+}
+
+.btn-outline-modern {
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    padding: 10px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-outline-modern:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* ========================================
+   CARDS
+   ======================================== */
+.card-modern {
+    border: none;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.card-modern:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-8px);
+}
+
+.card-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+}
+
+.card-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card-modern:hover .card-image-wrapper img {
+    transform: scale(1.08);
+}
+
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.card-modern:hover .card-overlay {
+    opacity: 1;
+}
+
+.btn-overlay {
+    background: white;
+    color: #333;
+    padding: 10px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transform: translateY(20px);
+    transition: var(--transition);
+}
+
+.card-modern:hover .btn-overlay {
+    transform: translateY(0);
+}
+
+.card-badges {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.badge-rating {
+    background: #28a745;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+.badge-featured {
+    background: var(--secondary);
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+.badge-duration {
+    background: var(--accent);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+.badge-type {
+    background: rgba(0,0,0,0.1);
+    color: #666;
+    font-size: 0.75rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-location {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.card-location i {
+    color: var(--primary);
+}
+
+.stars {
+    color: #ffc107;
+    font-size: 0.7rem;
+}
+
+.card-title-modern {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+
+.card-type, .card-description {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+.card-footer-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.card-price .price-label {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.card-price .price-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.card-price .price-unit {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.btn-book {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.btn-book:hover {
+    color: white;
+    box-shadow: 0 4px 15px rgba(196,30,58,0.3);
+}
+
+/* Empty State */
+.empty-state {
+    padding: 3rem;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: #ddd;
+    margin-bottom: 1rem;
+}
+
+.btn-primary-modern {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 12px 30px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+/* ========================================
+   DESTINATIONS
+   ======================================== */
+.destinations-wrapper {
+    overflow: hidden;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+}
+
+.destinations-scroll {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem 0 2rem;
+    scrollbar-width: none;
+}
+
+.destinations-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.destination-card-modern {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    height: 320px;
+    text-decoration: none;
+}
+
+.destination-card-modern img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.destination-card-modern:hover img {
+    transform: scale(1.1);
+}
+
+.destination-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    color: white;
+}
+
+.destination-overlay h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.destination-overlay span {
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* ========================================
+   PARTNERS
+   ======================================== */
+.partner-card {
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    height: 100%;
+    color: white;
+    display: flex;
+    gap: 2rem;
+}
+
+.partner-hotels {
+    background: var(--gradient-accent);
+}
+
+.partner-tours {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.partner-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.partner-content h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.partner-via {
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.partner-desc {
+    margin-bottom: 1rem;
+}
+
+.partner-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.partner-features li {
+    margin-bottom: 0.5rem;
+}
+
+.partner-features i {
+    margin-right: 0.5rem;
+    color: var(--secondary);
+}
+
+.btn-partner {
+    background: var(--secondary);
+    color: #333;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-partner:hover {
+    background: white;
+    color: #333;
+}
+
+/* ========================================
+   WHY CHOOSE US
+   ======================================== */
+.section-why {
+    background: #1a1a1a;
+    color: white;
+}
+
+.section-why .section-tag {
+    background: rgba(255,215,0,0.2);
+    color: var(--secondary);
+}
+
+.section-why .section-title {
+    color: white;
+}
+
+.why-card {
+    text-align: center;
+    padding: 2rem;
+}
+
+.why-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 1.5rem;
+}
+
+.why-icon-primary { background: var(--gradient-primary); }
+.why-icon-warning { background: var(--gradient-gold); color: #333; }
+.why-icon-success { background: linear-gradient(135deg, #28a745, #20c997); }
+
+.why-card h4 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.why-card p {
+    color: rgba(255,255,255,0.7);
+}
+
+/* ========================================
+   NEWSLETTER
+   ======================================== */
+.section-newsletter {
+    background: var(--gradient-primary);
+}
+
+.newsletter-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 3rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.newsletter-card h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.newsletter-card p {
+    color: #666;
+    margin-bottom: 0;
+}
+
+.newsletter-form .input-group {
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.newsletter-form .form-control {
+    border: 2px solid #e0e0e0;
+    padding: 15px 20px;
+    font-size: 1rem;
+}
+
+.newsletter-form .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: none;
+}
+
+.btn-newsletter {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 15px 30px;
+    font-weight: 600;
+    border: none;
+}
+
+.newsletter-form small {
+    display: block;
+    color: #888;
+    margin-top: 0.5rem;
+}
+
+/* ========================================
+   STATS
+   ======================================== */
+.section-stats {
+    background: #f8f9fa;
+}
+
+.stat-box {
+    padding: 1.5rem;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.stat-label {
+    display: block;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE
+   ======================================== */
+@media (max-width: 991.98px) {
+    .hero-title { font-size: 2.5rem; }
+    .hero-subtitle { font-size: 1rem; }
+    .search-box-modern { padding: 1.5rem; }
+    .section-header { flex-direction: column; text-align: center; }
+    .partner-card { flex-direction: column; text-align: center; }
+    .partner-icon { margin: 0 auto; }
+}
+
+@media (max-width: 767.98px) {
+    .hero-section-new { min-height: auto; padding: 6rem 0 4rem; }
+    .hero-title { font-size: 2rem; }
+    .hero-stats { gap: 1rem; }
+    .stat-divider { display: none; }
+    .stat-item { font-size: 0.8rem; }
+    .search-tabs .nav-link { padding: 8px 16px; font-size: 0.85rem; }
+    .section-title { font-size: 1.5rem; }
+    .destination-card-modern { flex: 0 0 240px; height: 280px; }
+    .newsletter-card { padding: 2rem; }
+    .newsletter-card h3 { font-size: 1.25rem; }
+    .newsletter-form .input-group { flex-direction: column; }
+    .newsletter-form .form-control,
+    .btn-newsletter { border-radius: var(--radius-sm) !important; }
+    .btn-newsletter { margin-top: 0.5rem; }
+    .why-card { padding: 1.5rem; }
+    .why-icon { width: 80px; height: 80px; font-size: 2rem; }
+}
+
+@media (max-width: 575.98px) {
+    .hero-title { font-size: 1.75rem; }
+    .hero-badge { font-size: 0.8rem; padding: 6px 14px; }
+    .search-box-modern { padding: 1rem; margin: 0 -0.5rem; border-radius: var(--radius-md); }
+    .card-image-wrapper { height: 180px; }
+    .partner-card { padding: 1.5rem; }
+    .stat-number { font-size: 2rem; }
+}
+
+/* Touch device adjustments */
+@media (hover: none) {
+    .card-modern:hover { transform: none; }
+    .card-overlay { display: none; }
+}
 </style>
 {% endblock %}
 
@@ -618,6 +1368,49 @@ document.getElementById('newsletter-form').addEventListener('submit', function(e
     .finally(() => {
         button.disabled = false;
         button.innerHTML = 'Subscribe';
+    });
+});
+
+// Animate stats on scroll
+const animateStats = () => {
+    const stats = document.querySelectorAll('.stat-number[data-count]');
+    stats.forEach(stat => {
+        const target = parseInt(stat.dataset.count);
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+
+        const counter = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                stat.textContent = target;
+                clearInterval(counter);
+            } else {
+                stat.textContent = Math.floor(current);
+            }
+        }, 16);
+    });
+};
+
+// Intersection Observer for stats animation
+const statsSection = document.querySelector('.section-stats');
+if (statsSection) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateStats();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    observer.observe(statsSection);
+}
+
+// Smooth scroll for hero indicator
+document.querySelector('.hero-scroll-indicator')?.addEventListener('click', () => {
+    window.scrollTo({
+        top: window.innerHeight,
+        behavior: 'smooth'
     });
 });
 </script>
