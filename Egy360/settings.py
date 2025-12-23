@@ -310,6 +310,25 @@ LOGGING = {
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = True
 
+# Cache settings - use database cache for production, local memory for dev
+if DEBUG:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        }
+    }
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+            'LOCATION': 'django_cache_table',
+        }
+    }
+
+# Cache timeout in seconds (5 minutes for pages, 1 hour for static data)
+CACHE_TIMEOUT_SHORT = 300  # 5 minutes
+CACHE_TIMEOUT_LONG = 3600  # 1 hour
+
 # Cloudinary Configuration - ADD AT VERY BOTTOM
 import os
 import cloudinary

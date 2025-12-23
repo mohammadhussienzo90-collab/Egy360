@@ -11,6 +11,8 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 import json
@@ -274,13 +276,20 @@ def search_autocomplete(request):
     return JsonResponse({'suggestions': suggestions})
 
 
-# Stats for homepage (can be cached)
+# Stats for homepage (cached for 1 hour)
+@cache_page(3600)
 def get_platform_stats(request):
-    """Get platform statistics for display"""
-    stats = {
-        'total_accommodations': Accommodation.objects.filter(is_active=True).count(),
-        'total_tours': Tour.objects.filter(is_active=True).count(),
-        'total_bookings': 5000,  # You can get this from bookings model
-        'happy_customers': 50000,
-    }
+    """Get platform statistics for display - cached for performance"""
+    # Try to get from cache first
+    stats = cache.get('platform_stats')
+    if stats is None:
+        from transportation.models import TransportationService
+        stats = {
+            'total_accommodations': Accommodation.objects.filter(is_active=True).count(),
+            'total_tours': Tour.objects.filter(is_active=True).count(),
+            'total_transport': TransportationService.objects.filter(is_active=True).count(),
+            'total_bookings': 5000,  # Placeholder - can be from bookings model
+            'happy_customers': 50000,
+        }
+        cache.set('platform_stats', stats, 3600)  # Cache for 1 hour
     return JsonResponse(stats)

@@ -8,6 +8,9 @@ find . -type f -name "*.pyc" -delete 2>/dev/null || true
 echo "Running migrations..."
 python manage.py migrate --noinput
 
+echo "Creating cache table..."
+python manage.py createcachetable || echo "Cache table already exists"
+
 echo "Setting up site domain for OAuth..."
 python manage.py setup_site || echo "Site setup completed or error occurred"
 
