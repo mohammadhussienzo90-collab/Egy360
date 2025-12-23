@@ -72,43 +72,46 @@ def contact(request):
     """Contact page view with form handling"""
     if request.method == 'POST':
         # Handle contact form submission
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        subject = request.POST.get('subject', 'Contact Form Submission')
-        message = request.POST.get('message')
+        name = request.POST.get('name', '').strip()
+        email = request.POST.get('email', '').strip()
+        subject = request.POST.get('subject', 'General Inquiry').strip()
+        message_text = request.POST.get('message', '').strip()
 
         # Validate form data
-        if not all([name, email, message]):
+        if not all([name, email, message_text]):
             messages.error(request, 'Please fill in all required fields.')
             return render(request, 'contact.html', {'form_data': request.POST})
 
+        # Validate email format
         try:
-            # Send email (configure email settings in settings.py)
-            email_message = f"""
-            New contact form submission from Egy360:
+            validate_email(email)
+        except ValidationError:
+            messages.error(request, 'Please enter a valid email address.')
+            return render(request, 'contact.html', {'form_data': request.POST})
 
-            Name: {name}
-            Email: {email}
-            Subject: {subject}
+        # Save message to database (always works, doesn't depend on email config)
+        ContactMessage.objects.create(
+            name=name,
+            email=email,
+            subject=subject,
+            message=message_text,
+        )
 
-            Message:
-            {message}
-            """
-
+        # Try to send email notification (optional, fails silently)
+        try:
+            from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@360egy.com')
             send_mail(
                 f'Egy360 Contact: {subject}',
-                email_message,
-                settings.DEFAULT_FROM_EMAIL,
-                ['support@egy360.com'],  # Replace with your email
-                fail_silently=False,
+                f"New contact from {name} ({email}):\n\n{message_text}",
+                from_email,
+                ['info@360egy.com'],
+                fail_silently=True,  # Don't fail if email doesn't work
             )
+        except Exception:
+            pass  # Email is optional, message is already saved to DB
 
-            messages.success(request, 'Thank you for contacting us! We\'ll respond within 24 hours.')
-            return redirect('home:contact')
-
-        except Exception as e:
-            messages.error(request, 'Sorry, there was an error sending your message. Please try again.')
-            return render(request, 'contact.html', {'form_data': request.POST})
+        messages.success(request, 'Thank you for contacting us! We\'ll respond within 24 hours.')
+        return redirect('home:contact')
 
     context = {
         'page_title': 'Contact Egy360 - Get in Touch',

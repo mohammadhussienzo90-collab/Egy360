@@ -29,6 +29,9 @@ python manage.py populate_real_hotels || echo "Real hotels population completed 
 echo "Populating real Egyptian tours..."
 python manage.py populate_real_tours || echo "Real tours population completed or error occurred"
 
+echo "Populating transportation services..."
+python manage.py populate_transportation || echo "Transportation population completed or error occurred"
+
 echo "Populating blog content..."
 python populate_blog_content.py || echo "Blog content population completed or error occurred"
 
