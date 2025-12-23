@@ -8,6 +8,9 @@ find . -type f -name "*.pyc" -delete 2>/dev/null || true
 echo "Running migrations..."
 python manage.py migrate --noinput
 
+echo "Setting up site domain for OAuth..."
+python manage.py setup_site || echo "Site setup completed or error occurred"
+
 echo "Fixing database schema and populating images..."
 python manage.py fix_and_populate_images || echo "Database fix completed or already applied"
 
@@ -43,4 +46,4 @@ python create_superuser_production.py || echo "Superuser creation completed or a
 
 echo "Starting Gunicorn..."
 exec gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120
-# Force redeploy - Dec 22 2024 - Real Egyptian hotels and tours data
+# Force redeploy - Dec 23 2024 - Social login OAuth configuration
