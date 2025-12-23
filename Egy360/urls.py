@@ -40,6 +40,9 @@ urlpatterns = [
 
     # API endpoints
     path('api/', include('api.urls')),
+
+    # Core app (affiliate tracking, etc.)
+    path('', include('core.urls')),
 ]
 
 # Serve media files in development

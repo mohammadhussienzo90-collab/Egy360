@@ -5,6 +5,115 @@ Includes all page views for the tourism platform
 
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.contrib.contenttypes.models import ContentType
+import json
+
+
+# ==================== AFFILIATE TRACKING ====================
+@csrf_exempt
+@require_http_methods(["POST"])
+def track_affiliate_click(request):
+    """
+    API endpoint to track affiliate link clicks
+    Called via JavaScript when user clicks an affiliate link
+    """
+    from .models import AffiliateClick
+
+    try:
+        data = json.loads(request.body)
+
+        # Get content type for the item
+        item_type = data.get('item_type', 'accommodation')
+        item_id = data.get('item_id')
+        platform = data.get('platform', 'other')
+        affiliate_url = data.get('url', '')
+
+        # Map item type to model
+        model_map = {
+            'accommodation': ('accommodations', 'accommodation'),
+            'tour': ('tours', 'tour'),
+            'transportation': ('transportation', 'transportationservice'),
+        }
+
+        app_label, model_name = model_map.get(item_type, ('accommodations', 'accommodation'))
+
+        try:
+            content_type = ContentType.objects.get(app_label=app_label, model=model_name)
+        except ContentType.DoesNotExist:
+            content_type = None
+
+        # Get user info
+        user = request.user if request.user.is_authenticated else None
+        session_key = request.session.session_key
+
+        # Get IP and user agent
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        ip_address = x_forwarded_for.split(',')[0] if x_forwarded_for else request.META.get('REMOTE_ADDR')
+        user_agent = request.META.get('HTTP_USER_AGENT', '')[:500]
+
+        # Detect device type
+        user_agent_lower = user_agent.lower()
+        if 'mobile' in user_agent_lower or 'android' in user_agent_lower:
+            device_type = 'mobile'
+        elif 'tablet' in user_agent_lower or 'ipad' in user_agent_lower:
+            device_type = 'tablet'
+        else:
+            device_type = 'desktop'
+
+        # Estimate commission based on platform
+        commission_rates = {
+            'booking_com': 4.0,
+            'hotellook': 2.5,
+            'viator': 8.0,
+            'getyourguide': 8.0,
+            'agoda': 5.0,
+        }
+        avg_booking_values = {
+            'accommodation': 100,
+            'tour': 80,
+            'flight': 400,
+            'transportation': 50,
+        }
+
+        rate = commission_rates.get(platform, 3.0)
+        avg_value = avg_booking_values.get(item_type, 100)
+        estimated_commission = (avg_value * rate / 100) * 0.5  # 50% estimated conversion
+
+        # Create click record
+        if content_type and item_id:
+            click = AffiliateClick.objects.create(
+                user=user,
+                session_key=session_key,
+                platform=platform,
+                item_type=item_type,
+                content_type=content_type,
+                object_id=item_id,
+                affiliate_url=affiliate_url[:1000],
+                referrer_url=request.META.get('HTTP_REFERER', '')[:500],
+                ip_address=ip_address,
+                user_agent=user_agent,
+                device_type=device_type,
+                estimated_commission=estimated_commission,
+            )
+
+            return JsonResponse({
+                'success': True,
+                'click_id': click.id,
+                'message': 'Click tracked successfully'
+            })
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Click logged (partial data)'
+        })
+
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=400)
 
 
 # ==================== HOME ====================
