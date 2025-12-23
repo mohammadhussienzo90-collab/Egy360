@@ -66,6 +66,14 @@ class Accommodation(models.Model):
     
     class Meta:
         ordering = ['-is_featured', '-average_rating']
+        indexes = [
+            models.Index(fields=['city'], name='accommodation_city_idx'),
+            models.Index(fields=['accommodation_type'], name='accommodation_type_idx'),
+            models.Index(fields=['is_active'], name='accommodation_active_idx'),
+            models.Index(fields=['is_featured'], name='accommodation_featured_idx'),
+            models.Index(fields=['city', 'is_active', 'accommodation_type'], name='accommodation_filter_idx'),
+            models.Index(fields=['average_rating'], name='accommodation_rating_idx'),
+        ]
 
     def __str__(self):
         return f"{self.name} - {self.city}"

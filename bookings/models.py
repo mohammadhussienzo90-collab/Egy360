@@ -55,6 +55,13 @@ class Booking(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', 'status'], name='booking_user_status_idx'),
+            models.Index(fields=['status'], name='booking_status_idx'),
+            models.Index(fields=['booking_type'], name='booking_type_idx'),
+            models.Index(fields=['content_type', 'object_id'], name='booking_content_idx'),
+            models.Index(fields=['booking_date'], name='booking_date_idx'),
+        ]
 
     def __str__(self):
         return f"{self.booking_reference} - {self.user.username}"

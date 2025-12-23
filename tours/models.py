@@ -80,6 +80,14 @@ class Tour(models.Model):
 
     class Meta:
         ordering = ['-is_featured', '-average_rating']
+        indexes = [
+            models.Index(fields=['tour_type'], name='tour_type_idx'),
+            models.Index(fields=['is_active'], name='tour_active_idx'),
+            models.Index(fields=['is_featured'], name='tour_featured_idx'),
+            models.Index(fields=['departure_city'], name='tour_departure_idx'),
+            models.Index(fields=['average_rating'], name='tour_rating_idx'),
+            models.Index(fields=['is_active', 'tour_type'], name='tour_filter_idx'),
+        ]
 
     def __str__(self):
         return self.name

@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django.utils import timezone
 import random
 import string
+import hmac
 
 
 class UserProfile(models.Model):
@@ -104,7 +105,8 @@ class UserProfile(models.Model):
         self.phone_otp_attempts += 1
         self.save()
 
-        if self.phone_otp == otp_code:
+        # Use constant-time comparison to prevent timing attacks
+        if hmac.compare_digest(str(self.phone_otp), str(otp_code)):
             self.phone_otp = None
             self.phone_otp_created = None
             self.phone_verified = True
@@ -125,11 +127,12 @@ class UserProfile(models.Model):
         return codes
 
     def verify_backup_code(self, code):
-        """Verify and consume a backup code"""
-        if code in self.backup_codes:
-            self.backup_codes.remove(code)
-            self.save()
-            return True
+        """Verify and consume a backup code with constant-time comparison"""
+        for stored_code in self.backup_codes:
+            if hmac.compare_digest(str(stored_code), str(code)):
+                self.backup_codes.remove(stored_code)
+                self.save()
+                return True
         return False
 
     def get_masked_phone(self):
