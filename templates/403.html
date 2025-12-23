@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Access Denied - Egy360{% endblock %}
+
+{% block content %}
+<section class="error-page py-5" style="min-height: 60vh; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="error-content">
+                    <h1 class="display-1 fw-bold mb-0" style="color: #ffc107;">403</h1>
+                    <h2 class="h3 mb-4">Access Denied</h2>
+                    <p class="text-muted mb-4">
+                        Sorry, you don't have permission to access this page.
+                        Please log in or contact support if you believe this is an error.
+                    </p>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
+                        <a href="{% url 'homepage' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-home me-2"></i>Go Home
+                        </a>
+                        <a href="{% url 'account_login' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Log In
+                        </a>
+                    </div>
+
+                    <div class="help-box p-4 bg-light rounded-3 mt-4">
+                        <h5 class="mb-3">Need Help?</h5>
+                        <p class="text-muted mb-0">
+                            If you think you should have access to this page,
+                            please <a href="{% url 'home:contact' %}">contact our support team</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.error-page {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+.error-content h1 {
+    font-size: 8rem;
+    line-height: 1;
+    background: linear-gradient(135deg, #ffc107, #e0a800);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+@media (max-width: 576px) {
+    .error-content h1 {
+        font-size: 5rem;
+    }
+}
+</style>
+{% endblock %}

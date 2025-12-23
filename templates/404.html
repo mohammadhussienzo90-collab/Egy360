@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Not Found - Egy360{% endblock %}
+
+{% block content %}
+<section class="error-page py-5" style="min-height: 60vh; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="error-content">
+                    <h1 class="display-1 fw-bold text-primary mb-0">404</h1>
+                    <h2 class="h3 mb-4">Page Not Found</h2>
+                    <p class="text-muted mb-4">
+                        Sorry, the page you're looking for doesn't exist or has been moved.
+                        Let's get you back on track to explore Egypt!
+                    </p>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
+                        <a href="{% url 'homepage' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-home me-2"></i>Go Home
+                        </a>
+                        <a href="{% url 'accommodations:accommodation_list' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-hotel me-2"></i>Browse Hotels
+                        </a>
+                        <a href="{% url 'tours:tour_list' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-map-marked-alt me-2"></i>Explore Tours
+                        </a>
+                    </div>
+
+                    <div class="search-box mt-4">
+                        <p class="text-muted mb-3">Or search for what you need:</p>
+                        <form action="{% url 'accommodations:accommodation_list' %}" method="get" class="d-flex gap-2 justify-content-center">
+                            <input type="text" name="q" class="form-control" placeholder="Search hotels, tours, destinations..." style="max-width: 300px;">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.error-page {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+.error-content h1 {
+    font-size: 8rem;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--primary-color), #c9302c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+@media (max-width: 576px) {
+    .error-content h1 {
+        font-size: 5rem;
+    }
+}
+</style>
+{% endblock %}

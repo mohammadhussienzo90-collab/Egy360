@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Server Error - Egy360{% endblock %}
+
+{% block content %}
+<section class="error-page py-5" style="min-height: 60vh; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="error-content">
+                    <h1 class="display-1 fw-bold text-danger mb-0">500</h1>
+                    <h2 class="h3 mb-4">Something Went Wrong</h2>
+                    <p class="text-muted mb-4">
+                        We're sorry, but something unexpected happened on our end.
+                        Our team has been notified and we're working to fix it.
+                    </p>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
+                        <a href="{% url 'homepage' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-home me-2"></i>Go Home
+                        </a>
+                        <a href="javascript:location.reload()" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-redo me-2"></i>Try Again
+                        </a>
+                    </div>
+
+                    <div class="help-box p-4 bg-light rounded-3 mt-4">
+                        <h5 class="mb-3">Need Immediate Help?</h5>
+                        <p class="text-muted mb-3">Contact us directly:</p>
+                        <div class="d-flex flex-wrap justify-content-center gap-3">
+                            <a href="mailto:info@360egy.com" class="btn btn-outline-primary">
+                                <i class="fas fa-envelope me-2"></i>Email Us
+                            </a>
+                            <a href="tel:+201234567890" class="btn btn-outline-success">
+                                <i class="fas fa-phone me-2"></i>Call Us
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.error-page {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+.error-content h1 {
+    font-size: 8rem;
+    line-height: 1;
+    background: linear-gradient(135deg, #dc3545, #a71d2a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+@media (max-width: 576px) {
+    .error-content h1 {
+        font-size: 5rem;
+    }
+}
+</style>
+{% endblock %}
