@@ -576,11 +576,39 @@
     <div class="container">
         <h3><i class="fas fa-envelope me-2"></i>Subscribe to Our Newsletter</h3>
         <p>Get the latest travel tips and Egypt guides delivered to your inbox</p>
-        <form class="newsletter-form" method="post" action="{% url 'home:newsletter' %}">
-            {% csrf_token %}
-            <input type="email" name="email" placeholder="Enter your email" required>
+        <form class="newsletter-form" id="blog-newsletter-form">
+            <input type="email" name="email" id="blog-newsletter-email" placeholder="Enter your email" required>
             <button type="submit">Subscribe</button>
         </form>
+        <div id="blog-newsletter-message" style="margin-top: 10px;"></div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('blog-newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('blog-newsletter-email').value;
+    const messageDiv = document.getElementById('blog-newsletter-message');
+
+    fetch('/api/newsletter/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email: email})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            messageDiv.innerHTML = '<span style="color: #ffd700;">' + data.message + '</span>';
+            document.getElementById('blog-newsletter-email').value = '';
+        } else {
+            messageDiv.innerHTML = '<span style="color: #ff6b6b;">' + (data.error || 'Error occurred') + '</span>';
+        }
+    })
+    .catch(error => {
+        messageDiv.innerHTML = '<span style="color: #ff6b6b;">Network error. Please try again.</span>';
+    });
+});
+</script>
 {% endblock %}

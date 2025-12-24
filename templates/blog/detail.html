@@ -617,11 +617,11 @@
                 <div class="sidebar-card">
                     <h4><i class="fas fa-envelope me-2"></i>Newsletter</h4>
                     <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Get travel tips and guides in your inbox</p>
-                    <form method="post" action="{% url 'home:newsletter' %}">
-                        {% csrf_token %}
-                        <input type="email" name="email" class="form-control mb-2" placeholder="Your email" required>
+                    <form id="sidebar-newsletter-form">
+                        <input type="email" name="email" id="sidebar-newsletter-email" class="form-control mb-2" placeholder="Your email" required>
                         <button type="submit" class="btn btn-primary w-100" style="background: var(--blog-gradient); border: none;">Subscribe</button>
                     </form>
+                    <div id="sidebar-newsletter-message" class="mt-2" style="font-size: 0.9rem;"></div>
                 </div>
             </aside>
         </div>
@@ -644,5 +644,30 @@ function copyToClipboard() {
         }, 2000);
     });
 }
+
+// Sidebar newsletter form
+document.getElementById('sidebar-newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('sidebar-newsletter-email').value;
+    const messageDiv = document.getElementById('sidebar-newsletter-message');
+
+    fetch('/api/newsletter/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email: email})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            messageDiv.innerHTML = '<span class="text-success">' + data.message + '</span>';
+            document.getElementById('sidebar-newsletter-email').value = '';
+        } else {
+            messageDiv.innerHTML = '<span class="text-danger">' + (data.error || 'Error occurred') + '</span>';
+        }
+    })
+    .catch(error => {
+        messageDiv.innerHTML = '<span class="text-danger">Network error. Please try again.</span>';
+    });
+});
 </script>
 {% endblock %}
