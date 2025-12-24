@@ -5,7 +5,7 @@ Tests for accommodations, tours, dashboard, and home views
 
 import json
 from decimal import Decimal
-from django.test import TestCase, Client
+from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 from django.contrib.auth.models import User
 
@@ -14,6 +14,7 @@ from tours.models import Tour, TourBooking
 from home.models import NewsletterSubscription
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class AccommodationViewsTest(TestCase):
     """Tests for accommodation views"""
 
@@ -79,6 +80,7 @@ class AccommodationViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class TourViewsTest(TestCase):
     """Tests for tour views"""
 
@@ -164,6 +166,7 @@ class TourViewsTest(TestCase):
         self.assertIn('booking_id', data)
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class DashboardViewsTest(TestCase):
     """Tests for dashboard views"""
 
@@ -199,6 +202,7 @@ class DashboardViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class NewsletterViewsTest(TestCase):
     """Tests for newsletter subscription"""
 
@@ -268,6 +272,7 @@ class NewsletterViewsTest(TestCase):
         self.assertTrue(sub.is_active)
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class HomeViewsTest(TestCase):
     """Tests for home app views"""
 
