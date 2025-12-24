@@ -78,7 +78,11 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',  # django-allauth
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.ContentSecurityPolicyMiddleware',
 ]
+
+# CSP in report-only mode for development
+CSP_HEADER = 'Content-Security-Policy-Report-Only'
 
 ROOT_URLCONF = 'Egy360.urls'
 

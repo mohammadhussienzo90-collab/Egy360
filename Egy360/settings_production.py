@@ -67,7 +67,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.ContentSecurityPolicyMiddleware',
 ]
+
+# Content Security Policy settings
+# Use 'Content-Security-Policy-Report-Only' for testing without enforcement
+# Change to 'Content-Security-Policy' for full enforcement
+CSP_HEADER = config('CSP_HEADER', default='Content-Security-Policy-Report-Only')
 
 ROOT_URLCONF = 'Egy360.urls'
 
