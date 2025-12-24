@@ -5,14 +5,12 @@ Includes all page views for the tourism platform
 
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.contenttypes.models import ContentType
 import json
 
 
 # ==================== AFFILIATE TRACKING ====================
-@csrf_exempt
 @require_http_methods(["POST"])
 def track_affiliate_click(request):
     """
