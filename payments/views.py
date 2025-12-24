@@ -4,11 +4,12 @@ Payments App Views
 
 Comprehensive API views for payment management including:
 - Payment method management
-- Payment processing
+- Payment processing with Stripe integration
 - Refund handling
 - Transaction logging
 """
 
+import logging
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -20,7 +21,7 @@ from .models import (
     PaymentMethod,
     Payment,
     Refund,
-    TransactionLog,
+    Transaction,
 )
 from .serializers import (
     PaymentMethodSerializer,
@@ -31,6 +32,9 @@ from .serializers import (
     RefundRequestSerializer,
     TransactionLogSerializer,
 )
+from .stripe_integration import stripe_gateway, get_stripe_public_key
+
+logger = logging.getLogger(__name__)
 
 
 class PaymentMethodViewSet(viewsets.ReadOnlyModelViewSet):
@@ -128,52 +132,81 @@ class PaymentViewSet(viewsets.ModelViewSet):
         """
         Process a new payment.
 
-        Creates and processes a payment transaction.
-        Integrates with payment gateway.
+        Creates a Stripe PaymentIntent and returns client_secret for frontend.
         """
         serializer = PaymentProcessSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # Here you would integrate with payment gateway
-        # For now, we'll create a pending payment
+        amount = serializer.validated_data['amount']
+        currency = serializer.validated_data.get('currency', 'EGP')
+        booking_id = serializer.validated_data.get('booking_id')
 
+        # Create Stripe PaymentIntent
+        stripe_result = stripe_gateway.create_payment_intent(
+            amount=amount,
+            currency=currency,
+            metadata={
+                'user_id': str(request.user.id),
+                'booking_id': str(booking_id) if booking_id else '',
+            }
+        )
+
+        if not stripe_result['success']:
+            logger.error(f"Stripe error for user {request.user.id}: {stripe_result.get('error')}")
+            return Response(
+                {'error': stripe_result.get('error', 'Payment processing failed')},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Create pending payment record
         payment = Payment.objects.create(
             user=request.user,
-            booking_id=serializer.validated_data.get('booking_id'),
-            payment_method_id=serializer.validated_data['payment_method_id'],
-            amount=serializer.validated_data['amount'],
-            currency=serializer.validated_data.get('currency', 'EGP'),
+            booking_id=booking_id,
+            payment_method=serializer.validated_data.get('payment_method', 'stripe'),
+            amount=amount,
+            currency=currency,
             status='pending',
-            transaction_id=f'TXN-{timezone.now().strftime("%Y%m%d%H%M%S")}-{request.user.id}'
+            gateway='stripe',
+            transaction_id=stripe_result['payment_intent_id']
         )
 
         # Log transaction
-        TransactionLog.objects.create(
+        Transaction.objects.create(
             payment=payment,
-            action='payment_initiated',
-            status='pending',
-            message='Payment initiated by user'
+            transaction_type='payment',
+            user=request.user,
+            amount=amount,
+            currency=currency,
+            description='Payment initiated via Stripe'
         )
 
-        return Response(
-            PaymentDetailSerializer(payment).data,
-            status=status.HTTP_201_CREATED
-        )
+        logger.info(f"Payment {payment.id} created for user {request.user.id}")
+
+        return Response({
+            'payment_id': payment.id,
+            'client_secret': stripe_result['client_secret'],
+            'public_key': get_stripe_public_key(),
+            'amount': str(amount),
+            'currency': currency,
+        }, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['get'])
+    def config(self, request):
+        """
+        Get Stripe public key for frontend initialization.
+        """
+        return Response({
+            'public_key': get_stripe_public_key(),
+            'is_configured': stripe_gateway.is_configured(),
+        })
 
     @action(detail=True, methods=['post'])
     def confirm(self, request, pk=None):
         """
         Confirm a payment.
 
-        Updates payment status to completed after gateway confirmation.
-        Staff only action.
+        Verifies payment with Stripe and updates status to completed.
         """
-        if not request.user.is_staff:
-            return Response(
-                {'detail': 'Only staff can confirm payments'},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
         payment = self.get_object()
 
         if payment.status != 'pending':
@@ -182,22 +215,42 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        # Verify with Stripe if we have a transaction_id
+        if payment.transaction_id and payment.gateway == 'stripe':
+            stripe_result = stripe_gateway.confirm_payment_intent(payment.transaction_id)
+
+            if not stripe_result['success']:
+                return Response(
+                    {'detail': 'Could not verify payment with payment gateway'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            if stripe_result['status'] != 'succeeded':
+                return Response(
+                    {'detail': f'Payment not yet complete. Status: {stripe_result["status"]}'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
         payment.status = 'completed'
-        payment.paid_at = timezone.now()
+        payment.completed_at = timezone.now()
         payment.save()
 
         # Log transaction
-        TransactionLog.objects.create(
+        Transaction.objects.create(
             payment=payment,
-            action='payment_confirmed',
-            status='completed',
-            message='Payment confirmed by staff'
+            transaction_type='payment',
+            user=payment.user,
+            amount=payment.amount,
+            currency=payment.currency,
+            description='Payment confirmed'
         )
 
         # Update booking payment status if applicable
         if payment.booking:
             payment.booking.payment_status = 'paid'
             payment.booking.save()
+
+        logger.info(f"Payment {payment.id} confirmed")
 
         return Response(
             PaymentDetailSerializer(payment).data,
@@ -209,7 +262,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         """
         Request a refund for a payment.
 
-        Creates a refund request for a completed payment.
+        Creates a refund request and processes via Stripe if applicable.
         """
         payment = self.get_object()
 
@@ -222,22 +275,54 @@ class PaymentViewSet(viewsets.ModelViewSet):
         serializer = RefundRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # Create refund
+        refund_amount = serializer.validated_data['amount']
+        reason = serializer.validated_data['reason']
+
+        # Process refund via Stripe if applicable
+        stripe_refund_id = None
+        if payment.transaction_id and payment.gateway == 'stripe':
+            stripe_result = stripe_gateway.process_refund(
+                payment.transaction_id,
+                amount=refund_amount,
+                reason='requested_by_customer'
+            )
+
+            if not stripe_result['success']:
+                logger.error(f"Stripe refund failed for payment {payment.id}: {stripe_result.get('error')}")
+                return Response(
+                    {'detail': stripe_result.get('error', 'Refund processing failed')},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            stripe_refund_id = stripe_result.get('refund_id')
+
+        # Create refund record
         refund = Refund.objects.create(
             payment=payment,
-            amount=serializer.validated_data['amount'],
-            reason=serializer.validated_data['reason'],
-            status='pending',
+            amount=refund_amount,
+            reason=reason,
+            status='completed' if stripe_refund_id else 'pending',
+            transaction_id=stripe_refund_id or '',
             requested_by=request.user
         )
 
         # Log transaction
-        TransactionLog.objects.create(
+        Transaction.objects.create(
             payment=payment,
-            action='refund_requested',
-            status='pending',
-            message=f'Refund requested: {serializer.validated_data["reason"]}'
+            refund=refund,
+            transaction_type='refund',
+            user=request.user,
+            amount=refund_amount,
+            currency=payment.currency,
+            description=f'Refund processed: {reason}'
         )
+
+        # Update payment status if fully refunded
+        if refund_amount >= payment.amount:
+            payment.status = 'refunded'
+            payment.save()
+
+        logger.info(f"Refund {refund.id} created for payment {payment.id}")
 
         return Response(
             RefundSerializer(refund).data,
@@ -352,13 +437,117 @@ class TransactionLogViewSet(viewsets.ReadOnlyModelViewSet):
     Retrieve: Get specific log entry
     """
 
-    queryset = TransactionLog.objects.all().select_related(
+    queryset = Transaction.objects.all().select_related(
         'payment'
     ).order_by('-created_at')
 
     serializer_class = TransactionLogSerializer
     permission_classes = [permissions.IsAdminUser]
 
-    filterset_fields = ['payment', 'action', 'status']
-    search_fields = ['message', 'response_data']
+    filterset_fields = ['payment', 'transaction_type']
+    search_fields = ['description', 'notes']
     ordering_fields = ['created_at']
+
+
+# Stripe Webhook Handler
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.http import HttpResponse
+import json
+
+
+@csrf_exempt
+@require_POST
+def stripe_webhook(request):
+    """
+    Handle Stripe webhook events.
+
+    Processes payment confirmation, failure, and refund events.
+    """
+    payload = request.body
+    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE', '')
+
+    event = stripe_gateway.verify_webhook_signature(payload, sig_header)
+
+    if not event:
+        logger.warning("Invalid Stripe webhook signature")
+        return HttpResponse(status=400)
+
+    event_type = event['type']
+    data = event['data']['object']
+
+    logger.info(f"Received Stripe webhook: {event_type}")
+
+    try:
+        if event_type == 'payment_intent.succeeded':
+            # Payment successful
+            payment_intent_id = data['id']
+            payment = Payment.objects.filter(
+                transaction_id=payment_intent_id,
+                gateway='stripe'
+            ).first()
+
+            if payment and payment.status == 'pending':
+                payment.status = 'completed'
+                payment.completed_at = timezone.now()
+                payment.save()
+
+                # Log transaction
+                Transaction.objects.create(
+                    payment=payment,
+                    transaction_type='payment',
+                    user=payment.user,
+                    amount=payment.amount,
+                    currency=payment.currency,
+                    description='Payment confirmed via Stripe webhook'
+                )
+
+                # Update booking if applicable
+                if payment.booking:
+                    payment.booking.payment_status = 'paid'
+                    payment.booking.save()
+
+                logger.info(f"Payment {payment.id} confirmed via webhook")
+
+        elif event_type == 'payment_intent.payment_failed':
+            # Payment failed
+            payment_intent_id = data['id']
+            payment = Payment.objects.filter(
+                transaction_id=payment_intent_id,
+                gateway='stripe'
+            ).first()
+
+            if payment and payment.status == 'pending':
+                failure_message = data.get('last_payment_error', {}).get('message', 'Payment failed')
+                payment.status = 'failed'
+                payment.failed_at = timezone.now()
+                payment.failure_reason = failure_message
+                payment.save()
+
+                logger.warning(f"Payment {payment.id} failed: {failure_message}")
+
+        elif event_type == 'charge.refunded':
+            # Refund processed
+            charge_id = data['id']
+            payment_intent_id = data.get('payment_intent')
+
+            if payment_intent_id:
+                payment = Payment.objects.filter(
+                    transaction_id=payment_intent_id,
+                    gateway='stripe'
+                ).first()
+
+                if payment:
+                    refund_amount = data['amount_refunded'] / 100  # Convert from cents
+                    if refund_amount >= float(payment.amount):
+                        payment.status = 'refunded'
+                        payment.save()
+
+                    logger.info(f"Refund processed for payment {payment.id}")
+
+    except Exception as e:
+        logger.error(f"Error processing webhook {event_type}: {e}")
+        # Still return 200 to prevent Stripe retries for processing errors
+        return HttpResponse(status=200)
+
+    return HttpResponse(status=200)

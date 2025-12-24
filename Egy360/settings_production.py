@@ -297,6 +297,7 @@ CELERY_TIMEZONE = TIME_ZONE
 # Payment Gateway Settings
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY', default='')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default='')
+STRIPE_WEBHOOK_SECRET = config('STRIPE_WEBHOOK_SECRET', default='')
 
 # API Keys
 GOOGLE_MAPS_API_KEY = config('GOOGLE_MAPS_API_KEY', default='')
