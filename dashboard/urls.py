@@ -18,4 +18,7 @@ urlpatterns = [
 
     # Settings
     path('settings/', views.settings_view, name='settings'),
+
+    # Admin revenue dashboard
+    path('revenue/', views.revenue_dashboard, name='revenue'),
 ]

@@ -1,12 +1,14 @@
 # dashboard/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
-from django.db.models import Count, Sum, Q
+from django.db.models import Count, Sum, Q, Avg
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
+from django.utils import timezone
 import json
 
 
@@ -276,3 +278,136 @@ def booking_detail(request, booking_id):
         'booking': booking,
         'booking_type': booking_type
     })
+
+
+@staff_member_required
+def revenue_dashboard(request):
+    """Admin revenue dashboard with affiliate analytics"""
+    from core.models import AffiliateClick
+    from accommodations.models import Accommodation
+    from tours.models import Tour
+
+    # Date ranges
+    today = timezone.now().date()
+    week_ago = today - timedelta(days=7)
+    month_ago = today - timedelta(days=30)
+    year_start = today.replace(month=1, day=1)
+
+    # Get date filter from request
+    period = request.GET.get('period', 'week')
+    if period == 'today':
+        start_date = today
+    elif period == 'week':
+        start_date = week_ago
+    elif period == 'month':
+        start_date = month_ago
+    elif period == 'year':
+        start_date = year_start
+    else:
+        start_date = week_ago
+
+    # Click statistics
+    clicks = AffiliateClick.objects.filter(clicked_at__date__gte=start_date)
+
+    total_clicks = clicks.count()
+    total_estimated_revenue = clicks.aggregate(total=Sum('estimated_commission'))['total'] or 0
+    converted_clicks = clicks.filter(converted=True).count()
+    conversion_rate = (converted_clicks / total_clicks * 100) if total_clicks > 0 else 0
+
+    # Platform breakdown
+    platform_stats = clicks.values('platform').annotate(
+        count=Count('id'),
+        revenue=Sum('estimated_commission')
+    ).order_by('-count')
+
+    # Item type breakdown
+    type_stats = clicks.values('item_type').annotate(
+        count=Count('id'),
+        revenue=Sum('estimated_commission')
+    ).order_by('-count')
+
+    # Device breakdown
+    device_stats = clicks.values('device_type').annotate(
+        count=Count('id')
+    ).order_by('-count')
+
+    # Daily trend data for chart
+    daily_clicks = []
+    for i in range(min(30, (today - start_date).days + 1)):
+        date = today - timedelta(days=i)
+        day_clicks = AffiliateClick.objects.filter(clicked_at__date=date)
+        daily_clicks.append({
+            'date': date.strftime('%Y-%m-%d'),
+            'clicks': day_clicks.count(),
+            'revenue': float(day_clicks.aggregate(total=Sum('estimated_commission'))['total'] or 0)
+        })
+    daily_clicks.reverse()
+
+    # Top performing items
+    top_hotels = clicks.filter(item_type='accommodation').values(
+        'object_id'
+    ).annotate(
+        click_count=Count('id')
+    ).order_by('-click_count')[:5]
+
+    top_tours = clicks.filter(item_type='tour').values(
+        'object_id'
+    ).annotate(
+        click_count=Count('id')
+    ).order_by('-click_count')[:5]
+
+    # Get actual hotel/tour names
+    top_hotels_list = []
+    for item in top_hotels:
+        try:
+            hotel = Accommodation.objects.get(id=item['object_id'])
+            top_hotels_list.append({
+                'name': hotel.name,
+                'clicks': item['click_count'],
+                'city': hotel.city
+            })
+        except Accommodation.DoesNotExist:
+            pass
+
+    top_tours_list = []
+    for item in top_tours:
+        try:
+            tour = Tour.objects.get(id=item['object_id'])
+            top_tours_list.append({
+                'name': tour.name,
+                'clicks': item['click_count'],
+                'type': tour.get_tour_type_display()
+            })
+        except Tour.DoesNotExist:
+            pass
+
+    # Inventory stats
+    total_hotels = Accommodation.objects.filter(is_active=True).count()
+    total_tours = Tour.objects.filter(is_active=True).count()
+    hotels_with_affiliates = Accommodation.objects.filter(
+        is_active=True
+    ).exclude(booking_com_url='').exclude(booking_com_url__isnull=True).count()
+    tours_with_affiliates = Tour.objects.filter(
+        is_active=True
+    ).exclude(viator_url='').exclude(viator_url__isnull=True).count()
+
+    context = {
+        'period': period,
+        'start_date': start_date,
+        'total_clicks': total_clicks,
+        'total_estimated_revenue': total_estimated_revenue,
+        'converted_clicks': converted_clicks,
+        'conversion_rate': conversion_rate,
+        'platform_stats': platform_stats,
+        'type_stats': type_stats,
+        'device_stats': device_stats,
+        'daily_clicks': json.dumps(daily_clicks),
+        'top_hotels': top_hotels_list,
+        'top_tours': top_tours_list,
+        'total_hotels': total_hotels,
+        'total_tours': total_tours,
+        'hotels_with_affiliates': hotels_with_affiliates,
+        'tours_with_affiliates': tours_with_affiliates,
+    }
+
+    return render(request, 'dashboard/revenue.html', context)

@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Revenue Dashboard - Egy360 Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">Revenue Dashboard</h2>
+                <div class="btn-group">
+                    <a href="?period=today" class="btn btn-{% if period == 'today' %}primary{% else %}outline-primary{% endif %}">Today</a>
+                    <a href="?period=week" class="btn btn-{% if period == 'week' %}primary{% else %}outline-primary{% endif %}">Week</a>
+                    <a href="?period=month" class="btn btn-{% if period == 'month' %}primary{% else %}outline-primary{% endif %}">Month</a>
+                    <a href="?period=year" class="btn btn-{% if period == 'year' %}primary{% else %}outline-primary{% endif %}">Year</a>
+                </div>
+            </div>
+            <p class="text-muted">Data from {{ start_date|date:"M d, Y" }} to today</p>
+        </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1">Total Clicks</p>
+                            <h3 class="mb-0">{{ total_clicks|default:0 }}</h3>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                            <i class="fas fa-mouse-pointer text-primary fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1">Est. Revenue</p>
+                            <h3 class="mb-0 text-success">${{ total_estimated_revenue|floatformat:2 }}</h3>
+                        </div>
+                        <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                            <i class="fas fa-dollar-sign text-success fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1">Conversions</p>
+                            <h3 class="mb-0">{{ converted_clicks|default:0 }}</h3>
+                        </div>
+                        <div class="bg-info bg-opacity-10 rounded-circle p-3">
+                            <i class="fas fa-check-circle text-info fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1">Conv. Rate</p>
+                            <h3 class="mb-0">{{ conversion_rate|floatformat:1 }}%</h3>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 rounded-circle p-3">
+                            <i class="fas fa-chart-line text-warning fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Click Trends</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="clicksChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">By Platform</h5>
+                </div>
+                <div class="card-body">
+                    {% if platform_stats %}
+                    <ul class="list-group list-group-flush">
+                        {% for stat in platform_stats %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span>
+                                {% if stat.platform == 'booking_com' %}
+                                <span class="badge bg-primary me-2">Booking.com</span>
+                                {% elif stat.platform == 'viator' %}
+                                <span class="badge bg-success me-2">Viator</span>
+                                {% elif stat.platform == 'hotellook' %}
+                                <span class="badge bg-warning me-2">Hotellook</span>
+                                {% else %}
+                                <span class="badge bg-secondary me-2">{{ stat.platform }}</span>
+                                {% endif %}
+                            </span>
+                            <span>
+                                <strong>{{ stat.count }}</strong> clicks
+                                <small class="text-success ms-2">${{ stat.revenue|floatformat:2|default:"0.00" }}</small>
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted text-center py-4">No click data yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breakdown Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">By Type</h5>
+                </div>
+                <div class="card-body">
+                    {% if type_stats %}
+                    {% for stat in type_stats %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-capitalize">{{ stat.item_type }}</span>
+                        <span><strong>{{ stat.count }}</strong> <small class="text-success">${{ stat.revenue|floatformat:2|default:"0.00" }}</small></span>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p class="text-muted">No data</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">By Device</h5>
+                </div>
+                <div class="card-body">
+                    {% if device_stats %}
+                    {% for stat in device_stats %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>
+                            {% if stat.device_type == 'mobile' %}
+                            <i class="fas fa-mobile-alt me-2"></i>
+                            {% elif stat.device_type == 'tablet' %}
+                            <i class="fas fa-tablet-alt me-2"></i>
+                            {% else %}
+                            <i class="fas fa-desktop me-2"></i>
+                            {% endif %}
+                            {{ stat.device_type|default:"Unknown"|title }}
+                        </span>
+                        <strong>{{ stat.count }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p class="text-muted">No data</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Inventory</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span><i class="fas fa-hotel me-2"></i>Hotels</span>
+                        <span><strong>{{ total_hotels }}</strong> <small class="text-muted">({{ hotels_with_affiliates }} with links)</small></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span><i class="fas fa-map me-2"></i>Tours</span>
+                        <span><strong>{{ total_tours }}</strong> <small class="text-muted">({{ tours_with_affiliates }} with links)</small></span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <span>Affiliate Coverage</span>
+                        <strong>
+                            {% widthratio hotels_with_affiliates total_hotels 100 %}% / {% widthratio tours_with_affiliates total_tours 100 %}%
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Performers -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-hotel me-2"></i>Top Hotels by Clicks</h5>
+                </div>
+                <div class="card-body">
+                    {% if top_hotels %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Hotel</th>
+                                <th>City</th>
+                                <th class="text-end">Clicks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hotel in top_hotels %}
+                            <tr>
+                                <td>{{ hotel.name|truncatechars:30 }}</td>
+                                <td>{{ hotel.city }}</td>
+                                <td class="text-end"><strong>{{ hotel.clicks }}</strong></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="text-muted text-center py-4">No hotel clicks yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-map-marked-alt me-2"></i>Top Tours by Clicks</h5>
+                </div>
+                <div class="card-body">
+                    {% if top_tours %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tour</th>
+                                <th>Type</th>
+                                <th class="text-end">Clicks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tour in top_tours %}
+                            <tr>
+                                <td>{{ tour.name|truncatechars:30 }}</td>
+                                <td>{{ tour.type }}</td>
+                                <td class="text-end"><strong>{{ tour.clicks }}</strong></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="text-muted text-center py-4">No tour clicks yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dailyData = {{ daily_clicks|safe }};
+
+    if (dailyData && dailyData.length > 0) {
+        const ctx = document.getElementById('clicksChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dailyData.map(d => d.date),
+                datasets: [{
+                    label: 'Clicks',
+                    data: dailyData.map(d => d.clicks),
+                    borderColor: '#0d6efd',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Revenue ($)',
+                    data: dailyData.map(d => d.revenue),
+                    borderColor: '#198754',
+                    backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Clicks'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Revenue ($)'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

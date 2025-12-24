@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Flights to Egypt - Find Cheap Airfare | Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+.flights-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+}
+.flight-deals .card {
+    transition: transform 0.3s ease;
+}
+.flight-deals .card:hover {
+    transform: translateY(-5px);
+}
+.tp-widget-container {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Flight Search -->
+<section class="flights-hero py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-white mb-4 mb-lg-0">
+                <h1 class="display-4 fw-bold mb-3">Flights to Egypt</h1>
+                <p class="lead mb-4">Compare prices from 100+ airlines and find the best deals to Cairo, Luxor, Hurghada, and more Egyptian destinations.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <span>Best Price Guarantee</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <span>No Hidden Fees</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <span>24/7 Support</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="tp-widget-container">
+                    <!-- Travelpayouts Flight Search Widget -->
+                    <div id="tp-search-widget"></div>
+                    <script>
+                    (function() {
+                        var script = document.createElement('script');
+                        script.src = 'https://tp.media/content?currency=usd&trs=267028&shmarker=477897&searchType498=flightshotesl&show_hotels=false&powered_by=false&locale=en&origin=&destination=CAI&one_way=false&only_direct=false&period=month&range=7%2C14&primary=%231a73e8&color_button=%23ff6b00&color_icons=%231a73e8&promo_id=4498&campaign_id=100';
+                        script.async = true;
+                        var widgetContainer = document.getElementById('tp-search-widget');
+                        widgetContainer.appendChild(script);
+                    })();
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Routes -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Popular Flight Routes to Egypt</h2>
+        <div class="row g-4 flight-deals">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="mb-0">London (LHR)</h6>
+                                <small class="text-muted">United Kingdom</small>
+                            </div>
+                            <i class="fas fa-plane text-primary"></i>
+                            <div class="text-end">
+                                <h6 class="mb-0">Cairo (CAI)</h6>
+                                <small class="text-muted">Egypt</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">From</span>
+                            <span class="h5 mb-0 text-success">$250</span>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FLHR1512CAI2212" target="_blank" rel="noopener" class="btn btn-primary w-100 mt-3" data-affiliate="true" data-item-type="flight" data-platform="aviasales">
+                            Search Flights
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="mb-0">New York (JFK)</h6>
+                                <small class="text-muted">United States</small>
+                            </div>
+                            <i class="fas fa-plane text-primary"></i>
+                            <div class="text-end">
+                                <h6 class="mb-0">Cairo (CAI)</h6>
+                                <small class="text-muted">Egypt</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">From</span>
+                            <span class="h5 mb-0 text-success">$450</span>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FJFK1512CAI2212" target="_blank" rel="noopener" class="btn btn-primary w-100 mt-3" data-affiliate="true" data-item-type="flight" data-platform="aviasales">
+                            Search Flights
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="mb-0">Dubai (DXB)</h6>
+                                <small class="text-muted">UAE</small>
+                            </div>
+                            <i class="fas fa-plane text-primary"></i>
+                            <div class="text-end">
+                                <h6 class="mb-0">Cairo (CAI)</h6>
+                                <small class="text-muted">Egypt</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">From</span>
+                            <span class="h5 mb-0 text-success">$180</span>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FDXB1512CAI2212" target="_blank" rel="noopener" class="btn btn-primary w-100 mt-3" data-affiliate="true" data-item-type="flight" data-platform="aviasales">
+                            Search Flights
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="mb-0">Paris (CDG)</h6>
+                                <small class="text-muted">France</small>
+                            </div>
+                            <i class="fas fa-plane text-primary"></i>
+                            <div class="text-end">
+                                <h6 class="mb-0">Hurghada (HRG)</h6>
+                                <small class="text-muted">Egypt</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">From</span>
+                            <span class="h5 mb-0 text-success">$220</span>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FCDG1512HRG2212" target="_blank" rel="noopener" class="btn btn-primary w-100 mt-3" data-affiliate="true" data-item-type="flight" data-platform="aviasales">
+                            Search Flights
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="mb-0">Berlin (BER)</h6>
+                                <small class="text-muted">Germany</small>
+                            </div>
+                            <i class="fas fa-plane text-primary"></i>
+                            <div class="text-end">
+                                <h6 class="mb-0">Sharm (SSH)</h6>
+                                <small class="text-muted">Egypt</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">From</span>
+                            <span class="h5 mb-0 text-success">$190</span>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FBER1512SSH2212" target="_blank" rel="noopener" class="btn btn-primary w-100 mt-3" data-affiliate="true" data-item-type="flight" data-platform="aviasales">
+                            Search Flights
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="mb-0">Moscow (SVO)</h6>
+                                <small class="text-muted">Russia</small>
+                            </div>
+                            <i class="fas fa-plane text-primary"></i>
+                            <div class="text-end">
+                                <h6 class="mb-0">Luxor (LXR)</h6>
+                                <small class="text-muted">Egypt</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">From</span>
+                            <span class="h5 mb-0 text-success">$280</span>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FSVO1512LXR2212" target="_blank" rel="noopener" class="btn btn-primary w-100 mt-3" data-affiliate="true" data-item-type="flight" data-platform="aviasales">
+                            Search Flights
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Flight Tips -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Tips for Booking Flights to Egypt</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-calendar-alt fa-lg"></i>
+                    </div>
+                    <h5>Best Time to Book</h5>
+                    <p class="text-muted">Book 2-3 months in advance for the best prices. Peak season is October-April, with higher prices during Christmas and Easter.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-plane-departure fa-lg"></i>
+                    </div>
+                    <h5>Main Airports</h5>
+                    <p class="text-muted">Cairo (CAI) is the main hub. Hurghada (HRG), Sharm El Sheikh (SSH), and Luxor (LXR) have direct international flights from Europe.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-tags fa-lg"></i>
+                    </div>
+                    <h5>Save Money</h5>
+                    <p class="text-muted">Fly midweek (Tue-Thu) for lower prices. Consider flying into Cairo and out of Luxor/Hurghada to save time and money.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Egyptian Airports -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Egyptian International Airports</h2>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <div class="card-body">
+                        <h4>CAI</h4>
+                        <h6>Cairo International</h6>
+                        <p class="text-muted small">Egypt's busiest airport. Hub for EgyptAir. Gateway to pyramids and Nile cruise.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <div class="card-body">
+                        <h4>HRG</h4>
+                        <h6>Hurghada International</h6>
+                        <p class="text-muted small">Red Sea gateway. Direct flights from Europe. Beaches and diving access.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <div class="card-body">
+                        <h4>SSH</h4>
+                        <h6>Sharm El Sheikh</h6>
+                        <p class="text-muted small">Sinai Peninsula. Popular with European charter flights. Snorkeling paradise.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <div class="card-body">
+                        <h4>LXR</h4>
+                        <h6>Luxor International</h6>
+                        <p class="text-muted small">Direct access to Valley of the Kings. Start point for Nile cruises.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Explore Egypt?</h2>
+        <p class="lead mb-4">Book your flight and start planning your Egyptian adventure today!</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'accommodations:accommodation_list' %}" class="btn btn-light btn-lg">
+                <i class="fas fa-hotel me-2"></i>Browse Hotels
+            </a>
+            <a href="{% url 'tours:tour_list' %}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-map-marked-alt me-2"></i>Explore Tours
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

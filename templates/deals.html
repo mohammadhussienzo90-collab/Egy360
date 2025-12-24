@@ -1,0 +1,410 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Egypt Travel Deals & Discounts | Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+.deals-hero {
+    background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+}
+.deal-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+.deal-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+.deal-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #ff6b00;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+.deal-badge.hot {
+    background: #dc3545;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+.countdown {
+    background: #1a1a1a;
+    color: #ffd700;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+.original-price {
+    text-decoration: line-through;
+    color: #999;
+}
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+.promo-code {
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.promo-code:hover {
+    border-color: var(--primary-color);
+    background: #fff;
+}
+.promo-code .copy-icon {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.promo-code:hover .copy-icon {
+    opacity: 1;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="deals-hero py-5">
+    <div class="container text-center text-white">
+        <h1 class="display-4 fw-bold mb-3">Egypt Travel Deals</h1>
+        <p class="lead mb-0">Exclusive discounts on hotels, tours, and flights to Egypt</p>
+    </div>
+</section>
+
+<!-- Filter Buttons -->
+<section class="py-4 bg-light sticky-top" style="z-index: 100;">
+    <div class="container">
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+            <button class="btn btn-outline-secondary filter-btn active" data-filter="all">
+                <i class="fas fa-th me-1"></i> All Deals
+            </button>
+            <button class="btn btn-outline-secondary filter-btn" data-filter="hotels">
+                <i class="fas fa-hotel me-1"></i> Hotels
+            </button>
+            <button class="btn btn-outline-secondary filter-btn" data-filter="tours">
+                <i class="fas fa-map me-1"></i> Tours
+            </button>
+            <button class="btn btn-outline-secondary filter-btn" data-filter="flights">
+                <i class="fas fa-plane me-1"></i> Flights
+            </button>
+            <button class="btn btn-outline-secondary filter-btn" data-filter="packages">
+                <i class="fas fa-gift me-1"></i> Packages
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Deals -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="mb-4"><i class="fas fa-fire text-danger me-2"></i>Hot Deals</h2>
+        <div class="row g-4">
+            <!-- Deal 1: Hotel -->
+            <div class="col-md-6 col-lg-4 deal-item" data-category="hotels">
+                <div class="card deal-card h-100 position-relative">
+                    <span class="deal-badge hot">-35% OFF</span>
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=250&fit=crop" class="card-img-top" alt="Luxury Cairo Hotel">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-primary">Hotel</span>
+                            <div class="countdown" id="countdown1">
+                                <i class="fas fa-clock me-1"></i>Ends in 2d 14h
+                            </div>
+                        </div>
+                        <h5 class="card-title">5-Star Cairo Marriott</h5>
+                        <p class="text-muted small mb-3">Zamalek, Cairo - Nile View Rooms</p>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="original-price">$250</span>
+                                <span class="h4 text-success ms-2 mb-0">$162</span>
+                                <small class="text-muted">/night</small>
+                            </div>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fhotellook.com%2Fcairo" target="_blank" rel="noopener" class="btn btn-primary w-100" data-affiliate="true" data-item-type="accommodation" data-platform="hotellook">
+                            Book Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deal 2: Tour -->
+            <div class="col-md-6 col-lg-4 deal-item" data-category="tours">
+                <div class="card deal-card h-100 position-relative">
+                    <span class="deal-badge">-25% OFF</span>
+                    <img src="https://images.unsplash.com/photo-1539768942893-daf53e448371?w=400&h=250&fit=crop" class="card-img-top" alt="Pyramids Tour">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-success">Tour</span>
+                            <div class="countdown">
+                                <i class="fas fa-clock me-1"></i>Ends in 5d 8h
+                            </div>
+                        </div>
+                        <h5 class="card-title">Pyramids & Sphinx Full Day</h5>
+                        <p class="text-muted small mb-3">Private tour with Egyptologist guide</p>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="original-price">$120</span>
+                                <span class="h4 text-success ms-2 mb-0">$89</span>
+                                <small class="text-muted">/person</small>
+                            </div>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fwww.viator.com%2FCairo-tours" target="_blank" rel="noopener" class="btn btn-primary w-100" data-affiliate="true" data-item-type="tour" data-platform="viator">
+                            Book Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deal 3: Flight -->
+            <div class="col-md-6 col-lg-4 deal-item" data-category="flights">
+                <div class="card deal-card h-100 position-relative">
+                    <span class="deal-badge hot">-40% OFF</span>
+                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=250&fit=crop" class="card-img-top" alt="Flight to Egypt">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-info">Flight</span>
+                            <div class="countdown">
+                                <i class="fas fa-clock me-1"></i>Ends in 1d 6h
+                            </div>
+                        </div>
+                        <h5 class="card-title">London to Cairo Roundtrip</h5>
+                        <p class="text-muted small mb-3">EgyptAir Direct - Jan-Feb 2025</p>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="original-price">$420</span>
+                                <span class="h4 text-success ms-2 mb-0">$249</span>
+                                <small class="text-muted">roundtrip</small>
+                            </div>
+                        </div>
+                        <a href="/flights/" class="btn btn-primary w-100">
+                            Search Flights
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deal 4: Package -->
+            <div class="col-md-6 col-lg-4 deal-item" data-category="packages">
+                <div class="card deal-card h-100 position-relative">
+                    <span class="deal-badge">-30% OFF</span>
+                    <img src="https://images.unsplash.com/photo-1568322503290-23f42c33aa57?w=400&h=250&fit=crop" class="card-img-top" alt="Nile Cruise Package">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-warning text-dark">Package</span>
+                            <div class="countdown">
+                                <i class="fas fa-clock me-1"></i>Ends in 7d
+                            </div>
+                        </div>
+                        <h5 class="card-title">7-Day Nile Cruise Package</h5>
+                        <p class="text-muted small mb-3">Cairo + Luxor + Aswan with flights</p>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="original-price">$1,499</span>
+                                <span class="h4 text-success ms-2 mb-0">$1,049</span>
+                                <small class="text-muted">/person</small>
+                            </div>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fwww.viator.com%2FEgypt-tours" target="_blank" rel="noopener" class="btn btn-primary w-100" data-affiliate="true" data-item-type="tour" data-platform="viator">
+                            View Package
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deal 5: Hotel -->
+            <div class="col-md-6 col-lg-4 deal-item" data-category="hotels">
+                <div class="card deal-card h-100 position-relative">
+                    <span class="deal-badge">-20% OFF</span>
+                    <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=400&h=250&fit=crop" class="card-img-top" alt="Hurghada Resort">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-primary">Hotel</span>
+                            <div class="countdown">
+                                <i class="fas fa-clock me-1"></i>Ends in 10d
+                            </div>
+                        </div>
+                        <h5 class="card-title">Hurghada Beach Resort</h5>
+                        <p class="text-muted small mb-3">All-inclusive beachfront resort</p>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="original-price">$180</span>
+                                <span class="h4 text-success ms-2 mb-0">$144</span>
+                                <small class="text-muted">/night</small>
+                            </div>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fhotellook.com%2Fhurghada" target="_blank" rel="noopener" class="btn btn-primary w-100" data-affiliate="true" data-item-type="accommodation" data-platform="hotellook">
+                            Book Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deal 6: Tour -->
+            <div class="col-md-6 col-lg-4 deal-item" data-category="tours">
+                <div class="card deal-card h-100 position-relative">
+                    <span class="deal-badge">-15% OFF</span>
+                    <img src="https://images.unsplash.com/photo-1553913861-c0a686d4c7d8?w=400&h=250&fit=crop" class="card-img-top" alt="Abu Simbel">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-success">Tour</span>
+                            <div class="countdown">
+                                <i class="fas fa-clock me-1"></i>Ends in 4d
+                            </div>
+                        </div>
+                        <h5 class="card-title">Abu Simbel Day Trip</h5>
+                        <p class="text-muted small mb-3">From Aswan with guide & lunch</p>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="original-price">$85</span>
+                                <span class="h4 text-success ms-2 mb-0">$72</span>
+                                <small class="text-muted">/person</small>
+                            </div>
+                        </div>
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=100&u=https%3A%2F%2Fwww.viator.com%2FAswan-tours" target="_blank" rel="noopener" class="btn btn-primary w-100" data-affiliate="true" data-item-type="tour" data-platform="viator">
+                            Book Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Promo Codes Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-2">Exclusive Promo Codes</h2>
+        <p class="text-center text-muted mb-5">Use these codes at checkout for extra savings</p>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Logo_of_Booking.com.svg/200px-Logo_of_Booking.com.svg.png" alt="Booking.com" style="height: 30px; object-fit: contain;" class="mb-3">
+                        <h6 class="mb-2">10% Off First Booking</h6>
+                        <p class="text-muted small mb-3">Valid for new Booking.com users on Egypt hotels</p>
+                        <div class="promo-code d-inline-block" onclick="copyCode(this, 'EGYPT10')">
+                            EGYPT10 <i class="fas fa-copy copy-icon ms-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Viator_2019_Logo.svg/200px-Viator_2019_Logo.svg.png" alt="Viator" style="height: 30px; object-fit: contain;" class="mb-3">
+                        <h6 class="mb-2">$15 Off $100+ Tours</h6>
+                        <p class="text-muted small mb-3">Valid on any Egypt tour over $100</p>
+                        <div class="promo-code d-inline-block" onclick="copyCode(this, 'EXPLORE15')">
+                            EXPLORE15 <i class="fas fa-copy copy-icon ms-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shield-alt fa-2x text-primary mb-3"></i>
+                        <h6 class="mb-2">5% Off Travel Insurance</h6>
+                        <p class="text-muted small mb-3">Valid on all World Nomads policies</p>
+                        <div class="promo-code d-inline-block" onclick="copyCode(this, 'SAFE5')">
+                            SAFE5 <i class="fas fa-copy copy-icon ms-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter for Deals -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h3 class="mb-2">Get Exclusive Deals in Your Inbox</h3>
+                <p class="mb-0 opacity-75">Be the first to know about flash sales and limited-time offers</p>
+            </div>
+            <div class="col-lg-6">
+                <form id="deals-newsletter" class="d-flex gap-2">
+                    <input type="email" class="form-control form-control-lg" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-warning btn-lg px-4">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Filter functionality
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // Update active state
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const filter = this.dataset.filter;
+        document.querySelectorAll('.deal-item').forEach(item => {
+            if (filter === 'all' || item.dataset.category === filter) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
+
+// Copy promo code
+function copyCode(element, code) {
+    navigator.clipboard.writeText(code).then(() => {
+        const originalText = element.innerHTML;
+        element.innerHTML = '<i class="fas fa-check text-success me-2"></i>Copied!';
+        element.style.borderColor = '#198754';
+        setTimeout(() => {
+            element.innerHTML = originalText;
+            element.style.borderColor = '';
+        }, 2000);
+    });
+}
+
+// Newsletter form
+document.getElementById('deals-newsletter').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = this.querySelector('input[type="email"]').value;
+
+    fetch('/api/newsletter/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            this.innerHTML = '<p class="mb-0 text-warning"><i class="fas fa-check-circle me-2"></i>' + data.message + '</p>';
+        }
+    });
+});
+</script>
+{% endblock %}

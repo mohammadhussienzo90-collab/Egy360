@@ -1,0 +1,404 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Travel Insurance for Egypt - Protect Your Trip | Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+.insurance-hero {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+}
+.coverage-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+.plan-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid transparent;
+}
+.plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+.plan-card.featured {
+    border-color: #0d6efd;
+}
+.plan-card.featured .card-header {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    color: white;
+}
+.badge-popular {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: #ff6b00;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="insurance-hero py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 text-white">
+                <h1 class="display-4 fw-bold mb-3">Travel Insurance for Egypt</h1>
+                <p class="lead mb-4">Protect your Egyptian adventure with comprehensive travel insurance. Coverage for medical emergencies, trip cancellation, lost luggage, and more.</p>
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-warning me-2 fa-lg"></i>
+                            <span>Medical Coverage up to $500,000</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-warning me-2 fa-lg"></i>
+                            <span>24/7 Emergency Assistance</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-warning me-2 fa-lg"></i>
+                            <span>Trip Cancellation Protection</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-warning me-2 fa-lg"></i>
+                            <span>Adventure Sports Covered</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="#compare-plans" class="btn btn-warning btn-lg">
+                    <i class="fas fa-shield-alt me-2"></i>Compare Plans
+                </a>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block text-center">
+                <i class="fas fa-shield-virus" style="font-size: 200px; opacity: 0.2;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Insurance Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Why You Need Travel Insurance for Egypt</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="coverage-icon bg-primary bg-opacity-10 rounded-circle mx-auto mb-3">
+                        <i class="fas fa-hospital text-primary"></i>
+                    </div>
+                    <h5>Medical Emergencies</h5>
+                    <p class="text-muted">Healthcare in Egypt can be expensive for tourists. Insurance covers hospital stays, doctor visits, and emergency evacuation.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="coverage-icon bg-success bg-opacity-10 rounded-circle mx-auto mb-3">
+                        <i class="fas fa-suitcase-rolling text-success"></i>
+                    </div>
+                    <h5>Lost Luggage</h5>
+                    <p class="text-muted">Protect your belongings during flights and transit. Get reimbursed for delayed, damaged, or lost luggage.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="coverage-icon bg-warning bg-opacity-10 rounded-circle mx-auto mb-3">
+                        <i class="fas fa-calendar-times text-warning"></i>
+                    </div>
+                    <h5>Trip Cancellation</h5>
+                    <p class="text-muted">Unexpected events happen. Get reimbursed for non-refundable trip costs if you need to cancel.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Compare Plans Section -->
+<section id="compare-plans" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-2">Compare Insurance Plans</h2>
+        <p class="text-center text-muted mb-5">Choose the right coverage for your Egypt trip</p>
+
+        <div class="row g-4">
+            <!-- Basic Plan -->
+            <div class="col-lg-4">
+                <div class="card plan-card h-100">
+                    <div class="card-header bg-light text-center py-4">
+                        <h4 class="mb-1">Basic</h4>
+                        <p class="text-muted mb-0">Essential coverage</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <span class="h2 fw-bold">$4</span>
+                            <span class="text-muted">/day</span>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Medical: $50,000
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Emergency Evacuation: $100,000
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Lost Luggage: $500
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Trip Delay: $100/day
+                            </li>
+                            <li class="mb-3 text-muted">
+                                <i class="fas fa-times text-danger me-2"></i>
+                                Trip Cancellation
+                            </li>
+                            <li class="mb-3 text-muted">
+                                <i class="fas fa-times text-danger me-2"></i>
+                                Adventure Sports
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-white border-0 pb-4">
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=48&u=https%3A%2F%2Fwww.worldnomads.com%2Ftravel-insurance%2Fegypt" target="_blank" rel="noopener" class="btn btn-outline-primary w-100" data-affiliate="true" data-item-type="insurance" data-platform="worldnomads">
+                            Get Quote
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standard Plan (Featured) -->
+            <div class="col-lg-4">
+                <div class="card plan-card featured h-100 position-relative">
+                    <span class="badge-popular">Most Popular</span>
+                    <div class="card-header text-center py-4">
+                        <h4 class="mb-1">Standard</h4>
+                        <p class="mb-0 opacity-75">Recommended coverage</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <span class="h2 fw-bold">$7</span>
+                            <span class="text-muted">/day</span>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Medical: $100,000
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Emergency Evacuation: $300,000
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Lost Luggage: $1,500
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Trip Delay: $200/day
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Trip Cancellation: $2,500
+                            </li>
+                            <li class="mb-3 text-muted">
+                                <i class="fas fa-times text-danger me-2"></i>
+                                Adventure Sports
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-white border-0 pb-4">
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=48&u=https%3A%2F%2Fwww.worldnomads.com%2Ftravel-insurance%2Fegypt" target="_blank" rel="noopener" class="btn btn-primary w-100" data-affiliate="true" data-item-type="insurance" data-platform="worldnomads">
+                            Get Quote
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="col-lg-4">
+                <div class="card plan-card h-100">
+                    <div class="card-header bg-light text-center py-4">
+                        <h4 class="mb-1">Premium</h4>
+                        <p class="text-muted mb-0">Complete protection</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <span class="h2 fw-bold">$12</span>
+                            <span class="text-muted">/day</span>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Medical: $500,000
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Emergency Evacuation: $500,000
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Lost Luggage: $3,000
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Trip Delay: $300/day
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Trip Cancellation: $10,000
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Adventure Sports
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-white border-0 pb-4">
+                        <a href="https://tp.media/click?shmarker=477897&campaign_id=48&u=https%3A%2F%2Fwww.worldnomads.com%2Ftravel-insurance%2Fegypt" target="_blank" rel="noopener" class="btn btn-outline-primary w-100" data-affiliate="true" data-item-type="insurance" data-platform="worldnomads">
+                            Get Quote
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <p class="text-muted small">Prices are estimates. Final quote based on age, trip duration, and coverage selected.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Egypt-Specific Coverage -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Coverage for Egypt Activities</h2>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-swimmer fa-2x text-primary mb-3"></i>
+                        <h6>Red Sea Diving</h6>
+                        <p class="text-muted small mb-0">Scuba diving and snorkeling in Hurghada, Sharm El Sheikh covered under Premium plan.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-mountain fa-2x text-success mb-3"></i>
+                        <h6>Desert Safaris</h6>
+                        <p class="text-muted small mb-0">Camel riding, quad biking, and desert camping adventures included.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-ship fa-2x text-info mb-3"></i>
+                        <h6>Nile Cruises</h6>
+                        <p class="text-muted small mb-0">River cruise coverage between Luxor and Aswan included in all plans.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-hot-air-balloon fa-2x text-warning mb-3"></i>
+                        <h6>Hot Air Balloons</h6>
+                        <p class="text-muted small mb-0">Luxor balloon rides covered under Premium adventure sports.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Frequently Asked Questions</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="insuranceFaq">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Do I need travel insurance for Egypt?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#insuranceFaq">
+                            <div class="accordion-body">
+                                While not legally required, travel insurance is highly recommended. Medical care for tourists in Egypt can be expensive, and evacuation costs can reach tens of thousands of dollars. Insurance provides peace of mind for your trip.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Does insurance cover diving in the Red Sea?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#insuranceFaq">
+                            <div class="accordion-body">
+                                Basic scuba diving (up to 30m) is covered under Standard and Premium plans. For technical diving or deeper dives, you may need additional coverage. Always check your policy details.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                What about pre-existing medical conditions?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#insuranceFaq">
+                            <div class="accordion-body">
+                                Coverage for pre-existing conditions varies by provider. Some offer waivers if you purchase within 14 days of your initial trip deposit. Disclose all conditions when purchasing to ensure proper coverage.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                Can I buy insurance after arriving in Egypt?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#insuranceFaq">
+                            <div class="accordion-body">
+                                Some providers allow purchase after departure, but coverage may be limited. Trip cancellation coverage requires purchase before departure. It's best to buy insurance when you book your trip.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-3">Protect Your Egyptian Adventure</h2>
+        <p class="lead mb-4">Don't let unexpected events ruin your trip. Get covered today!</p>
+        <a href="https://tp.media/click?shmarker=477897&campaign_id=48&u=https%3A%2F%2Fwww.worldnomads.com%2Ftravel-insurance%2Fegypt" target="_blank" rel="noopener" class="btn btn-warning btn-lg" data-affiliate="true" data-item-type="insurance" data-platform="worldnomads">
+            <i class="fas fa-shield-alt me-2"></i>Get Your Quote Now
+        </a>
+    </div>
+</section>
+{% endblock %}

@@ -157,6 +157,33 @@ def faq(request):
 
 
 # Error handlers
+def flights(request):
+    """Flights page with Travelpayouts search widget"""
+    context = {
+        'page_title': 'Flights to Egypt - Find Cheap Airfare | Egy360',
+        'meta_description': 'Compare flight prices from 100+ airlines to Egypt. Find cheap flights to Cairo, Luxor, Hurghada, Sharm El Sheikh and more.',
+    }
+    return render(request, 'flights.html', context)
+
+
+def insurance(request):
+    """Travel insurance page with affiliate links"""
+    context = {
+        'page_title': 'Travel Insurance for Egypt - Protect Your Trip | Egy360',
+        'meta_description': 'Get comprehensive travel insurance for your Egypt trip. Coverage for medical emergencies, trip cancellation, lost luggage, and adventure activities.',
+    }
+    return render(request, 'insurance.html', context)
+
+
+def deals(request):
+    """Deals and discounts page"""
+    context = {
+        'page_title': 'Egypt Travel Deals & Discounts | Egy360',
+        'meta_description': 'Find the best deals on Egypt hotels, tours, and flights. Exclusive discounts and promo codes for your Egyptian adventure.',
+    }
+    return render(request, 'deals.html', context)
+
+
 def error_404(request, exception):
     """Custom 404 error page"""
     return render(request, '404.html', status=404)

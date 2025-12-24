@@ -14,6 +14,9 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('faq/', views.faq, name='faq'),
+    path('flights/', views.flights, name='flights'),
+    path('insurance/', views.insurance, name='insurance'),
+    path('deals/', views.deals, name='deals'),
 
     # Legal pages
     path('privacy/', views.privacy_policy, name='privacy'),
