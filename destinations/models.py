@@ -44,6 +44,7 @@ class City(models.Model):
 
     # Images
     main_image = models.ImageField(upload_to='cities/', null=True, blank=True)
+    image_url = models.URLField(max_length=500, blank=True, null=True, help_text="External image URL (Unsplash, etc.)")
 
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)

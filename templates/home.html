@@ -252,7 +252,9 @@
             <div class="destinations-scroll">
                 {% for city in popular_destinations %}
                 <a href="{% url 'accommodations:by-city' city.name %}" class="destination-card-modern">
-                    {% if city.main_image %}
+                    {% if city.image_url %}
+                    <img src="{{ city.image_url }}" alt="{{ city.name }}" loading="lazy">
+                    {% elif city.main_image %}
                     <img src="{{ city.main_image.url }}" alt="{{ city.name }}" loading="lazy">
                     {% else %}
                     <img src="https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=400&q=80" alt="{{ city.name }}" loading="lazy">
