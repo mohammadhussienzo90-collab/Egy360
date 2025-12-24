@@ -1,4 +1,4 @@
-# FORCE DEPLOY Dec 23 2024 - Security, caching, transportation, contact fixes
+# FORCE DEPLOY Dec 24 2024 - Fix missing {% load static %} in base.html
 [build]
 builder = "nixpacks"
 
