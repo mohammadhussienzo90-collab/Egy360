@@ -5,12 +5,16 @@
 {% block description %}Explore Egypt with our curated tours. Pyramids, Nile cruises, desert safaris, and more. Book verified tour operators with the best prices.{% endblock %}
 
 {% block content %}
-<!-- Page Header -->
-<section class="bg-primary text-white py-4">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h1 class="mb-2">
+<!-- Hero Header -->
+<section class="listing-hero listing-hero-tours">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative">
+        <div class="row align-items-center py-5">
+            <div class="col-lg-8">
+                <span class="hero-badge">
+                    <i class="fas fa-star me-2"></i>Curated Experiences with Expert Guides
+                </span>
+                <h1 class="listing-title">
                     {% if type_display %}
                         {{ type_display }} Tours
                     {% elif destination %}
@@ -19,289 +23,294 @@
                         Tours & Experiences
                     {% endif %}
                 </h1>
-                <p class="mb-0 opacity-75">
-                    <i class="fas fa-star me-1"></i> Curated experiences with verified tour operators
+                <p class="listing-subtitle">
+                    Unforgettable adventures from pyramids to desert safaris
                 </p>
             </div>
-            <div class="col-md-4 text-md-end">
-                <span class="badge bg-warning text-dark fs-6">{{ total_results }} tour{{ total_results|pluralize }} found</span>
+            <div class="col-lg-4 text-lg-end">
+                <div class="results-badge">
+                    <span class="results-count">{{ total_results }}</span>
+                    <span class="results-label">tour{{ total_results|pluralize }} available</span>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Partner Tours Banner -->
-<div class="container mt-4">
-    <div class="card border-0 shadow-sm bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        <div class="card-body text-white py-4">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h4 class="mb-2"><i class="fas fa-globe-africa me-2"></i>Looking for More Tours?</h4>
-                    <p class="mb-0 opacity-75">Explore thousands of Egypt tours and activities from our trusted partners at GetYourGuide and Viator.</p>
-                </div>
-                <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                    <a href="https://tp.media/click?shmarker=477897&pression_mode=fix&trs=262019&campaign_id=97&searchType=1&city=Cairo,Egypt"
-                       target="_blank" rel="noopener" class="btn btn-warning btn-lg">
-                        <i class="fas fa-external-link-alt me-2"></i>Browse on Viator
-                    </a>
-                </div>
+<div class="container mt-n4 position-relative" style="z-index: 10;">
+    <div class="partner-banner">
+        <div class="partner-content">
+            <div class="partner-icon">
+                <i class="fas fa-globe-africa"></i>
+            </div>
+            <div class="partner-text">
+                <h4>Looking for More Tours?</h4>
+                <p>Explore thousands of Egypt tours from our trusted partners</p>
             </div>
         </div>
+        <a href="https://tp.media/click?shmarker=477897&pression_mode=fix&trs=262019&campaign_id=97&searchType=1&city=Cairo,Egypt"
+           target="_blank" rel="noopener" class="btn-partner">
+            <i class="fas fa-external-link-alt me-2"></i>Browse on Viator
+        </a>
     </div>
 </div>
 
-<div class="container py-4">
+<div class="container py-5">
     <!-- Mobile Filter Toggle -->
-    <div class="d-lg-none mb-3">
-        <button class="btn btn-outline-primary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false">
-            <i class="fas fa-filter me-2"></i>Show Filters
+    <div class="d-lg-none mb-4">
+        <button class="btn btn-filter-toggle w-100" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false">
+            <i class="fas fa-sliders-h me-2"></i>Filters & Sort
         </button>
     </div>
 
-    <div class="row">
+    <div class="row g-4">
         <!-- Filters Sidebar -->
-        <div class="col-lg-3 mb-4">
+        <div class="col-lg-3">
             <div class="collapse d-lg-block" id="filterCollapse">
-            <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
-                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filters</h5>
-                    <button type="button" class="btn-close d-lg-none" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-label="Close"></button>
-                </div>
-                <div class="card-body">
-                    <form method="get" id="filter-form">
-                        <!-- Search -->
-                        <div class="mb-3">
-                            <label for="q" class="form-label fw-bold">Search</label>
-                            <input type="text" class="form-control" id="q" name="q"
-                                   value="{{ current_filters.q }}" placeholder="Tour name or destination...">
-                        </div>
+                <div class="filter-card sticky-top" style="top: 100px;">
+                    <div class="filter-header">
+                        <h5><i class="fas fa-filter me-2"></i>Filters</h5>
+                        <button type="button" class="btn-close d-lg-none" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-label="Close"></button>
+                    </div>
+                    <div class="filter-body">
+                        <form method="get" id="filter-form">
+                            <!-- Search -->
+                            <div class="filter-group">
+                                <label class="filter-label">Search</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" class="form-control" id="q" name="q"
+                                           value="{{ current_filters.q }}" placeholder="Tour name...">
+                                </div>
+                            </div>
 
-                        <!-- Tour Type -->
-                        <div class="mb-3">
-                            <label for="type" class="form-label fw-bold">Tour Type</label>
-                            <select class="form-select" name="type" id="type">
-                                <option value="">All Types</option>
-                                {% for type_code, type_name in tour_types %}
-                                <option value="{{ type_code }}" {% if current_filters.type == type_code %}selected{% endif %}>
-                                    {{ type_name }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </div>
+                            <!-- Tour Type -->
+                            <div class="filter-group">
+                                <label class="filter-label">Tour Type</label>
+                                <select class="form-select" name="type" id="type">
+                                    <option value="">All Types</option>
+                                    {% for type_code, type_name in tour_types %}
+                                    <option value="{{ type_code }}" {% if current_filters.type == type_code %}selected{% endif %}>
+                                        {{ type_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-                        <!-- Difficulty -->
-                        <div class="mb-3">
-                            <label for="difficulty" class="form-label fw-bold">Difficulty Level</label>
-                            <select class="form-select" name="difficulty" id="difficulty">
-                                <option value="">Any Level</option>
-                                {% for diff_code, diff_name in difficulty_levels %}
-                                <option value="{{ diff_code }}" {% if current_filters.difficulty == diff_code %}selected{% endif %}>
-                                    {{ diff_name }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </div>
+                            <!-- Difficulty -->
+                            <div class="filter-group">
+                                <label class="filter-label">Difficulty Level</label>
+                                <div class="difficulty-options">
+                                    {% for diff_code, diff_name in difficulty_levels %}
+                                    <label class="difficulty-option {% if current_filters.difficulty == diff_code %}active{% endif %}">
+                                        <input type="radio" name="difficulty" value="{{ diff_code }}" {% if current_filters.difficulty == diff_code %}checked{% endif %}>
+                                        <span>{{ diff_name }}</span>
+                                    </label>
+                                    {% endfor %}
+                                    <label class="difficulty-option {% if not current_filters.difficulty %}active{% endif %}">
+                                        <input type="radio" name="difficulty" value="" {% if not current_filters.difficulty %}checked{% endif %}>
+                                        <span>Any</span>
+                                    </label>
+                                </div>
+                            </div>
 
-                        <!-- Duration -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Duration (Days)</label>
-                            <div class="row g-2">
-                                <div class="col-6">
+                            <!-- Duration -->
+                            <div class="filter-group">
+                                <label class="filter-label">Duration (Days)</label>
+                                <div class="duration-inputs">
                                     <input type="number" class="form-control" name="min_days"
                                            value="{{ current_filters.min_days }}" placeholder="Min" min="1">
-                                </div>
-                                <div class="col-6">
+                                    <span class="duration-divider">to</span>
                                     <input type="number" class="form-control" name="max_days"
                                            value="{{ current_filters.max_days }}" placeholder="Max" min="1">
                                 </div>
+                                {% if duration_range.min_days and duration_range.max_days %}
+                                <small class="text-muted">Range: {{ duration_range.min_days }} - {{ duration_range.max_days }} days</small>
+                                {% endif %}
                             </div>
-                            {% if duration_range.min_days and duration_range.max_days %}
-                            <small class="text-muted">Range: {{ duration_range.min_days }} - {{ duration_range.max_days }} days</small>
-                            {% endif %}
-                        </div>
 
-                        <!-- Price Range -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Price per Person (USD)</label>
-                            <div class="row g-2">
-                                <div class="col-6">
-                                    <input type="number" class="form-control" name="min_price"
-                                           value="{{ current_filters.min_price }}" placeholder="Min" min="0">
+                            <!-- Price Range -->
+                            <div class="filter-group">
+                                <label class="filter-label">Price per Person</label>
+                                <div class="price-inputs">
+                                    <div class="price-input">
+                                        <span class="currency">$</span>
+                                        <input type="number" class="form-control" name="min_price"
+                                               value="{{ current_filters.min_price }}" placeholder="Min" min="0">
+                                    </div>
+                                    <span class="price-divider">—</span>
+                                    <div class="price-input">
+                                        <span class="currency">$</span>
+                                        <input type="number" class="form-control" name="max_price"
+                                               value="{{ current_filters.max_price }}" placeholder="Max" min="0">
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <input type="number" class="form-control" name="max_price"
-                                           value="{{ current_filters.max_price }}" placeholder="Max" min="0">
-                                </div>
+                                {% if price_range.min_price and price_range.max_price %}
+                                <small class="text-muted">Range: ${{ price_range.min_price|floatformat:0 }} - ${{ price_range.max_price|floatformat:0 }}</small>
+                                {% endif %}
                             </div>
-                            {% if price_range.min_price and price_range.max_price %}
-                            <small class="text-muted">Range: ${{ price_range.min_price|floatformat:0 }} - ${{ price_range.max_price|floatformat:0 }}</small>
+
+                            <!-- Departure City -->
+                            {% if departure_cities %}
+                            <div class="filter-group">
+                                <label class="filter-label">Departure City</label>
+                                <select class="form-select" name="departure" id="departure">
+                                    <option value="">Any City</option>
+                                    {% for city in departure_cities %}
+                                    <option value="{{ city }}" {% if current_filters.departure == city %}selected{% endif %}>
+                                        {{ city }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                             {% endif %}
-                        </div>
 
-                        <!-- Departure City -->
-                        {% if departure_cities %}
-                        <div class="mb-3">
-                            <label for="departure" class="form-label fw-bold">Departure City</label>
-                            <select class="form-select" name="departure" id="departure">
-                                <option value="">Any City</option>
-                                {% for city in departure_cities %}
-                                <option value="{{ city }}" {% if current_filters.departure == city %}selected{% endif %}>
-                                    {{ city }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        {% endif %}
-
-                        <button type="submit" class="btn btn-primary w-100 mb-2">
-                            <i class="fas fa-search me-2"></i>Apply Filters
-                        </button>
-                        <a href="{% url 'tours:list' %}" class="btn btn-outline-secondary w-100">
-                            <i class="fas fa-times me-2"></i>Clear All
-                        </a>
-                    </form>
+                            <div class="filter-actions">
+                                <button type="submit" class="btn btn-apply">
+                                    <i class="fas fa-search me-2"></i>Apply Filters
+                                </button>
+                                <a href="{% url 'tours:list' %}" class="btn btn-clear">
+                                    <i class="fas fa-times me-2"></i>Clear
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-            </div><!-- End filterCollapse -->
         </div>
 
         <!-- Results -->
         <div class="col-lg-9">
-            <!-- Sort and View Options -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body py-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <p class="mb-0">
-                                Showing <strong>{{ page_obj.start_index|default:1 }}-{{ page_obj.end_index|default:total_results }}</strong>
-                                of <strong>{{ total_results }}</strong> results
-                            </p>
-                        </div>
-                        <div class="col-md-6 text-md-end">
-                            <label class="me-2">Sort by:</label>
-                            <select class="form-select form-select-sm d-inline-block w-auto" id="sort-select" onchange="updateSort(this.value)">
-                                <option value="" {% if not current_filters.sort %}selected{% endif %}>Featured</option>
-                                <option value="price_low" {% if current_filters.sort == "price_low" %}selected{% endif %}>Price: Low to High</option>
-                                <option value="price_high" {% if current_filters.sort == "price_high" %}selected{% endif %}>Price: High to Low</option>
-                                <option value="rating" {% if current_filters.sort == "rating" %}selected{% endif %}>Highest Rated</option>
-                                <option value="duration_short" {% if current_filters.sort == "duration_short" %}selected{% endif %}>Shortest Duration</option>
-                                <option value="duration_long" {% if current_filters.sort == "duration_long" %}selected{% endif %}>Longest Duration</option>
-                                <option value="popular" {% if current_filters.sort == "popular" %}selected{% endif %}>Most Popular</option>
-                            </select>
-                        </div>
-                    </div>
+            <!-- Sort Bar -->
+            <div class="sort-bar">
+                <div class="sort-info">
+                    Showing <strong>{{ page_obj.start_index|default:1 }}-{{ page_obj.end_index|default:total_results }}</strong>
+                    of <strong>{{ total_results }}</strong> tours
+                </div>
+                <div class="sort-options">
+                    <label>Sort:</label>
+                    <select class="form-select" id="sort-select" onchange="updateSort(this.value)">
+                        <option value="" {% if not current_filters.sort %}selected{% endif %}>Featured</option>
+                        <option value="price_low" {% if current_filters.sort == "price_low" %}selected{% endif %}>Price: Low to High</option>
+                        <option value="price_high" {% if current_filters.sort == "price_high" %}selected{% endif %}>Price: High to Low</option>
+                        <option value="rating" {% if current_filters.sort == "rating" %}selected{% endif %}>Highest Rated</option>
+                        <option value="duration_short" {% if current_filters.sort == "duration_short" %}selected{% endif %}>Shortest</option>
+                        <option value="duration_long" {% if current_filters.sort == "duration_long" %}selected{% endif %}>Longest</option>
+                        <option value="popular" {% if current_filters.sort == "popular" %}selected{% endif %}>Most Popular</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Tour Cards -->
-            <div class="row g-4">
+            <!-- Tour Cards Grid -->
+            <div class="tour-grid">
                 {% for tour in tours %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm tour-card">
-                        <div class="position-relative">
-                            {% if tour.main_image %}
-                            <img src="{{ tour.main_image.url }}" class="card-img-top" alt="{{ tour.name }}" style="height: 200px; object-fit: cover;">
-                            {% else %}
-                            <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=400&q=80"
-                                 class="card-img-top" alt="{{ tour.name }}" style="height: 200px; object-fit: cover;">
-                            {% endif %}
+                <div class="tour-card">
+                    <div class="card-image">
+                        {% if tour.image_url %}
+                        <img src="{{ tour.image_url }}" alt="{{ tour.name }}" loading="lazy">
+                        {% elif tour.main_image %}
+                        <img src="{{ tour.main_image.url }}" alt="{{ tour.name }}" loading="lazy">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=600&q=80" alt="{{ tour.name }}" loading="lazy">
+                        {% endif %}
 
-                            <span class="position-absolute top-0 start-0 m-2 badge bg-primary">
-                                {{ tour.duration_days }} Day{{ tour.duration_days|pluralize }}
+                        <div class="card-badges">
+                            <span class="badge badge-duration">
+                                <i class="fas fa-clock"></i> {{ tour.duration_days }} Day{{ tour.duration_days|pluralize }}
                             </span>
-
                             {% if tour.is_featured %}
-                            <span class="position-absolute top-0 end-0 m-2 badge bg-warning text-dark">
-                                <i class="fas fa-star me-1"></i>Featured
-                            </span>
-                            {% endif %}
-
-                            {% if tour.average_rating %}
-                            <span class="position-absolute bottom-0 end-0 m-2 badge bg-success">
-                                {{ tour.average_rating }} <i class="fas fa-star"></i>
-                            </span>
+                            <span class="badge badge-featured"><i class="fas fa-star"></i></span>
                             {% endif %}
                         </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ tour.name }}</h5>
-                            <p class="text-muted small mb-2">
-                                <i class="fas fa-map-marker-alt me-1"></i>{{ tour.departure_city }}
-                                <span class="badge bg-light text-dark ms-2">{{ tour.get_tour_type_display }}</span>
-                            </p>
-                            <p class="card-text text-muted small flex-grow-1">
-                                {{ tour.description|truncatewords:20 }}
-                            </p>
-                            <div class="d-flex align-items-center mb-3">
-                                <span class="me-3"><i class="fas fa-users text-primary me-1"></i>Max {{ tour.max_group_size }}</span>
-                                <span class="badge bg-light text-dark">{{ tour.get_difficulty_level_display }}</span>
+
+                        {% if tour.average_rating %}
+                        <div class="card-rating">
+                            <span class="rating-score">{{ tour.average_rating }}</span>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        {% endif %}
+
+                        <div class="card-overlay">
+                            <a href="{% url 'tours:detail' tour.slug %}" class="btn-quick-view">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-meta">
+                            <span class="meta-location">
+                                <i class="fas fa-map-marker-alt"></i> {{ tour.departure_city }}
+                            </span>
+                            <span class="meta-type">{{ tour.get_tour_type_display }}</span>
+                        </div>
+
+                        <h3 class="card-title">
+                            <a href="{% url 'tours:detail' tour.slug %}">{{ tour.name }}</a>
+                        </h3>
+
+                        <p class="card-description">{{ tour.description|truncatewords:15 }}</p>
+
+                        <div class="card-features">
+                            <span class="feature">
+                                <i class="fas fa-users"></i> Max {{ tour.max_group_size }}
+                            </span>
+                            <span class="feature">
+                                <i class="fas fa-signal"></i> {{ tour.get_difficulty_level_display }}
+                            </span>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="card-price">
+                                <span class="price-from">From</span>
+                                <span class="price-amount">${{ tour.price_per_person|floatformat:0 }}</span>
+                                <span class="price-per">/person</span>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
-                                <div>
-                                    <small class="text-muted">From</small>
-                                    <span class="fs-5 fw-bold text-primary">${{ tour.price_per_person|floatformat:0 }}</span>
-                                    <small class="text-muted">/person</small>
-                                </div>
-                                <a href="{% url 'tours:detail' tour.slug %}" class="btn btn-primary btn-sm">
-                                    View Details
-                                </a>
-                            </div>
+                            <a href="{% url 'tours:detail' tour.slug %}" class="btn-book">
+                                Book Now <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
                 {% empty %}
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body text-center py-5">
-                            <i class="fas fa-search fa-4x text-muted mb-3"></i>
-                            <h4>No tours found</h4>
-                            <p class="text-muted mb-4">Try adjusting your filters or search criteria</p>
-                            <a href="{% url 'tours:list' %}" class="btn btn-primary">
-                                <i class="fas fa-redo me-2"></i>Clear Filters
-                            </a>
-                        </div>
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-compass"></i>
                     </div>
+                    <h4>No tours found</h4>
+                    <p>Try adjusting your filters or search criteria</p>
+                    <a href="{% url 'tours:list' %}" class="btn btn-primary-modern">
+                        <i class="fas fa-redo me-2"></i>Clear Filters
+                    </a>
                 </div>
                 {% endfor %}
             </div>
 
             <!-- Pagination -->
             {% if is_paginated %}
-            <nav aria-label="Page navigation" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?{% for key, value in current_filters.items %}{% if value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
-                            <i class="fas fa-chevron-left"></i> Previous
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link"><i class="fas fa-chevron-left"></i> Previous</span>
-                    </li>
-                    {% endif %}
+            <nav class="pagination-modern">
+                {% if page_obj.has_previous %}
+                <a class="page-btn page-prev" href="?{% for key, value in current_filters.items %}{% if value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+                {% endif %}
 
+                <div class="page-numbers">
                     {% for num in page_obj.paginator.page_range %}
                         {% if page_obj.number == num %}
-                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        <span class="page-num active">{{ num }}</span>
                         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <li class="page-item">
-                            <a class="page-link" href="?{% for key, value in current_filters.items %}{% if value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}">{{ num }}</a>
-                        </li>
+                        <a class="page-num" href="?{% for key, value in current_filters.items %}{% if value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}">{{ num }}</a>
                         {% endif %}
                     {% endfor %}
+                </div>
 
-                    {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?{% for key, value in current_filters.items %}{% if value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
-                            Next <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">Next <i class="fas fa-chevron-right"></i></span>
-                    </li>
-                    {% endif %}
-                </ul>
+                {% if page_obj.has_next %}
+                <a class="page-btn page-next" href="?{% for key, value in current_filters.items %}{% if value %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
             </nav>
             {% endif %}
         </div>
@@ -309,13 +318,14 @@
 </div>
 
 <!-- Tour Types Section -->
-<section class="bg-light py-4">
+<section class="tour-types-section">
     <div class="container">
-        <h5 class="mb-3">Explore by Tour Type</h5>
-        <div class="d-flex flex-wrap gap-2">
+        <h5 class="section-label">Explore by Tour Type</h5>
+        <div class="tour-types-grid">
             {% for type_code, type_name in tour_types %}
-            <a href="{% url 'tours:by-type' type_code %}" class="btn btn-outline-primary btn-sm">
-                {{ type_name }}
+            <a href="{% url 'tours:by-type' type_code %}" class="tour-type-card">
+                <span class="type-name">{{ type_name }}</span>
+                <i class="fas fa-arrow-right"></i>
             </a>
             {% endfor %}
         </div>
@@ -325,15 +335,829 @@
 
 {% block extra_css %}
 <style>
-    .tour-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
-        transition: all 0.3s ease;
+/* ========================================
+   TOUR LISTING PAGE STYLES
+   ======================================== */
+
+:root {
+    --primary: #c41e3a;
+    --primary-dark: #9a1830;
+    --secondary: #ffd700;
+    --accent: #1e3c72;
+    --purple: #667eea;
+    --gradient-primary: linear-gradient(135deg, #c41e3a 0%, #9a1830 100%);
+    --gradient-accent: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.16);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hero Header */
+.listing-hero-tours {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1920&q=80') center/cover;
+    padding: 4rem 0 6rem;
+    color: white;
+}
+
+.listing-hero-tours .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.85) 100%);
+}
+
+.listing-hero-tours .container {
+    z-index: 2;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.listing-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.listing-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+.results-badge {
+    background: white;
+    color: var(--purple);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+
+.results-count {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.results-label {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Partner Banner */
+.partner-banner {
+    background: var(--gradient-purple);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    box-shadow: var(--shadow-lg);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.partner-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.partner-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.partner-text h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.partner-text p {
+    margin: 0;
+    opacity: 0.85;
+    font-size: 0.9rem;
+}
+
+.btn-partner {
+    background: var(--secondary);
+    color: #333;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btn-partner:hover {
+    background: white;
+    color: #333;
+    transform: translateY(-2px);
+}
+
+/* Filter Card */
+.filter-card {
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-header h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+}
+
+.filter-body {
+    padding: 1.25rem;
+}
+
+.filter-group {
+    margin-bottom: 1.25rem;
+}
+
+.filter-label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.input-with-icon .form-control {
+    padding-left: 38px;
+}
+
+.form-control, .form-select {
+    border: 2px solid #e8e8e8;
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 1rem;
+    transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Difficulty Options */
+.difficulty-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.difficulty-option {
+    cursor: pointer;
+}
+
+.difficulty-option input {
+    display: none;
+}
+
+.difficulty-option span {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 2px solid #e8e8e8;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.difficulty-option input:checked + span,
+.difficulty-option:hover span {
+    border-color: var(--purple);
+    background: rgba(102, 126, 234, 0.05);
+    color: var(--purple);
+}
+
+/* Duration Inputs */
+.duration-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.duration-inputs .form-control {
+    flex: 1;
+    text-align: center;
+}
+
+.duration-divider {
+    color: #999;
+    font-size: 0.85rem;
+}
+
+/* Price Inputs */
+.price-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.price-input {
+    position: relative;
+    flex: 1;
+}
+
+.price-input .currency {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.price-input .form-control {
+    padding-left: 28px;
+}
+
+.price-divider {
+    color: #ccc;
+}
+
+/* Filter Actions */
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.btn-apply {
+    flex: 1;
+    background: var(--gradient-purple);
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-apply:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    color: white;
+}
+
+.btn-clear {
+    background: #f5f5f5;
+    color: #666;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-clear:hover {
+    background: #e8e8e8;
+    color: #333;
+}
+
+/* Mobile Filter Toggle */
+.btn-filter-toggle {
+    background: white;
+    border: 2px solid #e8e8e8;
+    color: #333;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+/* Sort Bar */
+.sort-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.sort-info {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.sort-options {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sort-options label {
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.sort-options .form-select {
+    width: auto;
+    padding: 0.5rem 2rem 0.5rem 1rem;
+}
+
+/* Tour Grid */
+.tour-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+/* Tour Card */
+.tour-card {
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.tour-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-8px);
+}
+
+.tour-card .card-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.tour-card .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.tour-card:hover .card-image img {
+    transform: scale(1.08);
+}
+
+.card-badges {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.badge-duration {
+    background: var(--accent);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-featured {
+    background: var(--secondary);
+    color: #333;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.card-rating {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: #28a745;
+    color: white;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.tour-card:hover .card-overlay {
+    opacity: 1;
+}
+
+.btn-quick-view {
+    background: white;
+    color: #333;
+    padding: 10px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transform: translateY(20px);
+    transition: var(--transition);
+}
+
+.tour-card:hover .btn-quick-view {
+    transform: translateY(0);
+}
+
+.btn-quick-view:hover {
+    background: var(--purple);
+    color: white;
+}
+
+/* Card Content */
+.tour-card .card-content {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.meta-location {
+    color: #666;
+}
+
+.meta-location i {
+    color: var(--purple);
+    margin-right: 4px;
+}
+
+.meta-type {
+    background: #f5f5f5;
+    color: #666;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+}
+
+.tour-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.tour-card .card-title a {
+    color: #1a1a1a;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.tour-card .card-title a:hover {
+    color: var(--purple);
+}
+
+.tour-card .card-description {
+    color: #666;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    flex-grow: 1;
+    margin-bottom: 0.75rem;
+}
+
+.card-features {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.feature {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.feature i {
+    color: var(--purple);
+    margin-right: 4px;
+}
+
+.tour-card .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    margin-top: auto;
+}
+
+.card-price {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.price-from {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+.price-amount {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--purple);
+}
+
+.price-per {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+.btn-book {
+    background: var(--gradient-purple);
+    color: white;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-book:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* Empty State */
+.empty-state {
+    grid-column: 1 / -1;
+    background: white;
+    border-radius: var(--radius-md);
+    padding: 4rem 2rem;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.empty-icon {
+    width: 100px;
+    height: 100px;
+    background: #f5f5f5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.empty-icon i {
+    font-size: 2.5rem;
+    color: #ccc;
+}
+
+.btn-primary-modern {
+    background: var(--gradient-purple);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Pagination */
+.pagination-modern {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.page-btn {
+    background: white;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.page-btn:hover {
+    background: var(--purple);
+    color: white;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.page-num {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    color: #333;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.page-num:hover,
+.page-num.active {
+    background: var(--purple);
+    color: white;
+}
+
+/* Tour Types Section */
+.tour-types-section {
+    background: #f8f9fa;
+    padding: 3rem 0;
+}
+
+.section-label {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.tour-types-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.tour-type-card {
+    background: white;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tour-type-card:hover {
+    background: var(--purple);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.tour-type-card i {
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.tour-type-card:hover i {
+    opacity: 1;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1199.98px) {
+    .tour-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 991.98px) {
+    .listing-title { font-size: 2rem; }
+    .results-badge { margin-top: 1.5rem; }
+
+    .partner-banner {
+        flex-direction: column;
+        text-align: center;
     }
 
-    .tour-card {
-        transition: all 0.3s ease;
+    .partner-content {
+        flex-direction: column;
     }
+}
+
+@media (max-width: 767.98px) {
+    .listing-hero-tours {
+        padding: 3rem 0 5rem;
+    }
+
+    .listing-title { font-size: 1.5rem; }
+
+    .tour-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sort-bar {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .sort-options {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tour-card .card-footer {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .btn-book {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pagination-modern {
+        flex-wrap: wrap;
+    }
+}
+
+/* Touch device adjustments */
+@media (hover: none) {
+    .tour-card:hover {
+        transform: none;
+    }
+    .card-overlay {
+        display: none;
+    }
+    .tour-card:hover .card-image img {
+        transform: none;
+    }
+}
 </style>
 {% endblock %}
 
