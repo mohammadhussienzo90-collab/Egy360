@@ -1,376 +1,460 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Egy360 - Your Trusted Egypt Travel Partner</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Egy360 - Your Trusted Egypt Travel Partner{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --about-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    /* Hero Section */
+    .about-hero {
+        position: relative;
+        padding: 100px 0;
+        background: linear-gradient(135deg, var(--primary-color) 0%, #8b1226 100%);
+        color: white;
+        overflow: hidden;
+    }
+
+    .about-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80') center/cover;
+        opacity: 0.15;
+    }
+
+    .about-hero .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .about-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .about-hero p {
+        font-size: 1.3rem;
+        opacity: 0.95;
+        max-width: 700px;
+    }
+
+    .hero-stats {
+        display: flex;
+        gap: 50px;
+        margin-top: 40px;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ffd700;
+    }
+
+    .stat-label {
+        font-size: 0.95rem;
+        opacity: 0.9;
+    }
+
+    /* Introduction Section */
+    .intro-section {
+        padding: 80px 0;
+        background: white;
+    }
+
+    .intro-card {
+        background: #f8f9fa;
+        border-radius: 20px;
+        padding: 50px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .intro-card::before {
+        content: '"';
+        position: absolute;
+        top: 20px;
+        left: 30px;
+        font-size: 8rem;
+        color: var(--primary-color);
+        opacity: 0.1;
+        font-family: Georgia, serif;
+        line-height: 1;
+    }
+
+    .intro-card h2 {
+        color: var(--primary-color);
+        font-size: 2rem;
+        margin-bottom: 25px;
+    }
+
+    .intro-card p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #555;
+        margin-bottom: 1rem;
+    }
+
+    /* Mission Vision Values */
+    .mvv-section {
+        padding: 80px 0;
+        background: #f8f9fa;
+    }
+
+    .mvv-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        height: 100%;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        transition: all 0.4s ease;
+        border-top: 5px solid transparent;
+    }
+
+    .mvv-card:hover {
+        transform: translateY(-10px);
+        border-top-color: var(--primary-color);
+        box-shadow: 0 20px 50px rgba(196, 30, 58, 0.15);
+    }
+
+    .mvv-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, var(--primary-color) 0%, #8b1226 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        font-size: 2rem;
+        color: white;
+    }
+
+    .mvv-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #1a1a1a;
+    }
+
+    .mvv-card p {
+        color: #666;
+        line-height: 1.7;
+    }
+
+    /* Values Grid */
+    .values-section {
+        padding: 80px 0;
+        background: white;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem;
+        color: #1a1a1a;
+        margin-bottom: 15px;
+    }
+
+    .section-header p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+
+    .value-card {
+        text-align: center;
+        padding: 30px;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .value-card:hover {
+        background: #f8f9fa;
+    }
+
+    .value-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 1.8rem;
+        color: var(--primary-color);
+    }
+
+    .value-card h4 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: #1a1a1a;
+    }
+
+    .value-card p {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    /* Why Choose Us */
+    .why-section {
+        padding: 80px 0;
+        background: linear-gradient(135deg, var(--primary-color) 0%, #8b1226 100%);
+        color: white;
+    }
+
+    .why-section .section-header h2 {
+        color: white;
+    }
+
+    .why-section .section-header p {
+        color: rgba(255,255,255,0.9);
+    }
+
+    .why-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .why-item {
+        display: flex;
+        gap: 20px;
+        padding: 25px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .why-item:hover {
+        background: rgba(255,255,255,0.15);
+        transform: translateY(-5px);
+    }
+
+    .why-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        background: #ffd700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--primary-color);
+        font-size: 1.3rem;
+    }
+
+    .why-content h4 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+
+    .why-content p {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        line-height: 1.5;
+    }
+
+    /* Team Section */
+    .team-section {
+        padding: 80px 0;
+        background: #f8f9fa;
+    }
+
+    .team-content {
+        background: white;
+        border-radius: 20px;
+        padding: 50px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        text-align: center;
+    }
+
+    .team-content h2 {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 25px;
+    }
+
+    .team-content p {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.8;
+        max-width: 800px;
+        margin: 0 auto 1rem;
+    }
+
+    .team-features {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .team-feature {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #333;
+    }
+
+    .team-feature i {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        padding: 80px 0;
+        background: white;
+        text-align: center;
+    }
+
+    .cta-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 25px;
+        padding: 60px;
+        color: white;
+    }
+
+    .cta-card h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .cta-card p {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        margin-bottom: 30px;
+    }
+
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .cta-btn {
+        padding: 15px 40px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .cta-btn.primary {
+        background: white;
+        color: #667eea;
+    }
+
+    .cta-btn.primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .cta-btn.secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+    }
+
+    .cta-btn.secondary:hover {
+        background: white;
+        color: #667eea;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .about-hero h1 {
+            font-size: 2.5rem;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        /* Navigation */
-        .navbar {
-            background: #ffffff;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #c41e3a;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #1a1a1a;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #c41e3a;
-        }
-
-        /* Header Section */
-        .page-header {
-            background: linear-gradient(rgba(196, 30, 58, 0.9), rgba(26, 26, 26, 0.9)),
-                        url('https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-
-        .page-header h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .page-header p {
-            font-size: 1.3rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Content Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        /* About Section */
-        .about-intro {
-            background: white;
-            padding: 3rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 3rem;
-        }
-
-        .about-intro h2 {
-            color: #c41e3a;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .about-intro p {
+        .about-hero p {
             font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 1rem;
         }
 
-        /* Mission, Vision, Values Grid */
-        .mvv-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
+        .hero-stats {
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .stat-item {
+            flex: 1 1 40%;
+        }
+
+        .intro-card {
+            padding: 30px;
         }
 
         .mvv-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            border-top: 4px solid #c41e3a;
-            transition: transform 0.3s;
+            padding: 30px;
         }
 
-        .mvv-card:hover {
-            transform: translateY(-10px);
+        .cta-card {
+            padding: 40px 25px;
         }
 
-        .mvv-card .icon {
-            font-size: 3rem;
-            color: #c41e3a;
-            margin-bottom: 1.5rem;
-        }
-
-        .mvv-card h3 {
+        .cta-card h2 {
             font-size: 1.8rem;
-            color: #1a1a1a;
-            margin-bottom: 1rem;
         }
+    }
+</style>
+{% endblock %}
 
-        .mvv-card p {
-            color: #666;
-            font-size: 1.05rem;
-        }
-
-        /* Values Section */
-        .values-section {
-            background: white;
-            padding: 3rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin: 3rem 0;
-        }
-
-        .values-section h2 {
-            color: #c41e3a;
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .value-item {
-            text-align: center;
-            padding: 1.5rem;
-        }
-
-        .value-item .icon {
-            font-size: 2.5rem;
-            color: #c41e3a;
-            margin-bottom: 1rem;
-        }
-
-        .value-item h4 {
-            font-size: 1.3rem;
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
-        }
-
-        .value-item p {
-            color: #666;
-        }
-
-        /* Why Choose Us Section */
-        .why-choose {
-            background: linear-gradient(135deg, #c41e3a 0%, #8b1529 100%);
-            color: white;
-            padding: 3rem;
-            border-radius: 15px;
-            margin: 3rem 0;
-        }
-
-        .why-choose h2 {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .why-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .why-item {
-            display: flex;
-            align-items: start;
-            gap: 1rem;
-        }
-
-        .why-item .icon {
-            font-size: 1.8rem;
-            color: #ffd700;
-            min-width: 40px;
-        }
-
-        .why-item h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .why-item p {
-            opacity: 0.95;
-        }
-
-        /* Team Section */
-        .team-section {
-            text-align: center;
-            background: white;
-            padding: 3rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .team-section h2 {
-            color: #c41e3a;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .team-section p {
-            font-size: 1.1rem;
-            color: #666;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            text-align: center;
-            padding: 3rem;
-            background: #f8f9fa;
-            border-radius: 15px;
-            margin-top: 3rem;
-        }
-
-        .cta-section h2 {
-            color: #1a1a1a;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .cta-button {
-            background: #c41e3a;
-            color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: inline-block;
-            transition: all 0.3s;
-            border: 2px solid #c41e3a;
-        }
-
-        .cta-button:hover {
-            background: white;
-            color: #c41e3a;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(196, 30, 58, 0.3);
-        }
-
-        /* Footer */
-        .footer {
-            background: #1a1a1a;
-            color: #ffffff;
-            padding: 2rem;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
-        .footer p {
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            list-style: none;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: #ffffff;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: #c41e3a;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .page-header h1 {
-                font-size: 2rem;
-            }
-
-            .page-header p {
-                font-size: 1rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-                font-size: 0.9rem;
-            }
-
-            .mvv-grid,
-            .values-grid,
-            .why-list {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">Egy360</a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/about/">About</a></li>
-                <li><a href="/tours/">Tours</a></li>
-                <li><a href="/accommodations/">Accommodations</a></li>
-                <li><a href="/contact/">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Header -->
-    <header class="page-header">
-        <h1>About Egy360</h1>
-        <p>Your trusted partner for authentic Egyptian travel experiences</p>
-    </header>
-
-    <!-- Main Content -->
+{% block content %}
+<!-- Hero Section -->
+<section class="about-hero">
     <div class="container">
-        <!-- About Introduction -->
-        <section class="about-intro">
+        <h1>About Egy360</h1>
+        <p>Your trusted partner for authentic Egyptian travel experiences. We connect travelers with verified services, ensuring safe, memorable journeys through the land of pharaohs.</p>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Verified Partners</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10K+</div>
+                <div class="stat-label">Happy Travelers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Destinations</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Support</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Introduction -->
+<section class="intro-section">
+    <div class="container">
+        <div class="intro-card">
             <h2>Who We Are</h2>
             <p>
                 Egy360 is Egypt's premier tourism platform, dedicated to transforming how travelers discover and experience
@@ -390,232 +474,200 @@
                 yourself in Cairo's vibrant culture, Egy360 connects you with verified partners who share our commitment
                 to excellence.
             </p>
-        </section>
+        </div>
+    </div>
+</section>
 
-        <!-- Mission, Vision, Values -->
-        <div class="mvv-grid">
-            <div class="mvv-card">
-                <div class="icon">
-                    <i class="fas fa-bullseye"></i>
+<!-- Mission, Vision, Promise -->
+<section class="mvv-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="mvv-card">
+                    <div class="mvv-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Our Mission</h3>
+                    <p>
+                        To connect travelers with authentic Egyptian experiences through a trusted, transparent platform
+                        that eliminates scams, ensures fair pricing, and promotes the true beauty of Egypt's culture,
+                        history, and hospitality.
+                    </p>
                 </div>
-                <h3>Our Mission</h3>
-                <p>
-                    To connect travelers with authentic Egyptian experiences through a trusted, transparent platform
-                    that eliminates scams, ensures fair pricing, and promotes the true beauty of Egypt's culture,
-                    history, and hospitality.
-                </p>
             </div>
-
-            <div class="mvv-card">
-                <div class="icon">
-                    <i class="fas fa-eye"></i>
+            <div class="col-lg-4">
+                <div class="mvv-card">
+                    <div class="mvv-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Our Vision</h3>
+                    <p>
+                        To become Egypt's number one tourism platform and the global standard for safe, authentic travel
+                        experiences. We envision a future where every visitor to Egypt can explore with confidence,
+                        creating memories that last a lifetime.
+                    </p>
                 </div>
-                <h3>Our Vision</h3>
-                <p>
-                    To become Egypt's number one tourism platform and the global standard for safe, authentic travel
-                    experiences. We envision a future where every visitor to Egypt can explore with confidence,
-                    creating memories that last a lifetime.
-                </p>
             </div>
-
-            <div class="mvv-card">
-                <div class="icon">
-                    <i class="fas fa-heart"></i>
+            <div class="col-lg-4">
+                <div class="mvv-card">
+                    <div class="mvv-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Our Promise</h3>
+                    <p>
+                        Every service on Egy360 is personally verified. We guarantee transparent pricing, secure bookings,
+                        and quality experiences. Your safety, satisfaction, and trust are our top priorities, backed by
+                        24/7 customer support.
+                    </p>
                 </div>
-                <h3>Our Promise</h3>
-                <p>
-                    Every service on Egy360 is personally verified. We guarantee transparent pricing, secure bookings,
-                    and quality experiences. Your safety, satisfaction, and trust are our top priorities, backed by
-                    24/7 customer support.
-                </p>
             </div>
         </div>
+    </div>
+</section>
 
-        <!-- Our Values -->
-        <section class="values-section">
+<!-- Core Values -->
+<section class="values-section">
+    <div class="container">
+        <div class="section-header">
             <h2>Our Core Values</h2>
-            <div class="values-grid">
-                <div class="value-item">
-                    <div class="icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>Authenticity</h4>
-                    <p>
-                        We showcase the real Egypt - from ancient wonders to modern culture, connecting you with
-                        genuine experiences and local expertise.
-                    </p>
+            <p>The principles that guide everything we do</p>
+        </div>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-star"></i>
                 </div>
-
-                <div class="value-item">
-                    <div class="icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h4>Safety First</h4>
-                    <p>
-                        Your security is paramount. Every partner is vetted, every transaction is protected,
-                        and our team is always available to assist.
-                    </p>
-                </div>
-
-                <div class="value-item">
-                    <div class="icon">
-                        <i class="fas fa-gem"></i>
-                    </div>
-                    <h4>Quality</h4>
-                    <p>
-                        We maintain rigorous standards for all services, ensuring exceptional experiences
-                        that exceed expectations.
-                    </p>
-                </div>
-
-                <div class="value-item">
-                    <div class="icon">
-                        <i class="fas fa-compass"></i>
-                    </div>
-                    <h4>Local Expertise</h4>
-                    <p>
-                        Our team's deep knowledge of Egypt ensures you discover hidden gems and authentic
-                        experiences often missed by traditional tourism.
-                    </p>
-                </div>
-
-                <div class="value-item">
-                    <div class="icon">
-                        <i class="fas fa-handshake"></i>
-                    </div>
-                    <h4>Transparency</h4>
-                    <p>
-                        No hidden fees, no surprise charges. What you see is what you pay,
-                        with clear communication at every step.
-                    </p>
-                </div>
-
-                <div class="value-item">
-                    <div class="icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h4>Community</h4>
-                    <p>
-                        We support local businesses and communities, ensuring tourism benefits
-                        Egypt's people while enriching your experience.
-                    </p>
-                </div>
+                <h4>Authenticity</h4>
+                <p>We showcase the real Egypt - from ancient wonders to modern culture, connecting you with genuine experiences.</p>
             </div>
-        </section>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Safety First</h4>
+                <p>Your security is paramount. Every partner is vetted, every transaction protected.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <h4>Quality</h4>
+                <p>We maintain rigorous standards for all services, ensuring exceptional experiences.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-compass"></i>
+                </div>
+                <h4>Local Expertise</h4>
+                <p>Our deep knowledge of Egypt ensures you discover hidden gems and authentic experiences.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h4>Transparency</h4>
+                <p>No hidden fees, no surprise charges. What you see is what you pay.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h4>Community</h4>
+                <p>We support local businesses and communities, ensuring tourism benefits everyone.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <!-- Why Choose Egy360 -->
-        <section class="why-choose">
+<!-- Why Choose Us -->
+<section class="why-section">
+    <div class="container">
+        <div class="section-header">
             <h2>Why Choose Egy360?</h2>
-            <div class="why-list">
-                <div class="why-item">
-                    <div class="icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div>
-                        <h4>100% Verified Partners</h4>
-                        <p>
-                            Every accommodation, tour, and service provider undergoes strict verification
-                            to ensure legitimacy and quality.
-                        </p>
-                    </div>
+            <p>What sets us apart from other travel platforms</p>
+        </div>
+        <div class="why-grid">
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-check-circle"></i>
                 </div>
-
-                <div class="why-item">
-                    <div class="icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div>
-                        <h4>Best Price Guarantee</h4>
-                        <p>
-                            We negotiate directly with providers to offer competitive rates without
-                            compromising on quality or safety.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <div class="icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div>
-                        <h4>Scam Protection</h4>
-                        <p>
-                            Our platform eliminates common tourist scams, ensuring fair pricing and
-                            reliable services throughout your journey.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <div class="icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div>
-                        <h4>Secure Booking System</h4>
-                        <p>
-                            Advanced encryption and secure payment processing protect your personal
-                            and financial information.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <div class="icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div>
-                        <h4>24/7 Customer Support</h4>
-                        <p>
-                            Our dedicated team is available round-the-clock to assist with bookings,
-                            questions, or emergencies.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <div class="icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div>
-                        <h4>Local Insights</h4>
-                        <p>
-                            Benefit from insider knowledge, cultural tips, and recommendations that
-                            only locals can provide.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <div class="icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div>
-                        <h4>Flexible Cancellation</h4>
-                        <p>
-                            Travel plans change. Most bookings offer free cancellation up to 24 hours
-                            before your scheduled date.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <div class="icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div>
-                        <h4>Real Reviews</h4>
-                        <p>
-                            Read verified reviews from actual travelers to make informed decisions
-                            about your Egyptian adventure.
-                        </p>
-                    </div>
+                <div class="why-content">
+                    <h4>100% Verified Partners</h4>
+                    <p>Every accommodation, tour, and service provider undergoes strict verification.</p>
                 </div>
             </div>
-        </section>
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-tag"></i>
+                </div>
+                <div class="why-content">
+                    <h4>Best Price Guarantee</h4>
+                    <p>Competitive rates negotiated directly with providers.</p>
+                </div>
+            </div>
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="why-content">
+                    <h4>Scam Protection</h4>
+                    <p>Our platform eliminates common tourist scams.</p>
+                </div>
+            </div>
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="why-content">
+                    <h4>Secure Booking</h4>
+                    <p>Advanced encryption protects your information.</p>
+                </div>
+            </div>
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <div class="why-content">
+                    <h4>24/7 Support</h4>
+                    <p>Round-the-clock assistance for any questions.</p>
+                </div>
+            </div>
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="why-content">
+                    <h4>Local Insights</h4>
+                    <p>Insider knowledge only locals can provide.</p>
+                </div>
+            </div>
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-undo"></i>
+                </div>
+                <div class="why-content">
+                    <h4>Flexible Cancellation</h4>
+                    <p>Free cancellation on most bookings up to 24 hours.</p>
+                </div>
+            </div>
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="why-content">
+                    <h4>Real Reviews</h4>
+                    <p>Verified reviews from actual travelers.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <!-- Team Section -->
-        <section class="team-section">
-            <h2>Our Team</h2>
+<!-- Team Section -->
+<section class="team-section">
+    <div class="container">
+        <div class="team-content">
+            <h2><i class="fas fa-users me-2"></i>Our Team</h2>
             <p>
                 Egy360 is powered by a passionate team of Egyptian tourism professionals, technology experts,
                 and customer service specialists. With decades of combined experience in hospitality, travel,
@@ -627,29 +679,43 @@
                 making us the perfect bridge for your Egyptian adventure. We're not just a booking platform -
                 we're your trusted local partners dedicated to creating unforgettable experiences.
             </p>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="cta-section">
-            <h2>Ready to Explore Egypt?</h2>
-            <p style="margin-bottom: 2rem; color: #666;">
-                Join thousands of satisfied travelers who discovered authentic Egypt through Egy360
-            </p>
-            <a href="/tours/" class="cta-button">Start Your Journey</a>
-        </section>
+            <div class="team-features">
+                <div class="team-feature">
+                    <i class="fas fa-check"></i>
+                    <span>Multilingual Support</span>
+                </div>
+                <div class="team-feature">
+                    <i class="fas fa-check"></i>
+                    <span>Local Expertise</span>
+                </div>
+                <div class="team-feature">
+                    <i class="fas fa-check"></i>
+                    <span>Tourism Certified</span>
+                </div>
+                <div class="team-feature">
+                    <i class="fas fa-check"></i>
+                    <span>24/7 Available</span>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2024 Egy360. Your trusted partner for authentic Egyptian experiences.</p>
-        <ul class="footer-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/about/">About</a></li>
-            <li><a href="/contact/">Contact</a></li>
-            <li><a href="/faq/">FAQ</a></li>
-            <li><a href="/privacy/">Privacy Policy</a></li>
-            <li><a href="/terms/">Terms of Service</a></li>
-        </ul>
-    </footer>
-</body>
-</html>
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-card">
+            <h2>Ready to Explore Egypt?</h2>
+            <p>Join thousands of satisfied travelers who discovered authentic Egypt through Egy360</p>
+            <div class="cta-buttons">
+                <a href="{% url 'tours:list' %}" class="cta-btn primary">
+                    <i class="fas fa-compass me-2"></i>Browse Tours
+                </a>
+                <a href="{% url 'home:contact' %}" class="cta-btn secondary">
+                    <i class="fas fa-envelope me-2"></i>Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
