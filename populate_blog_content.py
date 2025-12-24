@@ -80,22 +80,22 @@ def create_blog_posts(author, categories):
     # Get cities for linking
     try:
         cairo = City.objects.get(name='Cairo')
-    except:
+    except City.DoesNotExist:
         cairo = None
 
     try:
         luxor = City.objects.get(name='Luxor')
-    except:
+    except City.DoesNotExist:
         luxor = None
 
     try:
         alexandria = City.objects.get(name='Alexandria')
-    except:
+    except City.DoesNotExist:
         alexandria = None
 
     try:
         aswan = City.objects.get(name='Aswan')
-    except:
+    except City.DoesNotExist:
         aswan = None
 
     posts = [

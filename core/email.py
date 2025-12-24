@@ -50,8 +50,9 @@ def send_booking_confirmation(booking, booking_type='tour'):
         try:
             html_content = render_to_string(template, context)
             text_content = strip_tags(html_content)
-        except Exception:
+        except Exception as e:
             # Fallback to simple text email
+            logger.warning(f"Failed to render email template {template}: {e}")
             text_content = _get_booking_text(booking, booking_type)
             html_content = None
 

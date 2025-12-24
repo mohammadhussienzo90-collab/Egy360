@@ -1,6 +1,9 @@
 # accounts/views.py
+import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+
+logger = logging.getLogger(__name__)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -318,8 +321,8 @@ def verify_2fa_view(request):
                 device = TOTPDevice.objects.filter(user=user, confirmed=True).first()
                 if device and device.verify_token(otp_code):
                     verified = True
-            except Exception:
-                pass
+            except Exception as e:
+                logger.warning(f"TOTP verification failed for user {user.id}: {e}")
 
         elif method == 'sms':
             # Verify SMS code
@@ -364,8 +367,8 @@ def disable_2fa_view(request):
             try:
                 from django_otp.plugins.otp_totp.models import TOTPDevice
                 TOTPDevice.objects.filter(user=request.user).delete()
-            except Exception:
-                pass
+            except Exception as e:
+                logger.warning(f"Failed to delete TOTP device for user {request.user.id}: {e}")
 
             messages.success(request, 'Two-factor authentication has been disabled.')
         else:

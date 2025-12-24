@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.db.models import Q, Min, Max
@@ -5,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import json
+
+logger = logging.getLogger(__name__)
 
 from .models import Tour, TourItinerary, TourBooking
 
@@ -273,8 +276,8 @@ def book_tour(request, slug):
         try:
             from core.email import send_booking_confirmation
             send_booking_confirmation(booking, booking_type='tour')
-        except Exception:
-            pass  # Don't fail the booking if email fails
+        except Exception as e:
+            logger.error(f"Failed to send confirmation email for booking {booking.id}: {e}")
 
         return JsonResponse({
             'success': True,

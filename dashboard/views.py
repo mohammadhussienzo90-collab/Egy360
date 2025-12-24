@@ -1,4 +1,5 @@
 # dashboard/views.py
+import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -10,6 +11,8 @@ from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from django.utils import timezone
 import json
+
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -42,8 +45,8 @@ def dashboard_view(request):
             total=Sum('total_amount')
         )['total']
         context['total_spent'] = total or 0
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Error loading booking stats for user {user.id}: {e}")
 
     # Get tour booking statistics
     try:
@@ -61,21 +64,24 @@ def dashboard_view(request):
 
         # Completed tours
         context['completed_tours'] = tour_bookings.filter(status='completed').count()
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Error loading tour booking stats for user {user.id}: {e}")
 
     # Get review statistics
     try:
         from reviews.models import Review
         context['reviews_count'] = Review.objects.filter(user=user).count()
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Error loading review stats for user {user.id}: {e}")
 
     # Get user profile
     try:
         from accounts.models import UserProfile
         context['profile'] = UserProfile.objects.get(user=user)
-    except Exception:
+    except UserProfile.DoesNotExist:
+        context['profile'] = None
+    except Exception as e:
+        logger.warning(f"Error loading profile for user {user.id}: {e}")
         context['profile'] = None
 
     return render(request, 'dashboard/dashboard.html', context)
@@ -95,8 +101,8 @@ def my_bookings(request):
         if status_filter:
             qs = qs.filter(status=status_filter)
         bookings = qs.order_by('-created_at')
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Error loading bookings for user {request.user.id}: {e}")
 
     # Get tour bookings
     try:
@@ -105,8 +111,8 @@ def my_bookings(request):
         if status_filter:
             qs = qs.filter(status=status_filter)
         tour_bookings = qs.select_related('tour').order_by('-booking_date')
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Error loading tour bookings for user {request.user.id}: {e}")
 
     context = {
         'bookings': bookings,
@@ -130,8 +136,8 @@ def my_reviews(request):
     try:
         from reviews.models import Review
         reviews = Review.objects.filter(user=request.user).order_by('-created_at')
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Error loading reviews for user {request.user.id}: {e}")
 
     return render(request, 'dashboard/reviews.html', {'reviews': reviews})
 
@@ -145,8 +151,8 @@ def settings_view(request):
     try:
         from accounts.models import UserProfile
         profile, created = UserProfile.objects.get_or_create(user=user)
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Error loading profile for settings view, user {user.id}: {e}")
 
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -213,8 +219,8 @@ def cancel_booking(request, booking_id):
             try:
                 from core.email import send_booking_status_update
                 send_booking_status_update(booking, booking_type='tour')
-            except Exception:
-                pass
+            except Exception as e:
+                logger.error(f"Failed to send cancellation email for tour booking {booking_id}: {e}")
             return JsonResponse({
                 'success': True,
                 'message': 'Booking cancelled successfully.'
@@ -235,8 +241,8 @@ def cancel_booking(request, booking_id):
             try:
                 from core.email import send_booking_status_update
                 send_booking_status_update(booking, booking_type='accommodation')
-            except Exception:
-                pass
+            except Exception as e:
+                logger.error(f"Failed to send cancellation email for booking {booking_id}: {e}")
             return JsonResponse({
                 'success': True,
                 'message': 'Booking cancelled successfully.'
@@ -260,6 +266,7 @@ def booking_detail(request, booking_id):
     booking = None
     booking_type = request.GET.get('type', 'tour')
 
+    from django.core.exceptions import ObjectDoesNotExist
     try:
         if booking_type == 'tour':
             from tours.models import TourBooking
@@ -270,8 +277,12 @@ def booking_detail(request, booking_id):
         else:
             from bookings.models import Booking
             booking = Booking.objects.get(id=booking_id, user=request.user)
-    except Exception:
+    except ObjectDoesNotExist:
         messages.error(request, 'Booking not found.')
+        return redirect('dashboard:bookings')
+    except Exception as e:
+        logger.error(f"Error loading booking {booking_id}: {e}")
+        messages.error(request, 'Error loading booking details.')
         return redirect('dashboard:bookings')
 
     return render(request, 'dashboard/booking_detail.html', {

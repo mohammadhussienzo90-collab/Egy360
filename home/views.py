@@ -2,7 +2,7 @@
 Views for the Home app - Main pages of Egy360
 Handles homepage, about, contact, and error pages
 """
-
+import logging
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib import messages
@@ -16,6 +16,8 @@ from django.core.cache import cache
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 import json
+
+logger = logging.getLogger(__name__)
 
 # Import models from other apps as needed
 from accommodations.models import Accommodation
@@ -109,8 +111,8 @@ def contact(request):
                 ['info@360egy.com'],
                 fail_silently=True,  # Don't fail if email doesn't work
             )
-        except Exception:
-            pass  # Email is optional, message is already saved to DB
+        except Exception as e:
+            logger.warning(f"Failed to send contact notification email: {e}")
 
         messages.success(request, 'Thank you for contacting us! We\'ll respond within 24 hours.')
         return redirect('home:contact')
@@ -242,8 +244,8 @@ def newsletter_subscribe(request):
         try:
             from core.email import send_newsletter_welcome
             send_newsletter_welcome(subscription)
-        except Exception:
-            pass  # Don't fail if email fails
+        except Exception as e:
+            logger.warning(f"Failed to send newsletter welcome email to {email}: {e}")
 
         return JsonResponse({
             'success': True,
