@@ -1,0 +1,212 @@
+{% comment %}
+Structured Data Templates for SEO
+Include this in pages with {% include 'includes/structured_data.html' with type='...' %}
+{% endcomment %}
+
+{% if type == 'breadcrumb' and breadcrumb_items %}
+<!-- BreadcrumbList Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://360egy.com/"
+        }{% for item in breadcrumb_items %},
+        {
+            "@type": "ListItem",
+            "position": {{ forloop.counter|add:1 }},
+            "name": "{{ item.name }}",
+            "item": "https://360egy.com{{ item.url }}"
+        }{% endfor %}
+    ]
+}
+</script>
+{% endif %}
+
+{% if type == 'hotel' and hotel %}
+<!-- Hotel Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Hotel",
+    "name": "{{ hotel.name }}",
+    "description": "{{ hotel.description|truncatewords:30|escapejs }}",
+    "url": "https://360egy.com{{ hotel.get_absolute_url }}",
+    "image": "{% if hotel.image_url %}{{ hotel.image_url }}{% elif hotel.main_image %}https://360egy.com{{ hotel.main_image.url }}{% endif %}",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ hotel.address|default:'' }}",
+        "addressLocality": "{{ hotel.city.name }}",
+        "addressCountry": "EG"
+    },
+    "starRating": {
+        "@type": "Rating",
+        "ratingValue": "{{ hotel.star_rating|default:'4' }}"
+    },
+    "priceRange": "{{ hotel.price_range|default:'$$' }}",
+    "telephone": "{{ hotel.phone|default:'+20-2-1234567' }}"
+}
+</script>
+{% endif %}
+
+{% if type == 'tour' and tour %}
+<!-- TouristTrip Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TouristTrip",
+    "name": "{{ tour.name }}",
+    "description": "{{ tour.description|truncatewords:30|escapejs }}",
+    "url": "https://360egy.com{{ tour.get_absolute_url }}",
+    "image": "{% if tour.image_url %}{{ tour.image_url }}{% elif tour.main_image %}https://360egy.com{{ tour.main_image.url }}{% endif %}",
+    "touristType": "Adventure travelers, History enthusiasts",
+    "offers": {
+        "@type": "Offer",
+        "price": "{{ tour.price|default:'0' }}",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+    },
+    "provider": {
+        "@type": "TravelAgency",
+        "name": "Egy360",
+        "url": "https://360egy.com"
+    }
+}
+</script>
+{% endif %}
+
+{% if type == 'attraction' and attraction %}
+<!-- TouristAttraction Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "name": "{{ attraction.name }}",
+    "description": "{{ attraction.description|truncatewords:30|escapejs }}",
+    "url": "https://360egy.com{{ attraction.get_absolute_url }}",
+    "image": "{% if attraction.image_url %}{{ attraction.image_url }}{% elif attraction.main_image %}https://360egy.com{{ attraction.main_image.url }}{% endif %}",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ attraction.address|default:'' }}",
+        "addressLocality": "{{ attraction.city.name }}",
+        "addressCountry": "EG"
+    },
+    {% if attraction.latitude and attraction.longitude %}
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "{{ attraction.latitude }}",
+        "longitude": "{{ attraction.longitude }}"
+    },
+    {% endif %}
+    "isAccessibleForFree": {% if attraction.admission_fee == 0 %}true{% else %}false{% endif %},
+    "publicAccess": true
+}
+</script>
+{% endif %}
+
+{% if type == 'city' and city %}
+<!-- City Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "City",
+    "name": "{{ city.name }}",
+    "description": "{{ city.description|truncatewords:30|escapejs }}",
+    "url": "https://360egy.com{{ city.get_absolute_url }}",
+    "image": "{% if city.image_url %}{{ city.image_url }}{% elif city.main_image %}https://360egy.com{{ city.main_image.url }}{% endif %}",
+    "containedInPlace": {
+        "@type": "Country",
+        "name": "Egypt"
+    },
+    {% if city.latitude and city.longitude %}
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "{{ city.latitude }}",
+        "longitude": "{{ city.longitude }}"
+    },
+    {% endif %}
+    {% if city.population %}
+    "population": {{ city.population }},
+    {% endif %}
+    "tourismType": "Historical, Cultural, Adventure"
+}
+</script>
+{% endif %}
+
+{% if type == 'blog' and post %}
+<!-- Article Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ post.title|escapejs }}",
+    "description": "{{ post.excerpt|default:post.content|truncatewords:30|escapejs }}",
+    "url": "https://360egy.com{{ post.get_absolute_url }}",
+    "image": "{% if post.featured_image %}https://360egy.com{{ post.featured_image.url }}{% else %}https://360egy.com/static/images/og-image.jpg{% endif %}",
+    "datePublished": "{{ post.published_at|date:'c' }}",
+    "dateModified": "{{ post.updated_at|date:'c' }}",
+    "author": {
+        "@type": "Person",
+        "name": "{{ post.author.get_full_name|default:post.author.username }}"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Egy360",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://360egy.com/static/images/logo.png"
+        }
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://360egy.com{{ post.get_absolute_url }}"
+    }
+}
+</script>
+{% endif %}
+
+{% if type == 'faq' and faqs %}
+<!-- FAQPage Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {% for faq in faqs %}
+        {
+            "@type": "Question",
+            "name": "{{ faq.question|escapejs }}",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "{{ faq.answer|escapejs }}"
+            }
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endif %}
+
+{% if type == 'search' %}
+<!-- WebSite with SearchAction Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Egy360",
+    "url": "https://360egy.com",
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://360egy.com/search/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+    }
+}
+</script>
+{% endif %}
