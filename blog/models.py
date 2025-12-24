@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.urls import reverse
 
 
 class BlogCategory(models.Model):
@@ -35,6 +36,7 @@ class BlogPost(models.Model):
     content = models.TextField()
     tags = models.CharField(max_length=255, blank=True, help_text='Comma-separated tags')
     featured_image = models.ImageField(upload_to='blog/', null=True, blank=True)
+    image_url = models.URLField(max_length=500, blank=True, null=True, help_text="External image URL (Unsplash, etc.)")
 
     meta_description = models.CharField(max_length=160, blank=True)
     meta_keywords = models.CharField(max_length=255, blank=True)
@@ -71,9 +73,21 @@ class BlogPost(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('blog:detail', kwargs={'slug': self.slug})
+
     @property
     def is_active(self):
         return self.status == 'published'
+
+    @property
+    def get_image(self):
+        """Returns image URL with fallback priority: image_url > featured_image > default"""
+        if self.image_url:
+            return self.image_url
+        if self.featured_image:
+            return self.featured_image.url
+        return "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800&q=80"
 
     def save(self, *args, **kwargs):
         if not self.slug:
