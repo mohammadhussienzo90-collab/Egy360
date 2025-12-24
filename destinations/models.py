@@ -94,6 +94,7 @@ class Attraction(models.Model):
 
     # Images
     main_image = models.ImageField(upload_to='attractions/', null=True, blank=True)
+    image_url = models.URLField(max_length=500, blank=True, null=True, help_text="External image URL")
 
     # Ratings
     average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)

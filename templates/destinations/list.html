@@ -1,60 +1,713 @@
 {% extends 'base.html' %}
 
-{% block title %}Destinations - Egy360{% endblock %}
+{% block title %}Explore Egypt's Destinations - Egy360{% endblock %}
+
+{% block description %}Discover Egypt's most captivating destinations. From Cairo's pyramids to Luxor's temples, explore cities and attractions across this ancient land.{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4">Egyptian Destinations</h1>
-    
-    <!-- Popular Cities -->
-    <section class="mb-5">
-        <h2 class="mb-4">Popular Cities</h2>
-        <div class="row">
-            {% for city in cities %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="https://source.unsplash.com/400x300/?{{ city.name }},egypt" 
-                         class="card-img-top" alt="{{ city.name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ city.name }}</h5>
-                        <p class="card-text">{{ city.description|truncatewords:20 }}</p>
-                        <a href="/destinations/city/{{ city.slug }}/" class="btn btn-primary">Explore {{ city.name }}</a>
+<!-- Hero Header -->
+<section class="destinations-hero">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative">
+        <div class="row align-items-center py-5">
+            <div class="col-lg-8">
+                <span class="hero-badge">
+                    <i class="fas fa-globe-africa me-2"></i>Discover Ancient Wonders
+                </span>
+                <h1 class="hero-title">Explore Egypt's Destinations</h1>
+                <p class="hero-subtitle">
+                    From the pyramids of Giza to the temples of Luxor, discover the magic of Egypt
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <div class="stats-card">
+                    <div class="stat">
+                        <span class="stat-number">{{ cities|length }}</span>
+                        <span class="stat-label">Cities</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-number">{{ attractions|length }}</span>
+                        <span class="stat-label">Attractions</span>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-5">
+    <!-- Popular Cities -->
+    <section class="cities-section mb-5">
+        <div class="section-header">
+            <div>
+                <span class="section-tag">Popular Destinations</span>
+                <h2 class="section-title">Egyptian Cities</h2>
+            </div>
+        </div>
+
+        <div class="cities-grid">
+            {% for city in cities %}
+            <a href="{% url 'destinations:city_detail' city.slug %}" class="city-card">
+                <div class="city-image">
+                    {% if city.image_url %}
+                    <img src="{{ city.image_url }}" alt="{{ city.name }}" loading="lazy">
+                    {% elif city.main_image %}
+                    <img src="{{ city.main_image.url }}" alt="{{ city.name }}" loading="lazy">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=600&q=80" alt="{{ city.name }}" loading="lazy">
+                    {% endif %}
+                    <div class="city-overlay">
+                        <span class="explore-btn">Explore <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+                <div class="city-content">
+                    <h3 class="city-name">{{ city.name }}</h3>
+                    <p class="city-description">{{ city.description|truncatewords:15 }}</p>
+                    <div class="city-meta">
+                        {% if city.attractions.count > 0 %}
+                        <span><i class="fas fa-landmark"></i> {{ city.attractions.count }} attractions</span>
+                        {% endif %}
+                        {% if city.best_time_to_visit %}
+                        <span><i class="fas fa-calendar"></i> {{ city.best_time_to_visit }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
             {% empty %}
-            <p class="text-center">No destinations available at the moment.</p>
+            <div class="empty-state">
+                <i class="fas fa-map-marked-alt"></i>
+                <h4>No destinations available</h4>
+                <p>Check back soon for exciting Egyptian destinations</p>
+            </div>
             {% endfor %}
         </div>
     </section>
-    
+
     <!-- Must-See Attractions -->
-    <section>
-        <h2 class="mb-4">Must-See Attractions</h2>
-        <div class="row">
+    <section class="attractions-section">
+        <div class="section-header">
+            <div>
+                <span class="section-tag">Must-See Places</span>
+                <h2 class="section-title">Top Attractions</h2>
+            </div>
+        </div>
+
+        <div class="attractions-grid">
             {% for attraction in attractions %}
-            <div class="col-md-6 mb-3">
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="https://source.unsplash.com/200x150/?{{ attraction.name }}" 
-                                 class="img-fluid rounded-start" alt="{{ attraction.name }}">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ attraction.name }}</h5>
-                                <p class="card-text">
-                                    <i class="fas fa-map-marker-alt"></i> {{ attraction.city.name }}
-                                </p>
-                                <p class="card-text">{{ attraction.description|truncatewords:15 }}</p>
-                                <a href="/destinations/attraction/{{ attraction.slug }}/" class="btn btn-sm btn-outline-primary">Learn More</a>
-                            </div>
-                        </div>
+            <div class="attraction-card">
+                <div class="attraction-image">
+                    {% if attraction.image_url %}
+                    <img src="{{ attraction.image_url }}" alt="{{ attraction.name }}" loading="lazy">
+                    {% elif attraction.main_image %}
+                    <img src="{{ attraction.main_image.url }}" alt="{{ attraction.name }}" loading="lazy">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=400&q=80" alt="{{ attraction.name }}" loading="lazy">
+                    {% endif %}
+
+                    <div class="attraction-badges">
+                        {% if attraction.is_unesco %}
+                        <span class="badge badge-unesco"><i class="fas fa-globe"></i> UNESCO</span>
+                        {% endif %}
+                        {% if attraction.is_must_see %}
+                        <span class="badge badge-must-see"><i class="fas fa-star"></i> Must See</span>
+                        {% endif %}
                     </div>
+
+                    {% if attraction.average_rating > 0 %}
+                    <div class="attraction-rating">
+                        <span>{{ attraction.average_rating }}</span>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    {% endif %}
                 </div>
+
+                <div class="attraction-content">
+                    <div class="attraction-meta">
+                        <span class="location">
+                            <i class="fas fa-map-marker-alt"></i> {{ attraction.city.name }}
+                        </span>
+                        <span class="type">{{ attraction.get_attraction_type_display }}</span>
+                    </div>
+
+                    <h3 class="attraction-name">{{ attraction.name }}</h3>
+                    <p class="attraction-description">{{ attraction.description|truncatewords:12 }}</p>
+
+                    <div class="attraction-info">
+                        {% if attraction.visit_duration %}
+                        <span><i class="fas fa-clock"></i> {{ attraction.visit_duration }}</span>
+                        {% endif %}
+                        {% if attraction.admission_fee %}
+                        <span><i class="fas fa-ticket-alt"></i> ${{ attraction.admission_fee|floatformat:0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <a href="{% url 'destinations:attraction_detail' attraction.slug %}" class="btn-explore">
+                        Learn More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <i class="fas fa-landmark"></i>
+                <h4>No attractions available</h4>
+                <p>Check back soon for must-see attractions</p>
             </div>
             {% endfor %}
         </div>
     </section>
 </div>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-card">
+            <div class="cta-content">
+                <h3>Ready to Explore Egypt?</h3>
+                <p>Find the perfect tour or accommodation for your Egyptian adventure</p>
+            </div>
+            <div class="cta-actions">
+                <a href="{% url 'tours:list' %}" class="btn-cta btn-tours">
+                    <i class="fas fa-compass me-2"></i>Browse Tours
+                </a>
+                <a href="{% url 'accommodations:search' %}" class="btn-cta btn-hotels">
+                    <i class="fas fa-hotel me-2"></i>Find Hotels
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ========================================
+   DESTINATIONS PAGE STYLES
+   ======================================== */
+
+:root {
+    --primary: #c41e3a;
+    --primary-dark: #9a1830;
+    --secondary: #ffd700;
+    --accent: #1e3c72;
+    --teal: #20c997;
+    --gradient-primary: linear-gradient(135deg, #c41e3a 0%, #9a1830 100%);
+    --gradient-accent: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    --gradient-teal: linear-gradient(135deg, #20c997 0%, #0d9488 100%);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.16);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hero Header */
+.destinations-hero {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1920&q=80') center/cover;
+    padding: 4rem 0 5rem;
+    color: white;
+}
+
+.destinations-hero .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(32, 201, 151, 0.85) 0%, rgba(30, 60, 114, 0.9) 100%);
+}
+
+.destinations-hero .container {
+    z-index: 2;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+.stats-card {
+    background: white;
+    border-radius: var(--radius-md);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--teal);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.stat-divider {
+    width: 1px;
+    height: 40px;
+    background: #e8e8e8;
+}
+
+/* Section Headers */
+.section-header {
+    margin-bottom: 2rem;
+}
+
+.section-tag {
+    display: inline-block;
+    background: rgba(32, 201, 151, 0.1);
+    color: var(--teal);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0;
+}
+
+/* Cities Grid */
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.city-card {
+    background: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    transition: var(--transition);
+    display: block;
+}
+
+.city-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-8px);
+}
+
+.city-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.city-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.city-card:hover .city-image img {
+    transform: scale(1.1);
+}
+
+.city-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.city-card:hover .city-overlay {
+    opacity: 1;
+}
+
+.explore-btn {
+    background: white;
+    color: #333;
+    padding: 10px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transform: translateY(20px);
+    transition: var(--transition);
+}
+
+.city-card:hover .explore-btn {
+    transform: translateY(0);
+}
+
+.city-content {
+    padding: 1.25rem;
+}
+
+.city-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.city-description {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+
+.city-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.city-meta i {
+    color: var(--teal);
+    margin-right: 4px;
+}
+
+/* Attractions Grid */
+.attractions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.attraction-card {
+    background: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    transition: var(--transition);
+}
+
+.attraction-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.attraction-image {
+    position: relative;
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.attraction-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.attraction-badges {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.badge-unesco {
+    background: #0077be;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.badge-must-see {
+    background: var(--secondary);
+    color: #333;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.attraction-rating {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #28a745;
+    color: white;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.attraction-rating i {
+    font-size: 0.7rem;
+    margin-left: 2px;
+}
+
+.attraction-content {
+    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.attraction-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.attraction-meta .location {
+    color: #666;
+}
+
+.attraction-meta .location i {
+    color: var(--teal);
+    margin-right: 4px;
+}
+
+.attraction-meta .type {
+    background: #f5f5f5;
+    color: #666;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+}
+
+.attraction-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.attraction-description {
+    color: #666;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    flex-grow: 1;
+    margin-bottom: 0.75rem;
+}
+
+.attraction-info {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.attraction-info i {
+    color: var(--teal);
+    margin-right: 4px;
+}
+
+.btn-explore {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--teal);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.btn-explore:hover {
+    color: var(--accent);
+}
+
+.btn-explore i {
+    transition: var(--transition);
+}
+
+.btn-explore:hover i {
+    transform: translateX(4px);
+}
+
+/* Empty State */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #f8f9fa;
+    border-radius: var(--radius-md);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+}
+
+.empty-state h4 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: #666;
+}
+
+/* CTA Section */
+.cta-section {
+    background: #f8f9fa;
+    padding: 3rem 0;
+}
+
+.cta-card {
+    background: var(--gradient-teal);
+    border-radius: var(--radius-lg);
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.cta-content h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.cta-content p {
+    opacity: 0.9;
+    margin: 0;
+}
+
+.cta-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-cta {
+    padding: 14px 28px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+}
+
+.btn-tours {
+    background: white;
+    color: var(--teal);
+}
+
+.btn-tours:hover {
+    background: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+.btn-hotels {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-hotels:hover {
+    background: white;
+    color: var(--teal);
+    border-color: white;
+}
+
+/* Mobile Responsive */
+@media (max-width: 991.98px) {
+    .hero-title { font-size: 2rem; }
+    .stats-card { margin-top: 1.5rem; }
+
+    .cities-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .attractions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .destinations-hero {
+        padding: 3rem 0 4rem;
+    }
+
+    .hero-title { font-size: 1.5rem; }
+
+    .cities-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .attraction-card {
+        flex-direction: column;
+    }
+
+    .attraction-image {
+        width: 100%;
+        height: 180px;
+    }
+
+    .cta-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .cta-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-cta {
+        justify-content: center;
+    }
+}
+
+/* Touch device adjustments */
+@media (hover: none) {
+    .city-card:hover {
+        transform: none;
+    }
+    .city-overlay {
+        display: none;
+    }
+    .city-card:hover .city-image img {
+        transform: none;
+    }
+}
+</style>
 {% endblock %}
