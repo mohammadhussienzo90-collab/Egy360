@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.db.models import Q, Avg, Min, Max
+from django.core.cache import cache
 from .models import Accommodation, Room, Amenity
 
 
@@ -82,10 +83,22 @@ class AccommodationSearchView(ListView):
 
         # Pass filter options to template
         context['accommodation_types'] = Accommodation.ACCOMMODATION_TYPES
-        context['amenities'] = Amenity.objects.all()
-        context['cities'] = Accommodation.objects.filter(
-            is_active=True
-        ).values_list('city', flat=True).distinct().order_by('city')
+
+        # Cache amenities for 1 hour
+        amenities = cache.get('accommodation_amenities')
+        if amenities is None:
+            amenities = list(Amenity.objects.all())
+            cache.set('accommodation_amenities', amenities, 3600)
+        context['amenities'] = amenities
+
+        # Cache cities for 1 hour
+        cities = cache.get('accommodation_cities')
+        if cities is None:
+            cities = list(Accommodation.objects.filter(
+                is_active=True
+            ).values_list('city', flat=True).distinct().order_by('city'))
+            cache.set('accommodation_cities', cities, 3600)
+        context['cities'] = cities
 
         # Current filter values for form persistence
         context['current_filters'] = {
@@ -102,11 +115,14 @@ class AccommodationSearchView(ListView):
 
         context['total_results'] = self.get_queryset().count()
 
-        # Price range for filter UI
-        price_stats = Accommodation.objects.filter(is_active=True).aggregate(
-            min_price=Min('price_per_night'),
-            max_price=Max('price_per_night')
-        )
+        # Cache price range for 1 hour
+        price_stats = cache.get('accommodation_price_range')
+        if price_stats is None:
+            price_stats = Accommodation.objects.filter(is_active=True).aggregate(
+                min_price=Min('price_per_night'),
+                max_price=Max('price_per_night')
+            )
+            cache.set('accommodation_price_range', price_stats, 3600)
         context['price_range'] = price_stats
 
         return context
@@ -162,15 +178,23 @@ class AccommodationDetailView(DetailView):
 
 def accommodation_by_city(request, city):
     """View all accommodations in a specific city"""
+    from django.core.paginator import Paginator
+
     accommodations = Accommodation.objects.filter(
         city__iexact=city,
         is_active=True
     ).order_by('-is_featured', '-average_rating')
 
+    # Pagination
+    paginator = Paginator(accommodations, 12)  # 12 per page
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'accommodations': accommodations,
+        'accommodations': page_obj,
+        'page_obj': page_obj,
         'city': city,
-        'total_results': accommodations.count(),
+        'total_results': paginator.count,
         'page_title': f'Accommodations in {city} - Egy360',
     }
     return render(request, 'accommodation_search.html', context)
@@ -178,17 +202,25 @@ def accommodation_by_city(request, city):
 
 def accommodation_by_type(request, acc_type):
     """View all accommodations of a specific type"""
+    from django.core.paginator import Paginator
+
     type_display = dict(Accommodation.ACCOMMODATION_TYPES).get(acc_type, acc_type)
     accommodations = Accommodation.objects.filter(
         accommodation_type=acc_type,
         is_active=True
     ).order_by('-is_featured', '-average_rating')
 
+    # Pagination
+    paginator = Paginator(accommodations, 12)  # 12 per page
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'accommodations': accommodations,
+        'accommodations': page_obj,
+        'page_obj': page_obj,
         'accommodation_type': acc_type,
         'type_display': type_display,
-        'total_results': accommodations.count(),
+        'total_results': paginator.count,
         'page_title': f'{type_display}s in Egypt - Egy360',
     }
     return render(request, 'accommodation_search.html', context)

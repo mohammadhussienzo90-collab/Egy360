@@ -94,10 +94,10 @@ def my_bookings(request):
     tour_bookings = []
     status_filter = request.GET.get('status', '')
 
-    # Get generic bookings
+    # Get generic bookings with related data
     try:
         from bookings.models import Booking
-        qs = Booking.objects.filter(user=request.user)
+        qs = Booking.objects.filter(user=request.user).select_related('user')
         if status_filter:
             qs = qs.filter(status=status_filter)
         bookings = qs.order_by('-created_at')
@@ -342,55 +342,69 @@ def revenue_dashboard(request):
         count=Count('id')
     ).order_by('-count')
 
-    # Daily trend data for chart
-    daily_clicks = []
-    for i in range(min(30, (today - start_date).days + 1)):
-        date = today - timedelta(days=i)
-        day_clicks = AffiliateClick.objects.filter(clicked_at__date=date)
-        daily_clicks.append({
-            'date': date.strftime('%Y-%m-%d'),
-            'clicks': day_clicks.count(),
-            'revenue': float(day_clicks.aggregate(total=Sum('estimated_commission'))['total'] or 0)
-        })
-    daily_clicks.reverse()
+    # Daily trend data for chart - single query with date grouping
+    from django.db.models.functions import TruncDate
+    daily_stats = clicks.annotate(
+        date=TruncDate('clicked_at')
+    ).values('date').annotate(
+        clicks=Count('id'),
+        revenue=Sum('estimated_commission')
+    ).order_by('date')
 
-    # Top performing items
-    top_hotels = clicks.filter(item_type='accommodation').values(
+    # Convert to list format for chart
+    daily_clicks = [
+        {
+            'date': stat['date'].strftime('%Y-%m-%d') if stat['date'] else '',
+            'clicks': stat['clicks'],
+            'revenue': float(stat['revenue'] or 0)
+        }
+        for stat in daily_stats
+    ]
+
+    # Top performing items - aggregate click counts
+    top_hotels_stats = clicks.filter(item_type='accommodation').values(
         'object_id'
     ).annotate(
         click_count=Count('id')
     ).order_by('-click_count')[:5]
 
-    top_tours = clicks.filter(item_type='tour').values(
+    top_tours_stats = clicks.filter(item_type='tour').values(
         'object_id'
     ).annotate(
         click_count=Count('id')
     ).order_by('-click_count')[:5]
 
-    # Get actual hotel/tour names
+    # Batch fetch all hotels and tours in single queries (fixes N+1)
+    hotel_ids = [item['object_id'] for item in top_hotels_stats]
+    tour_ids = [item['object_id'] for item in top_tours_stats]
+
+    hotels_map = {
+        h.id: h for h in Accommodation.objects.filter(id__in=hotel_ids).only('id', 'name', 'city')
+    }
+    tours_map = {
+        t.id: t for t in Tour.objects.filter(id__in=tour_ids).only('id', 'name', 'tour_type')
+    }
+
+    # Build result lists
     top_hotels_list = []
-    for item in top_hotels:
-        try:
-            hotel = Accommodation.objects.get(id=item['object_id'])
+    for item in top_hotels_stats:
+        hotel = hotels_map.get(item['object_id'])
+        if hotel:
             top_hotels_list.append({
                 'name': hotel.name,
                 'clicks': item['click_count'],
                 'city': hotel.city
             })
-        except Accommodation.DoesNotExist:
-            pass
 
     top_tours_list = []
-    for item in top_tours:
-        try:
-            tour = Tour.objects.get(id=item['object_id'])
+    for item in top_tours_stats:
+        tour = tours_map.get(item['object_id'])
+        if tour:
             top_tours_list.append({
                 'name': tour.name,
                 'clicks': item['click_count'],
                 'type': tour.get_tour_type_display()
             })
-        except Tour.DoesNotExist:
-            pass
 
     # Inventory stats
     total_hotels = Accommodation.objects.filter(is_active=True).count()

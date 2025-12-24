@@ -26,7 +26,15 @@ from .forms import (
 )
 from .models import UserProfile
 from .sms import send_otp_sms, validate_phone_number
-from core.rate_limit import rate_limit_login, rate_limit_register, rate_limit_otp
+from core.rate_limit import (
+    rate_limit_login,
+    rate_limit_register,
+    rate_limit_otp,
+    rate_limit_password_reset,
+    with_account_lockout,
+    account_lockout,
+    get_client_ip,
+)
 
 
 @rate_limit_register(requests_per_minute=3, requests_per_hour=10)
@@ -55,12 +63,17 @@ def register_view(request):
 
 
 @rate_limit_login(requests_per_minute=5, requests_per_hour=30)
+@with_account_lockout
 def login_view(request):
-    """User login view"""
+    """User login view with account lockout protection"""
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
+
+            # Clear failed attempts on successful login
+            ip = get_client_ip(request)
+            account_lockout.clear_failures(user.username, ip)
 
             # Check if 2FA is enabled
             if hasattr(user, 'profile') and user.profile.two_factor_enabled:
@@ -425,3 +438,17 @@ def security_settings_view(request):
         'phone_verified': profile.phone_verified,
         'phone_masked': profile.get_masked_phone()
     })
+
+
+# Password Reset Views with Rate Limiting
+from django.contrib.auth.views import PasswordResetView
+from django.utils.decorators import method_decorator
+
+
+@method_decorator(rate_limit_password_reset(requests_per_minute=3, requests_per_hour=10), name='post')
+class RateLimitedPasswordResetView(PasswordResetView):
+    """Password reset view with rate limiting to prevent abuse"""
+    template_name = 'accounts/password_reset.html'
+    email_template_name = 'accounts/password_reset_email.html'
+    subject_template_name = 'accounts/password_reset_subject.txt'
+    success_url = '/accounts/password-reset/done/'

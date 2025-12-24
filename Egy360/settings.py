@@ -235,6 +235,17 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
+    # API Rate Limiting / Throttling
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/hour',      # Anonymous users: 100 requests/hour
+        'user': '1000/hour',     # Authenticated users: 1000 requests/hour
+        'payment': '20/hour',    # Payment endpoints (stricter)
+        'booking': '50/hour',    # Booking endpoints
+    },
 }
 
 # CORS settings - restrict in production

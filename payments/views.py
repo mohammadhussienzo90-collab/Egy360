@@ -33,6 +33,7 @@ from .serializers import (
     TransactionLogSerializer,
 )
 from .stripe_integration import stripe_gateway, get_stripe_public_key
+from core.throttling import PaymentRateThrottle
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +89,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     ).order_by('-created_at')
 
     permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [PaymentRateThrottle]  # Strict rate limiting for payments
 
     filterset_fields = ['status', 'payment_method', 'booking']
     search_fields = ['transaction_id', 'reference_number']

@@ -5,6 +5,7 @@ from django.db.models import Q, Min, Max
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from django.core.cache import cache
 import json
 
 logger = logging.getLogger(__name__)
@@ -88,9 +89,15 @@ class TourListView(ListView):
         # Pass filter options to template
         context['tour_types'] = Tour.TOUR_TYPES
         context['difficulty_levels'] = Tour.DIFFICULTY_LEVELS
-        context['departure_cities'] = Tour.objects.filter(
-            is_active=True
-        ).values_list('departure_city', flat=True).distinct().order_by('departure_city')
+
+        # Cache departure cities for 1 hour
+        departure_cities = cache.get('tour_departure_cities')
+        if departure_cities is None:
+            departure_cities = list(Tour.objects.filter(
+                is_active=True
+            ).values_list('departure_city', flat=True).distinct().order_by('departure_city'))
+            cache.set('tour_departure_cities', departure_cities, 3600)
+        context['departure_cities'] = departure_cities
 
         # Current filter values for form persistence
         context['current_filters'] = {
@@ -107,18 +114,24 @@ class TourListView(ListView):
 
         context['total_results'] = self.get_queryset().count()
 
-        # Price range for filter UI
-        price_stats = Tour.objects.filter(is_active=True).aggregate(
-            min_price=Min('price_per_person'),
-            max_price=Max('price_per_person')
-        )
+        # Cache price range for 1 hour
+        price_stats = cache.get('tour_price_range')
+        if price_stats is None:
+            price_stats = Tour.objects.filter(is_active=True).aggregate(
+                min_price=Min('price_per_person'),
+                max_price=Max('price_per_person')
+            )
+            cache.set('tour_price_range', price_stats, 3600)
         context['price_range'] = price_stats
 
-        # Duration range for filter UI
-        duration_stats = Tour.objects.filter(is_active=True).aggregate(
-            min_days=Min('duration_days'),
-            max_days=Max('duration_days')
-        )
+        # Cache duration range for 1 hour
+        duration_stats = cache.get('tour_duration_range')
+        if duration_stats is None:
+            duration_stats = Tour.objects.filter(is_active=True).aggregate(
+                min_days=Min('duration_days'),
+                max_days=Max('duration_days')
+            )
+            cache.set('tour_duration_range', duration_stats, 3600)
         context['duration_range'] = duration_stats
 
         return context
@@ -179,17 +192,25 @@ class TourDetailView(DetailView):
 
 def tour_by_type(request, tour_type):
     """View all tours of a specific type"""
+    from django.core.paginator import Paginator
+
     type_display = dict(Tour.TOUR_TYPES).get(tour_type, tour_type)
     tours = Tour.objects.filter(
         tour_type=tour_type,
         is_active=True
     ).order_by('-is_featured', '-average_rating')
 
+    # Pagination
+    paginator = Paginator(tours, 12)  # 12 per page
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'tours': tours,
+        'tours': page_obj,
+        'page_obj': page_obj,
         'tour_type': tour_type,
         'type_display': type_display,
-        'total_results': tours.count(),
+        'total_results': paginator.count,
         'page_title': f'{type_display} Tours in Egypt - Egy360',
         'tour_types': Tour.TOUR_TYPES,
         'difficulty_levels': Tour.DIFFICULTY_LEVELS,
@@ -199,20 +220,44 @@ def tour_by_type(request, tour_type):
 
 def tour_by_destination(request, destination):
     """View all tours that include a specific destination"""
-    tours = Tour.objects.filter(
-        is_active=True
-    ).order_by('-is_featured', '-average_rating')
+    from django.core.paginator import Paginator
 
-    # Filter tours that include this destination in their JSON field
-    filtered_tours = [
-        tour for tour in tours
-        if destination.lower() in [d.lower() for d in (tour.destinations or [])]
-    ]
+    # Try database-level filtering first (works for PostgreSQL JSONField)
+    # Fall back to limited in-memory filtering for SQLite
+    try:
+        # Attempt case-insensitive JSON contains lookup
+        tours = Tour.objects.filter(
+            is_active=True,
+            destinations__icontains=destination
+        ).order_by('-is_featured', '-average_rating')
+        total_count = tours.count()
+    except Exception:
+        # Fallback: Load only necessary fields and filter in memory
+        tours = Tour.objects.filter(
+            is_active=True
+        ).only(
+            'id', 'name', 'slug', 'description', 'tour_type', 'duration_days',
+            'price_per_person', 'destinations', 'main_image', 'is_featured',
+            'average_rating', 'departure_city'
+        ).order_by('-is_featured', '-average_rating')
+
+        # Filter tours that include this destination in their JSON field
+        tours = [
+            tour for tour in tours
+            if destination.lower() in [d.lower() for d in (tour.destinations or [])]
+        ]
+        total_count = len(tours)
+
+    # Pagination
+    paginator = Paginator(tours, 12)  # 12 per page
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
 
     context = {
-        'tours': filtered_tours,
+        'tours': page_obj,
+        'page_obj': page_obj,
         'destination': destination,
-        'total_results': len(filtered_tours),
+        'total_results': total_count,
         'page_title': f'Tours to {destination} - Egy360',
         'tour_types': Tour.TOUR_TYPES,
         'difficulty_levels': Tour.DIFFICULTY_LEVELS,
