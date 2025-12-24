@@ -334,9 +334,14 @@ LOGGING = {
     },
 }
 
-# WhiteNoise settings
+# WhiteNoise settings for static file serving
 WHITENOISE_USE_FINDERS = True
-WHITENOISE_AUTOREFRESH = True
+WHITENOISE_AUTOREFRESH = DEBUG  # Only auto-refresh in debug mode
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# WhiteNoise compression and caching
+WHITENOISE_MAX_AGE = 31536000  # 1 year for immutable files
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'zip', 'gz', 'tgz', 'bz2', 'tbz', 'xz', 'br', 'swf', 'flv', 'woff', 'woff2']
 
 # Cache settings - use database cache for production, local memory for dev
 if DEBUG:
