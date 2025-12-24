@@ -267,8 +267,21 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
-# Email backend
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Email Configuration
+# Production uses SMTP (SendGrid, Mailgun, etc.), Development uses console
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.sendgrid.net')
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() == 'true'
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'apikey')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+
+# Default from email for all outgoing emails
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Egy360 <noreply@360egy.com>')
+SERVER_EMAIL = os.environ.get('SERVER_EMAIL', 'errors@360egy.com')
 
 # Messages
 from django.contrib.messages import constants as messages

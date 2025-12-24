@@ -47,40 +47,49 @@ class Command(BaseCommand):
         self.stdout.write(f'   - Tours: {Tour.objects.count()}')
 
     def create_users(self):
+        import secrets
+        import string
+
+        def generate_password(length=16):
+            alphabet = string.ascii_letters + string.digits + "!@#$%^&*"
+            return ''.join(secrets.choice(alphabet) for _ in range(length))
+
         self.stdout.write('👤 Creating users...')
 
         # Admin user
         if not User.objects.filter(username='admin').exists():
+            password = generate_password()
             User.objects.create_superuser(
                 username='admin',
                 email='admin@egy360.com',
-                password='admin123',
+                password=password,
                 first_name='Admin',
                 last_name='User'
             )
             self.stdout.write('   ✓ Admin user created')
+            self.stdout.write(self.style.WARNING(f'     Password: {password}'))
 
-        # Tourist user
+        # Tourist user (sample data - uses random password)
         if not User.objects.filter(username='tourist').exists():
+            password = generate_password()
             User.objects.create_user(
                 username='tourist',
                 email='tourist@example.com',
-                password='tourist123',
+                password=password,
                 first_name='John',
-                last_name='Tourist',
-                user_type='tourist'
+                last_name='Tourist'
             )
             self.stdout.write('   ✓ Tourist user created')
 
-        # Provider user
+        # Provider user (sample data - uses random password)
         if not User.objects.filter(username='provider').exists():
+            password = generate_password()
             User.objects.create_user(
                 username='provider',
                 email='provider@example.com',
-                password='provider123',
+                password=password,
                 first_name='Ahmed',
-                last_name='Provider',
-                user_type='provider'
+                last_name='Provider'
             )
             self.stdout.write('   ✓ Provider user created')
 

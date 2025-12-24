@@ -22,8 +22,10 @@ from .forms import (
 )
 from .models import UserProfile
 from .sms import send_otp_sms, validate_phone_number
+from core.rate_limit import rate_limit_login, rate_limit_register, rate_limit_otp
 
 
+@rate_limit_register(requests_per_minute=3, requests_per_hour=10)
 def register_view(request):
     """User registration view"""
     if request.method == 'POST':
@@ -48,6 +50,7 @@ def register_view(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 
+@rate_limit_login(requests_per_minute=5, requests_per_hour=30)
 def login_view(request):
     """User login view"""
     if request.method == 'POST':
@@ -115,6 +118,7 @@ def update_profile(request):
 
 # Phone OTP Login Views
 
+@rate_limit_otp(requests_per_minute=3, requests_per_hour=10)
 def phone_login_view(request):
     """Phone number entry for OTP login"""
     if request.method == 'POST':
@@ -283,6 +287,7 @@ def setup_2fa_view(request):
     })
 
 
+@rate_limit_otp(requests_per_minute=5, requests_per_hour=20)
 def verify_2fa_view(request):
     """Verify 2FA during login"""
     user_id = request.session.get('pending_2fa_user_id')

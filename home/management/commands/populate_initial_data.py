@@ -20,14 +20,22 @@ class Command(BaseCommand):
 
         # Create superuser if doesn't exist
         if not User.objects.filter(username='admin').exists():
+            import secrets
+            import string
+            # Generate secure random password
+            alphabet = string.ascii_letters + string.digits + "!@#$%^&*"
+            password = ''.join(secrets.choice(alphabet) for _ in range(16))
+
             User.objects.create_superuser(
                 username='admin',
                 email='admin@egy360.com',
-                password='admin123456',
+                password=password,
                 first_name='Admin',
                 last_name='User'
             )
             self.stdout.write(self.style.SUCCESS('✓ Superuser created'))
+            self.stdout.write(self.style.WARNING(f'  Password: {password}'))
+            self.stdout.write(self.style.WARNING('  Save this password securely!'))
 
         # Create destinations
         destinations_data = [

@@ -45,13 +45,22 @@ class Command(BaseCommand):
         self.stdout.write(f'  - Blog Posts: {BlogPost.objects.count()}')
 
     def create_admin_user(self):
+        import secrets
+        import string
+
         if not User.objects.filter(username='admin').exists():
+            # Generate secure random password
+            alphabet = string.ascii_letters + string.digits + "!@#$%^&*"
+            password = ''.join(secrets.choice(alphabet) for _ in range(16))
+
             User.objects.create_superuser(
                 username='admin',
                 email='admin@egytravel360.com',
-                password='admin123'  # Change this!
+                password=password
             )
-            self.stdout.write(self.style.SUCCESS('[SUCCESS] Admin user created (username: admin, password: admin123)'))
+            self.stdout.write(self.style.SUCCESS(f'[SUCCESS] Admin user created (username: admin)'))
+            self.stdout.write(self.style.WARNING(f'[PASSWORD] {password}'))
+            self.stdout.write(self.style.WARNING('[WARNING] Save this password securely!'))
         else:
             self.stdout.write('[INFO] Admin user already exists')
 
