@@ -1,7 +1,7 @@
-# FILE: payment/forms.py
+# FILE: payments/forms.py
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from .models import PaymentRefund
+from .models import Refund, PaymentMethod
 
 
 class PaymentMethodForm(forms.Form):
@@ -19,13 +19,13 @@ class PaymentMethodForm(forms.Form):
 
 class RefundRequestForm(forms.ModelForm):
     class Meta:
-        model = PaymentRefund
-        fields = ['reason', 'description']
+        model = Refund
+        fields = ['reason', 'reason_details']
         widgets = {
             'reason': forms.Select(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'reason_details': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         }
         labels = {
             'reason': _('Refund Reason'),
-            'description': _('Additional Details'),
+            'reason_details': _('Additional Details'),
         }

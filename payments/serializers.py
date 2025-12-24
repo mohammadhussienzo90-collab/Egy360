@@ -12,8 +12,8 @@ from django.utils import timezone
 from .models import (
     PaymentMethod,
     Payment,
-    Refund,  # ✅ Changed from PaymentRefund
-    TransactionLog,
+    Refund,
+    Transaction,
 )
 from bookings.models import Booking
 
@@ -24,31 +24,29 @@ from bookings.models import Booking
 
 class PaymentMethodSerializer(serializers.ModelSerializer):
     """
-    Serializer for payment methods.
-    
-    Used for displaying available payment options.
+    Serializer for user's saved payment methods (cards).
     """
-    
-    method_type_display = serializers.CharField(
-        source='get_method_type_display',
+
+    card_type_display = serializers.CharField(
+        source='get_card_type_display',
         read_only=True
     )
-    
+
     class Meta:
         model = PaymentMethod
         fields = [
             'id',
-            'name',
-            'method_type',
-            'method_type_display',
-            'description',
-            'icon',
+            'card_type',
+            'card_type_display',
+            'last_four_digits',
+            'card_holder_name',
+            'expiry_month',
+            'expiry_year',
+            'is_default',
             'is_active',
-            'processing_fee_percentage',
-            'min_amount',
-            'max_amount',
+            'created_at',
         ]
-        read_only_fields = ['processing_fee_percentage', 'min_amount', 'max_amount']
+        read_only_fields = ['last_four_digits', 'created_at']
 
 
 # ==============================================================================
@@ -86,42 +84,39 @@ class PaymentDetailSerializer(serializers.ModelSerializer):
     """
     Detailed serializer for payment information.
     """
-    
+
     user_details = serializers.SerializerMethodField()
-    payment_method_details = PaymentMethodSerializer(source='payment_method', read_only=True)
     booking_details = serializers.SerializerMethodField()
     status_display = serializers.CharField(source='get_status_display', read_only=True)
-    
+    payment_method_display = serializers.CharField(source='get_payment_method_display', read_only=True)
+
     class Meta:
         model = Payment
         fields = [
             'id',
+            'payment_reference',
             'transaction_id',
-            'reference_number',
             'user',
             'user_details',
             'booking',
             'booking_details',
             'payment_method',
-            'payment_method_details',
+            'payment_method_display',
             'amount',
             'currency',
-            'processing_fee',
-            'total_amount',
+            'gateway',
             'status',
             'status_display',
-            'gateway_response',
+            'description',
             'failure_reason',
-            'paid_at',
+            'completed_at',
             'created_at',
             'updated_at',
         ]
         read_only_fields = [
+            'payment_reference',
             'transaction_id',
-            'reference_number',
-            'processing_fee',
-            'total_amount',
-            'gateway_response',
+            'gateway',
             'created_at',
             'updated_at',
         ]
@@ -141,7 +136,7 @@ class PaymentDetailSerializer(serializers.ModelSerializer):
         if obj.booking:
             return {
                 'id': obj.booking.id,
-                'booking_number': obj.booking.booking_number,
+                'booking_reference': obj.booking.booking_reference,
                 'booking_type': obj.booking.booking_type,
                 'total_amount': str(obj.booking.total_amount),
             }
@@ -214,7 +209,7 @@ class RefundSerializer(serializers.ModelSerializer):
     """
     Serializer for refund information.
     """
-    
+
     payment_details = serializers.SerializerMethodField()
     requested_by_name = serializers.CharField(
         source='requested_by.get_full_name',
@@ -224,29 +219,39 @@ class RefundSerializer(serializers.ModelSerializer):
         source='get_status_display',
         read_only=True
     )
-    
+    reason_display = serializers.CharField(
+        source='get_reason_display',
+        read_only=True
+    )
+
     class Meta:
         model = Refund
         fields = [
             'id',
+            'refund_reference',
             'payment',
             'payment_details',
             'amount',
+            'currency',
             'reason',
+            'reason_display',
+            'reason_details',
             'status',
             'status_display',
+            'transaction_id',
             'requested_by',
             'requested_by_name',
             'processed_by',
-            'admin_notes',
-            'refunded_at',
-            'created_at',
+            'requested_at',
+            'processed_at',
+            'completed_at',
         ]
         read_only_fields = [
+            'refund_reference',
             'requested_by',
             'processed_by',
-            'refunded_at',
-            'created_at',
+            'requested_at',
+            'completed_at',
         ]
     
     def get_payment_details(self, obj):
@@ -292,40 +297,38 @@ class RefundRequestSerializer(serializers.Serializer):
 
 
 # ==============================================================================
-# TRANSACTION LOG SERIALIZERS
+# TRANSACTION SERIALIZERS
 # ==============================================================================
 
 class TransactionLogSerializer(serializers.ModelSerializer):
     """
     Serializer for transaction logs.
     """
-    
+
     payment_transaction_id = serializers.CharField(
         source='payment.transaction_id',
         read_only=True
     )
-    action_display = serializers.CharField(
-        source='get_action_display',
+    transaction_type_display = serializers.CharField(
+        source='get_transaction_type_display',
         read_only=True
     )
-    status_display = serializers.CharField(
-        source='get_status_display',
-        read_only=True
-    )
-    
+
     class Meta:
-        model = TransactionLog
+        model = Transaction
         fields = [
             'id',
+            'transaction_reference',
+            'transaction_type',
+            'transaction_type_display',
             'payment',
             'payment_transaction_id',
-            'action',
-            'action_display',
-            'status',
-            'status_display',
-            'message',
-            'request_data',
-            'response_data',
+            'refund',
+            'user',
+            'amount',
+            'currency',
+            'description',
+            'notes',
             'created_at',
         ]
-        read_only_fields = ['created_at']
+        read_only_fields = ['transaction_reference', 'created_at']

@@ -2,6 +2,7 @@
 import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+from django.utils.http import url_has_allowed_host_and_scheme
 
 logger = logging.getLogger(__name__)
 from django.contrib.auth.decorators import login_required
@@ -69,7 +70,12 @@ def login_view(request):
 
             login(request, user)
             messages.success(request, 'Welcome back!')
-            return redirect(request.GET.get('next', 'homepage'))
+
+            # Validate redirect URL to prevent open redirect attacks
+            next_url = request.GET.get('next', '')
+            if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+                return redirect(next_url)
+            return redirect('homepage')
     else:
         form = UserLoginForm()
     return render(request, 'accounts/login.html', {'form': form})

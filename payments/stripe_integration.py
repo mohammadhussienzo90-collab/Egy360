@@ -10,15 +10,21 @@ Handles:
 """
 
 import logging
-import stripe
 from django.conf import settings
 from django.utils import timezone
 from decimal import Decimal
 
 logger = logging.getLogger(__name__)
 
-# Initialize Stripe with secret key
-stripe.api_key = getattr(settings, 'STRIPE_SECRET_KEY', '')
+# Try to import stripe, make it optional for development
+try:
+    import stripe
+    stripe.api_key = getattr(settings, 'STRIPE_SECRET_KEY', '')
+    STRIPE_AVAILABLE = True
+except ImportError:
+    stripe = None
+    STRIPE_AVAILABLE = False
+    logger.warning("Stripe module not installed. Payment processing will be unavailable.")
 
 
 class StripePaymentGateway:
@@ -36,7 +42,7 @@ class StripePaymentGateway:
 
     def is_configured(self):
         """Check if Stripe is properly configured"""
-        return bool(self.secret_key and self.public_key)
+        return STRIPE_AVAILABLE and bool(self.secret_key and self.public_key)
 
     def create_payment_intent(self, amount, currency='EGP', metadata=None):
         """

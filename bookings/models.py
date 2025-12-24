@@ -12,6 +12,13 @@ class Booking(models.Model):
         ('completed', 'Completed'),
     ]
 
+    PAYMENT_STATUS = [
+        ('unpaid', 'Unpaid'),
+        ('partial', 'Partially Paid'),
+        ('paid', 'Paid'),
+        ('refunded', 'Refunded'),
+    ]
+
     BOOKING_TYPES = [
         ('accommodation', 'Accommodation'),
         ('tour', 'Tour'),
@@ -39,6 +46,7 @@ class Booking(models.Model):
 
     # Status
     status = models.CharField(max_length=20, choices=BOOKING_STATUS, default='pending')
+    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS, default='unpaid')
 
     # Contact
     contact_name = models.CharField(max_length=100)

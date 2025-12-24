@@ -37,23 +37,29 @@ from .stripe_integration import stripe_gateway, get_stripe_public_key
 logger = logging.getLogger(__name__)
 
 
-class PaymentMethodViewSet(viewsets.ReadOnlyModelViewSet):
+class PaymentMethodViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for viewing available payment methods.
+    ViewSet for managing user's saved payment methods (cards).
 
-    Read-only access to payment methods.
-
-    List: Get all active payment methods
+    List: Get user's saved payment methods
+    Create: Save a new payment method
     Retrieve: Get specific payment method details
+    Delete: Remove a saved payment method
     """
 
-    queryset = PaymentMethod.objects.filter(is_active=True).order_by('name')
     serializer_class = PaymentMethodSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
-    filterset_fields = ['method_type', 'is_active']
-    search_fields = ['name', 'description']
-    ordering_fields = ['name', 'created_at']
+    filterset_fields = ['card_type', 'is_active', 'is_default']
+    search_fields = ['card_holder_name', 'last_four_digits']
+    ordering_fields = ['is_default', 'created_at']
+
+    def get_queryset(self):
+        """Return only the current user's payment methods"""
+        return PaymentMethod.objects.filter(
+            user=self.request.user,
+            is_active=True
+        ).order_by('-is_default', '-created_at')
 
 
 class PaymentViewSet(viewsets.ModelViewSet):
@@ -390,14 +396,14 @@ class PaymentRefundViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Refund.objects.all().select_related(
         'payment',
         'requested_by'
-    ).order_by('-created_at')
+    ).order_by('-requested_at')
 
     serializer_class = RefundSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     filterset_fields = ['status', 'payment']
-    search_fields = ['reason']
-    ordering_fields = ['created_at', 'amount']
+    search_fields = ['reason', 'reason_details']
+    ordering_fields = ['requested_at', 'amount']
 
     def get_queryset(self):
         """Filter refunds based on user role"""

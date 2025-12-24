@@ -29,8 +29,8 @@ urlpatterns = [
     path('accommodations/', include('accommodations.urls')),
     path('tours/', include('tours.urls')),
     path('destinations/', include('destinations.urls')),
-    path('accounts/', include('allauth.urls')),  # Social auth URLs - must come first
-    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('accounts.urls')),  # Custom auth URLs (login, register, 2FA)
+    path('accounts/social/', include('allauth.urls')),  # Social auth URLs (Google, Facebook, Apple)
     path('bookings/', include('bookings.urls')),
     path('reviews/', include('reviews.urls')),
     path('payments/', include('payments.urls')),
