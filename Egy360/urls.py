@@ -1,4 +1,5 @@
 """Egy360 URL Configuration"""
+import os
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -21,6 +22,11 @@ def debug_check(request):
     from django.template import TemplateDoesNotExist
 
     result = {'status': 'checking'}
+
+    # Check DEBUG setting
+    from django.conf import settings
+    result['DEBUG'] = settings.DEBUG
+    result['DEBUG_env'] = os.environ.get('DEBUG', 'not set')
 
     # Check database connection
     try:
