@@ -1,47 +1,13 @@
-{% extends 'base.html' %}
-
-{% block title %}My Bookings - Egy360{% endblock %}
-
-{% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="text-center mb-5">
-                <h1 class="display-5 fw-bold" style="color: var(--primary-color);">
-                    <i class="fas fa-calendar-check me-3"></i>My Bookings
-                </h1>
-                <p class="lead text-muted">View and manage your travel reservations</p>
-            </div>
-
-            {% if user.is_authenticated %}
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center py-5">
-                        <i class="fas fa-suitcase-rolling fa-4x text-muted mb-4"></i>
-                        <h4>No Bookings Yet</h4>
-                        <p class="text-muted mb-4">You haven't made any bookings yet. Start exploring Egypt's amazing destinations!</p>
-                        <div class="d-flex gap-3 justify-content-center flex-wrap">
-                            <a href="{% url 'accommodations:list' %}" class="btn btn-primary btn-lg">
-                                <i class="fas fa-hotel me-2"></i>Browse Hotels
-                            </a>
-                            <a href="{% url 'tours:list' %}" class="btn btn-outline-primary btn-lg">
-                                <i class="fas fa-map-marked-alt me-2"></i>Explore Tours
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center py-5">
-                        <i class="fas fa-sign-in-alt fa-4x text-muted mb-4"></i>
-                        <h4>Sign In Required</h4>
-                        <p class="text-muted mb-4">Please log in to view your bookings.</p>
-                        <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-primary btn-lg">
-                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
-                        </a>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Egy360</title>
+</head>
+<body>
+    <h1>My Bookings</h1>
+    <p>This page is working. Bookings feature coming soon!</p>
+    <p><a href="/">Back to Home</a></p>
+</body>
+</html>

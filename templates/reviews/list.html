@@ -1,62 +1,13 @@
-{% extends 'base.html' %}
-
-{% block title %}Reviews - Egy360{% endblock %}
-
-{% block content %}
-<div class="container py-5">
-    <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold" style="color: var(--primary-color);">
-            <i class="fas fa-star me-3"></i>Traveler Reviews
-        </h1>
-        <p class="lead text-muted">Authentic experiences from our community</p>
-    </div>
-
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-comments fa-4x text-muted mb-4"></i>
-                    <h4>Reviews Coming Soon</h4>
-                    <p class="text-muted mb-4">
-                        We're building a trusted review system to help you make informed travel decisions.
-                        Check back soon to read authentic reviews from fellow travelers!
-                    </p>
-                    <div class="d-flex gap-3 justify-content-center flex-wrap">
-                        <a href="{% url 'accommodations:list' %}" class="btn btn-primary">
-                            <i class="fas fa-hotel me-2"></i>Browse Hotels
-                        </a>
-                        <a href="{% url 'tours:list' %}" class="btn btn-outline-primary">
-                            <i class="fas fa-map-marked-alt me-2"></i>Explore Tours
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Trust Indicators -->
-            <div class="row mt-5 text-center">
-                <div class="col-md-4 mb-3">
-                    <div class="p-3">
-                        <i class="fas fa-shield-alt fa-2x mb-2" style="color: var(--primary-color);"></i>
-                        <h6>Verified Reviews</h6>
-                        <small class="text-muted">Only from real travelers</small>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="p-3">
-                        <i class="fas fa-check-circle fa-2x mb-2" style="color: var(--primary-color);"></i>
-                        <h6>Honest Ratings</h6>
-                        <small class="text-muted">Unbiased feedback</small>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="p-3">
-                        <i class="fas fa-users fa-2x mb-2" style="color: var(--primary-color);"></i>
-                        <h6>Community Driven</h6>
-                        <small class="text-muted">By travelers, for travelers</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews - Egy360</title>
+</head>
+<body>
+    <h1>Traveler Reviews</h1>
+    <p>Reviews coming soon! We're building a trusted review system.</p>
+    <p><a href="/">Back to Home</a></p>
+</body>
+</html>
