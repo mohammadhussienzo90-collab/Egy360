@@ -1,14 +1,27 @@
 # api/urls.py
-from django.urls import path, include
+from django.urls import path
+from django.http import JsonResponse
 
 app_name = 'api'
 
+
+def api_root(request):
+    """API root endpoint listing available endpoints"""
+    return JsonResponse({
+        'status': 'ok',
+        'version': '1.0',
+        'message': 'Welcome to Egy360 API',
+        'endpoints': {
+            'health': '/health/',
+            'accommodations': '/accommodations/',
+            'tours': '/tours/',
+            'destinations': '/destinations/',
+            'blog': '/blog/',
+        },
+        'documentation': 'API documentation coming soon'
+    })
+
+
 urlpatterns = [
-    path('accommodations/', include('accommodations.urls')),
-    path('tours/', include('tours.urls')),
-    path('destinations/', include('destinations.urls')),
-    path('bookings/', include('bookings.urls')),
-    path('reviews/', include('reviews.urls')),
-    path('payments/', include('payments.urls')),
-    path('transportation/', include('transportation.urls')),
+    path('', api_root, name='root'),
 ]

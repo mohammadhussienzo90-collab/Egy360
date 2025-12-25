@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Information - Egy360{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold" style="color: var(--primary-color);">
+            <i class="fas fa-credit-card me-3"></i>Secure Payments
+        </h1>
+        <p class="lead text-muted">Safe and trusted payment options for your travels</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Payment Methods -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="mb-4"><i class="fas fa-wallet me-2"></i>Accepted Payment Methods</h5>
+                    <div class="row text-center">
+                        <div class="col-4 col-md-2 mb-3">
+                            <i class="fab fa-cc-visa fa-3x text-primary"></i>
+                            <small class="d-block mt-1">Visa</small>
+                        </div>
+                        <div class="col-4 col-md-2 mb-3">
+                            <i class="fab fa-cc-mastercard fa-3x text-danger"></i>
+                            <small class="d-block mt-1">Mastercard</small>
+                        </div>
+                        <div class="col-4 col-md-2 mb-3">
+                            <i class="fab fa-cc-amex fa-3x text-info"></i>
+                            <small class="d-block mt-1">Amex</small>
+                        </div>
+                        <div class="col-4 col-md-2 mb-3">
+                            <i class="fab fa-cc-paypal fa-3x text-primary"></i>
+                            <small class="d-block mt-1">PayPal</small>
+                        </div>
+                        <div class="col-4 col-md-2 mb-3">
+                            <i class="fab fa-apple-pay fa-3x text-dark"></i>
+                            <small class="d-block mt-1">Apple Pay</small>
+                        </div>
+                        <div class="col-4 col-md-2 mb-3">
+                            <i class="fab fa-google-pay fa-3x text-dark"></i>
+                            <small class="d-block mt-1">Google Pay</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Info -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="mb-4"><i class="fas fa-shield-alt me-2"></i>Payment Security</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-lock text-success me-3 mt-1"></i>
+                                <div>
+                                    <strong>SSL Encrypted</strong>
+                                    <p class="text-muted small mb-0">All transactions are secured with 256-bit SSL encryption</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                                <div>
+                                    <strong>PCI Compliant</strong>
+                                    <p class="text-muted small mb-0">We follow industry-standard security protocols</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-undo text-success me-3 mt-1"></i>
+                                <div>
+                                    <strong>Flexible Refunds</strong>
+                                    <p class="text-muted small mb-0">Easy cancellation with refund options available</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-headset text-success me-3 mt-1"></i>
+                                <div>
+                                    <strong>24/7 Support</strong>
+                                    <p class="text-muted small mb-0">Get help anytime with payment issues</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="text-center">
+                <p class="text-muted mb-3">Ready to book your Egyptian adventure?</p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="{% url 'accommodations:list' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-hotel me-2"></i>Book Hotels
+                    </a>
+                    <a href="{% url 'tours:list' %}" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-map-marked-alt me-2"></i>Book Tours
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -104,4 +104,4 @@ railway.json
 # Temporary files
 tmp/
 temp/
-*.tmp
+*.tmpnul
