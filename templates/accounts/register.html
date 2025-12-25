@@ -385,24 +385,33 @@
                 </div>
 
                 <!-- Social Login Section -->
+                {% get_providers as socialaccount_providers %}
+                {% if socialaccount_providers %}
                 <div class="social-login-section">
-                    <a href="{% provider_login_url 'google' %}" class="social-btn btn-google">
-                        <i class="fab fa-google"></i>
-                        Sign up with Google
-                    </a>
-                    <a href="{% provider_login_url 'facebook' %}" class="social-btn btn-facebook">
-                        <i class="fab fa-facebook-f"></i>
-                        Sign up with Facebook
-                    </a>
-                    <a href="{% provider_login_url 'apple' %}" class="social-btn btn-apple">
-                        <i class="fab fa-apple"></i>
-                        Sign up with Apple
-                    </a>
+                    {% for provider in socialaccount_providers %}
+                        {% if provider.id == 'google' %}
+                        <a href="{% provider_login_url 'google' %}" class="social-btn btn-google">
+                            <i class="fab fa-google"></i>
+                            Sign up with Google
+                        </a>
+                        {% elif provider.id == 'facebook' %}
+                        <a href="{% provider_login_url 'facebook' %}" class="social-btn btn-facebook">
+                            <i class="fab fa-facebook-f"></i>
+                            Sign up with Facebook
+                        </a>
+                        {% elif provider.id == 'apple' %}
+                        <a href="{% provider_login_url 'apple' %}" class="social-btn btn-apple">
+                            <i class="fab fa-apple"></i>
+                            Sign up with Apple
+                        </a>
+                        {% endif %}
+                    {% endfor %}
                 </div>
 
                 <div class="divider">
                     <span>or sign up with email</span>
                 </div>
+                {% endif %}
 
                 <!-- Registration Form -->
                 <form method="post" id="registerForm">
