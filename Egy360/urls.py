@@ -6,7 +6,13 @@ from django.conf.urls.static import static
 from django.http import JsonResponse
 
 def health_check(request):
-    return JsonResponse({'status': 'ok'})
+    """Basic health check that doesn't require database"""
+    import sys
+    return JsonResponse({
+        'status': 'ok',
+        'python': sys.version,
+        'django': True
+    })
 
 urlpatterns = [
     path('health/', health_check, name='health'),
