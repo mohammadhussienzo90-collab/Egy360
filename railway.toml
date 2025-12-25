@@ -1,8 +1,10 @@
-# FORCE DEPLOY Dec 24 2024 - Fix missing {% load static %} in base.html
+# Railway deployment configuration - Dec 25 2024
 [build]
 builder = "nixpacks"
 
 [deploy]
-startCommand = "chmod +x startup.sh && ./startup.sh"
+startCommand = "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
+healthcheckPath = "/"
+healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
