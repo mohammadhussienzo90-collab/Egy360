@@ -17,6 +17,9 @@ def health_check(request):
 def debug_check(request):
     """Diagnostic endpoint to debug 500 errors"""
     import traceback
+    from django.template.loader import get_template
+    from django.template import TemplateDoesNotExist
+
     result = {'status': 'checking'}
 
     # Check database connection
@@ -28,48 +31,51 @@ def debug_check(request):
     except Exception as e:
         result['database'] = f'error: {str(e)}'
 
-    # Check tours table
+    # Check tours
     try:
         from tours.models import Tour
-        tour_count = Tour.objects.count()
-        result['tours_count'] = tour_count
-        active_tours = Tour.objects.filter(is_active=True).count()
-        result['active_tours'] = active_tours
+        result['tours_count'] = Tour.objects.count()
+        result['active_tours'] = Tour.objects.filter(is_active=True).count()
     except Exception as e:
         result['tours_error'] = str(e)
 
-    # Check accommodations table
+    # Check accommodations
     try:
         from accommodations.models import Accommodation
-        acc_count = Accommodation.objects.count()
-        result['accommodations_count'] = acc_count
-        active_acc = Accommodation.objects.filter(is_active=True).count()
-        result['active_accommodations'] = active_acc
+        result['accommodations_count'] = Accommodation.objects.count()
+        result['active_accommodations'] = Accommodation.objects.filter(is_active=True).count()
     except Exception as e:
         result['accommodations_error'] = str(e)
 
-    # Test using Django test client for full request cycle
-    try:
-        from django.test import Client
-        client = Client()
-        resp = client.get('/tours/')
-        result['tours_page_status'] = resp.status_code
-        if resp.status_code != 200:
-            result['tours_page_content'] = resp.content.decode()[:1000]
-    except Exception as e:
-        result['tours_page_error'] = f'{type(e).__name__}: {str(e)}'
-        result['tours_page_traceback'] = traceback.format_exc()
+    # Check templates exist
+    templates_to_check = ['base.html', 'tour_listing.html', 'accommodation_search.html',
+                          'includes/travelpayouts_widgets.html']
+    result['templates'] = {}
+    for tpl in templates_to_check:
+        try:
+            get_template(tpl)
+            result['templates'][tpl] = 'found'
+        except TemplateDoesNotExist:
+            result['templates'][tpl] = 'NOT FOUND'
+        except Exception as e:
+            result['templates'][tpl] = f'error: {str(e)}'
 
+    # Test rendering tours template with context
     try:
-        from django.test import Client
-        client = Client()
-        resp = client.get('/accommodations/')
-        result['accommodations_page_status'] = resp.status_code
-        if resp.status_code != 200:
-            result['accommodations_page_content'] = resp.content.decode()[:1000]
+        from tours.models import Tour
+        from django.template import Context
+        template = get_template('tour_listing.html')
+        tours = Tour.objects.filter(is_active=True)[:5]
+        # Just check that we can access tour properties
+        if tours:
+            first_tour = tours[0]
+            result['sample_tour'] = {
+                'name': first_tour.name,
+                'has_tour_type': hasattr(first_tour, 'tour_type'),
+                'has_get_tour_type_display': hasattr(first_tour, 'get_tour_type_display'),
+            }
     except Exception as e:
-        result['accommodations_page_error'] = f'{type(e).__name__}: {str(e)}'
-        result['accommodations_page_traceback'] = traceback.format_exc()
+        result['template_render_error'] = f'{type(e).__name__}: {str(e)}'
 
     result['status'] = 'complete'
     return JsonResponse(result)
