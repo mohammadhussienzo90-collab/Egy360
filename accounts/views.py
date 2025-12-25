@@ -13,10 +13,16 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.conf import settings
-import qrcode
-import qrcode.image.svg
 from io import BytesIO
 import base64
+
+# Optional qrcode import for 2FA
+try:
+    import qrcode
+    import qrcode.image.svg
+    QRCODE_AVAILABLE = True
+except ImportError:
+    QRCODE_AVAILABLE = False
 
 from .forms import (
     UserRegistrationForm,
