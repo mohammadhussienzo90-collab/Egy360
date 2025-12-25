@@ -33,6 +33,8 @@ def debug_check(request):
         from tours.models import Tour
         tour_count = Tour.objects.count()
         result['tours_count'] = tour_count
+        active_tours = Tour.objects.filter(is_active=True).count()
+        result['active_tours'] = active_tours
     except Exception as e:
         result['tours_error'] = str(e)
 
@@ -41,23 +43,33 @@ def debug_check(request):
         from accommodations.models import Accommodation
         acc_count = Accommodation.objects.count()
         result['accommodations_count'] = acc_count
+        active_acc = Accommodation.objects.filter(is_active=True).count()
+        result['active_accommodations'] = active_acc
     except Exception as e:
         result['accommodations_error'] = str(e)
 
-    # Check if we can render the tour template context
+    # Test using Django test client for full request cycle
     try:
-        from tours.views import TourListView
-        from django.test import RequestFactory
-        factory = RequestFactory()
-        request_test = factory.get('/tours/')
-        view = TourListView()
-        view.request = request_test
-        view.object_list = view.get_queryset()
-        context = view.get_context_data()
-        result['tour_context_keys'] = list(context.keys())
+        from django.test import Client
+        client = Client()
+        resp = client.get('/tours/')
+        result['tours_page_status'] = resp.status_code
+        if resp.status_code != 200:
+            result['tours_page_content'] = resp.content.decode()[:1000]
     except Exception as e:
-        result['tour_context_error'] = f'{type(e).__name__}: {str(e)}'
-        result['tour_context_traceback'] = traceback.format_exc()
+        result['tours_page_error'] = f'{type(e).__name__}: {str(e)}'
+        result['tours_page_traceback'] = traceback.format_exc()
+
+    try:
+        from django.test import Client
+        client = Client()
+        resp = client.get('/accommodations/')
+        result['accommodations_page_status'] = resp.status_code
+        if resp.status_code != 200:
+            result['accommodations_page_content'] = resp.content.decode()[:1000]
+    except Exception as e:
+        result['accommodations_page_error'] = f'{type(e).__name__}: {str(e)}'
+        result['accommodations_page_traceback'] = traceback.format_exc()
 
     result['status'] = 'complete'
     return JsonResponse(result)
