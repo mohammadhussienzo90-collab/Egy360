@@ -1,5 +1,0 @@
-[phases.setup]
-nixPkgs = ["python311"]
-
-[start]
-cmd = "chmod +x startup.sh && ./startup.sh"

@@ -384,19 +384,23 @@ else:
 CACHE_TIMEOUT_SHORT = 300  # 5 minutes
 CACHE_TIMEOUT_LONG = 3600  # 1 hour
 
-# Cloudinary Configuration - ADD AT VERY BOTTOM
-import os
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+# Cloudinary Configuration - Only enable if credentials are set
+CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
+if CLOUDINARY_CLOUD_NAME:
+    import cloudinary
+    import cloudinary.uploader
+    import cloudinary.api
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
+        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    # Use local file storage if Cloudinary not configured
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

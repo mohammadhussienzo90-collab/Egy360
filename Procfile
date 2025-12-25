@@ -1,3 +1,1 @@
-web: gunicorn Egy360.wsgi --log-file - --workers 3 --timeout 120
-worker: celery -A Egy360 worker --loglevel=info
-beat: celery -A Egy360 beat --loglevel=info
+web: python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
