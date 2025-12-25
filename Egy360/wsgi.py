@@ -1,16 +1,23 @@
 """
 WSGI config for Egy360 project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 """
-
 import os
+import sys
 
-from django.core.wsgi import get_wsgi_application
+# Add startup logging
+print(f"WSGI: Starting with Python {sys.version}", file=sys.stderr)
+print(f"WSGI: Current directory: {os.getcwd()}", file=sys.stderr)
+print(f"WSGI: DATABASE_URL set: {bool(os.environ.get('DATABASE_URL'))}", file=sys.stderr)
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Egy360.settings')
 
-application = get_wsgi_application()
+try:
+    from django.core.wsgi import get_wsgi_application
+    print("WSGI: Django import successful", file=sys.stderr)
+    application = get_wsgi_application()
+    print("WSGI: Application created successfully", file=sys.stderr)
+except Exception as e:
+    print(f"WSGI: FAILED TO START: {type(e).__name__}: {e}", file=sys.stderr)
+    import traceback
+    traceback.print_exc()
+    raise
