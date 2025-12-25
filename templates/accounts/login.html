@@ -1,13 +1,6 @@
 {% extends 'base.html' %}
-{% load socialaccount %}
 
 {% block title %}Login - Egy360{% endblock %}
-
-{% comment %}
-Note: Social login buttons will show provider login URLs.
-If social apps aren't configured yet, the buttons will redirect to allauth error page.
-Configure social apps in Django Admin after deployment.
-{% endcomment %}
 
 {% block extra_css %}
 <style>
@@ -285,34 +278,25 @@ Configure social apps in Django Admin after deployment.
             </div>
 
             <div class="auth-body">
-                <!-- Social Login Section -->
-                {% get_providers as socialaccount_providers %}
-                {% if socialaccount_providers %}
+                <!-- Social Login Section - Will be enabled after OAuth setup -->
                 <div class="social-login-section">
-                    {% for provider in socialaccount_providers %}
-                        {% if provider.id == 'google' %}
-                        <a href="{% provider_login_url 'google' %}" class="social-btn btn-google">
-                            <i class="fab fa-google"></i>
-                            Continue with Google
-                        </a>
-                        {% elif provider.id == 'facebook' %}
-                        <a href="{% provider_login_url 'facebook' %}" class="social-btn btn-facebook">
-                            <i class="fab fa-facebook-f"></i>
-                            Continue with Facebook
-                        </a>
-                        {% elif provider.id == 'apple' %}
-                        <a href="{% provider_login_url 'apple' %}" class="social-btn btn-apple">
-                            <i class="fab fa-apple"></i>
-                            Continue with Apple
-                        </a>
-                        {% endif %}
-                    {% endfor %}
+                    <a href="/auth/google/login/" class="social-btn btn-google">
+                        <i class="fab fa-google"></i>
+                        Continue with Google
+                    </a>
+                    <a href="/auth/facebook/login/" class="social-btn btn-facebook">
+                        <i class="fab fa-facebook-f"></i>
+                        Continue with Facebook
+                    </a>
+                    <a href="/auth/apple/login/" class="social-btn btn-apple">
+                        <i class="fab fa-apple"></i>
+                        Continue with Apple
+                    </a>
                 </div>
 
                 <div class="divider">
                     <span>or continue with</span>
                 </div>
-                {% endif %}
 
                 <!-- Login Method Tabs -->
                 <div class="login-tabs">
