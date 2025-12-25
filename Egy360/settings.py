@@ -8,11 +8,19 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key-replace-in-production')
-# Temporarily enable DEBUG to see errors on Railway
-DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 'yes')
+# Enable DEBUG for now
+DEBUG = True
 
 # Allow ALL hosts for Railway (including health check)
-ALLOWED_HOSTS = ['*', '.railway.app', 'healthcheck.railway.app', '360egy.com', '.360egy.com']
+ALLOWED_HOSTS = [
+    '*',
+    'localhost',
+    '127.0.0.1',
+    '.railway.app',
+    'healthcheck.railway.app',
+    '360egy.com',
+    'www.360egy.com',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
