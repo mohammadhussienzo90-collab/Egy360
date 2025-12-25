@@ -9,8 +9,13 @@ def health_check(request):
     """Basic health check for Railway"""
     return JsonResponse({'status': 'ok'})
 
+def test_bookings(request):
+    """Test endpoint for bookings"""
+    return JsonResponse({'page': 'bookings', 'status': 'working'})
+
 urlpatterns = [
     path('health/', health_check, name='health'),
+    path('test-bookings/', test_bookings, name='test_bookings'),
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('accommodations/', include('accommodations.urls')),
