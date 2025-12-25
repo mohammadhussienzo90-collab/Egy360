@@ -3,6 +3,9 @@
 # Don't use set -e as we want to continue even if some commands fail
 
 echo "=== Starting Egy360 Deployment ==="
+echo "Python version: $(python --version)"
+echo "Django version: $(python -c 'import django; print(django.VERSION)')"
+echo "PORT: $PORT"
 
 echo "1. Running migrations..."
 python manage.py migrate --noinput || { echo "Migration failed"; exit 1; }

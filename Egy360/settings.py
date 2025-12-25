@@ -347,7 +347,8 @@ LOGGING = {
 # WhiteNoise settings for static file serving
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = DEBUG  # Only auto-refresh in debug mode
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Use simpler storage to avoid manifest issues on Railway
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # WhiteNoise compression and caching
 WHITENOISE_MAX_AGE = 31536000  # 1 year for immutable files
