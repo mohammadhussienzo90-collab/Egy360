@@ -8,7 +8,6 @@ from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
 
-from home.views import home as homepage_view
 from core.sitemaps import sitemaps
 
 urlpatterns = [
@@ -16,13 +15,10 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'), name='robots_txt'),
 
-    # Homepage (uses home app's home view for dynamic content)
-    path('', homepage_view, name='homepage'),
-
     # Admin
     path('admin/', admin.site.urls),
 
-    # Home app (about, contact, FAQ, newsletter, etc.)
+    # Home app (homepage, about, contact, FAQ, newsletter, etc.)
     path('', include('home.urls')),
 
     # Main apps
