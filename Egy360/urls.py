@@ -11,17 +11,8 @@ def health_check(request):
 
 def test_login_template(request):
     """Test rendering login template"""
-    try:
-        from django.http import HttpResponse
-        # Simple test - don't render any template
-        return HttpResponse('<html><body><h1>Test works!</h1></body></html>')
-    except Exception as e:
-        import traceback
-        return JsonResponse({
-            'error': str(e),
-            'type': type(e).__name__,
-            'traceback': traceback.format_exc()
-        })
+    from django.http import HttpResponse
+    return HttpResponse('<html><body><h1>Test V3 works!</h1></body></html>')
 
 urlpatterns = [
     path('test-login/', test_login_template, name='test-login'),
