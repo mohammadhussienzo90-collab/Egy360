@@ -20,6 +20,18 @@ class TourListView(ListView):
     context_object_name = 'tours'
     paginate_by = 12
 
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except Exception as e:
+            import traceback
+            from django.http import JsonResponse
+            return JsonResponse({
+                'error': str(e),
+                'type': type(e).__name__,
+                'traceback': traceback.format_exc()
+            }, status=500)
+
     def get_queryset(self):
         queryset = Tour.objects.filter(is_active=True)
 
