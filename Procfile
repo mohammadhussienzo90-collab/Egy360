@@ -1,1 +1,1 @@
-web: python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+web: python manage.py migrate --noinput 2>&1 || echo 'Migration skipped' && python manage.py collectstatic --noinput 2>&1 && gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120 --access-logfile - --error-logfile -
