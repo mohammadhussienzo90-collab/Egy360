@@ -33,19 +33,6 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
 
-    # Authentication - django-allauth
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.apple',
-
-    # Two-Factor Authentication - django-otp
-    'django_otp',
-    'django_otp.plugins.otp_totp',
-    'django_otp.plugins.otp_static',
-
     # Your apps
     'accounts',
     'accommodations',
@@ -62,6 +49,28 @@ INSTALLED_APPS = [
     'transportation',
 ]
 
+# Add optional apps based on environment
+# django-allauth for social login (requires database)
+ENABLE_ALLAUTH = os.environ.get('ENABLE_ALLAUTH', 'false').lower() == 'true'
+if ENABLE_ALLAUTH:
+    INSTALLED_APPS += [
+        'allauth',
+        'allauth.account',
+        'allauth.socialaccount',
+        'allauth.socialaccount.providers.google',
+        'allauth.socialaccount.providers.facebook',
+        'allauth.socialaccount.providers.apple',
+    ]
+
+# django-otp for 2FA (requires database)
+ENABLE_2FA = os.environ.get('ENABLE_2FA', 'false').lower() == 'true'
+if ENABLE_2FA:
+    INSTALLED_APPS += [
+        'django_otp',
+        'django_otp.plugins.otp_totp',
+        'django_otp.plugins.otp_static',
+    ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -70,12 +79,16 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_otp.middleware.OTPMiddleware',  # 2FA middleware
-    'allauth.account.middleware.AccountMiddleware',  # django-allauth
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'core.middleware.ContentSecurityPolicyMiddleware',
 ]
+
+# Add optional middleware
+if ENABLE_2FA:
+    MIDDLEWARE.insert(7, 'django_otp.middleware.OTPMiddleware')
+if ENABLE_ALLAUTH:
+    MIDDLEWARE.insert(8, 'allauth.account.middleware.AccountMiddleware')
 
 # CSP in report-only mode for development
 CSP_HEADER = 'Content-Security-Policy-Report-Only'
@@ -171,8 +184,9 @@ LOGOUT_REDIRECT_URL = '/'
 # Authentication backends
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
 ]
+if ENABLE_ALLAUTH:
+    AUTHENTICATION_BACKENDS.append('allauth.account.auth_backends.AuthenticationBackend')
 
 # Django-allauth settings
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
