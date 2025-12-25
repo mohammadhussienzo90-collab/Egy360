@@ -141,13 +141,17 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
 }
 
-# Cache - use local memory cache (simple and reliable)
+# Cache - FORCE local memory cache (Railway tries to auto-configure Redis but it's broken)
+# This must come AFTER any potential django_on_railway imports
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
+        'LOCATION': 'egy360-cache',
     }
 }
+# Make sure we're not using Redis
+if 'REDIS_URL' in os.environ:
+    del os.environ['REDIS_URL']
 
 # Logging
 LOGGING = {

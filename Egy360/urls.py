@@ -27,6 +27,9 @@ def debug_check(request):
     from django.conf import settings
     result['DEBUG'] = settings.DEBUG
     result['DEBUG_env'] = os.environ.get('DEBUG', 'not set')
+    result['REDIS_URL'] = os.environ.get('REDIS_URL', 'not set')
+    result['CACHES_env'] = os.environ.get('CACHES', 'not set')
+    result['cache_backend'] = str(settings.CACHES.get('default', {}).get('BACKEND', 'unknown'))
 
     # Check database connection
     try:
