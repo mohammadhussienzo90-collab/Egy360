@@ -8,9 +8,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key-replace-in-production')
-# TEMPORARY: Force DEBUG=True to diagnose 500 errors
-# TODO: Remove this after fixing the issue
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 # Allow ALL hosts for Railway (including health check)
 ALLOWED_HOSTS = [
@@ -141,17 +139,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
 }
 
-# Cache - FORCE local memory cache (Railway tries to auto-configure Redis but it's broken)
-# This must come AFTER any potential django_on_railway imports
+# Cache - Use local memory cache (simpler than configuring Redis)
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'egy360-cache',
     }
 }
-# Make sure we're not using Redis
-if 'REDIS_URL' in os.environ:
-    del os.environ['REDIS_URL']
 
 # Logging
 LOGGING = {
