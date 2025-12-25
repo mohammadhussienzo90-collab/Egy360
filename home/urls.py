@@ -9,6 +9,9 @@ from . import views
 app_name = 'home'
 
 urlpatterns = [
+    # Health check for Railway
+    path('health/', views.health_check, name='health'),
+
     # Main pages
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),

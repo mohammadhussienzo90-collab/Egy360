@@ -19,6 +19,12 @@ import json
 
 logger = logging.getLogger(__name__)
 
+
+def health_check(request):
+    """Simple health check endpoint for Railway"""
+    return JsonResponse({'status': 'ok', 'service': 'egy360'})
+
+
 # Import models from other apps as needed
 from accommodations.models import Accommodation
 from tours.models import Tour
@@ -31,21 +37,37 @@ def home(request):
     Main homepage view
     Displays featured content and search forms
     """
-    context = {
-        'featured_accommodations': Accommodation.objects.filter(
+    # Gracefully handle database errors (e.g., during initial deployment)
+    try:
+        featured_accommodations = list(Accommodation.objects.filter(
             is_featured=True,
             is_active=True
-        )[:6],
+        )[:6])
+    except Exception as e:
+        logger.warning(f"Could not load accommodations: {e}")
+        featured_accommodations = []
 
-        'featured_tours': Tour.objects.filter(
+    try:
+        featured_tours = list(Tour.objects.filter(
             is_featured=True,
             is_active=True
-        )[:6],
+        )[:6])
+    except Exception as e:
+        logger.warning(f"Could not load tours: {e}")
+        featured_tours = []
 
-        'popular_destinations': City.objects.filter(
+    try:
+        popular_destinations = list(City.objects.filter(
             is_popular=True
-        )[:8],
+        )[:8])
+    except Exception as e:
+        logger.warning(f"Could not load destinations: {e}")
+        popular_destinations = []
 
+    context = {
+        'featured_accommodations': featured_accommodations,
+        'featured_tours': featured_tours,
+        'popular_destinations': popular_destinations,
         'page_title': 'Egy360 - Discover Egypt Safely',
         'meta_description': 'Egypt\'s premier tourism platform. Find verified accommodations, tours, and transportation at the best prices.',
     }
