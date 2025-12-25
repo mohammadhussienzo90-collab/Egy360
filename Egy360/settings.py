@@ -28,10 +28,6 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.sites',
 
-    # Cloudinary
-    'cloudinary_storage',
-    'cloudinary',
-
     # Third-party apps
     'rest_framework',
     'django_filters',
@@ -388,6 +384,9 @@ CACHE_TIMEOUT_LONG = 3600  # 1 hour
 CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
 
 if CLOUDINARY_CLOUD_NAME:
+    # Add cloudinary apps dynamically
+    INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
+
     import cloudinary
     import cloudinary.uploader
     import cloudinary.api
