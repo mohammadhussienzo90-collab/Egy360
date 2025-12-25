@@ -76,20 +76,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Egy360.wsgi.application'
 
-# Database
-import dj_database_url
-DATABASE_URL = os.environ.get('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
-    # Disable persistent connections if there are issues
-    DATABASES['default']['CONN_MAX_AGE'] = 0
-else:
+# Database - with fallback to SQLite if DATABASE_URL parsing fails
+try:
+    import dj_database_url
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+    if DATABASE_URL:
+        DATABASES = {'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=0)}
+    else:
+        DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3'}}
+except Exception:
     DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3'}}
 
 AUTH_PASSWORD_VALIDATORS = [
