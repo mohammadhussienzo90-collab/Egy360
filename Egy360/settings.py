@@ -8,8 +8,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key-replace-in-production')
-# Production setting
-DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
+# Temporarily enable DEBUG to diagnose errors
+DEBUG = True
 
 # Allow ALL hosts for Railway (including health check)
 ALLOWED_HOSTS = [
