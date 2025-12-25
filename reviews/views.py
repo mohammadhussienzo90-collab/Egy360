@@ -73,11 +73,11 @@ class ReviewViewSet(viewsets.ModelViewSet):
     - report: Report inappropriate review
     - top_rated: Get highest rated reviews
     """
-    queryset = Review.objects.filter(is_approved=True)
+    queryset = Review.objects.filter(status='approved')
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['rating', 'is_verified_purchase', 'is_approved']
-    search_fields = ['title', 'review_text']
+    filterset_fields = ['rating', 'is_verified_booking', 'status']
+    search_fields = ['title', 'comment']
     ordering_fields = ['created_at', 'helpful_count', 'rating']
     ordering = ['-helpful_count', '-created_at']
 
@@ -123,15 +123,15 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """
-        Override create to set reviewer automatically
+        Override create to set user automatically
         """
-        serializer.save(reviewer=self.request.user)
+        serializer.save(user=self.request.user)
 
     def perform_update(self, serializer):
         """
         Only allow users to update their own reviews
         """
-        if serializer.instance.reviewer != self.request.user:
+        if serializer.instance.user != self.request.user:
             raise PermissionError("You can only edit your own reviews")
         serializer.save()
 
@@ -139,7 +139,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         """
         Only allow users to delete their own reviews
         """
-        if instance.reviewer != self.request.user and not self.request.user.is_staff:
+        if instance.user != self.request.user and not self.request.user.is_staff:
             raise PermissionError("You can only delete your own reviews")
         instance.delete()
 
@@ -192,7 +192,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
         Returns all reviews written by authenticated user
         """
-        my_reviews = Review.objects.filter(reviewer=request.user)
+        my_reviews = Review.objects.filter(user=request.user)
 
         page = self.paginate_queryset(my_reviews)
         if page is not None:
@@ -229,13 +229,13 @@ class ReviewViewSet(viewsets.ModelViewSet):
             if is_helpful:
                 review.helpful_count += 1
             else:
-                review.unhelpful_count += 1
+                review.not_helpful_count += 1
             review.save()
 
         return Response({
             'status': 'success',
             'helpful_count': review.helpful_count,
-            'unhelpful_count': review.unhelpful_count
+            'not_helpful_count': review.not_helpful_count
         })
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
@@ -256,7 +256,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         review = self.get_object()
 
         # Cannot report own review
-        if review.reviewer == request.user:
+        if review.user == request.user:
             return Response(
                 {'error': 'Cannot report your own review'},
                 status=status.HTTP_400_BAD_REQUEST
@@ -265,7 +265,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         # Check if user already reported this review
         existing_report = ReviewReport.objects.filter(
             review=review,
-            reporter=request.user
+            reported_by=request.user
         ).exists()
 
         if existing_report:
@@ -280,16 +280,16 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
         report = ReviewReport.objects.create(
             review=review,
-            reporter=request.user,
+            reported_by=request.user,
             reason=serializer.validated_data['reason'],
-            description=serializer.validated_data.get('description', '')
+            details=serializer.validated_data.get('description', '')
         )
 
-        # Flag review if multiple reports
+        # Automatically set review to pending if multiple reports
         report_count = ReviewReport.objects.filter(review=review).count()
         if report_count >= 3:
-            review.is_flagged = True
-            review.flag_reason = 'Multiple reports received'
+            review.status = 'pending'
+            review.moderation_notes = 'Multiple reports received - under review'
             review.save()
 
         return Response({
@@ -371,9 +371,9 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
         GET /api/v1/reviews/reviews/verified_only/
 
-        Returns only reviews from verified purchases
+        Returns only reviews from verified bookings
         """
-        verified = self.queryset.filter(is_verified_purchase=True)
+        verified = self.queryset.filter(is_verified_booking=True)
 
         page = self.paginate_queryset(verified)
         if page is not None:
@@ -420,8 +420,8 @@ class ReviewReportViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ReviewReportSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['review', 'reason', 'is_resolved']
-    ordering = ['-created_at']
+    filterset_fields = ['review', 'reason', 'is_reviewed']
+    ordering = ['-reported_at']
 
     def get_queryset(self):
         """
@@ -429,7 +429,7 @@ class ReviewReportViewSet(viewsets.ReadOnlyModelViewSet):
         """
         if self.request.user.is_staff:
             return ReviewReport.objects.all()
-        return ReviewReport.objects.filter(reporter=self.request.user)
+        return ReviewReport.objects.filter(reported_by=self.request.user)
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def resolve(self, request, pk=None):
@@ -447,10 +447,13 @@ class ReviewReportViewSet(viewsets.ReadOnlyModelViewSet):
             )
 
         report = self.get_object()
-        report.is_resolved = True
+        report.is_reviewed = True
+        report.reviewed_by = request.user
+        from django.utils import timezone
+        report.reviewed_at = timezone.now()
         report.save()
 
         return Response({
             'status': 'resolved',
-            'message': 'Report marked as resolved'
+            'message': 'Report marked as reviewed'
         })
