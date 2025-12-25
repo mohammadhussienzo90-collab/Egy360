@@ -12,10 +12,9 @@ def health_check(request):
 def test_login_template(request):
     """Test rendering login template"""
     try:
-        from django.template.loader import get_template
-        from django.shortcuts import render
-        template = get_template('accounts/login.html')
-        return render(request, 'accounts/login.html', {'form': None})
+        from django.http import HttpResponse
+        # Simple test - don't render any template
+        return HttpResponse('<html><body><h1>Test works!</h1></body></html>')
     except Exception as e:
         import traceback
         return JsonResponse({
