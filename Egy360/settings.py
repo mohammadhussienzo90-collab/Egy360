@@ -11,8 +11,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key-replace-in-p
 # Temporarily enable DEBUG to see errors on Railway
 DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
-# Allow ALL hosts for Railway
-ALLOWED_HOSTS = ['*']
+# Allow ALL hosts for Railway (including health check)
+ALLOWED_HOSTS = ['*', '.railway.app', 'healthcheck.railway.app', '360egy.com', '.360egy.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'Egy360.middleware.HealthCheckMiddleware',  # Handle health check first
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
