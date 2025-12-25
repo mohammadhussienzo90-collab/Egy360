@@ -5,7 +5,7 @@ from django.db.models import Q, Min, Max
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from django.core.cache import cache
+# from django.core.cache import cache  # Disabled due to Railway Redis issues
 import json
 
 logger = logging.getLogger(__name__)
@@ -102,13 +102,10 @@ class TourListView(ListView):
         context['tour_types'] = Tour.TOUR_TYPES
         context['difficulty_levels'] = Tour.DIFFICULTY_LEVELS
 
-        # Cache departure cities for 1 hour
-        departure_cities = cache.get('tour_departure_cities')
-        if departure_cities is None:
-            departure_cities = list(Tour.objects.filter(
-                is_active=True
-            ).values_list('departure_city', flat=True).distinct().order_by('departure_city'))
-            cache.set('tour_departure_cities', departure_cities, 3600)
+        # Get departure cities directly (cache disabled due to Railway Redis issues)
+        departure_cities = list(Tour.objects.filter(
+            is_active=True
+        ).values_list('departure_city', flat=True).distinct().order_by('departure_city'))
         context['departure_cities'] = departure_cities
 
         # Current filter values for form persistence
@@ -126,24 +123,17 @@ class TourListView(ListView):
 
         context['total_results'] = self.get_queryset().count()
 
-        # Cache price range for 1 hour
-        price_stats = cache.get('tour_price_range')
-        if price_stats is None:
-            price_stats = Tour.objects.filter(is_active=True).aggregate(
-                min_price=Min('price_per_person'),
-                max_price=Max('price_per_person')
-            )
-            cache.set('tour_price_range', price_stats, 3600)
+        # Get price and duration ranges directly (cache disabled due to Railway Redis issues)
+        price_stats = Tour.objects.filter(is_active=True).aggregate(
+            min_price=Min('price_per_person'),
+            max_price=Max('price_per_person')
+        )
         context['price_range'] = price_stats
 
-        # Cache duration range for 1 hour
-        duration_stats = cache.get('tour_duration_range')
-        if duration_stats is None:
-            duration_stats = Tour.objects.filter(is_active=True).aggregate(
-                min_days=Min('duration_days'),
-                max_days=Max('duration_days')
-            )
-            cache.set('tour_duration_range', duration_stats, 3600)
+        duration_stats = Tour.objects.filter(is_active=True).aggregate(
+            min_days=Min('duration_days'),
+            max_days=Max('duration_days')
+        )
         context['duration_range'] = duration_stats
 
         return context

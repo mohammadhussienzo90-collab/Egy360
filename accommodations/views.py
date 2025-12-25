@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.db.models import Q, Avg, Min, Max
-from django.core.cache import cache
+# from django.core.cache import cache  # Disabled due to Railway Redis issues
 from .models import Accommodation, Room, Amenity
 
 
@@ -96,21 +96,13 @@ class AccommodationSearchView(ListView):
         # Pass filter options to template
         context['accommodation_types'] = Accommodation.ACCOMMODATION_TYPES
 
-        # Cache amenities for 1 hour
-        amenities = cache.get('accommodation_amenities')
-        if amenities is None:
-            amenities = list(Amenity.objects.all())
-            cache.set('accommodation_amenities', amenities, 3600)
-        context['amenities'] = amenities
+        # Get amenities directly (cache disabled due to Railway Redis issues)
+        context['amenities'] = list(Amenity.objects.all())
 
-        # Cache cities for 1 hour
-        cities = cache.get('accommodation_cities')
-        if cities is None:
-            cities = list(Accommodation.objects.filter(
-                is_active=True
-            ).values_list('city', flat=True).distinct().order_by('city'))
-            cache.set('accommodation_cities', cities, 3600)
-        context['cities'] = cities
+        # Get cities directly (cache disabled due to Railway Redis issues)
+        context['cities'] = list(Accommodation.objects.filter(
+            is_active=True
+        ).values_list('city', flat=True).distinct().order_by('city'))
 
         # Current filter values for form persistence
         context['current_filters'] = {
@@ -127,14 +119,11 @@ class AccommodationSearchView(ListView):
 
         context['total_results'] = self.get_queryset().count()
 
-        # Cache price range for 1 hour
-        price_stats = cache.get('accommodation_price_range')
-        if price_stats is None:
-            price_stats = Accommodation.objects.filter(is_active=True).aggregate(
-                min_price=Min('price_per_night'),
-                max_price=Max('price_per_night')
-            )
-            cache.set('accommodation_price_range', price_stats, 3600)
+        # Get price range directly (cache disabled due to Railway Redis issues)
+        price_stats = Accommodation.objects.filter(is_active=True).aggregate(
+            min_price=Min('price_per_night'),
+            max_price=Max('price_per_night')
+        )
         context['price_range'] = price_stats
 
         return context
