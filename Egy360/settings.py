@@ -15,7 +15,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-change-in-pro
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 # Allowed hosts from environment or defaults
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app,360egy.com').split(',')
+# Include * for Railway health checks which use internal IPs
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app,360egy.com,*').split(',')
 
 # Application definition
 INSTALLED_APPS = [
