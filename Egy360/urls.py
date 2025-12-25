@@ -9,13 +9,7 @@ def health_check(request):
     """Basic health check for Railway"""
     return JsonResponse({'status': 'ok'})
 
-def test_login_template(request):
-    """Test rendering login template"""
-    from django.http import HttpResponse
-    return HttpResponse('<html><body><h1>Test V3 works!</h1></body></html>')
-
 urlpatterns = [
-    path('test-login/', test_login_template, name='test-login'),
     path('health/', health_check, name='health'),
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
@@ -23,7 +17,7 @@ urlpatterns = [
     path('tours/', include('tours.urls')),
     path('destinations/', include('destinations.urls')),
     path('accounts/', include('accounts.urls')),
-    # path('auth/', include('allauth.urls')),  # Social auth URLs - temporarily disabled
+    path('auth/', include('allauth.urls')),  # Social auth URLs
     path('bookings/', include('bookings.urls')),
     path('reviews/', include('reviews.urls')),
     path('payments/', include('payments.urls')),

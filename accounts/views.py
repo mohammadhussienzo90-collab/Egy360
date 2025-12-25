@@ -46,74 +46,58 @@ from core.rate_limit import (
 @rate_limit_register(requests_per_minute=3, requests_per_hour=10)
 def register_view(request):
     """User registration view"""
-    try:
-        if request.method == 'POST':
-            form = UserRegistrationForm(request.POST)
-            if form.is_valid():
-                user = form.save()
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
 
-                # Save phone number if provided
-                phone_number = request.POST.get('phone_number')
-                country_code = request.POST.get('country_code', '+20')
-                if phone_number:
-                    profile = user.profile
-                    profile.phone = f"{country_code}{phone_number}"
-                    profile.save()
+            # Save phone number if provided
+            phone_number = request.POST.get('phone_number')
+            country_code = request.POST.get('country_code', '+20')
+            if phone_number:
+                profile = user.profile
+                profile.phone = f"{country_code}{phone_number}"
+                profile.save()
 
-                username = form.cleaned_data.get('username')
-                messages.success(request, f'Account created for {username}!')
-                login(request, user)
-                return redirect('homepage')
-        else:
-            form = UserRegistrationForm()
-        return render(request, 'accounts/register.html', {'form': form})
-    except Exception as e:
-        import traceback
-        return JsonResponse({
-            'error': str(e),
-            'type': type(e).__name__,
-            'traceback': traceback.format_exc()
-        }, status=500)
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            login(request, user)
+            return redirect('homepage')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'accounts/register.html', {'form': form})
 
 
 @rate_limit_login(requests_per_minute=5, requests_per_hour=30)
 @with_account_lockout
 def login_view(request):
     """User login view with account lockout protection"""
-    try:
-        if request.method == 'POST':
-            form = UserLoginForm(data=request.POST)
-            if form.is_valid():
-                user = form.get_user()
+    if request.method == 'POST':
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
 
-                # Clear failed attempts on successful login
-                ip = get_client_ip(request)
-                account_lockout.clear_failures(user.username, ip)
+            # Clear failed attempts on successful login
+            ip = get_client_ip(request)
+            account_lockout.clear_failures(user.username, ip)
 
-                # Check if 2FA is enabled
-                if hasattr(user, 'profile') and user.profile.two_factor_enabled:
-                    # Store user ID in session for 2FA verification
-                    request.session['pending_2fa_user_id'] = user.id
-                    return redirect('accounts:verify_2fa')
+            # Check if 2FA is enabled
+            if hasattr(user, 'profile') and user.profile.two_factor_enabled:
+                # Store user ID in session for 2FA verification
+                request.session['pending_2fa_user_id'] = user.id
+                return redirect('accounts:verify_2fa')
 
-                login(request, user)
-                messages.success(request, 'Welcome back!')
+            login(request, user)
+            messages.success(request, 'Welcome back!')
 
-                # Validate redirect URL to prevent open redirect attacks
-                next_url = request.GET.get('next', '')
-                if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
-                    return redirect(next_url)
-                return redirect('homepage')
-        else:
-            form = UserLoginForm()
-        return render(request, 'accounts/login.html', {'form': form})
-    except Exception as e:
-        import traceback
-        return JsonResponse({
-            'error': str(e),
-            'type': type(e).__name__,
-            'traceback': traceback.format_exc()
-        }, status=500)
+            # Validate redirect URL to prevent open redirect attacks
+            next_url = request.GET.get('next', '')
+            if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+                return redirect(next_url)
+            return redirect('homepage')
+    else:
+        form = UserLoginForm()
+    return render(request, 'accounts/login.html', {'form': form})
 
 
 @login_required
