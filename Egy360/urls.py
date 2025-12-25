@@ -9,7 +9,23 @@ def health_check(request):
     """Basic health check for Railway"""
     return JsonResponse({'status': 'ok'})
 
+def test_login_template(request):
+    """Test rendering login template"""
+    try:
+        from django.template.loader import get_template
+        from django.shortcuts import render
+        template = get_template('accounts/login.html')
+        return render(request, 'accounts/login.html', {'form': None})
+    except Exception as e:
+        import traceback
+        return JsonResponse({
+            'error': str(e),
+            'type': type(e).__name__,
+            'traceback': traceback.format_exc()
+        })
+
 urlpatterns = [
+    path('test-login/', test_login_template, name='test-login'),
     path('health/', health_check, name='health'),
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
