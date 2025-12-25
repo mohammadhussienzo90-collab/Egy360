@@ -23,7 +23,7 @@ urlpatterns = [
     path('tours/', include('tours.urls')),
     path('destinations/', include('destinations.urls')),
     path('accounts/', include('accounts.urls')),
-    path('auth/', include('allauth.urls')),  # Social auth URLs
+    # path('auth/', include('allauth.urls')),  # Social auth URLs - temporarily disabled
     path('bookings/', include('bookings.urls')),
     path('reviews/', include('reviews.urls')),
     path('payments/', include('payments.urls')),
