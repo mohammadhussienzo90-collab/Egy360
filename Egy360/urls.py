@@ -5,14 +5,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.http import JsonResponse
 
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
+
+@csrf_exempt
 def health_check(request):
-    """Basic health check that doesn't require database"""
-    import sys
-    return JsonResponse({
-        'status': 'ok',
-        'python': sys.version,
-        'django': True
-    })
+    """Basic health check for Railway"""
+    return JsonResponse({'status': 'ok'})
 
 urlpatterns = [
     path('health/', health_check, name='health'),
