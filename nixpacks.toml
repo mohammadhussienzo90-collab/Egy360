@@ -2,7 +2,7 @@
 cmds = [
     "python manage.py collectstatic --noinput",
     "python manage.py migrate --noinput",
-    "python -c \"from django.contrib.sites.models import Site; Site.objects.update_or_create(id=1, defaults={'domain': '360egy.com', 'name': 'Egy360'})\""
+    "python manage.py setup_site"
 ]
 
 [start]

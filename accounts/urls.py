@@ -1,11 +1,19 @@
 # accounts/urls.py
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.http import JsonResponse
 from . import views
 
 app_name = 'accounts'
 
+def debug_view(request):
+    """Simple debug endpoint"""
+    return JsonResponse({'status': 'ok', 'app': 'accounts'})
+
 urlpatterns = [
+    # Debug endpoint
+    path('debug/', debug_view, name='debug'),
+
     # Basic Authentication
     path('register/', views.register_view, name='register'),
     path('login/', views.login_view, name='login'),
