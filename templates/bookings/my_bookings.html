@@ -1,0 +1,350 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Bookings - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .bookings-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+        min-height: calc(100vh - 200px);
+        padding: 40px 0;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .page-header h1 {
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+
+    /* Booking Card */
+    .booking-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .booking-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+
+    .booking-card-body {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .booking-image {
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .booking-info {
+        flex: 1;
+    }
+
+    .booking-info h5 {
+        margin: 0 0 8px;
+        color: #1a1a1a;
+    }
+
+    .booking-info h5 a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .booking-info h5 a:hover {
+        color: var(--primary-color);
+    }
+
+    .booking-meta {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+
+    .booking-meta span {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .booking-meta i {
+        color: var(--primary-color);
+        margin-right: 5px;
+    }
+
+    .booking-reference {
+        background: #f0f0f0;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.85rem;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-confirmed {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-cancelled {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .status-completed {
+        background: #cce5ff;
+        color: #004085;
+    }
+
+    .booking-price {
+        text-align: right;
+    }
+
+    .booking-price .amount {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .booking-price .label {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .booking-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .booking-actions .btn {
+        padding: 6px 15px;
+        font-size: 0.85rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #ccc;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h4 {
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .empty-state p {
+        color: #999;
+        margin-bottom: 20px;
+    }
+
+    /* Filters */
+    .filters-bar {
+        background: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        padding: 8px 16px;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 20px;
+        color: #666;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        background: rgba(196, 30, 58, 0.05);
+    }
+
+    @media (max-width: 768px) {
+        .booking-card-body {
+            flex-direction: column;
+        }
+
+        .booking-image {
+            width: 100%;
+            height: 150px;
+        }
+
+        .booking-price {
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .booking-meta {
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bookings-container">
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-calendar-check me-3"></i>My Bookings</h1>
+            <p class="text-muted">Manage your travel reservations</p>
+        </div>
+
+        {% if bookings %}
+        <!-- Filters -->
+        <div class="filters-bar">
+            <span class="text-muted">Filter:</span>
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="pending">Pending</button>
+            <button class="filter-btn" data-filter="confirmed">Confirmed</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+            <button class="filter-btn" data-filter="cancelled">Cancelled</button>
+        </div>
+
+        <!-- Bookings List -->
+        {% for booking in bookings %}
+        <div class="booking-card" data-status="{{ booking.status }}">
+            <div class="booking-card-body">
+                {% with item=booking.content_object %}
+                {% if item.image_url %}
+                <img src="{{ item.image_url }}" alt="{{ item.name }}" class="booking-image">
+                {% elif item.main_image %}
+                <img src="{{ item.main_image.url }}" alt="{{ item.name }}" class="booking-image">
+                {% else %}
+                <img src="{% static 'images/hotel-placeholder.jpg' %}" alt="Booking" class="booking-image">
+                {% endif %}
+
+                <div class="booking-info">
+                    <h5>
+                        <a href="{% url 'bookings:detail' booking.id %}">
+                            {% if item %}{{ item.name }}{% else %}{{ booking.booking_type|title }}{% endif %}
+                        </a>
+                    </h5>
+
+                    <div class="booking-meta">
+                        <span><i class="fas fa-hashtag"></i><span class="booking-reference">{{ booking.booking_reference }}</span></span>
+                        {% if item.city %}
+                        <span><i class="fas fa-map-marker-alt"></i>{{ item.city }}, Egypt</span>
+                        {% endif %}
+                        <span><i class="fas fa-calendar"></i>{{ booking.check_in_date|date:"M d" }}{% if booking.check_out_date %} - {{ booking.check_out_date|date:"M d, Y" }}{% endif %}</span>
+                    </div>
+
+                    <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+
+                    <div class="booking-actions">
+                        <a href="{% url 'bookings:detail' booking.id %}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye me-1"></i>View Details
+                        </a>
+                        {% if booking.status == 'pending' or booking.status == 'confirmed' %}
+                        <a href="{% url 'bookings:cancel' booking.id %}" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </a>
+                        {% endif %}
+                        {% if item.get_primary_booking_url and booking.status == 'pending' %}
+                        <a href="{{ item.get_primary_booking_url }}" target="_blank" class="btn btn-sm btn-primary">
+                            <i class="fas fa-credit-card me-1"></i>Complete Booking
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endwith %}
+
+                <div class="booking-price">
+                    <div class="amount">${{ booking.total_amount }}</div>
+                    <div class="label">Total</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <i class="fas fa-suitcase-rolling"></i>
+            <h4>No Bookings Yet</h4>
+            <p>Start exploring Egypt's amazing hotels and tours!</p>
+            <div class="d-flex gap-3 justify-content-center">
+                <a href="{% url 'accommodations:list' %}" class="btn btn-primary">
+                    <i class="fas fa-hotel me-2"></i>Browse Hotels
+                </a>
+                <a href="{% url 'tours:list' %}" class="btn btn-outline-primary">
+                    <i class="fas fa-map-marked-alt me-2"></i>Explore Tours
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const bookingCards = document.querySelectorAll('.booking-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const filter = this.dataset.filter;
+
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            // Filter cards
+            bookingCards.forEach(card => {
+                if (filter === 'all' || card.dataset.status === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancel Booking - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .cancel-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+        min-height: calc(100vh - 200px);
+        padding: 40px 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .cancel-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .cancel-header {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .cancel-header i {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    .cancel-body {
+        padding: 30px;
+        text-align: center;
+    }
+
+    .booking-info {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+
+    .booking-info h5 {
+        margin: 0 0 10px;
+        color: #1a1a1a;
+    }
+
+    .booking-info p {
+        margin: 0;
+        color: #666;
+    }
+
+    .warning-text {
+        color: #856404;
+        background: #fff3cd;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn-cancel-confirm {
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="cancel-container">
+    <div class="container">
+        <div class="cancel-card">
+            <div class="cancel-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h2>Cancel Booking?</h2>
+            </div>
+
+            <div class="cancel-body">
+                <div class="booking-info">
+                    <h5>{{ booking.booking_reference }}</h5>
+                    <p>{{ booking.content_object.name|default:booking.content_object.title }}</p>
+                    <p><small>{{ booking.check_in_date|date:"M d, Y" }} {% if booking.check_out_date %}- {{ booking.check_out_date|date:"M d, Y" }}{% endif %}</small></p>
+                </div>
+
+                <div class="warning-text">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Are you sure you want to cancel this booking? This action cannot be undone.
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="action-buttons">
+                        <a href="{% url 'bookings:detail' booking.id %}" class="btn btn-outline-secondary btn-cancel-confirm">
+                            <i class="fas fa-arrow-left me-2"></i>Go Back
+                        </a>
+                        <button type="submit" class="btn btn-danger btn-cancel-confirm">
+                            <i class="fas fa-times me-2"></i>Yes, Cancel Booking
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

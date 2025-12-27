@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Booking {{ booking.booking_reference }} - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .booking-detail-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+        min-height: calc(100vh - 200px);
+        padding: 40px 0;
+    }
+
+    .booking-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .booking-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 25px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .booking-header h2 {
+        margin: 0;
+    }
+
+    .booking-body {
+        padding: 30px;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-confirmed { background: #d4edda; color: #155724; }
+    .status-cancelled { background: #f8d7da; color: #721c24; }
+    .status-completed { background: #cce5ff; color: #004085; }
+
+    .detail-section {
+        margin-bottom: 30px;
+    }
+
+    .detail-section h5 {
+        color: #1a1a1a;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .detail-section h5 i {
+        color: var(--primary-color);
+        margin-right: 10px;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .detail-item {
+        background: #f8f9fa;
+        padding: 15px 20px;
+        border-radius: 10px;
+    }
+
+    .detail-item label {
+        display: block;
+        color: #666;
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+    }
+
+    .detail-item span {
+        font-weight: 600;
+        color: #1a1a1a;
+        font-size: 1.1rem;
+    }
+
+    .property-card {
+        display: flex;
+        gap: 20px;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .property-card img {
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .property-card h4 {
+        margin: 0 0 8px;
+    }
+
+    .property-card p {
+        margin: 0;
+        color: #666;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding-top: 20px;
+        border-top: 2px solid #f0f0f0;
+    }
+
+    .btn-action {
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .property-card {
+            flex-direction: column;
+        }
+
+        .property-card img {
+            width: 100%;
+            height: 150px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="booking-detail-container">
+    <div class="container">
+        <div class="booking-card">
+            <div class="booking-header">
+                <div>
+                    <h2><i class="fas fa-receipt me-2"></i>Booking Details</h2>
+                    <span class="mt-2 d-block opacity-75">Reference: {{ booking.booking_reference }}</span>
+                </div>
+                <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+            </div>
+
+            <div class="booking-body">
+                <!-- Property/Tour Info -->
+                <div class="detail-section">
+                    <h5><i class="fas fa-hotel"></i>{{ booking.booking_type|title }} Details</h5>
+                    <div class="property-card">
+                        {% if item.image_url %}
+                        <img src="{{ item.image_url }}" alt="{{ item.name }}">
+                        {% elif item.main_image %}
+                        <img src="{{ item.main_image.url }}" alt="{{ item.name }}">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.jpg' %}" alt="Booking">
+                        {% endif %}
+                        <div>
+                            <h4>{% if item.name %}{{ item.name }}{% elif item.title %}{{ item.title }}{% endif %}</h4>
+                            {% if item.city %}
+                            <p><i class="fas fa-map-marker-alt me-1"></i>{{ item.city }}, Egypt</p>
+                            {% endif %}
+                            {% if item.star_rating %}
+                            <p>
+                                {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= item.star_rating %}
+                                <i class="fas fa-star text-warning"></i>
+                                {% endif %}
+                                {% endfor %}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Details -->
+                <div class="detail-section">
+                    <h5><i class="fas fa-calendar-check"></i>Reservation Details</h5>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>Check-in Date</label>
+                            <span>{{ booking.check_in_date|date:"l, F d, Y" }}</span>
+                        </div>
+                        {% if booking.check_out_date %}
+                        <div class="detail-item">
+                            <label>Check-out Date</label>
+                            <span>{{ booking.check_out_date|date:"l, F d, Y" }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="detail-item">
+                            <label>Booking Date</label>
+                            <span>{{ booking.booking_date|date:"F d, Y" }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Total Amount</label>
+                            <span style="color: var(--primary-color);">${{ booking.total_amount }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="detail-section">
+                    <h5><i class="fas fa-user"></i>Contact Information</h5>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>Guest Name</label>
+                            <span>{{ booking.contact_name }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Email</label>
+                            <span>{{ booking.contact_email }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Phone</label>
+                            <span>{{ booking.contact_phone }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Payment Status</label>
+                            <span>{{ booking.get_payment_status_display }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {% if booking.special_requests %}
+                <div class="detail-section">
+                    <h5><i class="fas fa-comment-alt"></i>Special Requests</h5>
+                    <div class="detail-item" style="grid-column: 1 / -1;">
+                        <span style="font-weight: normal;">{{ booking.special_requests }}</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Actions -->
+                <div class="action-buttons">
+                    <a href="{% url 'bookings:my_bookings' %}" class="btn btn-outline-secondary btn-action">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Bookings
+                    </a>
+                    {% if item.get_primary_booking_url and booking.status == 'pending' %}
+                    <a href="{{ item.get_primary_booking_url }}" target="_blank" class="btn btn-primary btn-action">
+                        <i class="fas fa-credit-card me-2"></i>Complete Payment
+                    </a>
+                    {% endif %}
+                    {% if booking.status == 'pending' or booking.status == 'confirmed' %}
+                    <a href="{% url 'bookings:cancel' booking.id %}" class="btn btn-outline-danger btn-action">
+                        <i class="fas fa-times me-2"></i>Cancel Booking
+                    </a>
+                    {% endif %}
+                    <button onclick="window.print()" class="btn btn-outline-primary btn-action">
+                        <i class="fas fa-print me-2"></i>Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
