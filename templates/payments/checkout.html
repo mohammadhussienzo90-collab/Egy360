@@ -1,0 +1,407 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Complete Payment - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .checkout-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+        min-height: calc(100vh - 200px);
+        padding: 40px 0;
+    }
+
+    .checkout-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .checkout-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 25px 30px;
+        text-align: center;
+    }
+
+    .checkout-header h2 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .checkout-header p {
+        margin: 10px 0 0;
+        opacity: 0.9;
+    }
+
+    .checkout-body {
+        padding: 30px;
+    }
+
+    /* Booking Summary */
+    .booking-summary {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        margin-bottom: 30px;
+    }
+
+    .summary-image {
+        width: 120px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+        background: #ddd;
+    }
+
+    .summary-info h4 {
+        margin: 0 0 8px;
+        color: #1a1a1a;
+        font-size: 1.1rem;
+    }
+
+    .summary-info p {
+        margin: 0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    /* Amount Display */
+    .amount-display {
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+        color: white;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .amount-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin-bottom: 5px;
+    }
+
+    .amount-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+
+    .amount-currency {
+        font-size: 1rem;
+        opacity: 0.8;
+    }
+
+    /* Card Element */
+    .card-section {
+        margin-bottom: 30px;
+    }
+
+    .card-section h5 {
+        color: #1a1a1a;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .card-section h5 i {
+        color: var(--primary-color);
+        margin-right: 10px;
+    }
+
+    #card-element {
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        background: white;
+        transition: border-color 0.3s;
+    }
+
+    #card-element:focus-within {
+        border-color: var(--primary-color);
+    }
+
+    #card-errors {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 10px;
+        min-height: 20px;
+    }
+
+    /* Submit Button */
+    .btn-pay {
+        width: 100%;
+        padding: 18px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-pay:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(185, 28, 54, 0.4);
+    }
+
+    .btn-pay:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .btn-pay .spinner {
+        display: none;
+        width: 24px;
+        height: 24px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    .btn-pay.loading .spinner {
+        display: block;
+    }
+
+    .btn-pay.loading .btn-text {
+        display: none;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Security Badges */
+    .security-badges {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid #eee;
+    }
+
+    .security-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #666;
+        font-size: 0.85rem;
+    }
+
+    .security-badge i {
+        color: #28a745;
+        font-size: 1.1rem;
+    }
+
+    /* Test Mode Banner */
+    .test-mode-banner {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        color: #856404;
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+    }
+
+    .test-mode-banner strong {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    /* Card Brands */
+    .card-brands {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        opacity: 0.6;
+    }
+
+    .card-brands img {
+        height: 25px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <div class="container">
+        <div class="checkout-card">
+            <div class="checkout-header">
+                <h2><i class="fas fa-lock me-2"></i>Secure Payment</h2>
+                <p>Complete your booking for {{ item.name }}</p>
+            </div>
+
+            <div class="checkout-body">
+                <!-- Test Mode Warning -->
+                <div class="test-mode-banner">
+                    <strong><i class="fas fa-flask me-2"></i>Test Mode</strong>
+                    Use card number <code>4242 4242 4242 4242</code> with any future date and CVC.
+                </div>
+
+                <!-- Booking Summary -->
+                <div class="booking-summary">
+                    {% if item.image_url %}
+                    <img src="{{ item.image_url }}" alt="{{ item.name }}" class="summary-image">
+                    {% else %}
+                    <div class="summary-image" style="display:flex;align-items:center;justify-content:center;background:#f0f0f0;">
+                        <i class="fas fa-hotel" style="font-size:2rem;color:#ccc;"></i>
+                    </div>
+                    {% endif %}
+                    <div class="summary-info">
+                        <h4>{{ item.name }}</h4>
+                        <p><i class="fas fa-calendar me-1"></i> {{ booking.check_in_date|date:"M d, Y" }}
+                        {% if booking.check_out_date %} - {{ booking.check_out_date|date:"M d, Y" }}{% endif %}</p>
+                        <p><i class="fas fa-receipt me-1"></i> Ref: {{ booking.booking_reference }}</p>
+                    </div>
+                </div>
+
+                <!-- Amount Display -->
+                <div class="amount-display">
+                    <div class="amount-label">Total Amount</div>
+                    <div class="amount-value">{{ amount|floatformat:2 }}</div>
+                    <div class="amount-currency">{{ currency }}</div>
+                </div>
+
+                <!-- Payment Form -->
+                <form id="payment-form">
+                    {% csrf_token %}
+
+                    <div class="card-section">
+                        <h5><i class="fas fa-credit-card"></i>Card Details</h5>
+                        <div id="card-element"></div>
+                        <div id="card-errors" role="alert"></div>
+
+                        <div class="card-brands">
+                            <i class="fab fa-cc-visa fa-2x"></i>
+                            <i class="fab fa-cc-mastercard fa-2x"></i>
+                            <i class="fab fa-cc-amex fa-2x"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submit-button" class="btn-pay">
+                        <span class="spinner"></span>
+                        <span class="btn-text"><i class="fas fa-lock me-2"></i>Pay {{ amount|floatformat:2 }} {{ currency }}</span>
+                    </button>
+                </form>
+
+                <!-- Security Badges -->
+                <div class="security-badges">
+                    <div class="security-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SSL Secured</span>
+                    </div>
+                    <div class="security-badge">
+                        <i class="fas fa-lock"></i>
+                        <span>256-bit Encryption</span>
+                    </div>
+                    <div class="security-badge">
+                        <i class="fab fa-stripe"></i>
+                        <span>Powered by Stripe</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    // Initialize Stripe
+    const stripe = Stripe('{{ stripe_public_key }}');
+    const elements = stripe.elements();
+
+    // Create card element with styling
+    const cardElement = elements.create('card', {
+        style: {
+            base: {
+                color: '#32325d',
+                fontFamily: '"Segoe UI", Roboto, sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '16px',
+                '::placeholder': {
+                    color: '#aab7c4'
+                }
+            },
+            invalid: {
+                color: '#dc3545',
+                iconColor: '#dc3545'
+            }
+        }
+    });
+
+    cardElement.mount('#card-element');
+
+    // Handle validation errors
+    cardElement.on('change', function(event) {
+        const displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+
+    // Handle form submission
+    const form = document.getElementById('payment-form');
+    const submitButton = document.getElementById('submit-button');
+
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        // Disable button and show loading
+        submitButton.disabled = true;
+        submitButton.classList.add('loading');
+
+        const clientSecret = '{{ client_secret }}';
+
+        const {error, paymentIntent} = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: cardElement,
+                billing_details: {
+                    name: '{{ booking.contact_name }}',
+                    email: '{{ booking.contact_email }}'
+                }
+            }
+        });
+
+        if (error) {
+            // Show error
+            const errorElement = document.getElementById('card-errors');
+            errorElement.textContent = error.message;
+
+            // Re-enable button
+            submitButton.disabled = false;
+            submitButton.classList.remove('loading');
+        } else if (paymentIntent.status === 'succeeded') {
+            // Payment succeeded - redirect to success page
+            window.location.href = '{% url "payments:success" booking.id %}';
+        } else {
+            // Handle other statuses
+            const errorElement = document.getElementById('card-errors');
+            errorElement.textContent = 'Payment processing. Please wait...';
+
+            // Check status after a delay
+            setTimeout(function() {
+                window.location.href = '{% url "payments:success" booking.id %}';
+            }, 2000);
+        }
+    });
+</script>
+{% endblock %}

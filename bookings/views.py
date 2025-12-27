@@ -92,8 +92,9 @@ def booking_checkout(request, booking_type, item_id):
                 import logging
                 logging.getLogger(__name__).error(f"Failed to send booking email: {e}")
 
-            messages.success(request, 'Booking request submitted successfully!')
-            return redirect('bookings:confirmation', booking_id=booking.id)
+            # Redirect to payment page to complete booking
+            messages.info(request, 'Please complete payment to confirm your booking.')
+            return redirect('payments:checkout', booking_id=booking.id)
     else:
         # Pre-fill form with user data
         initial_data = {

@@ -559,3 +559,125 @@ def stripe_webhook(request):
         return HttpResponse(status=200)
 
     return HttpResponse(status=200)
+
+
+# =============================================================================
+# PAYMENT CHECKOUT VIEWS
+# =============================================================================
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from bookings.models import Booking
+
+
+@login_required
+def payment_checkout(request, booking_id):
+    """
+    Payment checkout page with Stripe Elements card form.
+    Creates a PaymentIntent and displays the card input form.
+    """
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+
+    # Check if booking is already paid
+    if booking.payment_status == 'paid':
+        messages.info(request, 'This booking has already been paid.')
+        return redirect('bookings:confirmation', booking_id=booking.id)
+
+    # Get the booked item
+    item = booking.content_object
+
+    # Create PaymentIntent via Stripe
+    result = stripe_gateway.create_payment_intent(
+        amount=float(booking.total_amount),
+        currency='EGP',
+        metadata={
+            'booking_id': str(booking.id),
+            'booking_reference': booking.booking_reference,
+            'user_id': str(request.user.id),
+        }
+    )
+
+    if not result.get('success'):
+        messages.error(request, f"Payment initialization failed: {result.get('error', 'Unknown error')}")
+        return redirect('bookings:detail', booking_id=booking.id)
+
+    # Create pending payment record
+    payment, created = Payment.objects.get_or_create(
+        booking=booking,
+        user=request.user,
+        defaults={
+            'payment_method': 'stripe',
+            'amount': booking.total_amount,
+            'currency': 'EGP',
+            'status': 'pending',
+            'gateway': 'stripe',
+            'transaction_id': result['payment_intent_id'],
+        }
+    )
+
+    if not created and payment.status == 'pending':
+        # Update existing pending payment with new intent
+        payment.transaction_id = result['payment_intent_id']
+        payment.save()
+
+    context = {
+        'booking': booking,
+        'item': item,
+        'payment': payment,
+        'client_secret': result['client_secret'],
+        'stripe_public_key': get_stripe_public_key(),
+        'amount': booking.total_amount,
+        'currency': 'EGP',
+    }
+
+    return render(request, 'payments/checkout.html', context)
+
+
+@login_required
+def payment_success(request, booking_id):
+    """
+    Payment success page after successful Stripe payment.
+    Verifies payment and shows confirmation.
+    """
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    payment = Payment.objects.filter(booking=booking).order_by('-created_at').first()
+
+    # Get the booked item
+    item = booking.content_object
+
+    # Verify payment status if we have a payment record
+    if payment and payment.transaction_id and payment.status == 'pending':
+        # Verify with Stripe
+        stripe_result = stripe_gateway.confirm_payment_intent(payment.transaction_id)
+
+        if stripe_result.get('success') and stripe_result.get('status') == 'succeeded':
+            # Mark payment as completed
+            payment.status = 'completed'
+            payment.completed_at = timezone.now()
+            payment.save()
+
+            # Update booking status
+            booking.status = 'confirmed'
+            booking.payment_status = 'paid'
+            booking.save()
+
+            # Log transaction
+            Transaction.objects.create(
+                payment=payment,
+                transaction_type='payment',
+                user=request.user,
+                amount=payment.amount,
+                currency=payment.currency,
+                description='Payment completed successfully'
+            )
+
+            logger.info(f"Payment {payment.id} confirmed for booking {booking.id}")
+
+    context = {
+        'booking': booking,
+        'item': item,
+        'payment': payment,
+    }
+
+    return render(request, 'payments/success.html', context)

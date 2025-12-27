@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Payment Successful - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .success-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+        min-height: calc(100vh - 200px);
+        padding: 60px 0;
+    }
+
+    .success-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 650px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .success-header {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 40px 30px;
+    }
+
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        animation: scaleIn 0.5s ease-out;
+    }
+
+    @keyframes scaleIn {
+        0% { transform: scale(0); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+
+    .success-icon i {
+        font-size: 2.5rem;
+    }
+
+    .success-header h2 {
+        margin: 0 0 10px;
+        font-weight: 700;
+    }
+
+    .success-header p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+
+    .success-body {
+        padding: 40px;
+    }
+
+    /* Booking Reference */
+    .booking-reference {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+    }
+
+    .booking-reference .label {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .booking-reference .value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        letter-spacing: 2px;
+    }
+
+    /* Details Grid */
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        text-align: left;
+        margin-bottom: 30px;
+    }
+
+    .detail-item {
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .detail-item .label {
+        color: #666;
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+    }
+
+    .detail-item .value {
+        color: #1a1a1a;
+        font-weight: 600;
+    }
+
+    /* Property Info */
+    .property-info {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    .property-image {
+        width: 120px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+        background: #ddd;
+    }
+
+    .property-details h4 {
+        margin: 0 0 8px;
+        color: #1a1a1a;
+    }
+
+    .property-details p {
+        margin: 0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    /* Payment Badge */
+    .payment-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #d4edda;
+        color: #155724;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-weight: 600;
+        margin-bottom: 30px;
+    }
+
+    .payment-badge i {
+        font-size: 1.1rem;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-action {
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-primary-custom {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        border: none;
+    }
+
+    .btn-primary-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(185, 28, 54, 0.3);
+        color: white;
+    }
+
+    .btn-outline-custom {
+        background: white;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+    }
+
+    .btn-outline-custom:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    /* Confirmation Email Notice */
+    .email-notice {
+        background: #e7f3ff;
+        border: 1px solid #b6d4fe;
+        color: #084298;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-top: 25px;
+        font-size: 0.9rem;
+    }
+
+    .email-notice i {
+        margin-right: 8px;
+    }
+
+    /* Print Receipt */
+    @media print {
+        .action-buttons, .email-notice {
+            display: none;
+        }
+        .success-container {
+            background: white;
+            padding: 0;
+        }
+        .success-card {
+            box-shadow: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <div class="container">
+        <div class="success-card">
+            <div class="success-header">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h2>Payment Successful!</h2>
+                <p>Your booking has been confirmed</p>
+            </div>
+
+            <div class="success-body">
+                <!-- Payment Status Badge -->
+                <div class="payment-badge">
+                    <i class="fas fa-check-circle"></i>
+                    {% if payment and payment.status == 'completed' %}
+                    Payment Confirmed
+                    {% else %}
+                    Booking Confirmed
+                    {% endif %}
+                </div>
+
+                <!-- Booking Reference -->
+                <div class="booking-reference">
+                    <div class="label">Booking Reference</div>
+                    <div class="value">{{ booking.booking_reference }}</div>
+                </div>
+
+                <!-- Property/Tour Info -->
+                <div class="property-info">
+                    {% if item.image_url %}
+                    <img src="{{ item.image_url }}" alt="{{ item.name }}" class="property-image">
+                    {% else %}
+                    <div class="property-image" style="display:flex;align-items:center;justify-content:center;background:#f0f0f0;">
+                        <i class="fas fa-hotel" style="font-size:2rem;color:#ccc;"></i>
+                    </div>
+                    {% endif %}
+                    <div class="property-details">
+                        <h4>{{ item.name }}</h4>
+                        <p><i class="fas fa-calendar me-1"></i> {{ booking.check_in_date|date:"M d, Y" }}
+                        {% if booking.check_out_date %} - {{ booking.check_out_date|date:"M d, Y" }}{% endif %}</p>
+                        <p><i class="fas fa-user me-1"></i> {{ booking.contact_name }}</p>
+                    </div>
+                </div>
+
+                <!-- Details Grid -->
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <div class="label">Amount Paid</div>
+                        <div class="value">{{ booking.total_amount|floatformat:2 }} EGP</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="label">Payment Method</div>
+                        <div class="value"><i class="fas fa-credit-card me-1"></i> Card</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="label">Booking Status</div>
+                        <div class="value" style="color: #28a745;">
+                            <i class="fas fa-check-circle me-1"></i> Confirmed
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="label">Date</div>
+                        <div class="value">{{ booking.created_at|date:"M d, Y H:i" }}</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="{% url 'bookings:my_bookings' %}" class="btn-action btn-primary-custom">
+                        <i class="fas fa-list"></i> View My Bookings
+                    </a>
+                    <a href="/" class="btn-action btn-outline-custom">
+                        <i class="fas fa-home"></i> Back to Home
+                    </a>
+                    <button onclick="window.print()" class="btn-action btn-outline-custom">
+                        <i class="fas fa-print"></i> Print Receipt
+                    </button>
+                </div>
+
+                <!-- Email Confirmation Notice -->
+                <div class="email-notice">
+                    <i class="fas fa-envelope"></i>
+                    A confirmation email has been sent to <strong>{{ booking.contact_email }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
