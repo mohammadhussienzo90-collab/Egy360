@@ -14,6 +14,16 @@ def clean_markdown(text):
     if not text:
         return text
 
+    # First, handle backslash-escaped markdown characters
+    # These might appear as \# \* \[ etc in the content
+    text = text.replace('\\#', '#')
+    text = text.replace('\\*', '*')
+    text = text.replace('\\[', '[')
+    text = text.replace('\\]', ']')
+    text = text.replace('\\_', '_')
+    text = text.replace('\\`', '`')
+    text = text.replace('\\|', '|')
+
     # Remove markdown headers (## ### etc) at start of lines
     text = re.sub(r'^#{1,6}\s*', '', text, flags=re.MULTILINE)
 
@@ -26,8 +36,8 @@ def clean_markdown(text):
     # Remove __text__ -> text
     text = re.sub(r'__([^_]+)__', r'\1', text)
 
-    # Remove _text_ -> text
-    text = re.sub(r'(?<!\w)_([^_]+)_(?!\w)', r'\1', text)
+    # Remove _text_ -> text (but not mid-word underscores)
+    text = re.sub(r'(?<![a-zA-Z])_([^_]+)_(?![a-zA-Z])', r'\1', text)
 
     # Remove markdown links [text](url) -> text
     text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
