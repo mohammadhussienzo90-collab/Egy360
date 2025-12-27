@@ -1,0 +1,9 @@
+[phases.build]
+cmds = [
+    "python manage.py collectstatic --noinput",
+    "python manage.py migrate --noinput",
+    "python -c \"from django.contrib.sites.models import Site; Site.objects.update_or_create(id=1, defaults={'domain': '360egy.com', 'name': 'Egy360'})\""
+]
+
+[start]
+cmd = "gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
