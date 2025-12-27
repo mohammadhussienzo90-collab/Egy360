@@ -17,13 +17,27 @@ def debug_check(request):
 
 @cache_control(max_age=86400)
 def favicon(request):
-    """Serve favicon directly"""
-    favicon_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'favicon.svg')
-    try:
-        with open(favicon_path, 'r') as f:
-            return HttpResponse(f.read(), content_type='image/svg+xml')
-    except FileNotFoundError:
-        return HttpResponse(status=404)
+    """Serve Ankh favicon directly - embedded SVG"""
+    svg_content = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700"/>
+      <stop offset="50%" style="stop-color:#FFA500"/>
+      <stop offset="100%" style="stop-color:#DAA520"/>
+    </linearGradient>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="url(#bgGradient)"/>
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#FFD700" stroke-width="1" opacity="0.3"/>
+  <ellipse cx="32" cy="16" rx="8" ry="10" fill="none" stroke="url(#goldGradient)" stroke-width="4"/>
+  <line x1="20" y1="28" x2="44" y2="28" stroke="url(#goldGradient)" stroke-width="4" stroke-linecap="round"/>
+  <line x1="32" y1="24" x2="32" y2="52" stroke="url(#goldGradient)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="32" cy="56" r="2" fill="#FFD700" opacity="0.6"/>
+</svg>'''
+    return HttpResponse(svg_content, content_type='image/svg+xml')
 
 urlpatterns = [
     path('favicon.svg', favicon, name='favicon'),
