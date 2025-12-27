@@ -127,48 +127,34 @@ class AccommodationDetailView(DetailView):
         return Accommodation.objects.filter(is_active=True)
 
     def get_context_data(self, **kwargs):
-        import logging
-        logger = logging.getLogger(__name__)
+        context = super().get_context_data(**kwargs)
+        accommodation = self.object
 
-        try:
-            context = super().get_context_data(**kwargs)
-            accommodation = self.object
+        # Get rooms for this accommodation
+        context['rooms'] = accommodation.rooms.all()
 
-            # Get rooms for this accommodation
-            context['rooms'] = list(accommodation.rooms.all())
+        # Get amenities
+        context['amenities'] = accommodation.amenities.all()
 
-            # Get amenities
-            context['amenities'] = list(accommodation.amenities.all())
+        # Get all booking options
+        context['booking_options'] = accommodation.get_all_booking_options()
+        context['primary_booking_url'] = accommodation.get_primary_booking_url()
 
-            # Get all booking options
-            context['booking_options'] = accommodation.get_all_booking_options()
-            context['primary_booking_url'] = accommodation.get_primary_booking_url()
+        # Get similar accommodations (same city or type)
+        context['similar_accommodations'] = Accommodation.objects.filter(
+            is_active=True
+        ).filter(
+            Q(city=accommodation.city) | Q(accommodation_type=accommodation.accommodation_type)
+        ).exclude(
+            id=accommodation.id
+        ).order_by('-average_rating')[:4]
 
-            # Get similar accommodations (same city or type)
-            context['similar_accommodations'] = list(Accommodation.objects.filter(
-                is_active=True
-            ).filter(
-                Q(city=accommodation.city) | Q(accommodation_type=accommodation.accommodation_type)
-            ).exclude(
-                id=accommodation.id
-            ).order_by('-average_rating')[:4])
+        # Reviews disabled temporarily
+        context['reviews_data'] = {'reviews': [], 'stats': {'total_count': 0}, 'distribution': {}}
+        context['item_type'] = 'accommodation'
+        context['item'] = accommodation
 
-            # Get reviews using the reviews helper function
-            try:
-                from reviews.web_views import get_reviews_for_object
-                context['reviews_data'] = get_reviews_for_object(accommodation)
-                context['item_type'] = 'accommodation'
-                context['item'] = accommodation
-            except Exception as e:
-                logger.error(f"Reviews error: {e}")
-                context['reviews_data'] = {'reviews': [], 'stats': {'total_count': 0}, 'distribution': {}}
-                context['item_type'] = 'accommodation'
-                context['item'] = accommodation
-
-            return context
-        except Exception as e:
-            logger.error(f"AccommodationDetailView error: {e}", exc_info=True)
-            raise
+        return context
 
 
 def accommodation_by_city(request, city):
