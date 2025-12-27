@@ -149,18 +149,16 @@ class AccommodationDetailView(DetailView):
             id=accommodation.id
         ).order_by('-average_rating')[:4]
 
-        # Get reviews if reviews app is available
+        # Get reviews using the reviews helper function
         try:
-            from reviews.models import Review
-            from django.contrib.contenttypes.models import ContentType
-            content_type = ContentType.objects.get_for_model(Accommodation)
-            context['reviews'] = Review.objects.filter(
-                content_type=content_type,
-                object_id=accommodation.id,
-                is_approved=True
-            ).order_by('-created_at')[:10]
+            from reviews.web_views import get_reviews_for_object
+            context['reviews_data'] = get_reviews_for_object(accommodation)
+            context['item_type'] = 'accommodation'
+            context['item'] = accommodation
         except (ImportError, Exception):
-            context['reviews'] = []
+            context['reviews_data'] = {'reviews': [], 'stats': {}, 'distribution': {}}
+            context['item_type'] = 'accommodation'
+            context['item'] = accommodation
 
         return context
 

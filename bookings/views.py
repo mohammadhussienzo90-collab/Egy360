@@ -84,6 +84,14 @@ def booking_checkout(request, booking_type, item_id):
                     number_of_rooms=form.cleaned_data['number_of_rooms']
                 )
 
+            # Send booking confirmation email
+            try:
+                from core.email import send_booking_confirmation
+                send_booking_confirmation(booking, booking_type=booking_type)
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).error(f"Failed to send booking email: {e}")
+
             messages.success(request, 'Booking request submitted successfully!')
             return redirect('bookings:confirmation', booking_id=booking.id)
     else:
@@ -183,6 +191,15 @@ def cancel_booking(request, booking_id):
     if request.method == 'POST':
         booking.status = 'cancelled'
         booking.save()
+
+        # Send cancellation notification
+        try:
+            from core.email import send_booking_status_update
+            send_booking_status_update(booking, booking_type=booking.booking_type)
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Failed to send cancellation email: {e}")
+
         messages.success(request, 'Booking cancelled successfully.')
         return redirect('bookings:my_bookings')
 

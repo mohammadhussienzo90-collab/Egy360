@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 40px 0;
+        margin-bottom: 30px;
+    }
+
+    .booking-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+        overflow: hidden;
+        transition: transform 0.2s;
+    }
+
+    .booking-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+    .booking-card-body {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .booking-image {
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+
+    .booking-details {
+        flex: 1;
+    }
+
+    .booking-details h5 {
+        margin: 0 0 8px;
+        color: #1a1a1a;
+    }
+
+    .booking-meta {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+
+    .booking-meta span {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .booking-meta i {
+        color: var(--primary-color);
+        margin-right: 5px;
+    }
+
+    .booking-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .status-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-confirmed { background: #d4edda; color: #155724; }
+    .status-cancelled { background: #f8d7da; color: #721c24; }
+    .status-completed { background: #cce5ff; color: #004085; }
+
+    .filter-bar {
+        background: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 12px;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .booking-card-body {
+            flex-direction: column;
+        }
+
+        .booking-image {
+            width: 100%;
+            height: 150px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard:dashboard' %}" class="text-white-50">Dashboard</a></li>
+                <li class="breadcrumb-item active text-white">My Bookings</li>
+            </ol>
+        </nav>
+        <h1 class="mb-0"><i class="fas fa-calendar-check me-2"></i>My Bookings</h1>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <form method="get" class="row align-items-center">
+            <div class="col-md-4">
+                <label class="form-label mb-0">Filter by Status</label>
+            </div>
+            <div class="col-md-5">
+                <select name="status" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Bookings</option>
+                    {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3 text-end">
+                <span class="text-muted">{{ bookings|length|add:tour_bookings|length }} bookings</span>
+            </div>
+        </form>
+    </div>
+
+    <!-- Accommodation Bookings -->
+    {% if bookings %}
+    <h5 class="mb-3"><i class="fas fa-hotel me-2 text-primary"></i>Accommodation Bookings</h5>
+    {% for booking in bookings %}
+    <div class="booking-card">
+        <div class="booking-card-body">
+            <img src="{{ booking.content_object.image_url|default:'/static/images/placeholder.jpg' }}"
+                 alt="{{ booking.content_object.name }}" class="booking-image">
+            <div class="booking-details">
+                <h5>{{ booking.content_object.name|default:"Accommodation Booking" }}</h5>
+                <div class="booking-meta">
+                    <span><i class="fas fa-hashtag"></i>{{ booking.booking_reference }}</span>
+                    <span><i class="fas fa-calendar"></i>{{ booking.check_in_date|date:"M d, Y" }}</span>
+                    {% if booking.check_out_date %}
+                    <span><i class="fas fa-calendar-alt"></i>{{ booking.check_out_date|date:"M d, Y" }}</span>
+                    {% endif %}
+                    <span><i class="fas fa-dollar-sign"></i>${{ booking.total_amount|floatformat:0 }}</span>
+                </div>
+                <div class="booking-actions">
+                    <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+                    <a href="{% url 'bookings:detail' booking.id %}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-eye me-1"></i>View Details
+                    </a>
+                    {% if booking.status == 'pending' or booking.status == 'confirmed' %}
+                    <a href="{% url 'bookings:cancel' booking.id %}" class="btn btn-sm btn-outline-danger">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Tour Bookings -->
+    {% if tour_bookings %}
+    <h5 class="mb-3 mt-4"><i class="fas fa-map-marked-alt me-2 text-success"></i>Tour Bookings</h5>
+    {% for booking in tour_bookings %}
+    <div class="booking-card">
+        <div class="booking-card-body">
+            {% if booking.tour.main_image %}
+            <img src="{{ booking.tour.main_image.url }}" alt="{{ booking.tour.name }}" class="booking-image">
+            {% else %}
+            <div class="booking-image bg-secondary d-flex align-items-center justify-content-center">
+                <i class="fas fa-hiking fa-2x text-white"></i>
+            </div>
+            {% endif %}
+            <div class="booking-details">
+                <h5>{{ booking.tour.name }}</h5>
+                <div class="booking-meta">
+                    <span><i class="fas fa-calendar"></i>{{ booking.tour_date|date:"M d, Y" }}</span>
+                    <span><i class="fas fa-users"></i>{{ booking.number_of_adults }} Adults{% if booking.number_of_children %}, {{ booking.number_of_children }} Children{% endif %}</span>
+                    <span><i class="fas fa-dollar-sign"></i>${{ booking.total_price|floatformat:0 }}</span>
+                </div>
+                <div class="booking-actions">
+                    <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+                    <a href="{% url 'dashboard:booking-detail' booking.id %}?type=tour" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-eye me-1"></i>View Details
+                    </a>
+                    {% if booking.status == 'pending' or booking.status == 'confirmed' %}
+                    <button class="btn btn-sm btn-outline-danger" onclick="cancelBooking({{ booking.id }})">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Empty State -->
+    {% if not bookings and not tour_bookings %}
+    <div class="empty-state">
+        <i class="fas fa-calendar-times"></i>
+        <h4>No Bookings Yet</h4>
+        <p class="text-muted mb-4">You haven't made any bookings yet. Start exploring Egypt!</p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a href="{% url 'accommodations:search' %}" class="btn btn-primary">
+                <i class="fas fa-hotel me-2"></i>Find Hotels
+            </a>
+            <a href="{% url 'tours:list' %}" class="btn btn-outline-primary">
+                <i class="fas fa-map-marked-alt me-2"></i>Browse Tours
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function cancelBooking(bookingId) {
+    if (confirm('Are you sure you want to cancel this booking?')) {
+        fetch(`/dashboard/bookings/${bookingId}/cancel/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.error || 'Failed to cancel booking');
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

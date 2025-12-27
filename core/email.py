@@ -21,7 +21,8 @@ def send_booking_confirmation(booking, booking_type='tour'):
         booking_type: 'tour' or 'accommodation'
     """
     try:
-        if booking_type == 'tour':
+        # Handle TourBooking model (from tours app)
+        if hasattr(booking, 'tour') and booking_type == 'tour':
             subject = f'Booking Confirmation - {booking.tour.name}'
             context = {
                 'booking': booking,
@@ -35,16 +36,44 @@ def send_booking_confirmation(booking, booking_type='tour'):
             }
             template = 'emails/tour_booking_confirmation.html'
             to_email = booking.contact_email or booking.user.email
-        else:
-            subject = f'Booking Confirmation - #{booking.id}'
+
+        # Handle Booking model (from bookings app) for tours
+        elif booking_type == 'tour':
+            item = booking.content_object
+            subject = f'Booking Confirmation - {item.name}'
             context = {
                 'booking': booking,
-                'user_name': booking.user.get_full_name(),
-                'total_amount': getattr(booking, 'total_amount', 0),
+                'tour': item,
+                'user_name': booking.contact_name or booking.user.get_full_name(),
+                'booking_date': booking.check_in_date,
+                'adults': 1,
+                'children': 0,
+                'total_price': booking.total_amount,
                 'status': booking.get_status_display(),
             }
-            template = 'emails/booking_confirmation.html'
-            to_email = booking.user.email
+            template = 'emails/tour_booking_confirmation.html'
+            to_email = booking.contact_email or booking.user.email
+
+        # Handle accommodation bookings
+        else:
+            item = booking.content_object
+            subject = f'Booking Confirmation - {item.name if item else "Your Stay"}'
+            # Get accommodation booking details if available
+            acc_booking = getattr(booking, 'accommodation_details', None)
+            context = {
+                'booking': booking,
+                'accommodation': item,
+                'user_name': booking.contact_name or booking.user.get_full_name(),
+                'check_in': booking.check_in_date,
+                'check_out': booking.check_out_date,
+                'nights': (booking.check_out_date - booking.check_in_date).days if booking.check_out_date else 1,
+                'guests': acc_booking.number_of_guests if acc_booking else 1,
+                'rooms': acc_booking.number_of_rooms if acc_booking else 1,
+                'total_amount': booking.total_amount,
+                'status': booking.get_status_display(),
+            }
+            template = 'emails/accommodation_booking_confirmation.html'
+            to_email = booking.contact_email or booking.user.email
 
         # Try to render HTML template, fall back to plain text
         try:

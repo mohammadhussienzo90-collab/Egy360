@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+
+{% block title %}Write a Review - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .review-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+        min-height: calc(100vh - 200px);
+        padding: 40px 0;
+    }
+
+    .review-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .review-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 25px 30px;
+    }
+
+    .review-body {
+        padding: 30px;
+    }
+
+    .item-summary {
+        display: flex;
+        gap: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+
+    .item-summary img {
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+
+    .rating-section {
+        margin-bottom: 25px;
+    }
+
+    .rating-section label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .star-rating {
+        display: flex;
+        gap: 5px;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+    }
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        font-size: 2rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input:checked ~ label {
+        color: #ffc107;
+    }
+
+    .detailed-ratings {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .rating-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .rating-item span {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .mini-stars {
+        display: flex;
+        gap: 3px;
+    }
+
+    .mini-stars i {
+        font-size: 1rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .mini-stars i.active {
+        color: #ffc107;
+    }
+
+    .form-section {
+        margin-bottom: 25px;
+    }
+
+    .form-section label {
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        border: none;
+    }
+
+    @media (max-width: 768px) {
+        .detailed-ratings {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="review-container">
+    <div class="container">
+        <div class="review-card">
+            <div class="review-header">
+                <h2><i class="fas fa-star me-2"></i>Write a Review</h2>
+            </div>
+
+            <div class="review-body">
+                <!-- Item Summary -->
+                <div class="item-summary">
+                    {% if item.main_image %}
+                    <img src="{{ item.main_image.url }}" alt="{{ item.name }}">
+                    {% elif item.image_url %}
+                    <img src="{{ item.image_url }}" alt="{{ item.name }}">
+                    {% endif %}
+                    <div>
+                        <h5 class="mb-1">{{ item.name }}</h5>
+                        <p class="mb-0 text-muted">
+                            {% if item.city %}{{ item.city }}, {% endif %}Egypt
+                        </p>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- Overall Rating -->
+                    <div class="rating-section">
+                        <label>Overall Rating *</label>
+                        <div class="star-rating" id="overall-rating">
+                            <input type="radio" name="rating" value="5" id="star5">
+                            <label for="star5"><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" value="4" id="star4">
+                            <label for="star4"><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" value="3" id="star3">
+                            <label for="star3"><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" value="2" id="star2">
+                            <label for="star2"><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" value="1" id="star1">
+                            <label for="star1"><i class="fas fa-star"></i></label>
+                        </div>
+                        {% if form.rating.errors %}
+                        <div class="text-danger small mt-1">{{ form.rating.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Detailed Ratings -->
+                    <div class="detailed-ratings">
+                        <div class="rating-item">
+                            <span>Cleanliness</span>
+                            <div class="mini-stars" data-field="cleanliness_rating">
+                                {% for i in "12345" %}
+                                <i class="fas fa-star" data-value="{{ forloop.counter }}"></i>
+                                {% endfor %}
+                            </div>
+                            <input type="hidden" name="cleanliness_rating" value="">
+                        </div>
+                        <div class="rating-item">
+                            <span>Location</span>
+                            <div class="mini-stars" data-field="location_rating">
+                                {% for i in "12345" %}
+                                <i class="fas fa-star" data-value="{{ forloop.counter }}"></i>
+                                {% endfor %}
+                            </div>
+                            <input type="hidden" name="location_rating" value="">
+                        </div>
+                        <div class="rating-item">
+                            <span>Value for Money</span>
+                            <div class="mini-stars" data-field="value_rating">
+                                {% for i in "12345" %}
+                                <i class="fas fa-star" data-value="{{ forloop.counter }}"></i>
+                                {% endfor %}
+                            </div>
+                            <input type="hidden" name="value_rating" value="">
+                        </div>
+                        <div class="rating-item">
+                            <span>Service</span>
+                            <div class="mini-stars" data-field="service_rating">
+                                {% for i in "12345" %}
+                                <i class="fas fa-star" data-value="{{ forloop.counter }}"></i>
+                                {% endfor %}
+                            </div>
+                            <input type="hidden" name="service_rating" value="">
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="form-section mt-4">
+                        <label for="id_title">Review Title *</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                        <div class="text-danger small mt-1">{{ form.title.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Comment -->
+                    <div class="form-section">
+                        <label for="id_comment">Your Review *</label>
+                        {{ form.comment }}
+                        {% if form.comment.errors %}
+                        <div class="text-danger small mt-1">{{ form.comment.errors.0 }}</div>
+                        {% endif %}
+                        <small class="text-muted">
+                            Share your experience to help other travelers make informed decisions.
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-submit">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Review
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mini star ratings
+    document.querySelectorAll('.mini-stars').forEach(function(container) {
+        const field = container.dataset.field;
+        const input = container.parentElement.querySelector('input[name="' + field + '"]');
+        const stars = container.querySelectorAll('i');
+
+        stars.forEach(function(star) {
+            star.addEventListener('click', function() {
+                const value = this.dataset.value;
+                input.value = value;
+
+                stars.forEach(function(s) {
+                    if (parseInt(s.dataset.value) <= parseInt(value)) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+
+            star.addEventListener('mouseenter', function() {
+                const value = this.dataset.value;
+                stars.forEach(function(s) {
+                    if (parseInt(s.dataset.value) <= parseInt(value)) {
+                        s.style.color = '#ffc107';
+                    } else {
+                        s.style.color = '#ddd';
+                    }
+                });
+            });
+        });
+
+        container.addEventListener('mouseleave', function() {
+            const currentValue = input.value;
+            stars.forEach(function(s) {
+                if (parseInt(s.dataset.value) <= parseInt(currentValue)) {
+                    s.style.color = '#ffc107';
+                } else {
+                    s.style.color = '#ddd';
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

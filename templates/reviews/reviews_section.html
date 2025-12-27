@@ -1,0 +1,213 @@
+{% comment %}
+Reviews Section Component
+Include this in detail pages with:
+{% include 'reviews/reviews_section.html' with reviews_data=reviews_data item_type=item_type item=item %}
+{% endcomment %}
+{% load review_tags %}
+
+<section class="reviews-section my-5" id="reviews">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3><i class="fas fa-star text-warning me-2"></i>Guest Reviews</h3>
+        {% if user.is_authenticated %}
+        <a href="{% url 'reviews:submit' item_type item.id %}" class="btn btn-primary">
+            <i class="fas fa-pen me-2"></i>Write a Review
+        </a>
+        {% else %}
+        <a href="{% url 'accounts:login' %}?next={{ request.path }}#reviews" class="btn btn-outline-primary">
+            <i class="fas fa-sign-in-alt me-2"></i>Login to Review
+        </a>
+        {% endif %}
+    </div>
+
+    {% if reviews_data.stats.total_count %}
+    <!-- Rating Summary -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                    <div class="display-3 fw-bold text-primary">{{ reviews_data.stats.avg_rating|floatformat:1 }}</div>
+                    <div class="star-display mb-2">
+                        {% for i in "12345" %}
+                        <i class="fas fa-star {% if forloop.counter <= reviews_data.stats.avg_rating %}text-warning{% else %}text-muted{% endif %}"></i>
+                        {% endfor %}
+                    </div>
+                    <p class="text-muted mb-0">{{ reviews_data.stats.total_count }} review{{ reviews_data.stats.total_count|pluralize }}</p>
+                </div>
+
+                <div class="col-md-5">
+                    <!-- Rating Bars -->
+                    {% for i in "54321" %}
+                    <div class="d-flex align-items-center mb-1">
+                        <span class="me-2" style="width: 20px;">{{ i }}</span>
+                        <i class="fas fa-star text-warning me-2"></i>
+                        <div class="progress flex-grow-1" style="height: 8px;">
+                            {% with count=reviews_data.distribution|default_if_none:0 %}
+                            <div class="progress-bar bg-warning"
+                                 style="width: {% widthratio reviews_data.distribution|get_item:i|default:0 reviews_data.stats.total_count 100 %}%"></div>
+                            {% endwith %}
+                        </div>
+                        <span class="ms-2 text-muted" style="width: 30px;">{{ reviews_data.distribution|get_item:i|default:0 }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Category Ratings -->
+                    <div class="category-ratings">
+                        {% if reviews_data.stats.avg_cleanliness %}
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Cleanliness</span>
+                            <span class="fw-bold">{{ reviews_data.stats.avg_cleanliness|floatformat:1 }}</span>
+                        </div>
+                        {% endif %}
+                        {% if reviews_data.stats.avg_location %}
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Location</span>
+                            <span class="fw-bold">{{ reviews_data.stats.avg_location|floatformat:1 }}</span>
+                        </div>
+                        {% endif %}
+                        {% if reviews_data.stats.avg_value %}
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Value</span>
+                            <span class="fw-bold">{{ reviews_data.stats.avg_value|floatformat:1 }}</span>
+                        </div>
+                        {% endif %}
+                        {% if reviews_data.stats.avg_service %}
+                        <div class="d-flex justify-content-between">
+                            <span>Service</span>
+                            <span class="fw-bold">{{ reviews_data.stats.avg_service|floatformat:1 }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews List -->
+    {% for review in reviews_data.reviews %}
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="avatar me-3"
+                         style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-color);
+                                display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                        {{ review.user.first_name|slice:":1"|upper|default:review.user.username|slice:":1"|upper }}
+                    </div>
+                    <div>
+                        <h6 class="mb-0">{{ review.user.first_name|default:review.user.username }}</h6>
+                        <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                        {% if review.is_verified_booking %}
+                        <span class="badge bg-success ms-2"><i class="fas fa-check me-1"></i>Verified Stay</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="text-end">
+                    <div class="mb-1">
+                        {% for i in "12345" %}
+                        <i class="fas fa-star {% if forloop.counter <= review.rating %}text-warning{% else %}text-muted{% endif %}"></i>
+                        {% endfor %}
+                    </div>
+                    <span class="badge bg-primary">{{ review.rating }}/5</span>
+                </div>
+            </div>
+
+            {% if review.title %}
+            <h6 class="mb-2">{{ review.title }}</h6>
+            {% endif %}
+
+            <p class="text-muted mb-3">{{ review.comment }}</p>
+
+            {% if review.response %}
+            <div class="bg-light p-3 rounded mt-3">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-reply text-primary me-2"></i>
+                    <strong>Response from Property</strong>
+                    <small class="text-muted ms-2">{{ review.response.created_at|date:"M d, Y" }}</small>
+                </div>
+                <p class="mb-0">{{ review.response.response_text }}</p>
+            </div>
+            {% endif %}
+
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                <div class="helpful-actions">
+                    <span class="text-muted me-2">Was this review helpful?</span>
+                    <button class="btn btn-sm btn-outline-success me-1" onclick="voteReview({{ review.id }}, true)">
+                        <i class="fas fa-thumbs-up me-1"></i>{{ review.helpful_count }}
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="voteReview({{ review.id }}, false)">
+                        <i class="fas fa-thumbs-down"></i>
+                    </button>
+                </div>
+                <button class="btn btn-sm btn-link text-muted" onclick="reportReview({{ review.id }})">
+                    <i class="fas fa-flag me-1"></i>Report
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <!-- No Reviews Yet -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+            <i class="fas fa-comment-slash fa-3x text-muted mb-3"></i>
+            <h5>No Reviews Yet</h5>
+            <p class="text-muted mb-4">Be the first to share your experience!</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'reviews:submit' item_type item.id %}" class="btn btn-primary">
+                <i class="fas fa-pen me-2"></i>Write the First Review
+            </a>
+            {% else %}
+            <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-outline-primary">
+                <i class="fas fa-sign-in-alt me-2"></i>Login to Write a Review
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<script>
+function voteReview(reviewId, isHelpful) {
+    fetch(`/reviews/${reviewId}/vote/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `is_helpful=${isHelpful}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.error || 'Could not record vote');
+        }
+    });
+}
+
+function reportReview(reviewId) {
+    const reason = prompt('Why are you reporting this review?\n(spam, offensive, fake, other)');
+    if (!reason) return;
+
+    fetch(`/reviews/${reviewId}/report/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `reason=${reason}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Thank you for your report. We will investigate.');
+        } else {
+            alert(data.error || 'Could not submit report');
+        }
+    });
+}
+</script>

@@ -158,18 +158,16 @@ class TourDetailView(DetailView):
             id=tour.id
         ).order_by('-average_rating')[:4]
 
-        # Get reviews if reviews app is available
+        # Get reviews using the reviews helper function
         try:
-            from reviews.models import Review
-            from django.contrib.contenttypes.models import ContentType
-            content_type = ContentType.objects.get_for_model(Tour)
-            context['reviews'] = Review.objects.filter(
-                content_type=content_type,
-                object_id=tour.id,
-                is_approved=True
-            ).order_by('-created_at')[:10]
+            from reviews.web_views import get_reviews_for_object
+            context['reviews_data'] = get_reviews_for_object(tour)
+            context['item_type'] = 'tour'
+            context['item'] = tour
         except (ImportError, Exception):
-            context['reviews'] = []
+            context['reviews_data'] = {'reviews': [], 'stats': {}, 'distribution': {}}
+            context['item_type'] = 'tour'
+            context['item'] = tour
 
         # Calculate child price
         if tour.child_discount > 0:

@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Saved Items - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 40px 0;
+        margin-bottom: 30px;
+    }
+
+    .filter-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .filter-tab {
+        padding: 10px 20px;
+        border-radius: 25px;
+        background: white;
+        color: #666;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .filter-tab:hover, .filter-tab.active {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .saved-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        overflow: hidden;
+        margin-bottom: 20px;
+        transition: transform 0.2s;
+    }
+
+    .saved-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+    .saved-card-image {
+        height: 180px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: white;
+        border: none;
+        color: #dc3545;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    .remove-btn:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .item-type-badge {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        padding: 5px 12px;
+        border-radius: 15px;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        font-size: 0.8rem;
+    }
+
+    .saved-card-body {
+        padding: 20px;
+    }
+
+    .saved-card-body h5 {
+        margin: 0 0 10px;
+        font-size: 1.1rem;
+    }
+
+    .saved-card-body h5 a {
+        color: #1a1a1a;
+        text-decoration: none;
+    }
+
+    .saved-card-body h5 a:hover {
+        color: var(--primary-color);
+    }
+
+    .item-meta {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+    }
+
+    .item-meta span {
+        color: #666;
+        font-size: 0.85rem;
+    }
+
+    .item-meta i {
+        color: var(--primary-color);
+        margin-right: 5px;
+    }
+
+    .item-price {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .item-price small {
+        font-weight: 400;
+        color: #888;
+        font-size: 0.8rem;
+    }
+
+    .saved-date {
+        color: #888;
+        font-size: 0.8rem;
+        margin-top: 10px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 12px;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard:dashboard' %}" class="text-white-50">Dashboard</a></li>
+                <li class="breadcrumb-item active text-white">Saved Items</li>
+            </ol>
+        </nav>
+        <h1 class="mb-0"><i class="fas fa-heart me-2"></i>Saved Items</h1>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+        <a href="?type=all" class="filter-tab {% if not type_filter or type_filter == 'all' %}active{% endif %}">
+            <i class="fas fa-th-large me-1"></i>All ({{ saved_items|length }})
+        </a>
+        <a href="?type=accommodation" class="filter-tab {% if type_filter == 'accommodation' %}active{% endif %}">
+            <i class="fas fa-hotel me-1"></i>Hotels
+        </a>
+        <a href="?type=tour" class="filter-tab {% if type_filter == 'tour' %}active{% endif %}">
+            <i class="fas fa-map-marked-alt me-1"></i>Tours
+        </a>
+    </div>
+
+    <!-- Saved Items Grid -->
+    <div class="row">
+        {% for item in saved_items %}
+        <div class="col-md-6 col-lg-4">
+            <div class="saved-card">
+                <div class="saved-card-image"
+                     style="background-image: url('{% if item.content_object.main_image %}{{ item.content_object.main_image.url }}{% elif item.content_object.image_url %}{{ item.content_object.image_url }}{% else %}{% static 'images/placeholder.jpg' %}{% endif %}')">
+                    <button class="remove-btn" onclick="removeSaved({{ item.id }})" title="Remove from saved">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <span class="item-type-badge">
+                        {% if 'accommodation' in item.content_type.model %}
+                        <i class="fas fa-hotel me-1"></i>Hotel
+                        {% else %}
+                        <i class="fas fa-hiking me-1"></i>Tour
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="saved-card-body">
+                    <h5>
+                        <a href="{% if 'accommodation' in item.content_type.model %}{% url 'accommodations:detail' item.content_object.slug %}{% else %}{% url 'tours:detail' item.content_object.slug %}{% endif %}">
+                            {{ item.content_object.name|default:item.content_object.title }}
+                        </a>
+                    </h5>
+                    <div class="item-meta">
+                        {% if item.content_object.city %}
+                        <span><i class="fas fa-map-marker-alt"></i>{{ item.content_object.city }}</span>
+                        {% endif %}
+                        {% if item.content_object.star_rating %}
+                        <span>
+                            {% for i in "12345"|make_list %}
+                            <i class="fas fa-star {% if forloop.counter > item.content_object.star_rating %}text-muted{% else %}text-warning{% endif %}" style="font-size: 0.7rem;"></i>
+                            {% endfor %}
+                        </span>
+                        {% endif %}
+                        {% if item.content_object.duration_days %}
+                        <span><i class="fas fa-clock"></i>{{ item.content_object.duration_days }} days</span>
+                        {% endif %}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="item-price">
+                            {% if item.content_object.price_per_night %}
+                            ${{ item.content_object.price_per_night|floatformat:0 }}
+                            <small>/night</small>
+                            {% elif item.content_object.price_per_person %}
+                            ${{ item.content_object.price_per_person|floatformat:0 }}
+                            <small>/person</small>
+                            {% endif %}
+                        </span>
+                        <a href="{% if 'accommodation' in item.content_type.model %}{% url 'bookings:checkout' 'accommodation' item.content_object.id %}{% else %}{% url 'bookings:checkout' 'tour' item.content_object.id %}{% endif %}"
+                           class="btn btn-sm btn-primary">
+                            Book Now
+                        </a>
+                    </div>
+                    <p class="saved-date">
+                        <i class="fas fa-bookmark me-1"></i>Saved {{ item.created_at|timesince }} ago
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="empty-state">
+                <i class="fas fa-heart-broken"></i>
+                <h4>No Saved Items</h4>
+                <p class="text-muted mb-4">Save hotels and tours you like to easily find them later!</p>
+                <div class="d-flex gap-3 justify-content-center">
+                    <a href="{% url 'accommodations:search' %}" class="btn btn-primary">
+                        <i class="fas fa-hotel me-2"></i>Browse Hotels
+                    </a>
+                    <a href="{% url 'tours:list' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-map-marked-alt me-2"></i>Explore Tours
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function removeSaved(itemId) {
+    if (confirm('Remove this item from your saved list?')) {
+        fetch(`/dashboard/saved/${itemId}/remove/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.error || 'Failed to remove item');
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

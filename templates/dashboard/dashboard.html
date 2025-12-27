@@ -2,146 +2,365 @@
 
 {% block title %}Dashboard - Egy360{% endblock %}
 
+{% block extra_css %}
+<style>
+    .dashboard-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 40px 0;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        transition: transform 0.2s;
+        height: 100%;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .stat-card .icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .stat-card h3 {
+        font-size: 2rem;
+        margin: 0;
+        font-weight: 700;
+    }
+
+    .stat-card p {
+        color: #666;
+        margin: 5px 0 0;
+    }
+
+    .stat-card a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+
+    .dashboard-card-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .dashboard-card-header h5 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .dashboard-card-body {
+        padding: 20px 25px;
+    }
+
+    .quick-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px;
+        border-radius: 10px;
+        background: #f8f9fa;
+        text-decoration: none;
+        color: #333;
+        transition: all 0.2s;
+        margin-bottom: 10px;
+    }
+
+    .quick-link:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .quick-link i {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-color);
+    }
+
+    .booking-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .booking-item:last-child {
+        border-bottom: none;
+    }
+
+    .booking-item-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        background: #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+    }
+
+    .booking-item-info h6 {
+        margin: 0 0 5px;
+    }
+
+    .booking-item-info p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .status-badge {
+        padding: 4px 10px;
+        border-radius: 15px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-confirmed { background: #d4edda; color: #155724; }
+
+    .tip-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .tip-item:last-child {
+        border-bottom: none;
+    }
+
+    .tip-item i {
+        font-size: 1.2rem;
+        width: 30px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4">Welcome back, {{ user.first_name|default:user.username }}!</h1>
-    
-    <!-- Quick Stats -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card bg-primary text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Total Bookings</h5>
-                    <h2>{{ total_bookings|default:"0" }}</h2>
-                    <p class="mb-0"><i class="fas fa-calendar"></i> All time</p>
-                </div>
+<div class="dashboard-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-2">Welcome back, {{ user.first_name|default:user.username }}!</h1>
+                <p class="mb-0 opacity-75">Manage your bookings, reviews, and saved items</p>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-success text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Upcoming Tours</h5>
-                    <h2>{{ upcoming_tours|default:"0" }}</h2>
-                    <p class="mb-0"><i class="fas fa-clock"></i> Next 30 days</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-info text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Reviews Written</h5>
-                    <h2>{{ reviews_count|default:"0" }}</h2>
-                    <p class="mb-0"><i class="fas fa-star"></i> Total reviews</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-warning text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Saved Items</h5>
-                    <h2>{{ saved_items|default:"0" }}</h2>
-                    <p class="mb-0"><i class="fas fa-heart"></i> Wishlist</p>
-                </div>
+            <div class="col-md-4 text-md-end">
+                <a href="{% url 'dashboard:settings' %}" class="btn btn-outline-light">
+                    <i class="fas fa-cog me-2"></i>Settings
+                </a>
             </div>
         </div>
     </div>
-    
-    <!-- Recent Bookings -->
-    <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Recent Bookings</h5>
-            <a href="/bookings/" class="btn btn-sm btn-outline-primary">View All</a>
+</div>
+
+<div class="container mb-5">
+    <!-- Stats Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="icon" style="background: #e3f2fd; color: #1976d2;">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>{{ total_bookings|default:"0" }}</h3>
+                <p>Total Bookings</p>
+                <a href="{% url 'dashboard:bookings' %}">View all <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Booking ID</th>
-                            <th>Type</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for booking in recent_bookings %}
-                        <tr>
-                            <td>#{{ booking.id }}</td>
-                            <td>{{ booking.type }}</td>
-                            <td>{{ booking.date }}</td>
-                            <td><span class="badge bg-success">{{ booking.status }}</span></td>
-                            <td>
-                                <a href="/bookings/{{ booking.id }}/" class="btn btn-sm btn-outline-primary">View</a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5" class="text-center text-muted py-4">
-                                No bookings yet. <a href="/tours/">Browse tours</a> to get started!
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="icon" style="background: #e8f5e9; color: #388e3c;">
+                    <i class="fas fa-plane-departure"></i>
+                </div>
+                <h3>{{ upcoming_tours|default:"0" }}</h3>
+                <p>Upcoming Tours</p>
+                <a href="{% url 'dashboard:bookings' %}?status=confirmed">View upcoming <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="icon" style="background: #fff3e0; color: #f57c00;">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>{{ reviews_count|default:"0" }}</h3>
+                <p>Reviews Written</p>
+                <a href="{% url 'dashboard:reviews' %}">Manage reviews <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="icon" style="background: #fce4ec; color: #c2185b;">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>{{ saved_items|default:"0" }}</h3>
+                <p>Saved Items</p>
+                <a href="{% url 'dashboard:saved' %}">View wishlist <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
         </div>
     </div>
-    
-    <!-- Quick Actions -->
+
     <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Quick Actions</h5>
+        <!-- Recent Bookings -->
+        <div class="col-lg-8">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h5><i class="fas fa-history me-2 text-primary"></i>Recent Bookings</h5>
+                    <a href="{% url 'dashboard:bookings' %}" class="btn btn-sm btn-outline-primary">View All</a>
                 </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <a href="/tours/" class="btn btn-outline-primary">
-                            <i class="fas fa-search"></i> Search Tours
+                <div class="dashboard-card-body">
+                    {% for booking in recent_bookings %}
+                    <div class="booking-item">
+                        <div class="booking-item-image">
+                            <i class="fas fa-{% if booking.booking_type == 'tour' %}map-marked-alt{% else %}hotel{% endif %}"></i>
+                        </div>
+                        <div class="booking-item-info flex-grow-1">
+                            <h6>{{ booking.content_object.name|default:"Booking" }}</h6>
+                            <p>
+                                <i class="fas fa-calendar me-1"></i>{{ booking.check_in_date|date:"M d, Y" }}
+                                {% if booking.check_out_date %} - {{ booking.check_out_date|date:"M d, Y" }}{% endif %}
+                            </p>
+                        </div>
+                        <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <p class="text-muted mb-3">No bookings yet</p>
+                        <a href="{% url 'tours:list' %}" class="btn btn-primary">
+                            <i class="fas fa-search me-2"></i>Explore Tours
                         </a>
-                        <a href="/accommodations/" class="btn btn-outline-primary">
-                            <i class="fas fa-hotel"></i> Find Hotels
-                        </a>
-                        <a href="/transportation/" class="btn btn-outline-primary">
-                            <i class="fas fa-car"></i> Book Transport
-                        </a>
-                        <a href="/accounts/profile/" class="btn btn-outline-primary">
-                            <i class="fas fa-user"></i> Update Profile
-                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Upcoming Tours -->
+            {% if upcoming_tour_bookings %}
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h5><i class="fas fa-plane me-2 text-success"></i>Upcoming Adventures</h5>
+                </div>
+                <div class="dashboard-card-body">
+                    {% for booking in upcoming_tour_bookings %}
+                    <div class="booking-item">
+                        <div class="booking-item-image">
+                            {% if booking.tour.main_image %}
+                            <img src="{{ booking.tour.main_image.url }}" alt="{{ booking.tour.name }}"
+                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                            {% else %}
+                            <i class="fas fa-hiking"></i>
+                            {% endif %}
+                        </div>
+                        <div class="booking-item-info flex-grow-1">
+                            <h6>{{ booking.tour.name }}</h6>
+                            <p>
+                                <i class="fas fa-calendar me-1"></i>{{ booking.tour_date|date:"l, M d, Y" }}
+                                <span class="ms-2"><i class="fas fa-users me-1"></i>{{ booking.number_of_adults }} travelers</span>
+                            </p>
+                        </div>
+                        <a href="{% url 'dashboard:booking-detail' booking.id %}?type=tour" class="btn btn-sm btn-outline-primary">Details</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Quick Actions -->
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h5><i class="fas fa-bolt me-2 text-warning"></i>Quick Actions</h5>
+                </div>
+                <div class="dashboard-card-body">
+                    <a href="{% url 'tours:list' %}" class="quick-link">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>Browse Tours</span>
+                    </a>
+                    <a href="{% url 'accommodations:search' %}" class="quick-link">
+                        <i class="fas fa-hotel"></i>
+                        <span>Find Hotels</span>
+                    </a>
+                    <a href="{% url 'dashboard:saved' %}" class="quick-link">
+                        <i class="fas fa-heart"></i>
+                        <span>View Wishlist</span>
+                    </a>
+                    <a href="{% url 'dashboard:settings' %}" class="quick-link">
+                        <i class="fas fa-user-edit"></i>
+                        <span>Edit Profile</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Travel Tips -->
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h5><i class="fas fa-lightbulb me-2 text-info"></i>Egypt Travel Tips</h5>
+                </div>
+                <div class="dashboard-card-body">
+                    <div class="tip-item">
+                        <i class="fas fa-sun text-warning"></i>
+                        <span>Best time to visit: October to April</span>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-passport text-info"></i>
+                        <span>Check visa requirements before traveling</span>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-money-bill text-success"></i>
+                        <span>Local currency: Egyptian Pound (EGP)</span>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-language text-primary"></i>
+                        <span>Arabic official, English widely spoken</span>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-tshirt text-danger"></i>
+                        <span>Dress modestly at religious sites</span>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Travel Tips</h5>
-                </div>
-                <div class="card-body">
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <i class="fas fa-sun text-warning"></i> 
-                            Best time to visit Egypt: October to April
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-passport text-info"></i> 
-                            Check visa requirements before traveling
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-money-bill text-success"></i> 
-                            Egyptian Pound (EGP) is the local currency
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-language text-primary"></i> 
-                            Arabic is the official language, English widely spoken
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-plug text-danger"></i> 
-                            Power outlets: Type C & F (220V, 50Hz)
-                        </li>
-                    </ul>
+
+            <!-- Need Help -->
+            <div class="dashboard-card">
+                <div class="dashboard-card-body text-center">
+                    <i class="fas fa-headset fa-2x text-primary mb-3"></i>
+                    <h6>Need Help?</h6>
+                    <p class="text-muted small mb-3">Our travel experts are here to assist you</p>
+                    <a href="{% url 'home:contact' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-envelope me-1"></i>Contact Support
+                    </a>
                 </div>
             </div>
         </div>
