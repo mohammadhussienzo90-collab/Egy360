@@ -17,9 +17,9 @@ def debug_check(request):
     """Simple debug endpoint"""
     return JsonResponse({'status': 'ok', 'version': 'v4'})
 
-@cache_control(max_age=86400)
+@cache_control(max_age=3600)
 def favicon(request):
-    """Serve Ankh favicon directly - embedded SVG"""
+    """Serve Ankh favicon directly - embedded SVG with white background"""
     svg_content = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -27,13 +27,8 @@ def favicon(request):
       <stop offset="50%" style="stop-color:#FFA500"/>
       <stop offset="100%" style="stop-color:#DAA520"/>
     </linearGradient>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#1a1a2e"/>
-      <stop offset="100%" style="stop-color:#16213e"/>
-    </linearGradient>
   </defs>
-  <circle cx="32" cy="32" r="30" fill="url(#bgGradient)"/>
-  <circle cx="32" cy="32" r="28" fill="none" stroke="#FFD700" stroke-width="1" opacity="0.3"/>
+  <rect width="64" height="64" fill="white"/>
   <ellipse cx="32" cy="16" rx="8" ry="10" fill="none" stroke="url(#goldGradient)" stroke-width="4"/>
   <line x1="20" y1="28" x2="44" y2="28" stroke="url(#goldGradient)" stroke-width="4" stroke-linecap="round"/>
   <line x1="32" y1="24" x2="32" y2="52" stroke="url(#goldGradient)" stroke-width="4" stroke-linecap="round"/>
