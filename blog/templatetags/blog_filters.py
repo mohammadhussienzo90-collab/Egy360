@@ -4,99 +4,87 @@ Custom template filters for blog content
 import re
 from django import template
 from django.utils.safestring import mark_safe
-from django.utils.html import escape
 
 register = template.Library()
 
 
 @register.filter(name='clean_markdown')
 def clean_markdown(text):
-    """Remove markdown formatting and convert to clean HTML"""
+    """Remove markdown formatting and return clean readable text as HTML"""
     if not text:
         return text
 
-    # Escape HTML first for security
-    text = escape(text)
+    # Remove markdown headers (## ### etc) at start of lines
+    text = re.sub(r'^#{1,6}\s*', '', text, flags=re.MULTILINE)
 
-    # Remove markdown headers (## ### etc) - keep the text
-    text = re.sub(r'^#{1,6}\s*(.+)$', r'<h3>\1</h3>', text, flags=re.MULTILINE)
+    # Remove bold markers **text** -> text
+    text = re.sub(r'\*\*([^*]+)\*\*', r'\1', text)
 
-    # Convert bold **text** to <strong>
-    text = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', text)
+    # Remove italic markers *text* -> text
+    text = re.sub(r'\*([^*]+)\*', r'\1', text)
 
-    # Convert italic *text* to <em>
-    text = re.sub(r'\*([^*]+)\*', r'<em>\1</em>', text)
+    # Remove __text__ -> text
+    text = re.sub(r'__([^_]+)__', r'\1', text)
 
-    # Convert __text__ to <strong>
-    text = re.sub(r'__([^_]+)__', r'<strong>\1</strong>', text)
+    # Remove _text_ -> text
+    text = re.sub(r'(?<!\w)_([^_]+)_(?!\w)', r'\1', text)
 
-    # Convert _text_ to <em>
-    text = re.sub(r'_([^_]+)_', r'<em>\1</em>', text)
-
-    # Remove markdown links [text](url) -> just text
+    # Remove markdown links [text](url) -> text
     text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
 
     # Remove markdown table separators
     text = re.sub(r'^\s*\|[-:| ]+\|\s*$', '', text, flags=re.MULTILINE)
-    text = re.sub(r'\|\s*', '', text)
+    text = re.sub(r'\|', ' ', text)
+
+    # Remove code blocks
+    text = re.sub(r'```[\s\S]*?```', '', text)
+    text = re.sub(r'`([^`]+)`', r'\1', text)
 
     # Remove special Unicode characters
     replacements = {
-        '\u2192': ' - ',  # right arrow
-        '\u2190': ' - ',  # left arrow
-        '\u2191': '',     # up arrow
-        '\u2193': '',     # down arrow
-        '\u25ba': '',     # play
-        '\u25b6': '',     # play
-        '\u25cf': '-',    # bullet
-        '\u2022': '-',    # bullet
-        '\u25aa': '-',    # small square
-        '\u2713': 'Yes',  # checkmark
-        '\u2717': 'No',   # x mark
-        '\u2605': '*',    # star
-        '\u2606': '*',    # star outline
-        '\u2014': '-',    # em dash
-        '\u2013': '-',    # en dash
-        '\u201c': '"',    # left quote
-        '\u201d': '"',    # right quote
-        '\u2018': "'",    # left single quote
-        '\u2019': "'",    # right single quote
+        '\u2192': '-',   # right arrow
+        '\u2190': '-',   # left arrow
+        '\u2191': '',    # up arrow
+        '\u2193': '',    # down arrow
+        '\u25ba': '',    # play
+        '\u25b6': '',    # play
+        '\u25cf': '-',   # bullet
+        '\u2022': '-',   # bullet
+        '\u25aa': '-',   # small square
+        '\u2713': 'Yes', # checkmark
+        '\u2717': 'No',  # x mark
+        '\u2605': '*',   # star
+        '\u2606': '*',   # star outline
+        '\u2014': '-',   # em dash
+        '\u2013': '-',   # en dash
+        '\u201c': '"',   # left quote
+        '\u201d': '"',   # right quote
+        '\u2018': "'",   # left single quote
+        '\u2019': "'",   # right single quote
         '\u2026': '...',  # ellipsis
     }
     for old, new in replacements.items():
         text = text.replace(old, new)
 
-    # Remove code blocks
-    text = re.sub(r'```[^`]*```', '', text, flags=re.DOTALL)
-    text = re.sub(r'`([^`]+)`', r'<code>\1</code>', text)
+    # Clean up multiple spaces
+    text = re.sub(r'[ \t]+', ' ', text)
 
-    # Convert bullet points - dash at start of line
-    text = re.sub(r'^-\s+(.+)$', r'<li>\1</li>', text, flags=re.MULTILINE)
+    # Clean up multiple newlines
+    text = re.sub(r'\n{3,}', '\n\n', text)
 
-    # Convert numbered lists
-    text = re.sub(r'^\d+\.\s+(.+)$', r'<li>\1</li>', text, flags=re.MULTILINE)
+    # Strip leading/trailing whitespace from lines
+    lines = text.split('\n')
+    lines = [line.strip() for line in lines]
+    text = '\n'.join(lines)
 
-    # Convert line breaks to paragraphs
+    # Convert to HTML paragraphs
     paragraphs = text.split('\n\n')
-    cleaned_paragraphs = []
+    html_parts = []
     for p in paragraphs:
         p = p.strip()
         if p:
-            # Check if it's already wrapped in HTML tags
-            if p.startswith('<h') or p.startswith('<li'):
-                cleaned_paragraphs.append(p)
-            else:
-                # Replace single newlines with <br>
-                p = p.replace('\n', '<br>')
-                cleaned_paragraphs.append(f'<p>{p}</p>')
+            # Convert single newlines to <br>
+            p = p.replace('\n', '<br>')
+            html_parts.append(f'<p>{p}</p>')
 
-    text = '\n'.join(cleaned_paragraphs)
-
-    # Wrap consecutive <li> items in <ul>
-    text = re.sub(r'(<li>.*?</li>\s*)+', lambda m: '<ul>' + m.group(0) + '</ul>', text)
-
-    # Clean up extra whitespace
-    text = re.sub(r'\n{3,}', '\n\n', text)
-    text = re.sub(r'<br>\s*<br>\s*<br>', '<br><br>', text)
-
-    return mark_safe(text)
+    return mark_safe('\n'.join(html_parts))
