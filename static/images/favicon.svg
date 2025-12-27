@@ -1,22 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <linearGradient id="sandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#D4A84B"/>
-      <stop offset="100%" style="stop-color:#B8860B"/>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700"/>
+      <stop offset="50%" style="stop-color:#FFA500"/>
+      <stop offset="100%" style="stop-color:#DAA520"/>
     </linearGradient>
-    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#1E3A5F"/>
-      <stop offset="100%" style="stop-color:#2E5A8B"/>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
     </linearGradient>
   </defs>
   <!-- Background circle -->
-  <circle cx="32" cy="32" r="30" fill="url(#skyGradient)"/>
-  <!-- Pyramid -->
-  <polygon points="32,12 52,48 12,48" fill="url(#sandGradient)" stroke="#8B7355" stroke-width="1"/>
-  <!-- Pyramid detail lines -->
-  <line x1="32" y1="12" x2="32" y2="48" stroke="#8B7355" stroke-width="0.5" opacity="0.5"/>
-  <!-- Sun -->
-  <circle cx="48" cy="18" r="6" fill="#FFD700"/>
-  <!-- 360 text -->
-  <text x="32" y="58" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#FFD700" text-anchor="middle">360</text>
+  <circle cx="32" cy="32" r="30" fill="url(#bgGradient)"/>
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#FFD700" stroke-width="1" opacity="0.3"/>
+
+  <!-- Ankh (Key of Life) Symbol -->
+  <!-- Loop at top -->
+  <ellipse cx="32" cy="16" rx="8" ry="10" fill="none" stroke="url(#goldGradient)" stroke-width="4"/>
+  <!-- Horizontal bar -->
+  <line x1="20" y1="28" x2="44" y2="28" stroke="url(#goldGradient)" stroke-width="4" stroke-linecap="round"/>
+  <!-- Vertical stem -->
+  <line x1="32" y1="24" x2="32" y2="52" stroke="url(#goldGradient)" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Decorative dots -->
+  <circle cx="32" cy="56" r="2" fill="#FFD700" opacity="0.6"/>
 </svg>
