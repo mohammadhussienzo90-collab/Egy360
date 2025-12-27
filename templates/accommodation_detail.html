@@ -170,15 +170,15 @@
                                 <h6 class="mb-1">{{ room.name }}</h6>
                                 <p class="text-muted small mb-2">{{ room.description|truncatewords:20 }}</p>
                                 <div class="small">
-                                    <span class="me-3"><i class="fas fa-users me-1"></i>{{ room.max_guests }} guests</span>
-                                    <span class="me-3"><i class="fas fa-bed me-1"></i>{{ room.bed_type }}</span>
-                                    {% if room.has_breakfast %}
-                                    <span class="text-success"><i class="fas fa-coffee me-1"></i>Breakfast included</span>
+                                    <span class="me-3"><i class="fas fa-users me-1"></i>{{ room.max_occupancy }} guests</span>
+                                    <span class="me-3"><i class="fas fa-bed me-1"></i>{{ room.beds }}</span>
+                                    {% if room.has_wifi %}
+                                    <span class="text-success"><i class="fas fa-wifi me-1"></i>WiFi</span>
                                     {% endif %}
                                 </div>
                             </div>
                             <div class="col-md-3 text-end">
-                                <div class="fs-4 fw-bold text-primary">${{ room.price_per_night|floatformat:0 }}</div>
+                                <div class="fs-4 fw-bold text-primary">${{ room.base_price|floatformat:0 }}</div>
                                 <small class="text-muted">per night</small>
                             </div>
                         </div>
