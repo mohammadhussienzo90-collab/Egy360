@@ -41,10 +41,8 @@ Include this in detail pages with:
                         <span class="me-2" style="width: 20px;">{{ i }}</span>
                         <i class="fas fa-star text-warning me-2"></i>
                         <div class="progress flex-grow-1" style="height: 8px;">
-                            {% with count=reviews_data.distribution|default_if_none:0 %}
                             <div class="progress-bar bg-warning"
-                                 style="width: {% widthratio reviews_data.distribution|get_item:i|default:0 reviews_data.stats.total_count 100 %}%"></div>
-                            {% endwith %}
+                                 style="width: {% if reviews_data.stats.total_count %}{% widthratio reviews_data.distribution|get_item:i|default:0 reviews_data.stats.total_count 100 %}{% else %}0{% endif %}%"></div>
                         </div>
                         <span class="ms-2 text-muted" style="width: 30px;">{{ reviews_data.distribution|get_item:i|default:0 }}</span>
                     </div>
