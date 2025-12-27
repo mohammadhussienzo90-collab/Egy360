@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ city.name }} Travel Guide | Egy360{% endblock %}
+
+{% block description %}Discover {{ city.name }}, Egypt. {{ city.description|truncatewords:25 }} Find attractions, hotels, and tours.{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="bg-light py-2">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'destinations:list' %}">Destinations</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ city.name }}</li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="position-relative" style="height: 400px;">
+    {% if city.image_url %}
+    <img src="{{ city.image_url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ city.name }}">
+    {% elif city.main_image %}
+    <img src="{{ city.main_image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ city.name }}">
+    {% else %}
+    <div class="w-100 h-100 bg-primary d-flex align-items-center justify-content-center">
+        <i class="fas fa-city fa-5x text-white"></i>
+    </div>
+    {% endif %}
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark" style="opacity: 0.4;"></div>
+    <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+        <h1 class="display-4 fw-bold">{{ city.name }}</h1>
+        <p class="lead">{{ city.country.name }}</p>
+        {% if city.is_capital %}
+        <span class="badge bg-warning text-dark"><i class="fas fa-star me-1"></i>Capital City</span>
+        {% endif %}
+    </div>
+</section>
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- About Section -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">About {{ city.name }}</h2>
+                    <p class="text-muted">{{ city.description }}</p>
+                </div>
+            </div>
+
+            <!-- Quick Facts -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Quick Facts</h2>
+                    <div class="row g-3">
+                        {% if city.population %}
+                        <div class="col-6 col-md-4">
+                            <div class="text-center p-3 bg-light rounded">
+                                <i class="fas fa-users text-primary fa-2x mb-2"></i>
+                                <div class="fw-bold">Population</div>
+                                <small class="text-muted">{{ city.population|floatformat:0 }}</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if city.best_time_to_visit %}
+                        <div class="col-6 col-md-4">
+                            <div class="text-center p-3 bg-light rounded">
+                                <i class="fas fa-calendar-alt text-primary fa-2x mb-2"></i>
+                                <div class="fw-bold">Best Time to Visit</div>
+                                <small class="text-muted">{{ city.best_time_to_visit }}</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if city.has_airport %}
+                        <div class="col-6 col-md-4">
+                            <div class="text-center p-3 bg-light rounded">
+                                <i class="fas fa-plane text-primary fa-2x mb-2"></i>
+                                <div class="fw-bold">Airport</div>
+                                <small class="text-muted">International Airport</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="col-6 col-md-4">
+                            <div class="text-center p-3 bg-light rounded">
+                                <i class="fas fa-clock text-primary fa-2x mb-2"></i>
+                                <div class="fw-bold">Timezone</div>
+                                <small class="text-muted">{{ city.timezone }}</small>
+                            </div>
+                        </div>
+                        {% if city.average_temperature_summer %}
+                        <div class="col-6 col-md-4">
+                            <div class="text-center p-3 bg-light rounded">
+                                <i class="fas fa-sun text-warning fa-2x mb-2"></i>
+                                <div class="fw-bold">Summer</div>
+                                <small class="text-muted">{{ city.average_temperature_summer }}°C avg</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if city.average_temperature_winter %}
+                        <div class="col-6 col-md-4">
+                            <div class="text-center p-3 bg-light rounded">
+                                <i class="fas fa-snowflake text-info fa-2x mb-2"></i>
+                                <div class="fw-bold">Winter</div>
+                                <small class="text-muted">{{ city.average_temperature_winter }}°C avg</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attractions -->
+            {% if attractions %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Top Attractions in {{ city.name }}</h2>
+                    <div class="row g-3">
+                        {% for attraction in attractions %}
+                        <div class="col-md-6">
+                            <div class="card h-100 border">
+                                {% if attraction.image_url %}
+                                <img src="{{ attraction.image_url }}" class="card-img-top" alt="{{ attraction.name }}" style="height: 150px; object-fit: cover;">
+                                {% elif attraction.main_image %}
+                                <img src="{{ attraction.main_image.url }}" class="card-img-top" alt="{{ attraction.name }}" style="height: 150px; object-fit: cover;">
+                                {% else %}
+                                <div class="bg-secondary d-flex align-items-center justify-content-center" style="height: 150px;">
+                                    <i class="fas fa-landmark fa-3x text-white"></i>
+                                </div>
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title h6">{{ attraction.name }}</h5>
+                                    <p class="card-text small text-muted">{{ attraction.description|truncatewords:15 }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary">{{ attraction.get_attraction_type_display }}</span>
+                                        {% if attraction.is_unesco %}
+                                        <span class="badge bg-success"><i class="fas fa-globe me-1"></i>UNESCO</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Travel Guides -->
+            {% if guides %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Travel Guides</h2>
+                    <div class="list-group list-group-flush">
+                        {% for guide in guides %}
+                        <div class="list-group-item px-0">
+                            <h5 class="mb-1">{{ guide.title }}</h5>
+                            <p class="mb-1 text-muted small">{{ guide.content|truncatewords:30 }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Search Hotels -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-hotel text-primary me-2"></i>Hotels in {{ city.name }}</h5>
+                    <p class="text-muted small">Find the best hotels and accommodations</p>
+                    <a href="{% url 'accommodations:by-city' city.name %}" class="btn btn-primary w-100">
+                        <i class="fas fa-search me-2"></i>Search Hotels
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tours -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-map-marked-alt text-primary me-2"></i>Tours from {{ city.name }}</h5>
+                    <p class="text-muted small">Discover amazing tours and experiences</p>
+                    <a href="{% url 'tours:by-destination' city.name %}" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-compass me-2"></i>View Tours
+                    </a>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-question-circle text-primary me-2"></i>Need Help?</h5>
+                    <p class="text-muted small">Our travel experts are here to help you plan your trip to {{ city.name }}.</p>
+                    <a href="{% url 'home:contact' %}" class="btn btn-outline-secondary w-100">
+                        <i class="fas fa-envelope me-2"></i>Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
