@@ -84,6 +84,13 @@ def dashboard_view(request):
         logger.warning(f"Error loading profile for user {user.id}: {e}")
         context['profile'] = None
 
+    # Get saved items count
+    try:
+        from .models import SavedItem
+        context['saved_items'] = SavedItem.objects.filter(user=user).count()
+    except Exception as e:
+        logger.warning(f"Error loading saved items count for user {user.id}: {e}")
+
     return render(request, 'dashboard/dashboard.html', context)
 
 
@@ -436,3 +443,93 @@ def revenue_dashboard(request):
     }
 
     return render(request, 'dashboard/revenue.html', context)
+
+
+@login_required
+def saved_items_view(request):
+    """User's saved/wishlisted items"""
+    from .models import SavedItem
+    from django.contrib.contenttypes.models import ContentType
+
+    type_filter = request.GET.get('type', 'all')
+
+    saved_items = SavedItem.objects.filter(user=request.user).select_related('content_type')
+
+    if type_filter == 'accommodation':
+        from accommodations.models import Accommodation
+        ct = ContentType.objects.get_for_model(Accommodation)
+        saved_items = saved_items.filter(content_type=ct)
+    elif type_filter == 'tour':
+        from tours.models import Tour
+        ct = ContentType.objects.get_for_model(Tour)
+        saved_items = saved_items.filter(content_type=ct)
+
+    context = {
+        'saved_items': saved_items,
+        'type_filter': type_filter,
+    }
+    return render(request, 'dashboard/saved_items.html', context)
+
+
+@login_required
+@require_http_methods(["POST"])
+def toggle_saved(request):
+    """Toggle save/unsave an item (AJAX)"""
+    from .models import SavedItem
+    from django.contrib.contenttypes.models import ContentType
+    import json
+
+    try:
+        data = json.loads(request.body)
+        item_type = data.get('item_type')
+        item_id = data.get('item_id')
+
+        if item_type == 'accommodation':
+            from accommodations.models import Accommodation
+            model = Accommodation
+        elif item_type == 'tour':
+            from tours.models import Tour
+            model = Tour
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid item type'}, status=400)
+
+        content_type = ContentType.objects.get_for_model(model)
+
+        # Check if already saved
+        saved_item = SavedItem.objects.filter(
+            user=request.user,
+            content_type=content_type,
+            object_id=item_id
+        ).first()
+
+        if saved_item:
+            saved_item.delete()
+            return JsonResponse({'success': True, 'saved': False, 'message': 'Removed from saved'})
+        else:
+            SavedItem.objects.create(
+                user=request.user,
+                content_type=content_type,
+                object_id=item_id
+            )
+            return JsonResponse({'success': True, 'saved': True, 'message': 'Saved successfully'})
+
+    except Exception as e:
+        logger.error(f"Error toggling saved item: {e}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@login_required
+@require_http_methods(["POST"])
+def remove_saved(request, item_id):
+    """Remove a saved item"""
+    from .models import SavedItem
+
+    try:
+        saved_item = SavedItem.objects.get(id=item_id, user=request.user)
+        saved_item.delete()
+        return JsonResponse({'success': True, 'message': 'Item removed from saved'})
+    except SavedItem.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Item not found'}, status=404)
+    except Exception as e:
+        logger.error(f"Error removing saved item {item_id}: {e}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
