@@ -50,8 +50,9 @@
             </div>
         </div>
         <a href="https://tp.media/click?shmarker=477897&pression_mode=fix&trs=262019&campaign_id=97&searchType=1&city=Cairo,Egypt"
-           target="_blank" rel="noopener" class="btn-partner">
-            <i class="fas fa-external-link-alt me-2"></i>Browse on Viator
+           target="_blank" rel="noopener" class="btn-partner affiliate-link pulse-animation"
+           data-item-type="tour" data-platform="viator">
+            <i class="fas fa-bolt me-2"></i>Find Best Prices on Viator
         </a>
     </div>
 </div>
@@ -205,6 +206,18 @@
             <!-- Tour Cards Grid -->
             <div class="tour-grid">
                 {% for tour in tours %}
+                <!-- Inline Affiliate Banner after every 6 items -->
+                {% if forloop.counter == 6 %}
+                <div class="inline-affiliate-banner">
+                    <h5><i class="fas fa-globe-africa me-2"></i>Want More Options?</h5>
+                    <p>Discover 1000+ Egypt tours with free cancellation on Viator</p>
+                    <a href="https://tp.media/click?shmarker=477897&pression_mode=fix&trs=262019&campaign_id=97&searchType=1&city=Cairo,Egypt"
+                       target="_blank" rel="noopener" class="btn-inline-cta affiliate-link"
+                       data-item-type="tour" data-platform="viator">
+                        <i class="fas fa-search"></i> Explore All Tours
+                    </a>
+                </div>
+                {% endif %}
                 <div class="tour-card">
                     <div class="card-image">
                         {% if tour.image_url %}
@@ -1157,6 +1170,64 @@
     .tour-card:hover .card-image img {
         transform: none;
     }
+}
+
+/* Pulse Animation */
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(255, 215, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+    }
+}
+
+/* Inline Affiliate Banner */
+.inline-affiliate-banner {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 2rem;
+    color: white;
+    text-align: center;
+}
+
+.inline-affiliate-banner h5 {
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.inline-affiliate-banner p {
+    margin: 0 0 1rem;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.inline-affiliate-banner .btn-inline-cta {
+    background: white;
+    color: #28a745;
+    padding: 10px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+.inline-affiliate-banner .btn-inline-cta:hover {
+    background: #ffd700;
+    color: #333;
+    transform: translateY(-2px);
 }
 </style>
 {% endblock %}
