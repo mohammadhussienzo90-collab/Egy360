@@ -5,6 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.cache import cache_control
+from django.contrib.sitemaps.views import sitemap
+from core.sitemaps import sitemaps
 import os
 
 def health_check(request):
@@ -44,6 +46,7 @@ urlpatterns = [
     path('favicon.ico', favicon, name='favicon_ico'),
     path('health/', health_check, name='health'),
     path('debug/', debug_check, name='debug'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('accommodations/', include('accommodations.urls')),

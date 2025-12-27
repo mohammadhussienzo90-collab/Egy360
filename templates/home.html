@@ -382,6 +382,27 @@
     </div>
 </section>
 
+<!-- Klook Tours & Activities Widget -->
+<section class="section-klook py-5">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-tag">Book with Klook</span>
+            <h2 class="section-title">Popular Egypt Activities</h2>
+            <p class="section-subtitle">Discover and book amazing experiences across Egypt</p>
+        </div>
+
+        <div class="klook-widget-wrapper">
+            <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="https://klook.tpx.li/2TiJT8NA" target="_blank" rel="noopener" class="btn btn-klook">
+                <i class="fas fa-external-link-alt me-2"></i>Explore More on Klook
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- Booking Partners -->
 <section class="section-partners py-5">
     <div class="container">
@@ -416,7 +437,7 @@
             <div class="col-lg-6">
                 <div class="partner-card partner-tours">
                     <div class="partner-icon">
-                        <i class="fas fa-globe-africa"></i>
+                        <i class="fas fa-compass"></i>
                     </div>
                     <div class="partner-content">
                         <h3>Tours & Activities</h3>
@@ -1330,6 +1351,53 @@
 @media (hover: none) {
     .card-modern:hover { transform: none; }
     .card-overlay { display: none; }
+}
+
+/* ========================================
+   KLOOK WIDGET SECTION
+   ======================================== */
+.section-klook {
+    background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+    color: white;
+}
+
+.section-klook .section-tag {
+    background: rgba(255,255,255,0.2);
+    color: white;
+}
+
+.section-klook .section-title {
+    color: white;
+}
+
+.section-klook .section-subtitle {
+    color: rgba(255,255,255,0.9);
+}
+
+.klook-widget-wrapper {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    min-height: 300px;
+}
+
+.btn-klook {
+    background: white;
+    color: #ff5722;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.btn-klook:hover {
+    background: #1a1a1a;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 </style>
 {% endblock %}

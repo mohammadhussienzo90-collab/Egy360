@@ -6,13 +6,15 @@
 {% block extra_css %}
 <style>
     :root {
-        --blog-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --blog-gradient: linear-gradient(135deg, #CE1126 0%, #8B0000 100%);
+        --gold-accent: #FFD700;
+        --dark-bg: #1a1a2e;
     }
 
     /* Hero Section */
     .blog-hero {
         background: var(--blog-gradient);
-        padding: 80px 0;
+        padding: 100px 0;
         text-align: center;
         color: white;
         position: relative;
@@ -26,8 +28,18 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80') center/cover;
-        opacity: 0.2;
+        background: url('https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80') center/cover;
+        opacity: 0.15;
+    }
+
+    .blog-hero::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(transparent, rgba(0,0,0,0.3));
     }
 
     .blog-hero .container {
@@ -36,16 +48,23 @@
     }
 
     .blog-hero h1 {
-        font-size: 3rem;
-        font-weight: 700;
+        font-size: 3.5rem;
+        font-weight: 800;
         margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .blog-hero h1 i {
+        color: var(--gold-accent);
+        margin-right: 15px;
     }
 
     .blog-hero p {
-        font-size: 1.25rem;
-        opacity: 0.9;
-        max-width: 600px;
+        font-size: 1.3rem;
+        opacity: 0.95;
+        max-width: 650px;
         margin: 0 auto;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
 
     /* Category Filter */
@@ -69,10 +88,10 @@
         padding: 10px 24px;
         border-radius: 50px;
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 600;
         transition: all 0.3s ease;
-        border: 2px solid #667eea;
-        color: #667eea;
+        border: 2px solid #CE1126;
+        color: #CE1126;
         background: white;
     }
 
@@ -82,7 +101,7 @@
         color: white;
         border-color: transparent;
         transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 5px 20px rgba(206, 17, 38, 0.35);
     }
 
     /* Blog Grid */
@@ -112,12 +131,12 @@
 
     .blog-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
+        box-shadow: 0 20px 50px rgba(206, 17, 38, 0.2);
     }
 
     .blog-card-image {
         position: relative;
-        height: 220px;
+        height: 240px;
         overflow: hidden;
     }
 
@@ -147,13 +166,13 @@
         position: absolute;
         top: 15px;
         left: 15px;
-        background: rgba(255,255,255,0.95);
-        color: #667eea;
-        padding: 6px 16px;
+        background: var(--gold-accent);
+        color: #1a1a1a;
+        padding: 6px 18px;
         border-radius: 20px;
         font-size: 0.85rem;
-        font-weight: 600;
-        backdrop-filter: blur(10px);
+        font-weight: 700;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     }
 
     .blog-card-content {
@@ -172,7 +191,7 @@
     }
 
     .blog-card-content h3:hover {
-        color: #667eea;
+        color: #CE1126;
     }
 
     .blog-excerpt {
@@ -200,7 +219,7 @@
     }
 
     .blog-author i {
-        color: #667eea;
+        color: #CE1126;
     }
 
     .blog-date {
@@ -234,12 +253,13 @@
         position: absolute;
         top: 20px;
         left: 20px;
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white;
-        padding: 8px 20px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.9rem;
+        background: var(--gold-accent);
+        color: #1a1a1a;
+        padding: 10px 24px;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
     .featured-content {
@@ -265,20 +285,21 @@
     .read-more-btn {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         background: var(--blog-gradient);
         color: white;
-        padding: 12px 28px;
+        padding: 14px 32px;
         border-radius: 50px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 700;
         transition: all 0.3s ease;
         width: fit-content;
+        box-shadow: 0 4px 15px rgba(206, 17, 38, 0.3);
     }
 
     .read-more-btn:hover {
         transform: translateX(5px);
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 10px 30px rgba(206, 17, 38, 0.4);
         color: white;
     }
 
@@ -326,8 +347,8 @@
     .pagination span {
         padding: 12px 20px;
         background: white;
-        border: 2px solid #667eea;
-        color: #667eea;
+        border: 2px solid #CE1126;
+        color: #CE1126;
         border-radius: 10px;
         text-decoration: none;
         font-weight: 600;
@@ -344,61 +365,152 @@
         background: var(--blog-gradient);
         color: white;
         border-color: transparent;
+        box-shadow: 0 4px 15px rgba(206, 17, 38, 0.3);
     }
 
     /* Newsletter CTA */
     .newsletter-cta {
-        background: var(--blog-gradient);
-        padding: 60px 0;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        padding: 80px 0;
         text-align: center;
         color: white;
+        position: relative;
+    }
+
+    .newsletter-cta::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gold-accent);
     }
 
     .newsletter-cta h3 {
-        font-size: 2rem;
+        font-size: 2.2rem;
         margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+    .newsletter-cta h3 i {
+        color: var(--gold-accent);
     }
 
     .newsletter-cta p {
         opacity: 0.9;
-        margin-bottom: 25px;
+        margin-bottom: 30px;
+        font-size: 1.1rem;
     }
 
     .newsletter-form {
         display: flex;
-        max-width: 500px;
+        max-width: 550px;
         margin: 0 auto;
-        gap: 10px;
+        gap: 12px;
     }
 
     .newsletter-form input {
         flex: 1;
-        padding: 15px 25px;
+        padding: 16px 28px;
         border: none;
         border-radius: 50px;
         font-size: 1rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .newsletter-form button {
-        padding: 15px 30px;
-        background: white;
-        color: #667eea;
+        padding: 16px 35px;
+        background: var(--gold-accent);
+        color: #1a1a1a;
         border: none;
         border-radius: 50px;
-        font-weight: 600;
+        font-weight: 700;
         cursor: pointer;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
     }
 
     .newsletter-form button:hover {
         transform: scale(1.05);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+    }
+
+    /* Klook CTA Banner */
+    .klook-cta {
+        background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+        padding: 40px 0;
+    }
+
+    .klook-banner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .klook-content {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: white;
+    }
+
+    .klook-icon {
+        font-size: 3rem;
+        background: rgba(255,255,255,0.2);
+        padding: 20px;
+        border-radius: 50%;
+    }
+
+    .klook-text h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .klook-text p {
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .btn-klook-blog {
+        background: white;
+        color: #ff5722;
+        padding: 14px 32px;
+        border-radius: 50px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        white-space: nowrap;
+    }
+
+    .btn-klook-blog:hover {
+        background: #1a1a1a;
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     }
 
     /* Responsive */
     @media (max-width: 768px) {
         .blog-hero h1 {
             font-size: 2rem;
+        }
+
+        .klook-banner {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .klook-content {
+            flex-direction: column;
+        }
+
+        .klook-text h3 {
+            font-size: 1.3rem;
         }
 
         .blog-grid {
@@ -461,7 +573,7 @@
             <div class="featured-post">
                 <div class="row g-0">
                     <div class="col-lg-6">
-                        <div class="featured-image" style="background-image: url('{% if featured.featured_image %}{{ featured.featured_image.url }}{% else %}https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800&q=80{% endif %}');">
+                        <div class="featured-image" style="background-image: url('{% if featured.image_url %}{{ featured.image_url }}{% elif featured.featured_image %}{{ featured.featured_image.url }}{% else %}https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800&q=80{% endif %}');">
                             <span class="featured-badge"><i class="fas fa-star me-2"></i>Featured</span>
                         </div>
                     </div>
@@ -500,12 +612,12 @@
                 {% else %}
                 <a href="{% url 'blog:detail' post.slug %}" class="blog-card">
                     <div class="blog-card-image">
-                        {% if post.featured_image %}
+                        {% if post.image_url %}
+                        <img src="{{ post.image_url }}" alt="{{ post.title }}" loading="lazy">
+                        {% elif post.featured_image %}
                         <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
                         {% else %}
-                        <div class="placeholder">
-                            <i class="fas fa-newspaper"></i>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=600&q=80" alt="{{ post.title }}" loading="lazy">
                         {% endif %}
                         {% if post.category %}
                         <span class="blog-category-badge">{{ post.category.name }}</span>
@@ -568,6 +680,24 @@
                 </a>
             </div>
         {% endif %}
+    </div>
+</section>
+
+<!-- Klook CTA Banner -->
+<section class="klook-cta">
+    <div class="container">
+        <div class="klook-banner">
+            <div class="klook-content">
+                <i class="fas fa-ticket-alt klook-icon"></i>
+                <div class="klook-text">
+                    <h3>Ready to Experience Egypt?</h3>
+                    <p>Book tours, activities, and attractions with Klook - trusted by millions of travelers</p>
+                </div>
+            </div>
+            <a href="https://klook.tpx.li/2TiJT8NA" target="_blank" rel="noopener" class="btn-klook-blog">
+                <i class="fas fa-external-link-alt me-2"></i>Book via Klook
+            </a>
+        </div>
     </div>
 </section>
 

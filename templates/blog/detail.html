@@ -6,7 +6,9 @@
 {% block extra_css %}
 <style>
     :root {
-        --blog-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --blog-gradient: linear-gradient(135deg, #CE1126 0%, #8B0000 100%);
+        --gold-accent: #FFD700;
+        --dark-bg: #1a1a2e;
     }
 
     /* Article Header */
@@ -71,7 +73,7 @@
     }
 
     .meta-item i {
-        color: #ffd700;
+        color: var(--gold-accent);
     }
 
     /* Article Content */
@@ -108,7 +110,7 @@
         margin-bottom: 20px;
         color: #1a1a1a;
         padding-bottom: 10px;
-        border-bottom: 3px solid #667eea;
+        border-bottom: 3px solid #CE1126;
     }
 
     .article-content h3 {
@@ -133,7 +135,7 @@
     }
 
     .article-content blockquote {
-        border-left: 4px solid #667eea;
+        border-left: 4px solid var(--gold-accent);
         padding-left: 25px;
         margin: 30px 0;
         font-style: italic;
@@ -170,12 +172,13 @@
     .tag {
         padding: 8px 18px;
         background: white;
-        border: 2px solid #667eea;
-        color: #667eea;
+        border: 2px solid #CE1126;
+        color: #CE1126;
         border-radius: 50px;
         font-size: 0.9rem;
         text-decoration: none;
         transition: all 0.3s ease;
+        font-weight: 500;
     }
 
     .tag:hover {
@@ -224,7 +227,7 @@
     .share-btn.twitter { background: #1da1f2; }
     .share-btn.whatsapp { background: #25d366; }
     .share-btn.linkedin { background: #0077b5; }
-    .share-btn.copy { background: #667eea; }
+    .share-btn.copy { background: #CE1126; }
 
     /* Sidebar */
     .article-sidebar {
@@ -244,7 +247,7 @@
         font-size: 1.1rem;
         margin-bottom: 20px;
         padding-bottom: 10px;
-        border-bottom: 2px solid #667eea;
+        border-bottom: 2px solid #CE1126;
         color: #333;
     }
 
@@ -415,15 +418,45 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        color: #667eea;
+        color: #CE1126;
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 600;
         transition: all 0.3s ease;
     }
 
     .back-link:hover {
         transform: translateX(-5px);
-        color: #764ba2;
+        color: #8B0000;
+    }
+
+    /* Klook Card */
+    .klook-card {
+        background: linear-gradient(135deg, #fff5f0 0%, #fff 100%);
+        border: 2px solid #ff5722;
+    }
+
+    .klook-card h4 {
+        color: #ff5722;
+        border-bottom-color: #ff5722;
+    }
+
+    .btn-klook-sidebar {
+        background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .btn-klook-sidebar:hover {
+        background: linear-gradient(135deg, #e64a19 0%, #f57c00 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
     }
 
     /* Responsive */
@@ -477,7 +510,7 @@
 
 <!-- Article Hero -->
 <section class="article-hero">
-    <div class="article-hero-bg" style="background-image: url('{% if post.featured_image %}{{ post.featured_image.url }}{% else %}https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80{% endif %}');"></div>
+    <div class="article-hero-bg" style="background-image: url('{% if post.image_url %}{{ post.image_url }}{% elif post.featured_image %}{{ post.featured_image.url }}{% else %}https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80{% endif %}');"></div>
     <div class="article-hero-content">
         <div class="container">
             {% if post.category %}
@@ -598,7 +631,9 @@
                     {% for related in related_posts %}
                     <a href="{% url 'blog:detail' related.slug %}" class="related-post">
                         <div class="related-post-image">
-                            {% if related.featured_image %}
+                            {% if related.image_url %}
+                            <img src="{{ related.image_url }}" alt="{{ related.title }}">
+                            {% elif related.featured_image %}
                             <img src="{{ related.featured_image.url }}" alt="{{ related.title }}">
                             {% else %}
                             <i class="fas fa-newspaper"></i>
@@ -612,6 +647,16 @@
                     {% endfor %}
                 </div>
                 {% endif %}
+
+                <!-- Book via Klook -->
+                <div class="sidebar-card klook-card">
+                    <h4><i class="fas fa-ticket-alt me-2"></i>Book Activities</h4>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Ready to explore Egypt? Book your tours and activities with Klook!</p>
+                    <a href="https://klook.tpx.li/2TiJT8NA" target="_blank" rel="noopener" class="btn btn-klook-sidebar w-100">
+                        <i class="fas fa-external-link-alt me-2"></i>Book via Klook
+                    </a>
+                    <small style="display: block; text-align: center; margin-top: 10px; color: #888;">Best prices guaranteed</small>
+                </div>
 
                 <!-- Newsletter -->
                 <div class="sidebar-card">
@@ -640,7 +685,7 @@ function copyToClipboard() {
 
         setTimeout(function() {
             btn.innerHTML = originalIcon;
-            btn.style.background = '#667eea';
+            btn.style.background = '#CE1126';
         }, 2000);
     });
 }
