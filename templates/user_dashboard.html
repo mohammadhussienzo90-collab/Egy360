@@ -25,13 +25,13 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="{% url 'homepage' %}" class="nav-logo">
+            <a href="{% url 'home:home' %}" class="nav-logo">
                 <i class="fas fa-globe-africa"></i>
                 <span>EGY<strong>360</strong></span>
             </a>
 
             <div class="nav-menu">
-                <a href="{% url 'homepage' %}" class="nav-link">Home</a>
+                <a href="{% url 'home:home' %}" class="nav-link">Home</a>
                 <a href="{% url 'accommodation-search' %}" class="nav-link">Accommodations</a>
                 <a href="{% url 'tour-listing' %}" class="nav-link">Tours</a>
                 <a href="#" class="nav-link">Transportation</a>

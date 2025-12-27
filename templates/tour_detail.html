@@ -50,7 +50,7 @@
 <nav aria-label="breadcrumb" class="bg-light py-2">
     <div class="container">
         <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
             <li class="breadcrumb-item"><a href="{% url 'tours:list' %}">Tours</a></li>
             <li class="breadcrumb-item"><a href="{% url 'tours:by-type' tour.tour_type %}">{{ tour.get_tour_type_display }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ tour.name }}</li>
@@ -297,11 +297,11 @@
                         </div>
 
                         {% if user.is_authenticated %}
-                        <button type="submit" class="btn btn-primary btn-lg w-100 mb-2">
+                        <a href="{% url 'bookings:checkout' 'tour' tour.id %}" class="btn btn-primary btn-lg w-100 mb-2" id="book-now-btn">
                             <i class="fas fa-calendar-check me-2"></i>Book Now
-                        </button>
+                        </a>
                         {% else %}
-                        <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-primary btn-lg w-100 mb-2">
+                        <a href="{% url 'accounts:login' %}?next={% url 'bookings:checkout' 'tour' tour.id %}" class="btn btn-primary btn-lg w-100 mb-2">
                             <i class="fas fa-sign-in-alt me-2"></i>Login to Book
                         </a>
                         {% endif %}
@@ -403,41 +403,30 @@
 
 {% block extra_js %}
 <script>
-// Handle booking form submission with AJAX
-document.getElementById('booking-form').addEventListener('submit', function(e) {
-    {% if user.is_authenticated %}
-    e.preventDefault();
+// Update booking link with selected date and participants
+function updateBookingLink() {
+    const bookBtn = document.getElementById('book-now-btn');
+    if (!bookBtn) return;
 
-    const formData = {
-        tour_date: document.getElementById('tour_date').value,
-        adults: document.getElementById('adults').value,
-        children: document.getElementById('children').value,
-        contact_name: '{{ user.get_full_name|escapejs }}',
-        contact_email: '{{ user.email|escapejs }}'
-    };
+    const tourDate = document.getElementById('tour_date').value;
+    const adults = document.getElementById('adults').value;
+    const children = document.getElementById('children').value;
 
-    fetch(this.action, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token }}'
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Booking confirmed! Check your email for details.');
-            window.location.href = '{% url "dashboard:bookings" %}';
-        } else {
-            alert('Error: ' + data.error);
-        }
-    })
-    .catch(error => {
-        alert('An error occurred. Please try again.');
-    });
-    {% endif %}
-});
+    let url = '{% url "bookings:checkout" "tour" tour.id %}';
+    const params = new URLSearchParams();
+    if (tourDate) params.append('tour_date', tourDate);
+    if (adults) params.append('adults', adults);
+    if (children) params.append('children', children);
+
+    if (params.toString()) {
+        url += '?' + params.toString();
+    }
+    bookBtn.href = url;
+}
+
+document.getElementById('tour_date').addEventListener('change', updateBookingLink);
+document.getElementById('adults').addEventListener('change', updateBookingLink);
+document.getElementById('children').addEventListener('change', updateBookingLink);
 
 // Track booking click for analytics
 if (typeof gtag !== 'undefined') {

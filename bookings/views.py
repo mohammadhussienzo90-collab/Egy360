@@ -96,12 +96,21 @@ def booking_checkout(request, booking_type, item_id):
             initial_data['contact_phone'] = request.user.profile.phone
 
         # Get dates from query params if provided
-        if request.GET.get('check_in'):
-            initial_data['check_in_date'] = request.GET.get('check_in')
-        if request.GET.get('check_out'):
-            initial_data['check_out_date'] = request.GET.get('check_out')
-        if request.GET.get('guests'):
-            initial_data['number_of_guests'] = request.GET.get('guests')
+        if booking_type == 'accommodation':
+            if request.GET.get('check_in'):
+                initial_data['check_in_date'] = request.GET.get('check_in')
+            if request.GET.get('check_out'):
+                initial_data['check_out_date'] = request.GET.get('check_out')
+            if request.GET.get('guests'):
+                initial_data['number_of_guests'] = request.GET.get('guests')
+        elif booking_type == 'tour':
+            if request.GET.get('tour_date'):
+                initial_data['tour_date'] = request.GET.get('tour_date')
+            if request.GET.get('adults'):
+                initial_data['number_of_participants'] = int(request.GET.get('adults', 1))
+                # Add children count to participants
+                if request.GET.get('children'):
+                    initial_data['number_of_participants'] += int(request.GET.get('children', 0))
 
         form = form_class(initial=initial_data)
 

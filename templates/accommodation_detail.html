@@ -52,7 +52,7 @@
 <nav aria-label="breadcrumb" class="bg-light py-2">
     <div class="container">
         <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
             <li class="breadcrumb-item"><a href="{% url 'accommodations:search' %}">Hotels</a></li>
             <li class="breadcrumb-item"><a href="{% url 'accommodations:by-city' accommodation.city %}">{{ accommodation.city }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ accommodation.name }}</li>
@@ -283,26 +283,28 @@
 
                     <!-- Booking Options -->
                     <div class="d-grid gap-2 mb-3">
+                        <!-- Egy360 Booking -->
+                        <a href="{% url 'bookings:checkout' 'accommodation' accommodation.id %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calendar-check me-2"></i>Reserve Now
+                        </a>
+
                         {% if primary_booking_url %}
+                        <div class="text-center my-2">
+                            <small class="text-muted">Or book directly with partners:</small>
+                        </div>
                         <a href="{{ primary_booking_url }}" target="_blank" rel="noopener nofollow"
-                           class="btn btn-primary btn-lg" data-accommodation-id="{{ accommodation.id }}">
-                            <i class="fas fa-external-link-alt me-2"></i>Book Now
+                           class="btn btn-outline-primary" data-accommodation-id="{{ accommodation.id }}">
+                            <i class="fas fa-external-link-alt me-2"></i>Booking.com
                         </a>
                         {% endif %}
 
                         {% for option in booking_options %}
                         <a href="{{ option.url }}" target="_blank" rel="noopener nofollow"
-                           class="btn btn-outline-primary" data-accommodation-id="{{ accommodation.id }}">
+                           class="btn btn-outline-secondary btn-sm" data-accommodation-id="{{ accommodation.id }}">
                             <i class="fas fa-external-link-alt me-2"></i>{{ option.platform }}
                             {% if option.price %}<span class="float-end">${{ option.price }}</span>{% endif %}
                         </a>
                         {% endfor %}
-
-                        {% if not primary_booking_url and not booking_options %}
-                        <a href="{% url 'accommodations:search' %}?city={{ accommodation.city }}" class="btn btn-primary btn-lg">
-                            <i class="fas fa-search me-2"></i>Check Availability
-                        </a>
-                        {% endif %}
                     </div>
 
                     <div class="border-top pt-3">
