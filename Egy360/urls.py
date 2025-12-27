@@ -7,41 +7,57 @@ from django.http import JsonResponse
 
 def health_check(request):
     """Basic health check for Railway"""
-    return JsonResponse({'status': 'ok'})
+    return JsonResponse({'status': 'ok', 'version': 'v3-debug'})
 
 def debug_check(request):
     """Debug endpoint to check system status"""
-    import traceback
-    result = {'status': 'ok', 'checks': {}}
+    import sys
+    result = {'status': 'ok', 'version': 'v2', 'checks': {}}
 
-    # Check database
+    # Step 1: Basic check
+    result['checks']['step1_basic'] = 'ok'
+
+    # Step 2: Check database connection
+    try:
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        result['checks']['step2_db_connection'] = 'ok'
+    except Exception as e:
+        result['checks']['step2_db_connection'] = str(e)
+        return JsonResponse(result)
+
+    # Step 3: Check model import
     try:
         from accommodations.models import Accommodation
-        acc = Accommodation.objects.filter(is_active=True).first()
-        if acc:
-            result['checks']['database'] = 'ok'
-            result['checks']['accommodation'] = acc.name
-            result['checks']['rooms_count'] = acc.rooms.count()
-            result['checks']['amenities_count'] = acc.amenities.count()
-        else:
-            result['checks']['database'] = 'no accommodations found'
+        result['checks']['step3_model_import'] = 'ok'
     except Exception as e:
-        result['checks']['database'] = f'error: {str(e)}'
+        result['checks']['step3_model_import'] = str(e)
+        return JsonResponse(result)
 
-    # Check templates
+    # Step 4: Check query
+    try:
+        count = Accommodation.objects.count()
+        result['checks']['step4_query'] = f'ok - {count} accommodations'
+    except Exception as e:
+        result['checks']['step4_query'] = str(e)
+        return JsonResponse(result)
+
+    # Step 5: Check template
     try:
         from django.template.loader import get_template
-        get_template('accommodation_detail.html')
-        result['checks']['template'] = 'ok'
+        t = get_template('accommodation_detail.html')
+        result['checks']['step5_template'] = 'ok'
     except Exception as e:
-        result['checks']['template'] = f'error: {str(e)}'
+        result['checks']['step5_template'] = str(e)
+        return JsonResponse(result)
 
-    # Check reviews
+    # Step 6: Check review tags
     try:
         from reviews.templatetags.review_tags import get_item
-        result['checks']['review_tags'] = 'ok'
+        result['checks']['step6_review_tags'] = 'ok'
     except Exception as e:
-        result['checks']['review_tags'] = f'error: {str(e)}'
+        result['checks']['step6_review_tags'] = str(e)
 
     return JsonResponse(result)
 
