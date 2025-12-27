@@ -265,28 +265,38 @@
 
                     <!-- Booking Options -->
                     <div class="d-grid gap-2 mb-3">
-                        <!-- Egy360 Booking -->
-                        <a href="{% url 'bookings:checkout' 'accommodation' accommodation.id %}" class="btn btn-primary btn-lg">
-                            <i class="fas fa-calendar-check me-2"></i>Reserve Now
-                        </a>
-
-                        {% if primary_booking_url %}
-                        <div class="text-center my-2">
-                            <small class="text-muted">Or book directly with partners:</small>
-                        </div>
-                        <a href="{{ primary_booking_url }}" target="_blank" rel="noopener nofollow"
-                           class="btn btn-outline-primary" data-accommodation-id="{{ accommodation.id }}">
-                            <i class="fas fa-external-link-alt me-2"></i>Booking.com
+                        <!-- Primary Affiliate Booking - Most Prominent -->
+                        {% if accommodation.booking_com_url %}
+                        <a href="{{ accommodation.booking_com_url }}" target="_blank" rel="noopener nofollow"
+                           class="btn btn-success btn-lg affiliate-link pulse-animation"
+                           data-item-type="accommodation" data-item-id="{{ accommodation.id }}" data-platform="hotellook">
+                            <i class="fas fa-bolt me-2"></i>Book Now - Best Price
+                            <small class="d-block" style="font-size: 0.7em; opacity: 0.9;">Free cancellation available</small>
                         </a>
                         {% endif %}
 
-                        {% for option in booking_options %}
-                        <a href="{{ option.url }}" target="_blank" rel="noopener nofollow"
-                           class="btn btn-outline-secondary btn-sm" data-accommodation-id="{{ accommodation.id }}">
-                            <i class="fas fa-external-link-alt me-2"></i>{{ option.platform }}
-                            {% if option.price %}<span class="float-end">${{ option.price }}</span>{% endif %}
+                        <!-- Compare Prices Banner -->
+                        <div class="bg-light rounded p-3 text-center my-2">
+                            <small class="text-success fw-bold"><i class="fas fa-check-circle me-1"></i>Compare prices from 70+ sites</small>
+                        </div>
+
+                        <!-- Egy360 Inquiry -->
+                        <a href="{% url 'bookings:checkout' 'accommodation' accommodation.id %}" class="btn btn-outline-primary">
+                            <i class="fas fa-envelope me-2"></i>Send Inquiry
                         </a>
-                        {% endfor %}
+
+                        {% if primary_booking_url and not accommodation.booking_com_url %}
+                        <a href="{{ primary_booking_url }}" target="_blank" rel="noopener nofollow"
+                           class="btn btn-success btn-lg affiliate-link"
+                           data-item-type="accommodation" data-item-id="{{ accommodation.id }}">
+                            <i class="fas fa-external-link-alt me-2"></i>Check Availability
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <!-- Urgency Indicator -->
+                    <div class="alert alert-warning py-2 mb-3">
+                        <small><i class="fas fa-fire me-1"></i><strong>Popular!</strong> Booked 12 times in last 24 hours</small>
                     </div>
 
                     <div class="border-top pt-3">

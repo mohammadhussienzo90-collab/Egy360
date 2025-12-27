@@ -295,27 +295,54 @@
 
                     <hr>
 
-                    <!-- Affiliate Partner Booking Options -->
-                    {% if tour.has_affiliate_options %}
-                    <div class="mb-3">
-                        <p class="small text-muted mb-2"><i class="fas fa-external-link-alt me-1"></i>Or book through our trusted partners:</p>
-                        <div class="d-grid gap-2">
-                            {% if tour.viator_url %}
-                            <a href="{{ tour.viator_url }}" target="_blank" rel="noopener nofollow"
-                               class="btn btn-outline-success btn-sm affiliate-link" data-tour-id="{{ tour.id }}" data-platform="Viator">
-                                <i class="fas fa-globe me-2"></i>Book on Viator
-                                <span class="badge bg-success ms-2">8% off</span>
-                            </a>
-                            {% endif %}
-                            {% if tour.getyourguide_url %}
-                            <a href="{{ tour.getyourguide_url }}" target="_blank" rel="noopener nofollow"
-                               class="btn btn-outline-primary btn-sm affiliate-link" data-tour-id="{{ tour.id }}" data-platform="GetYourGuide">
-                                <i class="fas fa-compass me-2"></i>Book on GetYourGuide
-                            </a>
-                            {% endif %}
-                        </div>
+                    <!-- Primary Affiliate Booking - Most Prominent -->
+                    {% if tour.viator_url %}
+                    <div class="d-grid gap-2 mb-3">
+                        <a href="{{ tour.viator_url }}" target="_blank" rel="noopener nofollow"
+                           class="btn btn-success btn-lg affiliate-link pulse-animation"
+                           data-item-type="tour" data-item-id="{{ tour.id }}" data-platform="Viator">
+                            <i class="fas fa-bolt me-2"></i>Book Now - Best Price
+                            <small class="d-block" style="font-size: 0.7em; opacity: 0.9;">Free cancellation up to 24hrs before</small>
+                        </a>
+                    </div>
+
+                    <!-- Compare Prices Banner -->
+                    <div class="bg-light rounded p-3 text-center mb-3">
+                        <small class="text-success fw-bold"><i class="fas fa-check-circle me-1"></i>Best price guaranteed from Viator</small>
+                    </div>
+
+                    <!-- Urgency Indicator -->
+                    <div class="alert alert-warning py-2 mb-3 urgency-banner">
+                        <small><i class="fas fa-fire me-1"></i><strong>Popular!</strong> Booked {{ tour.booking_count|default:8 }} times this week</small>
                     </div>
                     {% endif %}
+
+                    <!-- Alternative Affiliate Booking -->
+                    {% if tour.getyourguide_url %}
+                    <div class="d-grid gap-2 mb-3">
+                        <a href="{{ tour.getyourguide_url }}" target="_blank" rel="noopener nofollow"
+                           class="btn btn-outline-primary affiliate-link"
+                           data-item-type="tour" data-item-id="{{ tour.id }}" data-platform="GetYourGuide">
+                            <i class="fas fa-compass me-2"></i>Compare on GetYourGuide
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <!-- Trust Indicators -->
+                    <div class="border-top pt-3 mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-award text-warning me-2"></i>
+                            <span class="small">Best Price Guarantee</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-undo text-success me-2"></i>
+                            <span class="small">Free Cancellation Available</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shield-alt text-primary me-2"></i>
+                            <span class="small">Secure Booking</span>
+                        </div>
+                    </div>
 
                     <hr>
 

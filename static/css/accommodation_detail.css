@@ -1322,6 +1322,47 @@ button {
     font-size: var(--font-size-sm);
 }
 
+/* ==================== AFFILIATE BUTTON ANIMATIONS ==================== */
+.pulse-animation {
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(40, 167, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+}
+
+.affiliate-link {
+    transition: all 0.3s ease;
+}
+
+.affiliate-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+/* Urgency Banner Animation */
+.alert-warning {
+    animation: urgency-pulse 3s infinite;
+}
+
+@keyframes urgency-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 1024px) {
     .content-grid {
