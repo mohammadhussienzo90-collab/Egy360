@@ -11,7 +11,7 @@ import os
 
 def health_check(request):
     """Basic health check for Railway"""
-    return JsonResponse({'status': 'ok', 'version': 'v3-debug'})
+    return JsonResponse({'status': 'ok', 'version': 'v5-whitefav'})
 
 def debug_check(request):
     """Simple debug endpoint"""
