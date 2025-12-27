@@ -3,7 +3,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.cache import cache_control
+import os
 
 def health_check(request):
     """Basic health check for Railway"""
@@ -13,7 +15,19 @@ def debug_check(request):
     """Simple debug endpoint"""
     return JsonResponse({'status': 'ok', 'version': 'v4'})
 
+@cache_control(max_age=86400)
+def favicon(request):
+    """Serve favicon directly"""
+    favicon_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'favicon.svg')
+    try:
+        with open(favicon_path, 'r') as f:
+            return HttpResponse(f.read(), content_type='image/svg+xml')
+    except FileNotFoundError:
+        return HttpResponse(status=404)
+
 urlpatterns = [
+    path('favicon.svg', favicon, name='favicon'),
+    path('favicon.ico', favicon, name='favicon_ico'),
     path('health/', health_check, name='health'),
     path('debug/', debug_check, name='debug'),
     path('admin/', admin.site.urls),
