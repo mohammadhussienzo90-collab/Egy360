@@ -9,5 +9,5 @@ class HealthCheckMiddleware:
         # Use WSGI environ directly to avoid triggering Django's host validation
         path = request.META.get('PATH_INFO', '')
         if path in ['/health/', '/health', '/healthz', '/healthz/']:
-            return HttpResponse('{"status":"ok"}', content_type='application/json', status=200)
+            return HttpResponse('{"status":"ok","version":"v5-middleware"}', content_type='application/json', status=200)
         return self.get_response(request)
