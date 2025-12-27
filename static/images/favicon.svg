@@ -5,14 +5,9 @@
       <stop offset="50%" style="stop-color:#FFA500"/>
       <stop offset="100%" style="stop-color:#DAA520"/>
     </linearGradient>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#1a1a2e"/>
-      <stop offset="100%" style="stop-color:#16213e"/>
-    </linearGradient>
   </defs>
-  <!-- Background circle -->
-  <circle cx="32" cy="32" r="30" fill="url(#bgGradient)"/>
-  <circle cx="32" cy="32" r="28" fill="none" stroke="#FFD700" stroke-width="1" opacity="0.3"/>
+  <!-- White background -->
+  <rect width="64" height="64" fill="white"/>
 
   <!-- Ankh (Key of Life) Symbol -->
   <!-- Loop at top -->
