@@ -35,18 +35,18 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
 
-    # Authentication (allauth)
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.apple',
+    # Authentication (allauth) - TEMPORARILY DISABLED
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.apple',
 
-    # Two-Factor Authentication
-    'django_otp',
-    'django_otp.plugins.otp_totp',
-    'django_otp.plugins.otp_static',
+    # Two-Factor Authentication - TEMPORARILY DISABLED
+    # 'django_otp',
+    # 'django_otp.plugins.otp_totp',
+    # 'django_otp.plugins.otp_static',
 
     # Your apps
     'accounts',
@@ -74,7 +74,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'django_otp.middleware.OTPMiddleware',  # 2FA middleware - temporarily disabled
-    'allauth.account.middleware.AccountMiddleware',  # Allauth middleware
+    # 'allauth.account.middleware.AccountMiddleware',  # Allauth middleware - DISABLED
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -139,10 +139,10 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Authentication backends (allauth + default)
+# Authentication backends
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    # 'allauth.account.auth_backends.AuthenticationBackend',  # DISABLED
 ]
 
 SITE_ID = 1
