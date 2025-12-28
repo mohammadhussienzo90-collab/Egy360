@@ -16,7 +16,7 @@
         border-radius: 16px;
         box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         overflow: hidden;
-        max-width: 600px;
+        max-width: 700px;
         margin: 0 auto;
     }
 
@@ -48,7 +48,7 @@
         padding: 20px;
         background: #f8f9fa;
         border-radius: 12px;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
     }
 
     .summary-image {
@@ -78,7 +78,7 @@
         padding: 25px;
         border-radius: 12px;
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
     }
 
     .amount-label {
@@ -97,91 +97,59 @@
         opacity: 0.8;
     }
 
-    /* Card Element */
-    .card-section {
-        margin-bottom: 30px;
+    /* Payment Methods */
+    .payment-methods {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
     }
 
-    .card-section h5 {
-        color: #1a1a1a;
-        font-weight: 600;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #f0f0f0;
-    }
-
-    .card-section h5 i {
-        color: var(--primary-color);
-        margin-right: 10px;
-    }
-
-    #card-element {
+    .payment-method-btn {
+        flex: 1;
+        min-width: 150px;
         padding: 15px;
         border: 2px solid #e0e0e0;
-        border-radius: 8px;
+        border-radius: 10px;
         background: white;
-        transition: border-color 0.3s;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
     }
 
-    #card-element:focus-within {
+    .payment-method-btn:hover {
         border-color: var(--primary-color);
     }
 
-    #card-errors {
-        color: #dc3545;
-        font-size: 0.9rem;
-        margin-top: 10px;
-        min-height: 20px;
+    .payment-method-btn.active {
+        border-color: var(--primary-color);
+        background: rgba(196, 30, 58, 0.05);
     }
 
-    /* Submit Button */
-    .btn-pay {
-        width: 100%;
-        padding: 18px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--primary-color), #8b1226);
-        border: none;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .btn-pay:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(185, 28, 54, 0.4);
-    }
-
-    .btn-pay:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-    }
-
-    .btn-pay .spinner {
-        display: none;
-        width: 24px;
-        height: 24px;
-        border: 3px solid rgba(255,255,255,0.3);
-        border-top-color: white;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-
-    .btn-pay.loading .spinner {
+    .payment-method-btn i {
+        font-size: 1.5rem;
         display: block;
+        margin-bottom: 8px;
+        color: #333;
     }
 
-    .btn-pay.loading .btn-text {
-        display: none;
+    .payment-method-btn span {
+        font-size: 0.9rem;
+        color: #666;
     }
 
-    @keyframes spin {
-        to { transform: rotate(360deg); }
+    /* PayMob Iframe */
+    .paymob-iframe-container {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .paymob-iframe-container iframe {
+        width: 100%;
+        height: 450px;
+        border: none;
     }
 
     /* Security Badges */
@@ -207,32 +175,73 @@
         font-size: 1.1rem;
     }
 
-    /* Test Mode Banner */
-    .test-mode-banner {
-        background: #fff3cd;
-        border: 1px solid #ffc107;
-        color: #856404;
-        padding: 12px 20px;
+    /* Supported Cards */
+    .supported-cards {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+        opacity: 0.7;
+    }
+
+    .supported-cards i {
+        font-size: 2rem;
+    }
+
+    /* Info Notice */
+    .info-notice {
+        background: #e7f3ff;
+        border: 1px solid #b6d4fe;
+        color: #084298;
+        padding: 15px 20px;
         border-radius: 8px;
         margin-bottom: 20px;
         font-size: 0.9rem;
     }
 
-    .test-mode-banner strong {
-        display: block;
-        margin-bottom: 5px;
+    .info-notice i {
+        margin-right: 8px;
     }
 
-    /* Card Brands */
-    .card-brands {
+    /* Mobile Wallet Info */
+    .wallet-info {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        color: #856404;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .wallet-logos {
         display: flex;
-        gap: 10px;
-        margin-top: 15px;
-        opacity: 0.6;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 10px;
     }
 
-    .card-brands img {
-        height: 25px;
+    .wallet-logos img {
+        height: 30px;
+    }
+
+    @media (max-width: 768px) {
+        .booking-summary {
+            flex-direction: column;
+        }
+
+        .summary-image {
+            width: 100%;
+            height: 120px;
+        }
+
+        .payment-method-btn {
+            min-width: 100%;
+        }
+
+        .security-badges {
+            flex-wrap: wrap;
+            gap: 15px;
+        }
     }
 </style>
 {% endblock %}
@@ -247,10 +256,10 @@
             </div>
 
             <div class="checkout-body">
-                <!-- Test Mode Warning -->
-                <div class="test-mode-banner">
-                    <strong><i class="fas fa-flask me-2"></i>Test Mode</strong>
-                    Use card number <code>4242 4242 4242 4242</code> with any future date and CVC.
+                <!-- Info Notice -->
+                <div class="info-notice">
+                    <i class="fas fa-info-circle"></i>
+                    Your payment is secured by <strong>PayMob</strong>, Egypt's trusted payment gateway.
                 </div>
 
                 <!-- Booking Summary -->
@@ -277,27 +286,49 @@
                     <div class="amount-currency">{{ currency }}</div>
                 </div>
 
-                <!-- Payment Form -->
-                <form id="payment-form">
-                    {% csrf_token %}
+                <!-- Payment Method Selection -->
+                <div class="payment-methods">
+                    <a href="?method=card" class="payment-method-btn {% if payment_method == 'card' %}active{% endif %}">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Credit/Debit Card</span>
+                    </a>
+                    <a href="?method=wallet" class="payment-method-btn {% if payment_method == 'wallet' %}active{% endif %}">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Mobile Wallet</span>
+                    </a>
+                    <a href="?method=fawry" class="payment-method-btn {% if payment_method == 'fawry' %}active{% endif %}">
+                        <i class="fas fa-store"></i>
+                        <span>Fawry</span>
+                    </a>
+                </div>
 
-                    <div class="card-section">
-                        <h5><i class="fas fa-credit-card"></i>Card Details</h5>
-                        <div id="card-element"></div>
-                        <div id="card-errors" role="alert"></div>
+                {% if payment_method == 'wallet' %}
+                <!-- Mobile Wallet Info -->
+                <div class="wallet-info">
+                    <strong><i class="fas fa-mobile-alt me-2"></i>Supported Mobile Wallets:</strong>
+                    <p class="mb-0 mt-2">Vodafone Cash, Orange Money, Etisalat Cash, WE Pay</p>
+                </div>
+                {% endif %}
 
-                        <div class="card-brands">
-                            <i class="fab fa-cc-visa fa-2x"></i>
-                            <i class="fab fa-cc-mastercard fa-2x"></i>
-                            <i class="fab fa-cc-amex fa-2x"></i>
-                        </div>
-                    </div>
+                {% if payment_method == 'fawry' %}
+                <!-- Fawry Info -->
+                <div class="wallet-info">
+                    <strong><i class="fas fa-store me-2"></i>Pay with Fawry:</strong>
+                    <p class="mb-0 mt-2">Get a reference code and pay at any of 200,000+ Fawry locations across Egypt.</p>
+                </div>
+                {% endif %}
 
-                    <button type="submit" id="submit-button" class="btn-pay">
-                        <span class="spinner"></span>
-                        <span class="btn-text"><i class="fas fa-lock me-2"></i>Pay {{ amount|floatformat:2 }} {{ currency }}</span>
-                    </button>
-                </form>
+                <!-- PayMob Iframe -->
+                <div class="paymob-iframe-container">
+                    <iframe src="{{ iframe_url }}" allow="payment" title="PayMob Payment"></iframe>
+                </div>
+
+                <!-- Supported Cards -->
+                <div class="supported-cards">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fas fa-credit-card" title="Meeza"></i>
+                </div>
 
                 <!-- Security Badges -->
                 <div class="security-badges">
@@ -310,98 +341,12 @@
                         <span>256-bit Encryption</span>
                     </div>
                     <div class="security-badge">
-                        <i class="fab fa-stripe"></i>
-                        <span>Powered by Stripe</span>
+                        <i class="fas fa-check-circle"></i>
+                        <span>PCI DSS Compliant</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="https://js.stripe.com/v3/"></script>
-<script>
-    // Initialize Stripe
-    const stripe = Stripe('{{ stripe_public_key }}');
-    const elements = stripe.elements();
-
-    // Create card element with styling
-    const cardElement = elements.create('card', {
-        style: {
-            base: {
-                color: '#32325d',
-                fontFamily: '"Segoe UI", Roboto, sans-serif',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
-                '::placeholder': {
-                    color: '#aab7c4'
-                }
-            },
-            invalid: {
-                color: '#dc3545',
-                iconColor: '#dc3545'
-            }
-        }
-    });
-
-    cardElement.mount('#card-element');
-
-    // Handle validation errors
-    cardElement.on('change', function(event) {
-        const displayError = document.getElementById('card-errors');
-        if (event.error) {
-            displayError.textContent = event.error.message;
-        } else {
-            displayError.textContent = '';
-        }
-    });
-
-    // Handle form submission
-    const form = document.getElementById('payment-form');
-    const submitButton = document.getElementById('submit-button');
-
-    form.addEventListener('submit', async function(event) {
-        event.preventDefault();
-
-        // Disable button and show loading
-        submitButton.disabled = true;
-        submitButton.classList.add('loading');
-
-        const clientSecret = '{{ client_secret }}';
-
-        const {error, paymentIntent} = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: cardElement,
-                billing_details: {
-                    name: '{{ booking.contact_name }}',
-                    email: '{{ booking.contact_email }}'
-                }
-            }
-        });
-
-        if (error) {
-            // Show error
-            const errorElement = document.getElementById('card-errors');
-            errorElement.textContent = error.message;
-
-            // Re-enable button
-            submitButton.disabled = false;
-            submitButton.classList.remove('loading');
-        } else if (paymentIntent.status === 'succeeded') {
-            // Payment succeeded - redirect to success page
-            window.location.href = '{% url "payments:success" booking.id %}';
-        } else {
-            // Handle other statuses
-            const errorElement = document.getElementById('card-errors');
-            errorElement.textContent = 'Payment processing. Please wait...';
-
-            // Check status after a delay
-            setTimeout(function() {
-                window.location.href = '{% url "payments:success" booking.id %}';
-            }, 2000);
-        }
-    });
-</script>
 {% endblock %}

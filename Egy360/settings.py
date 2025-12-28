@@ -231,8 +231,34 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Egy360 <noreply@360egy.com>')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'admin@360egy.com')
 
-# Stripe Payment Configuration
-# Use test keys for development, replace with live keys in production
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', 'pk_test_51234567890abcdefghijklmnopqrstuvwxyz')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', 'sk_test_51234567890abcdefghijklmnopqrstuvwxyz')
-STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
+# =============================================================================
+# PAYMOB PAYMENT CONFIGURATION (Egypt's #1 Payment Gateway)
+# =============================================================================
+# PayMob supports:
+# - Credit/Debit Cards (Visa, Mastercard, Meeza)
+# - Mobile Wallets (Vodafone Cash, Orange Money, Etisalat Cash, WE Pay)
+# - Fawry (Cash payments at 200,000+ retail locations)
+#
+# Get your credentials from: https://accept.paymob.com/portal2/en/login
+# Documentation: https://docs.paymob.com/docs/accept-standard-redirect
+# =============================================================================
+
+# API Key from PayMob Dashboard > Settings > Account Info
+PAYMOB_API_KEY = os.environ.get('PAYMOB_API_KEY', '')
+
+# HMAC Secret for webhook verification (Dashboard > Settings > Account Info)
+PAYMOB_HMAC_SECRET = os.environ.get('PAYMOB_HMAC_SECRET', '')
+
+# Integration IDs from PayMob Dashboard > Developers > Payment Integrations
+# Each payment method (card, wallet, fawry) has its own integration ID
+PAYMOB_CARD_INTEGRATION_ID = os.environ.get('PAYMOB_CARD_INTEGRATION_ID', '')
+PAYMOB_WALLET_INTEGRATION_ID = os.environ.get('PAYMOB_WALLET_INTEGRATION_ID', '')
+PAYMOB_FAWRY_INTEGRATION_ID = os.environ.get('PAYMOB_FAWRY_INTEGRATION_ID', '')
+
+# Iframe ID for card payments (Dashboard > Developers > iframes)
+PAYMOB_IFRAME_ID = os.environ.get('PAYMOB_IFRAME_ID', '')
+
+# Legacy Stripe Configuration (kept for reference, not used)
+# STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', '')
+# STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
+# STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')

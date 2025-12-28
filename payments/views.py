@@ -562,33 +562,42 @@ def stripe_webhook(request):
 
 
 # =============================================================================
-# PAYMENT CHECKOUT VIEWS
+# PAYMENT CHECKOUT VIEWS (PayMob Integration)
 # =============================================================================
 #
-# These views handle the user-facing payment flow:
-# 1. payment_checkout: Displays Stripe card form, creates PaymentIntent
-# 2. payment_success: Verifies payment completion, updates booking status
+# These views handle the user-facing payment flow using PayMob:
+# 1. payment_checkout: Creates PayMob order and displays payment iframe
+# 2. payment_success: Handles callback after successful payment
+# 3. paymob_callback: Webhook handler for PayMob transaction notifications
 #
-# Flow: User fills booking form -> Redirected here -> Enters card -> Success page
+# PayMob supports:
+# - Credit/Debit Cards (Visa, Mastercard, Meeza)
+# - Mobile Wallets (Vodafone Cash, Orange Money, Etisalat Cash, WE Pay)
+# - Fawry (Cash payments at retail locations)
+#
+# Flow: User fills booking form -> PayMob iframe -> Callback -> Success page
 # =============================================================================
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
 from bookings.models import Booking
+from .paymob_integration import paymob_gateway
 
 
 @login_required
 def payment_checkout(request, booking_id):
     """
-    Payment checkout page with Stripe Elements card form.
+    Payment checkout page with PayMob iframe.
 
     This view:
     1. Validates the booking belongs to the current user
     2. Checks if already paid (prevents double-payment)
-    3. Creates a Stripe PaymentIntent for secure card processing
+    3. Creates a PayMob order and payment key
     4. Creates/updates a Payment record in our database
-    5. Renders the checkout template with Stripe.js integration
+    5. Renders the checkout template with PayMob iframe
 
     Args:
         request: HTTP request object
@@ -608,55 +617,51 @@ def payment_checkout(request, booking_id):
     # Get the actual item (Accommodation or Tour) via GenericForeignKey
     item = booking.content_object
 
-    # Create Stripe PaymentIntent - this is required for secure card processing
-    # The client_secret is used by Stripe.js on the frontend to confirm payment
-    result = stripe_gateway.create_payment_intent(
-        amount=float(booking.total_amount),
-        currency='EGP',  # Egyptian Pounds
-        metadata={
-            # Metadata helps identify the payment in Stripe Dashboard
-            'booking_id': str(booking.id),
-            'booking_reference': booking.booking_reference,
-            'user_id': str(request.user.id),
-        }
+    # Get payment method from query param (default to card)
+    payment_method = request.GET.get('method', 'card')
+
+    # Create PayMob payment session
+    result = paymob_gateway.create_payment_session(
+        amount=booking.total_amount,
+        booking=booking,
+        payment_method=payment_method
     )
 
-    # Handle Stripe initialization failure (API keys invalid, network error, etc.)
+    # Handle PayMob initialization failure
     if not result.get('success'):
         messages.error(request, f"Payment initialization failed: {result.get('error', 'Unknown error')}")
         return redirect('bookings:detail', booking_id=booking.id)
 
     # Create or get existing Payment record
-    # Using get_or_create prevents duplicate records if user refreshes page
     payment, created = Payment.objects.get_or_create(
         booking=booking,
         user=request.user,
         defaults={
-            'payment_method': 'stripe',
+            'payment_method': payment_method,
             'amount': booking.total_amount,
             'currency': 'EGP',
             'status': 'pending',
-            'gateway': 'stripe',
-            'transaction_id': result['payment_intent_id'],
+            'gateway': 'paymob',
+            'transaction_id': str(result['order_id']),
         }
     )
 
-    # If payment record already exists but is pending, update with new PaymentIntent
-    # This handles cases where user abandoned checkout and returned
+    # If payment record exists but is pending, update with new order
     if not created and payment.status == 'pending':
-        payment.transaction_id = result['payment_intent_id']
+        payment.transaction_id = str(result['order_id'])
+        payment.payment_method = payment_method
         payment.save()
 
     # Prepare context for template
-    # client_secret and stripe_public_key are required by Stripe.js
     context = {
         'booking': booking,
         'item': item,
         'payment': payment,
-        'client_secret': result['client_secret'],  # For Stripe.js confirmCardPayment()
-        'stripe_public_key': get_stripe_public_key(),  # For Stripe() initialization
+        'iframe_url': result['iframe_url'],
+        'payment_key': result['payment_key'],
         'amount': booking.total_amount,
         'currency': 'EGP',
+        'payment_method': payment_method,
     }
 
     return render(request, 'payments/checkout.html', context)
@@ -665,17 +670,10 @@ def payment_checkout(request, booking_id):
 @login_required
 def payment_success(request, booking_id):
     """
-    Payment success page after Stripe payment completion.
+    Payment success page after PayMob payment completion.
 
-    This view:
-    1. Retrieves the booking and associated payment
-    2. Verifies payment status with Stripe API (double-check)
-    3. Updates payment and booking status to confirmed/paid
-    4. Creates transaction log for audit trail
-    5. Displays success confirmation to user
-
-    Note: Payment confirmation also happens via Stripe webhooks as backup.
-    This view provides immediate feedback to users after payment.
+    This view displays the success confirmation after PayMob redirects
+    the user back. The actual payment confirmation happens via webhook.
 
     Args:
         request: HTTP request object
@@ -693,34 +691,13 @@ def payment_success(request, booking_id):
     # Get the actual item (Accommodation or Tour)
     item = booking.content_object
 
-    # Verify and update payment status if still pending
-    # This provides immediate confirmation without waiting for webhook
-    if payment and payment.transaction_id and payment.status == 'pending':
-        # Call Stripe API to verify payment succeeded
-        stripe_result = stripe_gateway.confirm_payment_intent(payment.transaction_id)
-
-        if stripe_result.get('success') and stripe_result.get('status') == 'succeeded':
-            # Update payment record
-            payment.status = 'completed'
-            payment.completed_at = timezone.now()
-            payment.save()
-
-            # Update booking to confirmed status
-            booking.status = 'confirmed'
-            booking.payment_status = 'paid'
-            booking.save()
-
-            # Create transaction log for financial audit trail
-            Transaction.objects.create(
-                payment=payment,
-                transaction_type='payment',
-                user=request.user,
-                amount=payment.amount,
-                currency=payment.currency,
-                description='Payment completed successfully'
-            )
-
-            logger.info(f"Payment {payment.id} confirmed for booking {booking.id}")
+    # Check if payment was marked as completed by webhook
+    if payment and payment.status == 'completed':
+        # Already confirmed via webhook
+        pass
+    elif payment and payment.status == 'pending':
+        # Payment may still be processing
+        messages.info(request, 'Your payment is being processed. You will receive a confirmation email shortly.')
 
     context = {
         'booking': booking,
@@ -729,3 +706,85 @@ def payment_success(request, booking_id):
     }
 
     return render(request, 'payments/success.html', context)
+
+
+@csrf_exempt
+@require_GET
+def paymob_callback(request):
+    """
+    PayMob callback/webhook handler.
+
+    PayMob redirects users here after payment and also sends
+    server-to-server callbacks. This handler:
+    1. Verifies the HMAC signature
+    2. Extracts transaction details
+    3. Updates payment and booking status
+    4. Redirects user to success/failure page
+
+    Query Parameters (from PayMob):
+        - success: 'true' or 'false'
+        - id: Transaction ID
+        - order: Order ID
+        - amount_cents: Amount paid in cents
+        - hmac: HMAC signature for verification
+    """
+    # Extract transaction data from query params
+    success = request.GET.get('success', 'false').lower() == 'true'
+    transaction_id = request.GET.get('id', '')
+    order_id = request.GET.get('order', '')
+    amount_cents = request.GET.get('amount_cents', '0')
+
+    # Verify HMAC signature
+    if not paymob_gateway.verify_callback(request.GET.dict()):
+        logger.warning(f"Invalid PayMob callback HMAC for order {order_id}")
+        messages.error(request, 'Payment verification failed. Please contact support.')
+        return redirect('home:home')
+
+    # Find the payment record
+    payment = Payment.objects.filter(
+        transaction_id=order_id,
+        gateway='paymob'
+    ).first()
+
+    if not payment:
+        logger.error(f"Payment not found for PayMob order {order_id}")
+        messages.error(request, 'Payment record not found. Please contact support.')
+        return redirect('home:home')
+
+    booking = payment.booking
+
+    if success:
+        # Update payment status
+        payment.status = 'completed'
+        payment.completed_at = timezone.now()
+        payment.transaction_id = f"{order_id}:{transaction_id}"
+        payment.save()
+
+        # Update booking status
+        booking.status = 'confirmed'
+        booking.payment_status = 'paid'
+        booking.save()
+
+        # Create transaction log
+        Transaction.objects.create(
+            payment=payment,
+            transaction_type='payment',
+            user=payment.user,
+            amount=payment.amount,
+            currency=payment.currency,
+            description=f'PayMob payment completed (Transaction: {transaction_id})'
+        )
+
+        logger.info(f"PayMob payment {payment.id} confirmed for booking {booking.id}")
+
+        # Redirect to success page
+        return redirect('payments:success', booking_id=booking.id)
+    else:
+        # Payment failed
+        payment.status = 'failed'
+        payment.save()
+
+        logger.warning(f"PayMob payment failed for booking {booking.id}")
+        messages.error(request, 'Payment was not successful. Please try again.')
+
+        return redirect('payments:checkout', booking_id=booking.id)
