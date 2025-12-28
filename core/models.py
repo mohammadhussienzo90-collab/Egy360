@@ -222,6 +222,39 @@ class AffiliateClick(models.Model):
     country = models.CharField(max_length=100, blank=True, null=True)
     device_type = models.CharField(max_length=20, blank=True, null=True)  # mobile, desktop, tablet
 
+    # -------------------------------------------------------------------------
+    # UTM Parameters for Social Media Campaign Attribution
+    # -------------------------------------------------------------------------
+    # These fields track which social media campaigns are driving bookings.
+    # Example: A TikTok video about pyramids generates clicks with:
+    #   utm_source='tiktok', utm_medium='social', utm_campaign='pyramids_jan2025'
+    # This helps calculate ROI for each social media effort.
+    # -------------------------------------------------------------------------
+    utm_source = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="Traffic source: instagram, facebook, tiktok, google, etc."
+    )
+    utm_medium = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="Traffic medium: social, cpc, email, referral, etc."
+    )
+    utm_campaign = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        help_text="Campaign name: egypt_tours_jan2025, pyramids_promo, etc."
+    )
+    utm_content = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        help_text="Content identifier: pyramids_reel, hotel_carousel, etc."
+    )
+
     # Revenue tracking
     estimated_commission = models.DecimalField(
         max_digits=10,
@@ -255,6 +288,9 @@ class AffiliateClick(models.Model):
             models.Index(fields=['clicked_at'], name='affiliate_clicked_idx'),
             models.Index(fields=['user'], name='affiliate_user_idx'),
             models.Index(fields=['converted'], name='affiliate_converted_idx'),
+            # UTM indexes for social media analytics queries
+            models.Index(fields=['utm_source'], name='affiliate_utm_source_idx'),
+            models.Index(fields=['utm_campaign'], name='affiliate_utm_campaign_idx'),
         ]
         verbose_name = 'Affiliate Click'
         verbose_name_plural = 'Affiliate Clicks'

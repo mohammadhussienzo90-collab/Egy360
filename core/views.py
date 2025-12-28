@@ -1,6 +1,19 @@
 """
-Egy360 Core App Views - UPDATED WITH BOOKING FLOW
-Includes all page views for the tourism platform
+Egy360 Core App Views
+=====================
+
+This module contains core views for the Egy360 tourism platform:
+- Affiliate click tracking (revenue generation)
+- Homepage and basic page views
+- Accommodation/tour search and detail views
+- User dashboard
+- Legacy booking flow views
+
+Key Endpoints:
+- POST /api/track-click/ - Track affiliate link clicks for revenue
+- GET / - Homepage
+- GET /accommodations/search/ - Search hotels
+- GET /tours/ - Browse tours
 """
 
 from django.shortcuts import render
@@ -10,25 +23,73 @@ from django.contrib.contenttypes.models import ContentType
 import json
 
 
-# ==================== AFFILIATE TRACKING ====================
+# =============================================================================
+# AFFILIATE CLICK TRACKING
+# =============================================================================
+#
+# This is the core revenue-generating feature. When users click affiliate links
+# (Booking.com, Viator, etc.), we track the click for analytics and to estimate
+# commissions. The actual commission is paid by the affiliate partner when the
+# user completes a booking on their site.
+#
+# Flow:
+# 1. User clicks "Book on Booking.com" button
+# 2. JavaScript sends POST to /api/track-click/
+# 3. We record the click with user/session/device info
+# 4. User is redirected to affiliate site (happens client-side)
+# 5. If user books, affiliate pays us commission (tracked separately)
+# =============================================================================
+
 @require_http_methods(["POST"])
 def track_affiliate_click(request):
     """
-    API endpoint to track affiliate link clicks
-    Called via JavaScript when user clicks an affiliate link
+    API endpoint to track affiliate link clicks for revenue analytics.
+
+    Called asynchronously by JavaScript when user clicks any affiliate link.
+    Does not block the user's navigation to the affiliate site.
+
+    Request Body (JSON):
+        item_type: 'accommodation', 'tour', 'transportation', 'flight'
+        item_id: ID of the clicked item (optional)
+        platform: 'booking_com', 'hotellook', 'viator', 'getyourguide', etc.
+        url: The affiliate URL being clicked
+
+    Response (JSON):
+        success: boolean
+        click_id: ID of created click record (if success)
+        message: Status message
+
+    Revenue Model:
+        - Hotellook: ~2.5% commission on hotel bookings
+        - Booking.com: ~4% commission
+        - Viator/GetYourGuide: ~8% commission on tour bookings
     """
     from .models import AffiliateClick
 
     try:
+        # Parse JSON request body
         data = json.loads(request.body)
 
-        # Get content type for the item
+        # Extract click information from request
         item_type = data.get('item_type', 'accommodation')
         item_id = data.get('item_id')
         platform = data.get('platform', 'other')
         affiliate_url = data.get('url', '')
 
-        # Map item type to model
+        # -----------------------------------------------------------------
+        # UTM Parameters for Social Media Attribution
+        # These help track which Instagram post, TikTok video, or Facebook
+        # ad drove this click. Essential for measuring ROI on social media.
+        # -----------------------------------------------------------------
+        utm_source = data.get('utm_source', '')    # e.g., 'instagram', 'facebook'
+        utm_medium = data.get('utm_medium', '')    # e.g., 'social', 'cpc'
+        utm_campaign = data.get('utm_campaign', '')  # e.g., 'egypt_tours_jan2025'
+        utm_content = data.get('utm_content', '')  # e.g., 'pyramids_reel'
+
+        # -----------------------------------------------------------------
+        # Map item type to Django ContentType for GenericForeignKey
+        # This allows us to link clicks to any model type
+        # -----------------------------------------------------------------
         model_map = {
             'accommodation': ('accommodations', 'accommodation'),
             'tour': ('tours', 'tour'),
@@ -42,16 +103,23 @@ def track_affiliate_click(request):
         except ContentType.DoesNotExist:
             content_type = None
 
-        # Get user info
+        # -----------------------------------------------------------------
+        # Extract user information (works for both logged in and anonymous)
+        # -----------------------------------------------------------------
         user = request.user if request.user.is_authenticated else None
         session_key = request.session.session_key
 
-        # Get IP and user agent
+        # Get IP address (handle proxy/load balancer forwarding)
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         ip_address = x_forwarded_for.split(',')[0] if x_forwarded_for else request.META.get('REMOTE_ADDR')
+
+        # Get user agent (truncate to prevent DB overflow)
         user_agent = request.META.get('HTTP_USER_AGENT', '')[:500]
 
-        # Detect device type
+        # -----------------------------------------------------------------
+        # Detect device type from user agent string
+        # Used for analytics (mobile vs desktop conversion rates)
+        # -----------------------------------------------------------------
         user_agent_lower = user_agent.lower()
         if 'mobile' in user_agent_lower or 'android' in user_agent_lower:
             device_type = 'mobile'
@@ -60,26 +128,38 @@ def track_affiliate_click(request):
         else:
             device_type = 'desktop'
 
-        # Estimate commission based on platform
+        # -----------------------------------------------------------------
+        # Estimate commission for revenue forecasting
+        # These are approximate rates from affiliate programs (as %)
+        # -----------------------------------------------------------------
         commission_rates = {
-            'booking_com': 4.0,
-            'hotellook': 2.5,
-            'viator': 8.0,
-            'getyourguide': 8.0,
-            'agoda': 5.0,
-        }
-        avg_booking_values = {
-            'accommodation': 100,
-            'tour': 80,
-            'flight': 400,
-            'transportation': 50,
+            'booking_com': 4.0,     # Booking.com pays ~4% commission
+            'hotellook': 2.5,       # Hotellook/Travelpayouts pays ~2.5%
+            'viator': 8.0,          # Viator pays ~8% on tour bookings
+            'getyourguide': 8.0,    # GetYourGuide pays ~8%
+            'agoda': 5.0,           # Agoda pays ~5%
         }
 
+        # Average booking values by type (in USD for estimation)
+        avg_booking_values = {
+            'accommodation': 100,   # Average hotel booking
+            'tour': 80,             # Average tour booking
+            'flight': 400,          # Average flight booking
+            'transportation': 50,   # Average transfer booking
+        }
+
+        # Calculate estimated commission (assuming 50% conversion rate)
         rate = commission_rates.get(platform, 3.0)
         avg_value = avg_booking_values.get(item_type, 100)
-        estimated_commission = (avg_value * rate / 100) * 0.5  # 50% estimated conversion
+        estimated_commission = (avg_value * rate / 100) * 0.5
 
-        # Create click record
+        # -----------------------------------------------------------------
+        # Create click record in database
+        # This record is used for:
+        # 1. Revenue analytics dashboard
+        # 2. Social media campaign ROI tracking
+        # 3. Conversion rate optimization
+        # -----------------------------------------------------------------
         if content_type and item_id:
             click = AffiliateClick.objects.create(
                 user=user,
@@ -94,6 +174,11 @@ def track_affiliate_click(request):
                 user_agent=user_agent,
                 device_type=device_type,
                 estimated_commission=estimated_commission,
+                # UTM parameters for social media attribution
+                utm_source=utm_source[:100] if utm_source else None,
+                utm_medium=utm_medium[:100] if utm_medium else None,
+                utm_campaign=utm_campaign[:200] if utm_campaign else None,
+                utm_content=utm_content[:200] if utm_content else None,
             )
 
             return JsonResponse({

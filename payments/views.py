@@ -564,6 +564,13 @@ def stripe_webhook(request):
 # =============================================================================
 # PAYMENT CHECKOUT VIEWS
 # =============================================================================
+#
+# These views handle the user-facing payment flow:
+# 1. payment_checkout: Displays Stripe card form, creates PaymentIntent
+# 2. payment_success: Verifies payment completion, updates booking status
+#
+# Flow: User fills booking form -> Redirected here -> Enters card -> Success page
+# =============================================================================
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -575,34 +582,52 @@ from bookings.models import Booking
 def payment_checkout(request, booking_id):
     """
     Payment checkout page with Stripe Elements card form.
-    Creates a PaymentIntent and displays the card input form.
+
+    This view:
+    1. Validates the booking belongs to the current user
+    2. Checks if already paid (prevents double-payment)
+    3. Creates a Stripe PaymentIntent for secure card processing
+    4. Creates/updates a Payment record in our database
+    5. Renders the checkout template with Stripe.js integration
+
+    Args:
+        request: HTTP request object
+        booking_id: ID of the booking to pay for
+
+    Returns:
+        Rendered checkout template or redirect on error/already paid
     """
+    # Security: Ensure user can only pay for their own bookings
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
 
-    # Check if booking is already paid
+    # Prevent double-payment - redirect if already paid
     if booking.payment_status == 'paid':
         messages.info(request, 'This booking has already been paid.')
         return redirect('bookings:confirmation', booking_id=booking.id)
 
-    # Get the booked item
+    # Get the actual item (Accommodation or Tour) via GenericForeignKey
     item = booking.content_object
 
-    # Create PaymentIntent via Stripe
+    # Create Stripe PaymentIntent - this is required for secure card processing
+    # The client_secret is used by Stripe.js on the frontend to confirm payment
     result = stripe_gateway.create_payment_intent(
         amount=float(booking.total_amount),
-        currency='EGP',
+        currency='EGP',  # Egyptian Pounds
         metadata={
+            # Metadata helps identify the payment in Stripe Dashboard
             'booking_id': str(booking.id),
             'booking_reference': booking.booking_reference,
             'user_id': str(request.user.id),
         }
     )
 
+    # Handle Stripe initialization failure (API keys invalid, network error, etc.)
     if not result.get('success'):
         messages.error(request, f"Payment initialization failed: {result.get('error', 'Unknown error')}")
         return redirect('bookings:detail', booking_id=booking.id)
 
-    # Create pending payment record
+    # Create or get existing Payment record
+    # Using get_or_create prevents duplicate records if user refreshes page
     payment, created = Payment.objects.get_or_create(
         booking=booking,
         user=request.user,
@@ -616,17 +641,20 @@ def payment_checkout(request, booking_id):
         }
     )
 
+    # If payment record already exists but is pending, update with new PaymentIntent
+    # This handles cases where user abandoned checkout and returned
     if not created and payment.status == 'pending':
-        # Update existing pending payment with new intent
         payment.transaction_id = result['payment_intent_id']
         payment.save()
 
+    # Prepare context for template
+    # client_secret and stripe_public_key are required by Stripe.js
     context = {
         'booking': booking,
         'item': item,
         'payment': payment,
-        'client_secret': result['client_secret'],
-        'stripe_public_key': get_stripe_public_key(),
+        'client_secret': result['client_secret'],  # For Stripe.js confirmCardPayment()
+        'stripe_public_key': get_stripe_public_key(),  # For Stripe() initialization
         'amount': booking.total_amount,
         'currency': 'EGP',
     }
@@ -637,32 +665,52 @@ def payment_checkout(request, booking_id):
 @login_required
 def payment_success(request, booking_id):
     """
-    Payment success page after successful Stripe payment.
-    Verifies payment and shows confirmation.
+    Payment success page after Stripe payment completion.
+
+    This view:
+    1. Retrieves the booking and associated payment
+    2. Verifies payment status with Stripe API (double-check)
+    3. Updates payment and booking status to confirmed/paid
+    4. Creates transaction log for audit trail
+    5. Displays success confirmation to user
+
+    Note: Payment confirmation also happens via Stripe webhooks as backup.
+    This view provides immediate feedback to users after payment.
+
+    Args:
+        request: HTTP request object
+        booking_id: ID of the paid booking
+
+    Returns:
+        Rendered success template with booking/payment details
     """
+    # Security: Ensure user can only view their own booking success
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+
+    # Get the most recent payment for this booking
     payment = Payment.objects.filter(booking=booking).order_by('-created_at').first()
 
-    # Get the booked item
+    # Get the actual item (Accommodation or Tour)
     item = booking.content_object
 
-    # Verify payment status if we have a payment record
+    # Verify and update payment status if still pending
+    # This provides immediate confirmation without waiting for webhook
     if payment and payment.transaction_id and payment.status == 'pending':
-        # Verify with Stripe
+        # Call Stripe API to verify payment succeeded
         stripe_result = stripe_gateway.confirm_payment_intent(payment.transaction_id)
 
         if stripe_result.get('success') and stripe_result.get('status') == 'succeeded':
-            # Mark payment as completed
+            # Update payment record
             payment.status = 'completed'
             payment.completed_at = timezone.now()
             payment.save()
 
-            # Update booking status
+            # Update booking to confirmed status
             booking.status = 'confirmed'
             booking.payment_status = 'paid'
             booking.save()
 
-            # Log transaction
+            # Create transaction log for financial audit trail
             Transaction.objects.create(
                 payment=payment,
                 transaction_type='payment',
