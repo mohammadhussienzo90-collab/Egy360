@@ -267,7 +267,7 @@
                     <div class="d-grid gap-2 mb-3">
                         <!-- Primary Affiliate Booking - Most Prominent -->
                         {% if accommodation.booking_com_url %}
-                        <a href="{{ accommodation.booking_com_url }}" target="_blank" rel="noopener nofollow"
+                        <a href="{{ accommodation.booking_com_url }}" target="_blank" rel="sponsored noopener"
                            class="btn btn-success btn-lg affiliate-link pulse-animation"
                            data-item-type="accommodation" data-item-id="{{ accommodation.id }}" data-platform="hotellook">
                             <i class="fas fa-bolt me-2"></i>Book Now - Best Price
@@ -286,7 +286,7 @@
                         </a>
 
                         {% if primary_booking_url and not accommodation.booking_com_url %}
-                        <a href="{{ primary_booking_url }}" target="_blank" rel="noopener nofollow"
+                        <a href="{{ primary_booking_url }}" target="_blank" rel="sponsored noopener"
                            class="btn btn-success btn-lg affiliate-link"
                            data-item-type="accommodation" data-item-id="{{ accommodation.id }}">
                             <i class="fas fa-external-link-alt me-2"></i>Check Availability

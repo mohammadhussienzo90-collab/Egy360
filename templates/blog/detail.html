@@ -258,7 +258,60 @@
     .share-btn.twitter { background: #1da1f2; }
     .share-btn.whatsapp { background: #25d366; }
     .share-btn.linkedin { background: #0077b5; }
+    .share-btn.pinterest { background: #e60023; }
     .share-btn.copy { background: #CE1126; }
+
+    /* Follow CTA in articles */
+    .follow-cta {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin: 30px 0;
+        text-align: center;
+        border: 2px dashed #CE1126;
+    }
+
+    .follow-cta h4 {
+        color: #CE1126;
+        margin-bottom: 15px;
+    }
+
+    .follow-cta .social-follow-btns {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .follow-cta .social-follow-btns a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 50px;
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+    .follow-cta .social-follow-btns a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .follow-cta .social-follow-btns a.instagram-follow {
+        background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+
+    .follow-cta .social-follow-btns a.facebook-follow {
+        background: #1877f2;
+    }
+
+    .follow-cta .social-follow-btns a.tiktok-follow {
+        background: #000;
+    }
 
     /* Sidebar */
     .article-sidebar {
@@ -609,21 +662,38 @@
                         <div class="share-section">
                             <h5><i class="fas fa-share-alt me-2"></i>Share this article</h5>
                             <div class="share-buttons">
-                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="share-btn facebook" title="Share on Facebook">
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}%3Futm_source%3Dfacebook%26utm_medium%3Dshare" target="_blank" class="share-btn facebook" title="Share on Facebook" onclick="trackShare('facebook')">
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
-                                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title }}" target="_blank" class="share-btn twitter" title="Share on Twitter">
+                                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}%3Futm_source%3Dtwitter%26utm_medium%3Dshare&text={{ post.title|urlencode }}%20via%20%40360egy" target="_blank" class="share-btn twitter" title="Share on Twitter" onclick="trackShare('twitter')">
                                     <i class="fab fa-twitter"></i>
                                 </a>
-                                <a href="https://wa.me/?text={{ post.title }}%20{{ request.build_absolute_uri }}" target="_blank" class="share-btn whatsapp" title="Share on WhatsApp">
+                                <a href="https://wa.me/?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri }}%3Futm_source%3Dwhatsapp%26utm_medium%3Dshare" target="_blank" class="share-btn whatsapp" title="Share on WhatsApp" onclick="trackShare('whatsapp')">
                                     <i class="fab fa-whatsapp"></i>
                                 </a>
-                                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title }}" target="_blank" class="share-btn linkedin" title="Share on LinkedIn">
+                                <a href="https://pinterest.com/pin/create/button/?url={{ request.build_absolute_uri }}%3Futm_source%3Dpinterest%26utm_medium%3Dshare&media={% if post.image_url %}{{ post.image_url }}{% endif %}&description={{ post.title|urlencode }}" target="_blank" class="share-btn pinterest" title="Pin on Pinterest" onclick="trackShare('pinterest')">
+                                    <i class="fab fa-pinterest-p"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}%3Futm_source%3Dlinkedin%26utm_medium%3Dshare&title={{ post.title|urlencode }}" target="_blank" class="share-btn linkedin" title="Share on LinkedIn" onclick="trackShare('linkedin')">
                                     <i class="fab fa-linkedin-in"></i>
                                 </a>
                                 <button class="share-btn copy" onclick="copyToClipboard()" title="Copy link">
                                     <i class="fas fa-link"></i>
                                 </button>
+                            </div>
+                        </div>
+
+                        <!-- Follow CTA -->
+                        <div class="follow-cta">
+                            <h4>Love Egypt Travel Tips?</h4>
+                            <p style="color: #666; margin-bottom: 15px;">Follow us for daily inspiration and travel guides!</p>
+                            <div class="social-follow-btns">
+                                <a href="https://instagram.com/egy360travel" target="_blank" rel="noopener" class="instagram-follow">
+                                    <i class="fab fa-instagram"></i> Follow on Instagram
+                                </a>
+                                <a href="https://facebook.com/egy360travel" target="_blank" rel="noopener" class="facebook-follow">
+                                    <i class="fab fa-facebook-f"></i> Like on Facebook
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -721,17 +791,31 @@
 {% block extra_js %}
 <script>
 function copyToClipboard() {
-    navigator.clipboard.writeText(window.location.href).then(function() {
+    const shareUrl = window.location.href + '?utm_source=clipboard&utm_medium=share';
+    navigator.clipboard.writeText(shareUrl).then(function() {
         const btn = document.querySelector('.share-btn.copy');
         const originalIcon = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-check"></i>';
         btn.style.background = '#00C851';
+        trackShare('clipboard');
 
         setTimeout(function() {
             btn.innerHTML = originalIcon;
             btn.style.background = '#CE1126';
         }, 2000);
     });
+}
+
+// Track social shares for analytics
+function trackShare(platform) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'share', {
+            'event_category': 'Social',
+            'event_label': platform,
+            'content_type': 'article',
+            'item_id': '{{ post.slug }}'
+        });
+    }
 }
 
 // Sidebar newsletter form

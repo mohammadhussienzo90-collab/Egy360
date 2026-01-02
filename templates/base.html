@@ -273,6 +273,35 @@
             box-shadow: 0 4px 15px rgba(196,30,58,0.3);
         }
 
+        /* Affiliate Disclosure Banner */
+        .affiliate-disclosure-banner {
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+        }
+
+        .affiliate-disclosure-banner p {
+            margin: 0;
+            color: #666;
+            text-align: center;
+        }
+
+        .affiliate-disclosure-banner i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        .affiliate-disclosure-banner a {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .affiliate-disclosure-banner a:hover {
+            color: var(--primary-dark);
+        }
+
         /* Modern Footer */
         footer {
             background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
@@ -558,6 +587,13 @@
     <!-- Main Content -->
     {% block content %}{% endblock %}
 
+    <!-- Affiliate Disclosure Banner -->
+    <div class="affiliate-disclosure-banner">
+        <div class="container">
+            <p><i class="fas fa-info-circle"></i> <strong>Disclosure:</strong> Some links on this site are affiliate links. If you book through these links, we may earn a small commission at no extra cost to you. <a href="/affiliate-disclosure/">Learn more</a></p>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -568,10 +604,10 @@
                     </h5>
                     <p class="text-white-50 mb-4">Your trusted platform for Egyptian tourism. Discover the wonders of ancient Egypt with verified accommodations, tours, and transportation.</p>
                     <div class="social-links d-flex gap-2">
-                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                        <a href="https://facebook.com/egy360travel" target="_blank" rel="noopener" class="text-white" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/egy360travel" target="_blank" rel="noopener" class="text-white" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://tiktok.com/@egy360travel" target="_blank" rel="noopener" class="text-white" title="Follow us on TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://pinterest.com/egy360travel" target="_blank" rel="noopener" class="text-white" title="Follow us on Pinterest"><i class="fab fa-pinterest-p"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6">
@@ -598,7 +634,8 @@
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="/terms/" class="text-white-50">Terms</a></li>
                         <li class="mb-2"><a href="/privacy/" class="text-white-50">Privacy</a></li>
-                        <li class="mb-2"><a href="/cookies/" class="text-white-50">Cookies</a></li>
+                        <li class="mb-2"><a href="/cookie-policy/" class="text-white-50">Cookies</a></li>
+                        <li class="mb-2"><a href="/affiliate-disclosure/" class="text-white-50">Affiliate Disclosure</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-6">

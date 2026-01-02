@@ -298,7 +298,7 @@
                     <!-- Primary Affiliate Booking - Most Prominent -->
                     {% if tour.viator_url %}
                     <div class="d-grid gap-2 mb-3">
-                        <a href="{{ tour.viator_url }}" target="_blank" rel="noopener nofollow"
+                        <a href="{{ tour.viator_url }}" target="_blank" rel="sponsored noopener"
                            class="btn btn-success btn-lg affiliate-link pulse-animation"
                            data-item-type="tour" data-item-id="{{ tour.id }}" data-platform="Viator">
                             <i class="fas fa-bolt me-2"></i>Book Now - Best Price
@@ -320,7 +320,7 @@
                     <!-- Alternative Affiliate Booking -->
                     {% if tour.getyourguide_url %}
                     <div class="d-grid gap-2 mb-3">
-                        <a href="{{ tour.getyourguide_url }}" target="_blank" rel="noopener nofollow"
+                        <a href="{{ tour.getyourguide_url }}" target="_blank" rel="sponsored noopener"
                            class="btn btn-outline-primary affiliate-link"
                            data-item-type="tour" data-item-id="{{ tour.id }}" data-platform="GetYourGuide">
                             <i class="fas fa-compass me-2"></i>Compare on GetYourGuide

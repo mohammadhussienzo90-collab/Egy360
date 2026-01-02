@@ -1,0 +1,347 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <meta name="description" content="{{ meta_description }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ page_title }}">
+    <meta property="og:description" content="{{ meta_description }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://360egy.com/links/">
+    <meta property="og:image" content="https://360egy.com/static/images/og-image.jpg">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GETCTXF3PV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GETCTXF3PV');
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding-top: 30px;
+        }
+
+        /* Profile Section */
+        .profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #c41e3a, #ffd700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .profile-image i {
+            font-size: 48px;
+            color: white;
+        }
+
+        .profile h1 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .profile p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        /* Social Icons */
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            background: #ffd700;
+            color: #1a1a2e;
+        }
+
+        .social-icon.instagram:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+
+        .social-icon.facebook:hover {
+            background: #1877f2;
+            color: white;
+        }
+
+        .social-icon.tiktok:hover {
+            background: #000;
+            color: white;
+        }
+
+        /* Link Buttons */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .link-button {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: #1a1a2e;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .link-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .link-icon i {
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .link-content {
+            flex: 1;
+        }
+
+        .link-content h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: #1a1a2e;
+        }
+
+        .link-content p {
+            font-size: 0.8rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .link-arrow {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Featured Badge */
+        .featured {
+            position: relative;
+        }
+
+        .featured::before {
+            content: 'Popular';
+            position: absolute;
+            top: -8px;
+            right: 15px;
+            background: linear-gradient(135deg, #c41e3a, #ff6b6b);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 35px;
+            padding-bottom: 20px;
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #ffd700;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            margin-top: 10px;
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .link-button {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .link-button:nth-child(1) { animation-delay: 0.1s; }
+        .link-button:nth-child(2) { animation-delay: 0.15s; }
+        .link-button:nth-child(3) { animation-delay: 0.2s; }
+        .link-button:nth-child(4) { animation-delay: 0.25s; }
+        .link-button:nth-child(5) { animation-delay: 0.3s; }
+        .link-button:nth-child(6) { animation-delay: 0.35s; }
+        .link-button:nth-child(7) { animation-delay: 0.4s; }
+
+        /* Egypt flag colors accent */
+        .egypt-flag {
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+            margin-bottom: 20px;
+        }
+
+        .egypt-flag span {
+            width: 40px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .egypt-flag .red { background: #c41e3a; }
+        .egypt-flag .white { background: white; }
+        .egypt-flag .black { background: #1a1a1a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Profile Section -->
+        <div class="profile">
+            <div class="profile-image">
+                <i class="fas fa-ankh"></i>
+            </div>
+            <h1>Egy360</h1>
+            <p>Your Trusted Egypt Travel Guide</p>
+            <div class="egypt-flag">
+                <span class="red"></span>
+                <span class="white"></span>
+                <span class="black"></span>
+            </div>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="social-icons">
+            <a href="https://instagram.com/egy360travel" target="_blank" rel="noopener" class="social-icon instagram" title="Follow on Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://facebook.com/egy360travel" target="_blank" rel="noopener" class="social-icon facebook" title="Follow on Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://tiktok.com/@egy360travel" target="_blank" rel="noopener" class="social-icon tiktok" title="Follow on TikTok">
+                <i class="fab fa-tiktok"></i>
+            </a>
+        </div>
+
+        <!-- Link Buttons -->
+        <div class="links">
+            {% for link in links %}
+            <a href="{{ link.url }}" class="link-button{% if forloop.first %} featured{% endif %}" onclick="trackLinkClick('{{ link.title }}')">
+                <div class="link-icon" style="background: {{ link.color }}">
+                    <i class="fas {{ link.icon }}"></i>
+                </div>
+                <div class="link-content">
+                    <h3>{{ link.title }}</h3>
+                    <p>{{ link.description }}</p>
+                </div>
+                <i class="fas fa-chevron-right link-arrow"></i>
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <a href="https://360egy.com">360egy.com</a>
+            <p>Made with love for Egypt travelers</p>
+        </div>
+    </div>
+
+    <script>
+        // Track link clicks for analytics
+        function trackLinkClick(linkName) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'link_click', {
+                    'event_category': 'Social Links',
+                    'event_label': linkName,
+                    'value': 1
+                });
+            }
+        }
+    </script>
+</body>
+</html>

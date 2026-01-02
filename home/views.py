@@ -160,6 +160,22 @@ def terms_of_service(request):
     })
 
 
+def affiliate_disclosure(request):
+    """Affiliate disclosure page - required for affiliate program compliance"""
+    return render(request, 'affiliate-disclosure.html', {
+        'page_title': 'Affiliate Disclosure - Egy360',
+        'meta_description': 'Egy360 affiliate disclosure - transparency about our partnerships with travel booking platforms.',
+    })
+
+
+def cookie_policy(request):
+    """Cookie policy page - required for GDPR and affiliate program compliance"""
+    return render(request, 'cookie-policy.html', {
+        'page_title': 'Cookie Policy - Egy360',
+        'meta_description': 'Learn how Egy360 uses cookies and tracking technologies.',
+    })
+
+
 def faq(request):
     """FAQ page with database-driven content"""
     # Get FAQs from database, grouped by category
@@ -206,6 +222,69 @@ def deals(request):
         'meta_description': 'Find the best deals on Egypt hotels, tours, and flights. Exclusive discounts and promo codes for your Egyptian adventure.',
     }
     return render(request, 'deals.html', context)
+
+
+def social_links(request):
+    """Social media link-in-bio page for Instagram and Facebook"""
+    # Define all the links with UTM tracking
+    links = [
+        {
+            'title': 'Best Pyramids Tours',
+            'description': 'Top-rated guided tours of the Pyramids of Giza',
+            'url': '/tours/?destination=cairo&utm_source=social&utm_medium=bio&utm_campaign=link_in_bio',
+            'icon': 'fa-landmark',
+            'color': '#c41e3a',
+        },
+        {
+            'title': 'Top Cairo Hotels',
+            'description': 'Best hotels near the Pyramids & downtown Cairo',
+            'url': '/accommodations/?city=cairo&utm_source=social&utm_medium=bio&utm_campaign=link_in_bio',
+            'icon': 'fa-hotel',
+            'color': '#2563eb',
+        },
+        {
+            'title': 'Red Sea Beach Resorts',
+            'description': 'Hurghada & Sharm El Sheikh resorts',
+            'url': '/accommodations/?city=hurghada&utm_source=social&utm_medium=bio&utm_campaign=link_in_bio',
+            'icon': 'fa-umbrella-beach',
+            'color': '#0891b2',
+        },
+        {
+            'title': 'Book Flights to Egypt',
+            'description': 'Compare prices from 100+ airlines',
+            'url': '/flights/?utm_source=social&utm_medium=bio&utm_campaign=link_in_bio',
+            'icon': 'fa-plane',
+            'color': '#7c3aed',
+        },
+        {
+            'title': 'Travel Guides & Tips',
+            'description': 'Everything you need to know about Egypt',
+            'url': '/blog/?utm_source=social&utm_medium=bio&utm_campaign=link_in_bio',
+            'icon': 'fa-book-open',
+            'color': '#059669',
+        },
+        {
+            'title': 'Nile Cruise Packages',
+            'description': 'Luxor to Aswan cruise experiences',
+            'url': '/tours/?type=cruise&utm_source=social&utm_medium=bio&utm_campaign=link_in_bio',
+            'icon': 'fa-ship',
+            'color': '#dc2626',
+        },
+        {
+            'title': 'Travel Insurance',
+            'description': 'Protect your Egypt trip',
+            'url': '/insurance/?utm_source=social&utm_medium=bio&utm_campaign=link_in_bio',
+            'icon': 'fa-shield-halved',
+            'color': '#ca8a04',
+        },
+    ]
+
+    context = {
+        'page_title': 'Egy360 Links - Your Egypt Travel Guide',
+        'meta_description': 'All links from Egy360 - Best Egypt tours, hotels, flights, and travel guides in one place.',
+        'links': links,
+    }
+    return render(request, 'social_links.html', context)
 
 
 def error_404(request, exception):

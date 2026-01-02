@@ -24,6 +24,11 @@ urlpatterns = [
     # Legal pages
     path('privacy/', views.privacy_policy, name='privacy'),
     path('terms/', views.terms_of_service, name='terms'),
+    path('affiliate-disclosure/', views.affiliate_disclosure, name='affiliate-disclosure'),
+    path('cookie-policy/', views.cookie_policy, name='cookie-policy'),
+
+    # Social media
+    path('links/', views.social_links, name='social-links'),
 
     # API endpoints
     path('api/newsletter/', views.newsletter_subscribe, name='newsletter-subscribe'),

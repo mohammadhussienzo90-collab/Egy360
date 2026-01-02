@@ -119,7 +119,7 @@ def reverse_city_guides(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0002_blogpost_related_city'),
+        ('blog', '0004_seed_major_city_guides'),
     ]
 
     operations = [
