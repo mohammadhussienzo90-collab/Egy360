@@ -1,4 +1,31 @@
-"""Egy360 URL Configuration"""
+"""
+Egy360 URL Configuration
+========================
+
+This module defines all URL routes for the Egy360 travel platform.
+
+URL Structure:
+- /                 - Homepage and landing pages
+- /admin/           - Django admin interface
+- /accounts/        - User authentication (login, register, profile)
+- /auth/            - OAuth social login (Google, Facebook)
+- /tours/           - Tour packages and experiences
+- /accommodations/  - Hotels, resorts, vacation rentals
+- /destinations/    - Egyptian cities and attractions
+- /blog/            - Travel guides and articles
+- /bookings/        - Booking management
+- /payments/        - Payment processing (PayMob)
+- /api/             - REST API endpoints
+- /dashboard/       - User dashboard
+
+Special URLs:
+- /health/          - Health check for Railway deployment
+- /favicon.svg      - Site favicon (Ankh symbol)
+- /sitemap.xml      - SEO sitemap
+
+Author: Egy360 Team
+"""
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -47,8 +74,8 @@ urlpatterns = [
     path('accommodations/', include('accommodations.urls')),
     path('tours/', include('tours.urls')),
     path('destinations/', include('destinations.urls')),
-    path('accounts/', include('accounts.urls')),
-    # path('auth/', include('allauth.urls')),  # Social auth URLs - DISABLED FOR DEBUG
+    path('accounts/', include('accounts.urls')),  # Custom account views
+    path('accounts/', include('allauth.urls')),  # OAuth social login (Google, Facebook)
     path('bookings/', include('bookings.urls')),
     path('reviews/', include('reviews.urls')),
     path('payments/', include('payments.urls')),
