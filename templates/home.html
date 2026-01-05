@@ -382,6 +382,51 @@
     </div>
 </section>
 
+<!-- Travelpayouts Hotel Search Widget -->
+<section class="section-travel-search py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Hotel Search Widget -->
+            <div class="col-lg-6">
+                <div class="search-widget-card">
+                    <div class="widget-header">
+                        <div class="widget-icon widget-icon-hotel">
+                            <i class="fas fa-hotel"></i>
+                        </div>
+                        <div>
+                            <h3>Find Your Perfect Hotel</h3>
+                            <p>Compare prices from 70+ booking sites</p>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <!-- Hotellook White Label Widget -->
+                        <script charset="utf-8" src="//tp.media/content?promo_id=4495&shmarker=477897&campaign_id=100&trs=262019" async></script>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flight Search Widget -->
+            <div class="col-lg-6">
+                <div class="search-widget-card">
+                    <div class="widget-header">
+                        <div class="widget-icon widget-icon-flight">
+                            <i class="fas fa-plane-departure"></i>
+                        </div>
+                        <div>
+                            <h3>Book Cheap Flights</h3>
+                            <p>Search 700+ airlines instantly</p>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <!-- Aviasales Flight Widget -->
+                        <script charset="utf-8" src="//tp.media/content?promo_id=4497&shmarker=477897&campaign_id=100&trs=262019&search_host=hydra.aviasales.ru&locale=en" async></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Klook Tours & Activities Widget -->
 <section class="section-klook py-5">
     <div class="container">
@@ -1351,6 +1396,78 @@
 @media (hover: none) {
     .card-modern:hover { transform: none; }
     .card-overlay { display: none; }
+}
+
+/* ========================================
+   TRAVELPAYOUTS SEARCH WIDGETS
+   ======================================== */
+.section-travel-search {
+    background: #f8f9fa;
+}
+
+.search-widget-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    height: 100%;
+    transition: var(--transition);
+}
+
+.search-widget-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.widget-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.widget-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.widget-icon-hotel {
+    background: var(--gradient-accent);
+}
+
+.widget-icon-flight {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.widget-header h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.widget-header p {
+    color: #666;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+.widget-body {
+    min-height: 380px;
+}
+
+/* Override Travelpayouts widget styling if needed */
+.widget-body iframe {
+    border-radius: var(--radius-sm);
 }
 
 /* ========================================
