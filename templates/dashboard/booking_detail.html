@@ -1,0 +1,446 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Details - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 40px 0;
+        margin-bottom: 30px;
+    }
+
+    .detail-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .detail-card-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .detail-card-header h5 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .detail-card-body {
+        padding: 25px;
+    }
+
+    .booking-hero {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+
+    .booking-hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .booking-hero-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        padding: 30px;
+        color: white;
+    }
+
+    .booking-hero-overlay h2 {
+        margin: 0 0 10px;
+        font-weight: 700;
+    }
+
+    .status-badge {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-confirmed { background: #d4edda; color: #155724; }
+    .status-cancelled { background: #f8d7da; color: #721c24; }
+    .status-completed { background: #cce5ff; color: #004085; }
+
+    .info-row {
+        display: flex;
+        padding: 15px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        width: 180px;
+        color: #666;
+        font-weight: 500;
+    }
+
+    .info-value {
+        flex: 1;
+        color: #1a1a1a;
+    }
+
+    .info-value i {
+        color: var(--primary-color);
+        margin-right: 8px;
+    }
+
+    .price-breakdown {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .price-row:last-child {
+        border-bottom: none;
+    }
+
+    .price-row.total {
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        border-top: 2px solid var(--primary-color);
+        margin-top: 10px;
+        padding-top: 15px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #e0e0e0;
+    }
+
+    .timeline-item {
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -24px;
+        top: 5px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        border: 2px solid white;
+        box-shadow: 0 0 0 2px var(--primary-color);
+    }
+
+    .timeline-item.completed::before {
+        background: #28a745;
+        box-shadow: 0 0 0 2px #28a745;
+    }
+
+    .timeline-item.pending::before {
+        background: #ffc107;
+        box-shadow: 0 0 0 2px #ffc107;
+    }
+
+    .timeline-date {
+        font-size: 0.85rem;
+        color: #888;
+    }
+
+    @media (max-width: 768px) {
+        .info-row {
+            flex-direction: column;
+        }
+
+        .info-label {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .booking-hero {
+            height: 200px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard:dashboard' %}" class="text-white-50">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dashboard:bookings' %}" class="text-white-50">My Bookings</a></li>
+                <li class="breadcrumb-item active text-white">Booking Details</li>
+            </ol>
+        </nav>
+        <h1 class="mb-0"><i class="fas fa-receipt me-2"></i>Booking Details</h1>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Booking Hero -->
+            <div class="booking-hero">
+                {% if booking_type == 'tour' %}
+                    {% if booking.tour.main_image %}
+                    <img src="{{ booking.tour.main_image.url }}" alt="{{ booking.tour.name }}">
+                    {% else %}
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-hiking fa-4x text-white"></i>
+                    </div>
+                    {% endif %}
+                    <div class="booking-hero-overlay">
+                        <h2>{{ booking.tour.name }}</h2>
+                        <p class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>{{ booking.tour.departure_city }}</p>
+                    </div>
+                {% else %}
+                    {% if booking.content_object.image_url %}
+                    <img src="{{ booking.content_object.image_url }}" alt="{{ booking.content_object.name }}">
+                    {% else %}
+                    <div style="background: linear-gradient(135deg, #1e3c72, #2a5298); height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-hotel fa-4x text-white"></i>
+                    </div>
+                    {% endif %}
+                    <div class="booking-hero-overlay">
+                        <h2>{{ booking.content_object.name|default:"Accommodation Booking" }}</h2>
+                        <p class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>{{ booking.content_object.city|default:"Egypt" }}</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Booking Information -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <h5><i class="fas fa-info-circle me-2 text-primary"></i>Booking Information</h5>
+                    <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+                </div>
+                <div class="detail-card-body">
+                    {% if booking_type == 'tour' %}
+                    <div class="info-row">
+                        <span class="info-label">Booking Reference</span>
+                        <span class="info-value"><i class="fas fa-hashtag"></i>TUR-{{ booking.id|stringformat:"05d" }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tour Date</span>
+                        <span class="info-value"><i class="fas fa-calendar"></i>{{ booking.tour_date|date:"l, F d, Y" }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value"><i class="fas fa-clock"></i>{{ booking.tour.duration_days }} Day(s)</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Travelers</span>
+                        <span class="info-value">
+                            <i class="fas fa-users"></i>
+                            {{ booking.number_of_adults }} Adult(s)
+                            {% if booking.number_of_children %}, {{ booking.number_of_children }} Child(ren){% endif %}
+                        </span>
+                    </div>
+                    {% if booking.special_requests %}
+                    <div class="info-row">
+                        <span class="info-label">Special Requests</span>
+                        <span class="info-value"><i class="fas fa-comment"></i>{{ booking.special_requests }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="info-row">
+                        <span class="info-label">Booking Date</span>
+                        <span class="info-value"><i class="fas fa-calendar-plus"></i>{{ booking.booking_date|date:"M d, Y - H:i" }}</span>
+                    </div>
+                    {% else %}
+                    <div class="info-row">
+                        <span class="info-label">Booking Reference</span>
+                        <span class="info-value"><i class="fas fa-hashtag"></i>{{ booking.booking_reference }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Check-in</span>
+                        <span class="info-value"><i class="fas fa-calendar-check"></i>{{ booking.check_in_date|date:"l, F d, Y" }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Check-out</span>
+                        <span class="info-value"><i class="fas fa-calendar-times"></i>{{ booking.check_out_date|date:"l, F d, Y" }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Guests</span>
+                        <span class="info-value"><i class="fas fa-users"></i>{{ booking.guests|default:"2" }} Guest(s)</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Booking Date</span>
+                        <span class="info-value"><i class="fas fa-calendar-plus"></i>{{ booking.created_at|date:"M d, Y - H:i" }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <h5><i class="fas fa-user me-2 text-success"></i>Contact Information</h5>
+                </div>
+                <div class="detail-card-body">
+                    <div class="info-row">
+                        <span class="info-label">Name</span>
+                        <span class="info-value">{{ booking.user.get_full_name|default:booking.user.username }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email</span>
+                        <span class="info-value">{{ booking.user.email }}</span>
+                    </div>
+                    {% if booking.contact_phone %}
+                    <div class="info-row">
+                        <span class="info-label">Phone</span>
+                        <span class="info-value">{{ booking.contact_phone }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Price Breakdown -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <h5><i class="fas fa-receipt me-2 text-warning"></i>Price Breakdown</h5>
+                </div>
+                <div class="detail-card-body">
+                    <div class="price-breakdown">
+                        {% if booking_type == 'tour' %}
+                        <div class="price-row">
+                            <span>Adults ({{ booking.number_of_adults }} x ${{ booking.tour.price_per_person }})</span>
+                            <span>${{ booking.adult_total|default:booking.total_price|floatformat:0 }}</span>
+                        </div>
+                        {% if booking.number_of_children %}
+                        <div class="price-row">
+                            <span>Children ({{ booking.number_of_children }})</span>
+                            <span>${{ booking.children_total|default:"0" }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="price-row total">
+                            <span>Total</span>
+                            <span>${{ booking.total_price|floatformat:0 }}</span>
+                        </div>
+                        {% else %}
+                        <div class="price-row">
+                            <span>Accommodation</span>
+                            <span>${{ booking.subtotal|default:booking.total_amount|floatformat:0 }}</span>
+                        </div>
+                        {% if booking.taxes %}
+                        <div class="price-row">
+                            <span>Taxes & Fees</span>
+                            <span>${{ booking.taxes|floatformat:0 }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="price-row total">
+                            <span>Total</span>
+                            <span>${{ booking.total_amount|floatformat:0 }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <h5><i class="fas fa-cogs me-2 text-info"></i>Actions</h5>
+                </div>
+                <div class="detail-card-body">
+                    <div class="action-buttons">
+                        <a href="{% url 'dashboard:bookings' %}" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Bookings
+                        </a>
+                        {% if booking.status == 'pending' or booking.status == 'confirmed' %}
+                        <button class="btn btn-outline-danger w-100" onclick="cancelBooking({{ booking.id }})">
+                            <i class="fas fa-times me-2"></i>Cancel Booking
+                        </button>
+                        {% endif %}
+                        {% if booking.status == 'completed' %}
+                        <a href="{% url 'reviews:create' %}?type={{ booking_type }}&id={% if booking_type == 'tour' %}{{ booking.tour.id }}{% else %}{{ booking.content_object.id }}{% endif %}" class="btn btn-primary w-100">
+                            <i class="fas fa-star me-2"></i>Write a Review
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Need Help -->
+            <div class="detail-card">
+                <div class="detail-card-body text-center">
+                    <i class="fas fa-headset fa-2x text-primary mb-3"></i>
+                    <h6>Need Help?</h6>
+                    <p class="text-muted small mb-3">Questions about your booking?</p>
+                    <a href="{% url 'home:contact' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-envelope me-1"></i>Contact Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function cancelBooking(bookingId) {
+    if (confirm('Are you sure you want to cancel this booking? This action cannot be undone.')) {
+        fetch(`/dashboard/bookings/${bookingId}/cancel/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Booking cancelled successfully.');
+                window.location.href = '{% url "dashboard:bookings" %}';
+            } else {
+                alert(data.error || 'Failed to cancel booking');
+            }
+        })
+        .catch(error => {
+            alert('An error occurred. Please try again.');
+        });
+    }
+}
+</script>
+{% endblock %}
