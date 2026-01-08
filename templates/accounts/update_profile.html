@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Profile - Egy360{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-container {
+        padding: 40px 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+        min-height: calc(100vh - 200px);
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        padding: 30px;
+    }
+
+    .profile-header h2 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .profile-header p {
+        margin: 10px 0 0;
+        opacity: 0.9;
+    }
+
+    .profile-body {
+        padding: 30px;
+    }
+
+    .section-title {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .form-floating {
+        margin-bottom: 20px;
+    }
+
+    .form-floating .form-control {
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        padding: 1rem 0.75rem;
+        height: auto;
+    }
+
+    .form-floating .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(196, 30, 58, 0.15);
+    }
+
+    .form-floating label {
+        padding: 1rem 0.75rem;
+    }
+
+    .avatar-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .avatar-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #f0f0f0;
+        margin-bottom: 15px;
+    }
+
+    .avatar-placeholder {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        margin: 0 auto 15px;
+    }
+
+    .btn-submit {
+        padding: 14px 40px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--primary-color), #8b1226);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(196, 30, 58, 0.3);
+    }
+
+    .btn-cancel {
+        padding: 14px 40px;
+        border-radius: 10px;
+        font-weight: 600;
+        background: #f0f0f0;
+        color: #666;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+    .phone-input-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .country-select {
+        width: 100px;
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        padding: 12px;
+    }
+
+    .phone-input {
+        flex: 1;
+    }
+
+    @media (max-width: 768px) {
+        .profile-container {
+            padding: 20px 0;
+        }
+        .profile-header, .profile-body {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <h2><i class="fas fa-user-edit me-2"></i>Update Profile</h2>
+                        <p>Manage your account information</p>
+                    </div>
+
+                    <div class="profile-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <!-- Avatar Section -->
+                            <div class="avatar-section">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="Profile" class="avatar-preview">
+                                {% else %}
+                                    <div class="avatar-placeholder">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <label for="avatar" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-camera me-2"></i>Change Photo
+                                    </label>
+                                    <input type="file" id="avatar" name="avatar" class="d-none" accept="image/*">
+                                </div>
+                            </div>
+
+                            <!-- Account Information -->
+                            <h5 class="section-title"><i class="fas fa-user me-2"></i>Account Information</h5>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="first_name" name="first_name"
+                                               value="{{ user.first_name }}" placeholder="First Name">
+                                        <label for="first_name">First Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="last_name" name="last_name"
+                                               value="{{ user.last_name }}" placeholder="Last Name">
+                                        <label for="last_name">Last Name</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="username" name="username"
+                                       value="{{ user.username }}" placeholder="Username" required>
+                                <label for="username"><i class="fas fa-at me-2"></i>Username</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="email" name="email"
+                                       value="{{ user.email }}" placeholder="Email" required>
+                                <label for="email"><i class="fas fa-envelope me-2"></i>Email Address</label>
+                            </div>
+
+                            <!-- Contact Information -->
+                            <h5 class="section-title mt-4"><i class="fas fa-phone me-2"></i>Contact Information</h5>
+
+                            <div class="mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <div class="phone-input-group">
+                                    <select class="form-select country-select" name="country_code">
+                                        <option value="+20" {% if profile.phone and '+20' in profile.phone %}selected{% endif %}>+20</option>
+                                        <option value="+1" {% if profile.phone and '+1' in profile.phone %}selected{% endif %}>+1</option>
+                                        <option value="+44" {% if profile.phone and '+44' in profile.phone %}selected{% endif %}>+44</option>
+                                        <option value="+971" {% if profile.phone and '+971' in profile.phone %}selected{% endif %}>+971</option>
+                                        <option value="+966" {% if profile.phone and '+966' in profile.phone %}selected{% endif %}>+966</option>
+                                    </select>
+                                    <input type="tel" class="form-control phone-input" name="phone_number"
+                                           value="{{ profile.phone|default:'' }}" placeholder="Phone number">
+                                </div>
+                            </div>
+
+                            <!-- Preferences -->
+                            <h5 class="section-title mt-4"><i class="fas fa-cog me-2"></i>Preferences</h5>
+
+                            <div class="form-floating">
+                                <select class="form-select" id="preferred_currency" name="preferred_currency" style="border-radius: 10px; border: 2px solid #e0e0e0;">
+                                    <option value="EGP" {% if profile.preferred_currency == 'EGP' %}selected{% endif %}>Egyptian Pound (EGP)</option>
+                                    <option value="USD" {% if profile.preferred_currency == 'USD' %}selected{% endif %}>US Dollar (USD)</option>
+                                    <option value="EUR" {% if profile.preferred_currency == 'EUR' %}selected{% endif %}>Euro (EUR)</option>
+                                    <option value="GBP" {% if profile.preferred_currency == 'GBP' %}selected{% endif %}>British Pound (GBP)</option>
+                                </select>
+                                <label for="preferred_currency">Preferred Currency</label>
+                            </div>
+
+                            <div class="form-check mb-4">
+                                <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter"
+                                       {% if profile.newsletter_subscribed %}checked{% endif %}>
+                                <label class="form-check-label" for="newsletter">
+                                    Subscribe to newsletter for travel deals and updates
+                                </label>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            <div class="d-flex gap-3 justify-content-end">
+                                <a href="{% url 'accounts:profile' %}" class="btn btn-cancel">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary btn-submit">
+                                    <i class="fas fa-save me-2"></i>Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Avatar preview
+    const avatarInput = document.getElementById('avatar');
+    const avatarPreview = document.querySelector('.avatar-preview');
+    const avatarPlaceholder = document.querySelector('.avatar-placeholder');
+
+    if (avatarInput) {
+        avatarInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (avatarPlaceholder) {
+                        avatarPlaceholder.remove();
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'avatar-preview';
+                        img.alt = 'Profile';
+                        document.querySelector('.avatar-section').insertBefore(img, document.querySelector('.avatar-section > div'));
+                    } else if (avatarPreview) {
+                        avatarPreview.src = e.target.result;
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -148,14 +148,14 @@ def contact(request):
 
 def privacy_policy(request):
     """Privacy policy page"""
-    return render(request, 'privacy_policy.html', {
+    return render(request, 'privacy.html', {
         'page_title': 'Privacy Policy - Egy360',
     })
 
 
 def terms_of_service(request):
     """Terms of service page"""
-    return render(request, 'terms_of_service.html', {
+    return render(request, 'terms.html', {
         'page_title': 'Terms of Service - Egy360',
     })
 
