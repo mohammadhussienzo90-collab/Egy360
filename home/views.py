@@ -206,6 +206,15 @@ def flights(request):
     return render(request, 'flights.html', context)
 
 
+def hotels_search(request):
+    """Hotels comparison page with Travelpayouts Hotellook widget"""
+    context = {
+        'page_title': 'Compare Hotel Prices in Egypt - Best Rates | Egy360',
+        'meta_description': 'Compare hotel prices from 70+ booking sites. Find the best rates for hotels in Cairo, Luxor, Hurghada, Sharm El Sheikh and more.',
+    }
+    return render(request, 'hotels-search.html', context)
+
+
 def insurance(request):
     """Travel insurance page with affiliate links"""
     context = {

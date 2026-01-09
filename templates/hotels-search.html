@@ -1,0 +1,588 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Compare Hotel Prices in Egypt - Best Rates Guaranteed | Egy360{% endblock %}
+
+{% block description %}Compare hotel prices from Booking.com, Agoda, Hotels.com & 70+ sites. Find the best rates for Cairo, Luxor, Hurghada, Sharm El Sheikh hotels. No booking fees.{% endblock %}
+
+{% block keywords %}Egypt hotels, Cairo hotels, Luxor hotels, Hurghada resorts, Sharm El Sheikh hotels, cheap hotels Egypt, hotel comparison{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hotels-hero {
+        background: linear-gradient(135deg, rgba(30, 60, 114, 0.95), rgba(42, 82, 152, 0.9)),
+                    url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=85') center/cover;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+        color: white;
+        padding: 60px 0;
+    }
+
+    .hotels-hero h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+    }
+
+    .hotels-hero p {
+        font-size: 1.25rem;
+        opacity: 0.95;
+        max-width: 600px;
+    }
+
+    .search-widget-container {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        margin-top: -80px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .widget-header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .widget-header h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 10px;
+    }
+
+    .widget-header p {
+        color: #666;
+    }
+
+    .widget-body {
+        min-height: 400px;
+    }
+
+    .partner-logos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        padding: 20px 0;
+        border-top: 1px solid #eee;
+        margin-top: 20px;
+    }
+
+    .partner-logos span {
+        color: #999;
+        font-size: 0.9rem;
+    }
+
+    .features-section {
+        padding: 80px 0;
+        background: #f8f9fa;
+    }
+
+    .feature-card {
+        text-align: center;
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        height: 100%;
+        transition: transform 0.3s;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 20px;
+    }
+
+    .feature-icon.blue { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; }
+    .feature-icon.green { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
+    .feature-icon.orange { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+    .feature-icon.gold { background: linear-gradient(135deg, #f5af19, #f12711); color: white; }
+
+    .feature-card h4 {
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .feature-card p {
+        color: #666;
+        margin-bottom: 0;
+    }
+
+    .destinations-section {
+        padding: 80px 0;
+    }
+
+    .destination-card {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        height: 300px;
+        margin-bottom: 20px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .destination-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+
+    .destination-card:hover img {
+        transform: scale(1.1);
+    }
+
+    .destination-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 25px;
+        color: white;
+    }
+
+    .destination-overlay h4 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .destination-overlay .price {
+        font-size: 1.25rem;
+        color: #ffd700;
+    }
+
+    .hotel-types-section {
+        padding: 80px 0;
+        background: #f8f9fa;
+    }
+
+    .hotel-type-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s;
+        height: 100%;
+    }
+
+    .hotel-type-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .hotel-type-card i {
+        font-size: 3rem;
+        color: #1e3c72;
+        margin-bottom: 20px;
+    }
+
+    .hotel-type-card h5 {
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .hotel-type-card p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
+    .tips-section {
+        padding: 80px 0;
+    }
+
+    .tip-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+        height: 100%;
+    }
+
+    .tip-card h5 {
+        color: #1e3c72;
+        margin-bottom: 15px;
+    }
+
+    .tip-card ul {
+        margin-bottom: 0;
+        padding-left: 20px;
+    }
+
+    .tip-card li {
+        margin-bottom: 8px;
+        color: #555;
+    }
+
+    .cta-section {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        padding: 60px 0;
+        color: white;
+        text-align: center;
+    }
+
+    .cta-section h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .guarantee-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255,255,255,0.1);
+        padding: 15px 25px;
+        border-radius: 50px;
+        margin-top: 20px;
+    }
+
+    .guarantee-badge i {
+        color: #ffd700;
+        font-size: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .hotels-hero h1 {
+            font-size: 2rem;
+        }
+
+        .hotels-hero {
+            min-height: 400px;
+            padding: 40px 0;
+        }
+
+        .search-widget-container {
+            margin-top: -40px;
+            padding: 20px;
+        }
+
+        .destination-card {
+            height: 200px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hotels-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1>Compare Hotel Prices in Egypt</h1>
+                <p>Search 70+ booking sites at once. Find the best rates for hotels, resorts, and Nile cruises across Egypt.</p>
+                <div class="d-flex gap-3 flex-wrap mt-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-warning me-2"></i>
+                        <span>Best Price Guarantee</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-warning me-2"></i>
+                        <span>No Booking Fees</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-warning me-2"></i>
+                        <span>Free Cancellation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Widget -->
+<section class="pb-5">
+    <div class="container">
+        <div class="search-widget-container">
+            <div class="widget-header">
+                <h2><i class="fas fa-hotel me-2 text-primary"></i>Search & Compare Hotels</h2>
+                <p>Compare prices from Booking.com, Agoda, Hotels.com, Expedia & more</p>
+            </div>
+            <div class="widget-body">
+                <!-- Travelpayouts Hotellook Widget -->
+                <script charset="utf-8" src="//tp.media/content?promo_id=4495&shmarker=477897&campaign_id=100&trs=262019" async></script>
+            </div>
+            <div class="partner-logos">
+                <span>Comparing prices from:</span>
+                <span class="fw-bold">Booking.com</span>
+                <span class="fw-bold">Agoda</span>
+                <span class="fw-bold">Hotels.com</span>
+                <span class="fw-bold">Expedia</span>
+                <span class="fw-bold">+70 more</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Why Compare Hotels With Us?</h2>
+            <p class="text-muted">We search all major booking sites to find you the best deals</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="feature-card">
+                    <div class="feature-icon blue">
+                        <i class="fas fa-search-dollar"></i>
+                    </div>
+                    <h4>Best Prices</h4>
+                    <p>Compare prices from 70+ booking sites in one search</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-card">
+                    <div class="feature-icon green">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h4>No Hidden Fees</h4>
+                    <p>The price you see is the price you pay. No surprises.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-card">
+                    <div class="feature-icon orange">
+                        <i class="fas fa-undo"></i>
+                    </div>
+                    <h4>Free Cancellation</h4>
+                    <p>Many hotels offer free cancellation. Book now, decide later.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-card">
+                    <div class="feature-icon gold">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4>Verified Reviews</h4>
+                    <p>Real reviews from millions of verified guests</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Destinations -->
+<section class="destinations-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Popular Hotel Destinations in Egypt</h2>
+            <p class="text-muted">Find the best hotels in Egypt's top cities</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <a href="https://search.hotellook.com/?marker=477897&locationId=12153&locale=en&currency=usd" target="_blank" rel="noopener" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=600&q=80" alt="Cairo Hotels">
+                    <div class="destination-overlay">
+                        <h4>Cairo</h4>
+                        <span>500+ hotels</span>
+                        <span class="price">From $25/night</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="https://search.hotellook.com/?marker=477897&locationId=27536&locale=en&currency=usd" target="_blank" rel="noopener" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=80" alt="Hurghada Hotels">
+                    <div class="destination-overlay">
+                        <h4>Hurghada</h4>
+                        <span>300+ resorts</span>
+                        <span class="price">From $35/night</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="https://search.hotellook.com/?marker=477897&locationId=27521&locale=en&currency=usd" target="_blank" rel="noopener" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Sharm El Sheikh Hotels">
+                    <div class="destination-overlay">
+                        <h4>Sharm El Sheikh</h4>
+                        <span>250+ resorts</span>
+                        <span class="price">From $40/night</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <a href="https://search.hotellook.com/?marker=477897&locationId=27468&locale=en&currency=usd" target="_blank" rel="noopener" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=600&q=80" alt="Luxor Hotels">
+                    <div class="destination-overlay">
+                        <h4>Luxor</h4>
+                        <span class="price">From $30/night</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="https://search.hotellook.com/?marker=477897&locationId=27456&locale=en&currency=usd" target="_blank" rel="noopener" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=600&q=80" alt="Aswan Hotels">
+                    <div class="destination-overlay">
+                        <h4>Aswan</h4>
+                        <span class="price">From $28/night</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="https://search.hotellook.com/?marker=477897&locationId=27448&locale=en&currency=usd" target="_blank" rel="noopener" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=600&q=80" alt="Alexandria Hotels">
+                    <div class="destination-overlay">
+                        <h4>Alexandria</h4>
+                        <span class="price">From $22/night</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="https://search.hotellook.com/?marker=477897&locationId=27504&locale=en&currency=usd" target="_blank" rel="noopener" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Marsa Alam Hotels">
+                    <div class="destination-overlay">
+                        <h4>Marsa Alam</h4>
+                        <span class="price">From $45/night</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Hotel Types -->
+<section class="hotel-types-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Types of Accommodations</h2>
+            <p class="text-muted">From budget hostels to luxury resorts</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-2 col-6">
+                <div class="hotel-type-card">
+                    <i class="fas fa-hotel"></i>
+                    <h5>Hotels</h5>
+                    <p>City & boutique</p>
+                </div>
+            </div>
+            <div class="col-md-2 col-6">
+                <div class="hotel-type-card">
+                    <i class="fas fa-umbrella-beach"></i>
+                    <h5>Resorts</h5>
+                    <p>All-inclusive</p>
+                </div>
+            </div>
+            <div class="col-md-2 col-6">
+                <div class="hotel-type-card">
+                    <i class="fas fa-ship"></i>
+                    <h5>Nile Cruises</h5>
+                    <p>Floating hotels</p>
+                </div>
+            </div>
+            <div class="col-md-2 col-6">
+                <div class="hotel-type-card">
+                    <i class="fas fa-campground"></i>
+                    <h5>Desert Camps</h5>
+                    <p>Unique stays</p>
+                </div>
+            </div>
+            <div class="col-md-2 col-6">
+                <div class="hotel-type-card">
+                    <i class="fas fa-home"></i>
+                    <h5>Apartments</h5>
+                    <p>Self-catering</p>
+                </div>
+            </div>
+            <div class="col-md-2 col-6">
+                <div class="hotel-type-card">
+                    <i class="fas fa-bed"></i>
+                    <h5>Hostels</h5>
+                    <p>Budget-friendly</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tips Section -->
+<section class="tips-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Tips for Booking Hotels in Egypt</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="tip-card">
+                    <h5><i class="fas fa-calendar-alt me-2"></i>Best Time to Book</h5>
+                    <ul>
+                        <li>Book 2-4 weeks in advance for best availability</li>
+                        <li>Prices drop 20-30% during summer (June-August)</li>
+                        <li>Peak season: Oct-Apr (book 2+ months ahead)</li>
+                        <li>Ramadan offers special deals and quieter hotels</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="tip-card">
+                    <h5><i class="fas fa-lightbulb me-2"></i>Money-Saving Tips</h5>
+                    <ul>
+                        <li>Compare prices - same hotel can vary by 40%</li>
+                        <li>Book refundable rates for flexibility</li>
+                        <li>All-inclusive resorts save money on food</li>
+                        <li>Check our featured deals page for discounts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Ready to Find Your Perfect Hotel?</h2>
+        <p class="mb-4">Compare prices from 70+ booking sites and save up to 40%</p>
+        <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="btn btn-light btn-lg px-5">
+            <i class="fas fa-search me-2"></i>Search Hotels Now
+        </a>
+        <div class="guarantee-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Best Price Guarantee - Find it cheaper? We'll match it!</span>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Compare Hotel Prices in Egypt",
+    "description": "Compare hotel prices from 70+ booking sites. Find the best rates for hotels in Cairo, Luxor, Hurghada, Sharm El Sheikh and more Egyptian destinations.",
+    "url": "https://360egy.com/hotels-search/",
+    "mainEntity": {
+        "@type": "Service",
+        "name": "Hotel Price Comparison",
+        "serviceType": "Hotel Booking",
+        "areaServed": {
+            "@type": "Country",
+            "name": "Egypt"
+        }
+    }
+}
+</script>
+{% endblock %}
