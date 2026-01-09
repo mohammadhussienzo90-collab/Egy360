@@ -38,7 +38,7 @@ import os
 
 def health_check(request):
     """Basic health check for Railway"""
-    return JsonResponse({'status': 'ok', 'version': 'v6-pyramid'})
+    return JsonResponse({'status': 'ok', 'version': 'v7-hotels-search', 'branch': 'main'})
 
 def seed_articles(request):
     """Seed pyramid articles - access via /seed/?key=egy360seed"""
@@ -91,7 +91,7 @@ def seed_articles(request):
 
 def debug_check(request):
     """Simple debug endpoint"""
-    return JsonResponse({'status': 'ok', 'version': 'v4'})
+    return JsonResponse({'status': 'ok', 'version': 'v7-hotels-search', 'branch': 'main', 'features': ['hotels-search', 'privacy', 'terms']})
 
 @cache_control(max_age=3600)
 def favicon(request):
