@@ -84,61 +84,157 @@
     }
     </script>
 
-    <!-- Google Analytics GA4 -->
+    <!-- Google Analytics GA4 + Ads Conversion Tracking -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GETCTXF3PV"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
+
+        // GA4 Configuration
         gtag('config', 'G-GETCTXF3PV', {
             'send_page_view': true,
             'page_title': document.title,
             'page_location': window.location.href
         });
 
-        // Track affiliate link clicks
+        // Google Ads Configuration (Replace AW-XXXXXXXXX with your Google Ads ID)
+        // To get your ID: Google Ads > Tools > Conversions > New Conversion > Website
+        // gtag('config', 'AW-XXXXXXXXX');
+
+        // Enhanced Ecommerce & Conversion Tracking
         document.addEventListener('DOMContentLoaded', function() {
+
+            // Track page views by section
+            var pageSection = window.location.pathname.split('/')[1] || 'home';
+            gtag('event', 'page_section_view', {
+                'event_category': 'Navigation',
+                'event_label': pageSection
+            });
+
+            // Universal affiliate click tracker
+            function trackAffiliateClick(platform, category, value) {
+                // GA4 Event
+                gtag('event', 'affiliate_click', {
+                    'event_category': category,
+                    'event_label': platform,
+                    'value': value || 0
+                });
+
+                // Conversion event for Google Ads (importable)
+                gtag('event', 'conversion', {
+                    'send_to': 'G-GETCTXF3PV',
+                    'event_category': 'Affiliate Conversion',
+                    'event_label': platform,
+                    'value': value || 1
+                });
+
+                // Google Ads conversion (uncomment when you have Ads ID)
+                // gtag('event', 'conversion', {
+                //     'send_to': 'AW-XXXXXXXXX/CONVERSION_LABEL',
+                //     'value': value,
+                //     'currency': 'USD'
+                // });
+            }
+
             // Track Booking.com clicks
             document.querySelectorAll('a[href*="booking.com"]').forEach(function(link) {
                 link.addEventListener('click', function(e) {
-                    gtag('event', 'affiliate_click', {
-                        'event_category': 'Affiliate',
-                        'event_label': 'Booking.com',
-                        'value': link.getAttribute('data-accommodation-id') || '0'
-                    });
+                    trackAffiliateClick('Booking.com', 'Hotels', 50);
                 });
             });
 
             // Track Agoda clicks
             document.querySelectorAll('a[href*="agoda.com"]').forEach(function(link) {
                 link.addEventListener('click', function(e) {
-                    gtag('event', 'affiliate_click', {
-                        'event_category': 'Affiliate',
-                        'event_label': 'Agoda',
-                        'value': link.getAttribute('data-accommodation-id') || '0'
-                    });
+                    trackAffiliateClick('Agoda', 'Hotels', 40);
                 });
             });
 
             // Track Hotels.com clicks
             document.querySelectorAll('a[href*="hotels.com"]').forEach(function(link) {
                 link.addEventListener('click', function(e) {
-                    gtag('event', 'affiliate_click', {
-                        'event_category': 'Affiliate',
-                        'event_label': 'Hotels.com',
-                        'value': link.getAttribute('data-accommodation-id') || '0'
+                    trackAffiliateClick('Hotels.com', 'Hotels', 45);
+                });
+            });
+
+            // Track Hotellook/Hotel comparison clicks
+            document.querySelectorAll('a[href*="hotellook.com"], a[href*="search.hotellook"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    trackAffiliateClick('Hotellook', 'Hotels', 35);
+                });
+            });
+
+            // Track Aviasales/Flight clicks
+            document.querySelectorAll('a[href*="aviasales.com"], a[href*="jetradar"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    trackAffiliateClick('Aviasales', 'Flights', 25);
+                });
+            });
+
+            // Track Viator clicks
+            document.querySelectorAll('a[href*="viator.com"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    trackAffiliateClick('Viator', 'Tours', 30);
+                });
+            });
+
+            // Track GetYourGuide clicks
+            document.querySelectorAll('a[href*="getyourguide.com"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    trackAffiliateClick('GetYourGuide', 'Tours', 30);
+                });
+            });
+
+            // Track Klook clicks
+            document.querySelectorAll('a[href*="klook.com"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    trackAffiliateClick('Klook', 'Activities', 25);
+                });
+            });
+
+            // Track Travelpayouts widget clicks
+            document.querySelectorAll('a[href*="tp.media"], a[href*="travelpayouts"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    trackAffiliateClick('Travelpayouts', 'Mixed', 20);
+                });
+            });
+
+            // Track search widget interactions
+            var searchWidgets = document.querySelectorAll('[id*="tp-"], [class*="tp-widget"]');
+            searchWidgets.forEach(function(widget) {
+                widget.addEventListener('click', function(e) {
+                    gtag('event', 'widget_interaction', {
+                        'event_category': 'Engagement',
+                        'event_label': 'Search Widget Click'
                     });
                 });
             });
 
-            // Track Travelpayouts clicks
-            document.querySelectorAll('a[href*="tp.media"], a[href*="travelpayouts"]').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    gtag('event', 'affiliate_click', {
-                        'event_category': 'Affiliate',
-                        'event_label': 'Travelpayouts',
-                        'value': link.getAttribute('data-tour-id') || '0'
+            // Track newsletter signups
+            var newsletterForms = document.querySelectorAll('form[action*="newsletter"]');
+            newsletterForms.forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    gtag('event', 'generate_lead', {
+                        'event_category': 'Lead',
+                        'event_label': 'Newsletter Signup'
                     });
+                });
+            });
+
+            // Track scroll depth
+            var scrollDepths = [25, 50, 75, 100];
+            var scrollDepthsReached = [];
+            window.addEventListener('scroll', function() {
+                var scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                scrollDepths.forEach(function(depth) {
+                    if (scrollPercent >= depth && !scrollDepthsReached.includes(depth)) {
+                        scrollDepthsReached.push(depth);
+                        gtag('event', 'scroll_depth', {
+                            'event_category': 'Engagement',
+                            'event_label': depth + '%'
+                        });
+                    }
                 });
             });
         });
@@ -531,17 +627,23 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/destinations/">Destinations</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/accommodations/">Hotels</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-hotel me-1"></i>Hotels
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/accommodations/"><i class="fas fa-list me-2"></i>Browse Hotels</a></li>
+                            <li><a class="dropdown-item" href="/hotels-search/"><i class="fas fa-search-dollar me-2"></i>Compare Prices</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/tours/">Tours</a>
+                        <a class="nav-link text-white" href="/tours/"><i class="fas fa-hiking me-1"></i>Tours</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/flights/">Flights</a>
+                        <a class="nav-link text-white" href="/flights/"><i class="fas fa-plane me-1"></i>Flights</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/transportation/">Transport</a>
+                        <a class="nav-link text-white" href="/transportation/"><i class="fas fa-car me-1"></i>Transport</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/blog/">Blog</a>
