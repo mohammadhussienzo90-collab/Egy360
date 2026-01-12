@@ -1,4 +1,5 @@
 # Egy360 Dependencies
+# Build: v7-hotels-search-2026-01-12
 Django==5.1.2
 gunicorn==23.0.0
 whitenoise==6.7.0
