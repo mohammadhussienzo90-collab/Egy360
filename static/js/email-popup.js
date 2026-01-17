@@ -60,8 +60,8 @@
                         <img src="https://images.unsplash.com/photo-1539768942893-daf53e448371?w=300&h=200&fit=crop" alt="Egypt Pyramids">
                     </div>
                     <div class="popup-form">
-                        <h3>Discover Egypt Deals</h3>
-                        <p>Get exclusive travel deals, tips, and insider guides delivered to your inbox.</p>
+                        <h3>Free Egypt Travel Guide</h3>
+                        <p>Get our 7-Day Egypt Itinerary + exclusive travel deals delivered to your inbox.</p>
                         <form id="popup-newsletter-form">
                             <input type="email" id="popup-email" placeholder="Enter your email" required>
                             <button type="submit">

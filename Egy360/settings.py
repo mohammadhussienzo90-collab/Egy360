@@ -495,6 +495,17 @@ PAYMOB_FAWRY_INTEGRATION_ID = os.environ.get('PAYMOB_FAWRY_INTEGRATION_ID', '')
 PAYMOB_IFRAME_ID = os.environ.get('PAYMOB_IFRAME_ID', '')
 
 # =============================================================================
+# MAILCHIMP EMAIL MARKETING
+# =============================================================================
+# Setup: https://mailchimp.com/ (free up to 500 contacts)
+# API Key: Account > Extras > API keys
+# Audience ID: Audience > Settings > Audience name and defaults
+
+MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY', '')
+MAILCHIMP_AUDIENCE_ID = os.environ.get('MAILCHIMP_AUDIENCE_ID', '')
+MAILCHIMP_SERVER_PREFIX = os.environ.get('MAILCHIMP_SERVER_PREFIX', '')  # e.g., 'us21'
+
+# =============================================================================
 # SECURITY SETTINGS (Production)
 # =============================================================================
 # Uncomment these for production deployment

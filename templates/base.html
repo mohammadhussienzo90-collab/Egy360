@@ -771,5 +771,21 @@
     <script src="{% static 'js/email-popup.js' %}"></script>
 
     {% block extra_js %}{% endblock %}
+
+    <!--Start of Tawk.to Script - Free Live Chat Widget-->
+    <!--Sign up at https://www.tawk.to/ to get your Property ID and Widget ID-->
+    <!--Replace PROPERTY_ID and WIDGET_ID below with your actual IDs-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/PROPERTY_ID/WIDGET_ID';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
 </body>
 </html>

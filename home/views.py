@@ -350,6 +350,13 @@ def newsletter_subscribe(request):
         # Create new subscription
         subscription = NewsletterSubscription.objects.create(email=email, name=name)
 
+        # Sync to Mailchimp for email marketing campaigns
+        try:
+            from core.mailchimp_integration import sync_subscriber_to_mailchimp
+            sync_subscriber_to_mailchimp(email, name)
+        except Exception as e:
+            logger.warning(f"Failed to sync subscriber to Mailchimp {email}: {e}")
+
         # Send welcome email
         try:
             from core.email import send_newsletter_welcome
@@ -365,6 +372,87 @@ def newsletter_subscribe(request):
     except json.JSONDecodeError:
         return JsonResponse({'success': False, 'error': 'Invalid request format'}, status=400)
     except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': 'An error occurred. Please try again.'
+        }, status=500)
+
+
+# Lead magnet landing page
+def lead_magnet_page(request):
+    """Display lead magnet landing page for email capture"""
+    return render(request, 'lead-magnet.html')
+
+
+# Lead magnet download API endpoint
+@require_http_methods(["POST"])
+def lead_magnet_download(request):
+    """
+    Handle lead magnet download requests.
+
+    Captures email, syncs to Mailchimp with 'lead-magnet' tag,
+    and sends the PDF guide via email.
+    """
+    try:
+        data = json.loads(request.body)
+        email = data.get('email', '').strip().lower()
+        name = data.get('name', '').strip()
+        lead_magnet = data.get('lead_magnet', 'egypt-travel-guide')
+
+        if not email:
+            return JsonResponse({'success': False, 'error': 'Email is required'}, status=400)
+
+        # Validate email format
+        try:
+            validate_email(email)
+        except ValidationError:
+            return JsonResponse({'success': False, 'error': 'Please enter a valid email address'}, status=400)
+
+        # Create or get newsletter subscription
+        subscription, created = NewsletterSubscription.objects.get_or_create(
+            email=email,
+            defaults={'name': name, 'is_active': True}
+        )
+
+        if not created and not subscription.is_active:
+            subscription.is_active = True
+            subscription.name = name or subscription.name
+            subscription.save()
+
+        # Sync to Mailchimp with lead-magnet tag
+        try:
+            from core.mailchimp_integration import mailchimp_client
+            if mailchimp_client.is_configured():
+                parts = name.split(' ', 1) if name else ['', '']
+                first_name = parts[0]
+                last_name = parts[1] if len(parts) > 1 else ''
+
+                mailchimp_client.add_subscriber(
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name,
+                    tags=['lead-magnet', lead_magnet, 'egypt-travel']
+                )
+        except Exception as e:
+            logger.warning(f"Failed to sync lead magnet subscriber to Mailchimp {email}: {e}")
+
+        # Send lead magnet email with download link
+        try:
+            from core.email import send_lead_magnet_email
+            send_lead_magnet_email(email, name, lead_magnet)
+        except Exception as e:
+            logger.warning(f"Failed to send lead magnet email to {email}: {e}")
+            # Don't fail the request - still show success
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Check your email for the download link!'
+        })
+
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'error': 'Invalid request format'}, status=400)
+    except Exception as e:
+        logger.error(f"Lead magnet error: {e}")
         return JsonResponse({
             'success': False,
             'error': 'An error occurred. Please try again.'

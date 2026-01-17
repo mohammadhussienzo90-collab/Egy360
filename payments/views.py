@@ -709,7 +709,6 @@ def payment_success(request, booking_id):
 
 
 @csrf_exempt
-@require_GET
 def paymob_callback(request):
     """
     PayMob callback/webhook handler.
@@ -728,6 +727,16 @@ def paymob_callback(request):
         - amount_cents: Amount paid in cents
         - hmac: HMAC signature for verification
     """
+    # Handle PayMob URL validation (empty request or POST without data)
+    # PayMob checks if callback URL is valid before saving
+    if request.method == 'POST':
+        # Server-to-server callback notification
+        return JsonResponse({'status': 'received'})
+
+    if not request.GET.get('id'):
+        # URL validation request - just return OK
+        return JsonResponse({'status': 'ok', 'message': 'PayMob callback endpoint active'})
+
     # Extract transaction data from query params
     success = request.GET.get('success', 'false').lower() == 'true'
     transaction_id = request.GET.get('id', '')

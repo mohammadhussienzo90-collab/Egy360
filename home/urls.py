@@ -31,8 +31,12 @@ urlpatterns = [
     # Social media
     path('links/', views.social_links, name='social-links'),
 
+    # Lead magnet
+    path('free-egypt-guide/', views.lead_magnet_page, name='lead-magnet'),
+
     # API endpoints
     path('api/newsletter/', views.newsletter_subscribe, name='newsletter-subscribe'),
+    path('api/lead-magnet/', views.lead_magnet_download, name='lead-magnet-api'),
     path('api/search-autocomplete/', views.search_autocomplete, name='search-autocomplete'),
     path('api/stats/', views.get_platform_stats, name='platform-stats'),
 ]

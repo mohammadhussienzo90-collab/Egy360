@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Free Egypt Travel Guide - Download Now | Egy360{% endblock %}
+{% block description %}Download our free 7-Day Egypt Itinerary with hotel recommendations, budget tips, and insider travel advice. Plan your perfect Egyptian adventure!{% endblock %}
+
+{% block content %}
+<div class="lead-magnet-page">
+    <!-- Hero Section -->
+    <section class="hero-section py-5" style="background: linear-gradient(135deg, #c41e3a 0%, #9a1830 100%);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-white mb-4 mb-lg-0">
+                    <span class="badge bg-warning text-dark mb-3">FREE DOWNLOAD</span>
+                    <h1 class="display-5 fw-bold mb-3">The Ultimate 7-Day Egypt Itinerary</h1>
+                    <p class="lead mb-4">Plan your perfect Egyptian adventure with our comprehensive travel guide. Includes:</p>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i> Day-by-day itinerary for Cairo, Luxor & Aswan</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i> Top-rated hotel recommendations (all budgets)</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i> Budget breakdown - How much to bring</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i> Scam-avoidance tips from locals</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i> Best times to visit each attraction</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i> Must-try Egyptian food & restaurants</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-body p-4 p-md-5">
+                            <h3 class="text-center mb-4">Get Your Free Guide</h3>
+
+                            <form id="lead-magnet-form" class="needs-validation" novalidate>
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Your Name</label>
+                                    <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="John Smith" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="john@example.com" required>
+                                    <div class="form-text">We'll send the guide to this email.</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mb-3" id="submit-btn">
+                                    <span class="btn-text"><i class="fas fa-download me-2"></i>Download Free Guide</span>
+                                    <span class="btn-loading d-none"><i class="fas fa-spinner fa-spin me-2"></i>Processing...</span>
+                                </button>
+                                <p class="text-muted text-center small mb-0">
+                                    <i class="fas fa-lock me-1"></i> We respect your privacy. Unsubscribe anytime.
+                                </p>
+                            </form>
+
+                            <!-- Success Message (hidden initially) -->
+                            <div id="success-message" class="text-center d-none">
+                                <div class="mb-4">
+                                    <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                                </div>
+                                <h4 class="mb-3">Check Your Email!</h4>
+                                <p class="text-muted mb-4">We've sent the Egypt Travel Guide to your inbox. Check your spam folder if you don't see it.</p>
+                                <a href="/blog/" class="btn btn-outline-primary">
+                                    <i class="fas fa-book-open me-2"></i>Read Our Travel Blog
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Inside Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">What's Inside the Guide</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="icon-circle bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-map-marked-alt fa-lg"></i>
+                            </div>
+                            <h5>Complete Itinerary</h5>
+                            <p class="text-muted">Day-by-day schedule covering Cairo, Giza, Luxor, and Aswan with timing recommendations.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="icon-circle bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-hotel fa-lg"></i>
+                            </div>
+                            <h5>Hotel Picks</h5>
+                            <p class="text-muted">Curated selection of hotels from budget hostels to luxury 5-stars, all personally vetted.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="icon-circle bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-piggy-bank fa-lg"></i>
+                            </div>
+                            <h5>Budget Guide</h5>
+                            <p class="text-muted">Detailed cost breakdown: accommodation, food, transport, tours, and tips for every budget level.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h3 class="mb-4">Join 1,000+ Travelers</h3>
+                    <div class="d-flex justify-content-center align-items-center gap-4 flex-wrap">
+                        <div class="text-center">
+                            <div class="h2 text-primary mb-0">1,000+</div>
+                            <small class="text-muted">Downloads</small>
+                        </div>
+                        <div class="text-center">
+                            <div class="h2 text-primary mb-0">4.9/5</div>
+                            <small class="text-muted">Rating</small>
+                        </div>
+                        <div class="text-center">
+                            <div class="h2 text-primary mb-0">28</div>
+                            <small class="text-muted">Pages</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.lead-magnet-page .hero-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('lead-magnet-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const form = this;
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    const successMessage = document.getElementById('success-message');
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    if (!email) {
+        alert('Please enter your email address');
+        return;
+    }
+
+    // Show loading
+    btnText.classList.add('d-none');
+    btnLoading.classList.remove('d-none');
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch('/api/lead-magnet/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({
+                email: email,
+                name: name,
+                lead_magnet: 'egypt-travel-guide'
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Hide form, show success
+            form.classList.add('d-none');
+            successMessage.classList.remove('d-none');
+
+            // Track conversion in Google Analytics
+            if (typeof gtag === 'function') {
+                gtag('event', 'generate_lead', {
+                    'event_category': 'Lead Magnet',
+                    'event_label': 'Egypt Travel Guide Download'
+                });
+            }
+        } else {
+            alert(data.error || 'Something went wrong. Please try again.');
+            btnText.classList.remove('d-none');
+            btnLoading.classList.add('d-none');
+            submitBtn.disabled = false;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Network error. Please try again.');
+        btnText.classList.remove('d-none');
+        btnLoading.classList.add('d-none');
+        submitBtn.disabled = false;
+    }
+});
+</script>
+{% endblock %}

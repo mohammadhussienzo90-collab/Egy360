@@ -233,6 +233,137 @@ To unsubscribe, visit: https://360egy.com/newsletter/unsubscribe?email={subscrip
         return False
 
 
+def send_lead_magnet_email(email, name, lead_magnet='egypt-travel-guide'):
+    """
+    Send lead magnet download email with PDF link.
+
+    Args:
+        email: Recipient email
+        name: Recipient name
+        lead_magnet: Type of lead magnet ('egypt-travel-guide', etc.)
+    """
+    try:
+        # Lead magnet metadata
+        lead_magnets = {
+            'egypt-travel-guide': {
+                'name': '7-Day Egypt Travel Guide',
+                'description': 'Your complete guide to exploring Egypt',
+                # Replace with actual PDF URL when uploaded
+                'download_url': 'https://360egy.com/static/downloads/egypt-travel-guide.pdf',
+            }
+        }
+
+        magnet_info = lead_magnets.get(lead_magnet, lead_magnets['egypt-travel-guide'])
+        first_name = name.split()[0] if name else 'Traveler'
+
+        subject = f"Your Free {magnet_info['name']} is Ready!"
+
+        text_content = f"""
+Hi {first_name}!
+
+Thank you for downloading our {magnet_info['name']}!
+
+DOWNLOAD YOUR GUIDE:
+{magnet_info['download_url']}
+
+What's inside:
+- Complete 7-day itinerary for Cairo, Luxor & Aswan
+- Budget breakdown and money-saving tips
+- Top hotel recommendations for every budget
+- Scam-avoidance tips from locals
+- Must-try Egyptian food and restaurants
+- Best times to visit each attraction
+
+NEXT STEPS:
+1. Download and save your guide
+2. Browse our verified hotels: https://360egy.com/accommodations/
+3. Explore our top-rated tours: https://360egy.com/tours/
+
+Have questions about your Egypt trip? Reply to this email and we'll help you plan the perfect adventure!
+
+Happy travels,
+The Egy360 Team
+
+---
+https://360egy.com
+Your trusted guide to Egyptian tourism
+
+To unsubscribe: https://360egy.com/newsletter/unsubscribe?email={email}
+        """
+
+        html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+        .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+        .header {{ background: linear-gradient(135deg, #c41e3a, #9a1830); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }}
+        .content {{ padding: 30px; background: #f9f9f9; }}
+        .download-btn {{ display: inline-block; background: #c41e3a; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; margin: 20px 0; }}
+        .features {{ background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+        .feature-item {{ padding: 8px 0; border-bottom: 1px solid #eee; }}
+        .footer {{ text-align: center; padding: 20px; color: #666; font-size: 12px; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 style="margin: 0;">Your Free Guide is Ready!</h1>
+            <p style="margin: 10px 0 0 0; opacity: 0.9;">{magnet_info['name']}</p>
+        </div>
+        <div class="content">
+            <p>Hi {first_name}!</p>
+            <p>Thank you for downloading our comprehensive Egypt travel guide. Your adventure starts here!</p>
+
+            <div style="text-align: center;">
+                <a href="{magnet_info['download_url']}" class="download-btn">Download Your Guide</a>
+            </div>
+
+            <div class="features">
+                <h3 style="margin-top: 0;">What's Inside:</h3>
+                <div class="feature-item">Complete 7-day itinerary for Cairo, Luxor & Aswan</div>
+                <div class="feature-item">Budget breakdown and money-saving tips</div>
+                <div class="feature-item">Top hotel recommendations for every budget</div>
+                <div class="feature-item">Scam-avoidance tips from locals</div>
+                <div class="feature-item">Must-try Egyptian food and restaurants</div>
+                <div class="feature-item">Best times to visit each attraction</div>
+            </div>
+
+            <h3>Ready to Book?</h3>
+            <p>
+                <a href="https://360egy.com/accommodations/">Browse Verified Hotels</a> |
+                <a href="https://360egy.com/tours/">Explore Top Tours</a>
+            </p>
+
+            <p>Have questions? Just reply to this email!</p>
+
+            <p>Happy travels,<br><strong>The Egy360 Team</strong></p>
+        </div>
+        <div class="footer">
+            <p><a href="https://360egy.com">360egy.com</a> - Your trusted guide to Egyptian tourism</p>
+            <p><a href="https://360egy.com/newsletter/unsubscribe?email={email}">Unsubscribe</a></p>
+        </div>
+    </div>
+</body>
+</html>
+        """
+
+        _send_email(
+            subject=subject,
+            text_content=text_content,
+            html_content=html_content,
+            to_email=email
+        )
+
+        logger.info(f"Lead magnet email sent to {email}")
+        return True
+
+    except Exception as e:
+        logger.error(f"Failed to send lead magnet email: {e}")
+        return False
+
+
 def _send_email(subject, text_content, to_email, html_content=None):
     """
     Internal helper to send emails
