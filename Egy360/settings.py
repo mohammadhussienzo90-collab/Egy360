@@ -91,7 +91,7 @@ INSTALLED_APPS = [
     'allauth.account',  # Email/password authentication
     'allauth.socialaccount',  # Social account authentication
     'allauth.socialaccount.providers.google',  # Google OAuth2
-    'allauth.socialaccount.providers.facebook',  # Facebook OAuth2
+    # 'allauth.socialaccount.providers.facebook',  # Facebook OAuth2 (disabled temporarily)
     # 'allauth.socialaccount.providers.apple',  # Apple Sign-In (uncomment when configured)
 
     # Two-Factor Authentication (optional, uncomment to enable)
@@ -314,21 +314,21 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     },
 
-    # Facebook OAuth2
+    # Facebook OAuth2 (disabled temporarily - uncomment when you have credentials)
     # Setup: https://developers.facebook.com/apps/
     # 1. Create App > Consumer type
     # 2. Add Facebook Login product
     # 3. Add redirect URI: https://360egy.com/accounts/facebook/login/callback/
-    'facebook': {
-        'METHOD': 'oauth2',
-        'SCOPE': ['email', 'public_profile'],
-        'FIELDS': ['id', 'email', 'name', 'first_name', 'last_name'],
-        'APP': {
-            'client_id': os.environ.get('FACEBOOK_APP_ID', ''),
-            'secret': os.environ.get('FACEBOOK_APP_SECRET', ''),
-            'key': '',
-        }
-    },
+    # 'facebook': {
+    #     'METHOD': 'oauth2',
+    #     'SCOPE': ['email', 'public_profile'],
+    #     'FIELDS': ['id', 'email', 'name', 'first_name', 'last_name'],
+    #     'APP': {
+    #         'client_id': os.environ.get('FACEBOOK_APP_ID', ''),
+    #         'secret': os.environ.get('FACEBOOK_APP_SECRET', ''),
+    #         'key': '',
+    #     }
+    # },
 
     # Apple Sign-In (optional)
     # Setup: https://developer.apple.com/account/resources/identifiers/
