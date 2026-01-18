@@ -61,8 +61,8 @@ def register_view(request):
 
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
-            login(request, user)
-            return redirect('homepage')
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('home:home')
     else:
         form = UserRegistrationForm()
     return render(request, 'accounts/register.html', {'form': form})
