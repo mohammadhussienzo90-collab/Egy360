@@ -91,7 +91,7 @@ def seed_articles(request):
 
 def debug_check(request):
     """Simple debug endpoint"""
-    return JsonResponse({'status': 'ok', 'version': 'v7-hotels-search', 'branch': 'main', 'features': ['hotels-search', 'privacy', 'terms']})
+    return JsonResponse({'status': 'ok', 'version': 'v8-payment-fix', 'branch': 'main', 'features': ['hotels-search', 'privacy', 'terms', 'paymob-ready']})
 
 @cache_control(max_age=3600)
 def favicon(request):
