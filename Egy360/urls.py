@@ -89,6 +89,79 @@ def seed_articles(request):
 
     return JsonResponse({'success': True, 'created': created, 'total': 9})
 
+def seed_2026_articles(request):
+    """Seed 2026 travel guide articles - access via /seed2026/?key=egy360seed"""
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from django.contrib.auth.models import User
+    from django.utils import timezone
+    from blog.models import BlogPost, BlogCategory
+
+    category, _ = BlogCategory.objects.get_or_create(
+        slug='travel-tips',
+        defaults={'name': 'Travel Tips', 'description': 'Egypt travel tips and guides'}
+    )
+
+    author = User.objects.first()
+    if not author:
+        return JsonResponse({'error': 'No users'}, status=500)
+
+    articles = [
+        {
+            'slug': 'best-egypt-tours-2026-complete-guide',
+            'title': 'Best Egypt Tours 2026: Complete Guide to Top 10 Tour Packages',
+            'excerpt': 'Discover the best Egypt tours for 2026. From luxury Nile cruises to budget backpacker trips.',
+            'image_url': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200',
+            'is_featured': True,
+        },
+        {
+            'slug': 'egypt-on-a-budget-2026-travel-guide',
+            'title': 'Egypt on a Budget 2026: How to Travel Egypt for Under $50/Day',
+            'excerpt': 'Complete guide to budget travel in Egypt. Save money on accommodation, food, and transport.',
+            'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200',
+            'is_featured': False,
+        },
+        {
+            'slug': 'nile-cruise-guide-2026-everything-you-need-to-know',
+            'title': 'Nile Cruise Guide 2026: Everything You Need to Know',
+            'excerpt': 'Complete guide to Nile River cruises. Compare options, routes, prices and insider tips.',
+            'image_url': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200',
+            'is_featured': True,
+        },
+        {
+            'slug': 'egypt-visa-guide-2026-requirements-by-nationality',
+            'title': 'Egypt Visa Guide 2026: Requirements, Costs & How to Apply',
+            'excerpt': 'Complete Egypt visa guide. Learn about e-Visa, visa on arrival, and requirements by nationality.',
+            'image_url': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200',
+            'is_featured': False,
+        },
+    ]
+
+    created = 0
+    for article in articles:
+        _, was_created = BlogPost.objects.update_or_create(
+            slug=article['slug'],
+            defaults={
+                'title': article['title'],
+                'author': author,
+                'category': category,
+                'excerpt': article['excerpt'],
+                'content': f"## {article['title']}\n\n{article['excerpt']}\n\nFull content available in the blog.",
+                'image_url': article['image_url'],
+                'meta_description': article['excerpt'],
+                'meta_keywords': 'egypt travel, egypt tours, egypt guide, 2026',
+                'tags': 'egypt, travel, 2026, guide',
+                'status': 'published',
+                'is_featured': article['is_featured'],
+                'published_at': timezone.now(),
+            }
+        )
+        if was_created:
+            created += 1
+
+    return JsonResponse({'success': True, 'created': created, 'total': len(articles)})
+
 def debug_check(request):
     """Simple debug endpoint"""
     return JsonResponse({'status': 'ok', 'version': 'v8-payment-fix', 'branch': 'main', 'features': ['hotels-search', 'privacy', 'terms', 'paymob-ready']})
@@ -117,6 +190,7 @@ urlpatterns = [
     path('favicon.ico', favicon, name='favicon_ico'),
     path('health/', health_check, name='health'),
     path('seed/', seed_articles, name='seed'),
+    path('seed2026/', seed_2026_articles, name='seed2026'),
     path('debug/', debug_check, name='debug'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('admin/', admin.site.urls),
