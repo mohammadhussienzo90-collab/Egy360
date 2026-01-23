@@ -164,7 +164,60 @@ def seed_2026_articles(request):
 
 def debug_check(request):
     """Simple debug endpoint"""
-    return JsonResponse({'status': 'ok', 'version': 'v8-payment-fix', 'branch': 'main', 'features': ['hotels-search', 'privacy', 'terms', 'paymob-ready']})
+    return JsonResponse({'status': 'ok', 'version': 'v9-egypt-articles', 'branch': 'main', 'features': ['hotels-search', 'privacy', 'terms', 'paymob-ready', 'egypt-history-articles']})
+
+def seed_egypt_history_articles(request):
+    """Seed 14 captivating Egypt history articles - access via /seed-egypt/?key=egy360seed"""
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from django.contrib.auth.models import User
+    from django.utils import timezone
+    from blog.models import BlogPost, BlogCategory
+    from blog.egypt_articles_data import EGYPT_ARTICLES
+
+    # Create or get the Ancient Egypt category
+    category, _ = BlogCategory.objects.get_or_create(
+        slug='ancient-egypt-history',
+        defaults={'name': 'Ancient Egypt History', 'description': 'Fascinating articles about ancient Egyptian civilization, pharaohs, mysteries, and culture'}
+    )
+
+    author = User.objects.first()
+    if not author:
+        return JsonResponse({'error': 'No users found'}, status=500)
+
+    created = 0
+    updated = 0
+    for article in EGYPT_ARTICLES:
+        _, was_created = BlogPost.objects.update_or_create(
+            slug=article['slug'],
+            defaults={
+                'title': article['title'],
+                'author': author,
+                'category': category,
+                'excerpt': article['excerpt'],
+                'content': article['content'],
+                'image_url': article['image_url'],
+                'meta_description': article['meta_description'],
+                'meta_keywords': article['meta_keywords'],
+                'tags': article['tags'],
+                'status': 'published',
+                'is_featured': article['is_featured'],
+                'published_at': timezone.now(),
+            }
+        )
+        if was_created:
+            created += 1
+        else:
+            updated += 1
+
+    return JsonResponse({
+        'success': True,
+        'created': created,
+        'updated': updated,
+        'total': len(EGYPT_ARTICLES),
+        'category': 'Ancient Egypt History'
+    })
 
 @cache_control(max_age=3600)
 def favicon(request):
@@ -191,6 +244,7 @@ urlpatterns = [
     path('health/', health_check, name='health'),
     path('seed/', seed_articles, name='seed'),
     path('seed2026/', seed_2026_articles, name='seed2026'),
+    path('seed-egypt/', seed_egypt_history_articles, name='seed_egypt'),
     path('debug/', debug_check, name='debug'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('admin/', admin.site.urls),
