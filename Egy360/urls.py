@@ -189,6 +189,9 @@ def seed_egypt_history_articles(request):
     created = 0
     updated = 0
     for article in EGYPT_ARTICLES:
+        # Truncate meta_description to 160 chars (database limit)
+        meta_desc = article['meta_description'][:157] + '...' if len(article['meta_description']) > 160 else article['meta_description']
+
         _, was_created = BlogPost.objects.update_or_create(
             slug=article['slug'],
             defaults={
@@ -198,9 +201,9 @@ def seed_egypt_history_articles(request):
                 'excerpt': article['excerpt'],
                 'content': article['content'],
                 'image_url': article['image_url'],
-                'meta_description': article['meta_description'],
-                'meta_keywords': article['meta_keywords'],
-                'tags': article['tags'],
+                'meta_description': meta_desc,
+                'meta_keywords': article['meta_keywords'][:255],  # Also limit keywords
+                'tags': article['tags'][:255],  # Also limit tags
                 'status': 'published',
                 'is_featured': article['is_featured'],
                 'published_at': timezone.now(),
