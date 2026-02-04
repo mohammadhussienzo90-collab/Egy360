@@ -22,6 +22,7 @@ Special URLs:
 - /health/          - Health check for Railway deployment
 - /favicon.svg      - Site favicon (Ankh symbol)
 - /sitemap.xml      - SEO sitemap
+- /robots.txt       - SEO robots file
 
 Author: Egy360 Team
 """
@@ -39,6 +40,28 @@ import os
 def health_check(request):
     """Basic health check for Railway"""
     return JsonResponse({'status': 'ok', 'version': 'v7-hotels-search', 'branch': 'main'})
+
+def robots_txt(request):
+    """SEO robots.txt file"""
+    content = """User-agent: *
+Allow: /
+Allow: /blog/
+Allow: /destinations/
+
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /bookings/
+Disallow: /payments/
+
+# Sitemap
+Sitemap: https://egy360.com/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 1
+"""
+    return HttpResponse(content, content_type='text/plain')
 
 def seed_articles(request):
     """Seed pyramid articles - access via /seed/?key=egy360seed"""
@@ -244,6 +267,7 @@ def favicon(request):
 urlpatterns = [
     path('favicon.svg', favicon, name='favicon'),
     path('favicon.ico', favicon, name='favicon_ico'),
+    path('robots.txt', robots_txt, name='robots_txt'),
     path('health/', health_check, name='health'),
     path('seed/', seed_articles, name='seed'),
     path('seed2026/', seed_2026_articles, name='seed2026'),

@@ -157,10 +157,10 @@ class BlogListView(ListView):
     model = BlogPost
     template_name = 'blog/list.html'
     context_object_name = 'posts'
-    paginate_by = 10
+    paginate_by = 12
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = BlogPost.objects.filter(status='published').order_by('-published_at', '-created_at')
         category = self.request.GET.get('category')
         if category:
             queryset = queryset.filter(category__slug=category)
@@ -168,8 +168,14 @@ class BlogListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = BlogCategory.objects.all()
-        context['recent_posts'] = BlogPost.objects.all()[:5]
+        context['categories'] = BlogCategory.objects.filter(
+            posts__status='published'
+        ).distinct().order_by('name')
+        context['featured_posts'] = BlogPost.objects.filter(
+            status='published',
+            is_featured=True
+        ).order_by('-published_at')[:6]
+        context['recent_posts'] = BlogPost.objects.filter(status='published')[:5]
         return context
 
 

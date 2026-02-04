@@ -382,25 +382,30 @@
     </div>
 </section>
 
-<!-- Travelpayouts Hotel Search Widget -->
+<!-- Travelpayouts Search Widgets -->
 <section class="section-travel-search py-5">
     <div class="container">
+        <div class="section-header text-center mb-4">
+            <span class="section-tag">Search & Compare</span>
+            <h2 class="section-title">Find the Best Deals</h2>
+            <p class="section-subtitle">Compare prices across multiple booking platforms</p>
+        </div>
         <div class="row g-4">
-            <!-- Hotel Search Widget -->
+            <!-- Tours Widget -->
             <div class="col-lg-6">
                 <div class="search-widget-card">
                     <div class="widget-header">
                         <div class="widget-icon widget-icon-hotel">
-                            <i class="fas fa-hotel"></i>
+                            <i class="fas fa-compass"></i>
                         </div>
                         <div>
-                            <h3>Find Your Perfect Hotel</h3>
-                            <p>Compare prices from 70+ booking sites</p>
+                            <h3>Egypt Tours & Activities</h3>
+                            <p>Book amazing experiences in Egypt</p>
                         </div>
                     </div>
                     <div class="widget-body">
-                        <!-- Hotellook White Label Widget -->
-                        <script charset="utf-8" src="//tp.media/content?promo_id=4495&shmarker=477897&campaign_id=100&trs=262019" async></script>
+                        <!-- Travelpayouts Tours Widget -->
+                        <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=284&category=4&amount=5&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
                     </div>
                 </div>
             </div>
@@ -413,13 +418,13 @@
                             <i class="fas fa-plane-departure"></i>
                         </div>
                         <div>
-                            <h3>Book Cheap Flights</h3>
+                            <h3>Book Cheap Flights to Egypt</h3>
                             <p>Search 700+ airlines instantly</p>
                         </div>
                     </div>
                     <div class="widget-body">
                         <!-- Aviasales Flight Widget -->
-                        <script charset="utf-8" src="//tp.media/content?promo_id=4497&shmarker=477897&campaign_id=100&trs=262019&search_host=hydra.aviasales.ru&locale=en" async></script>
+                        <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&destination=CAI&category=1&amount=5&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
                     </div>
                 </div>
             </div>
@@ -437,7 +442,8 @@
         </div>
 
         <div class="klook-widget-wrapper">
-            <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+            <!-- Travelpayouts Tours Widget - Cairo Activities -->
+            <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=284&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
         </div>
 
         <div class="text-center mt-4">
@@ -465,15 +471,14 @@
                     </div>
                     <div class="partner-content">
                         <h3>Hotels & Resorts</h3>
-                        <p class="partner-via">via Hotellook</p>
-                        <p class="partner-desc">Compare prices from Booking.com, Agoda, Hotels.com and 70+ sites</p>
+                        <p class="partner-via">via Booking.com</p>
+                        <p class="partner-desc">Compare prices from top booking sites for Egypt hotels</p>
                         <ul class="partner-features">
                             <li><i class="fas fa-check"></i> Best price guarantee</li>
                             <li><i class="fas fa-check"></i> Free cancellation</li>
                             <li><i class="fas fa-check"></i> No hidden fees</li>
                         </ul>
-                        <a href="https://search.hotellook.com/?marker=477897&locationId=12153&locale=en&currency=usd"
-                           target="_blank" rel="noopener" class="btn btn-partner">
+                        <a href="{% url 'accommodations:search' %}" class="btn btn-partner">
                             <i class="fas fa-search me-2"></i>Search Hotels
                         </a>
                     </div>
@@ -486,15 +491,14 @@
                     </div>
                     <div class="partner-content">
                         <h3>Tours & Activities</h3>
-                        <p class="partner-via">via Viator</p>
+                        <p class="partner-via">via GetYourGuide & Viator</p>
                         <p class="partner-desc">World-class experiences from pyramids tours to desert safaris</p>
                         <ul class="partner-features">
                             <li><i class="fas fa-check"></i> Skip-the-line tickets</li>
                             <li><i class="fas fa-check"></i> Expert local guides</li>
                             <li><i class="fas fa-check"></i> 24-hour cancellation</li>
                         </ul>
-                        <a href="https://tp.media/click?shmarker=477897&pression_mode=fix&trs=262019&campaign_id=97&searchType=1&city=Cairo,Egypt"
-                           target="_blank" rel="noopener" class="btn btn-partner">
+                        <a href="{% url 'tours:list' %}" class="btn btn-partner">
                             <i class="fas fa-compass me-2"></i>Explore Tours
                         </a>
                     </div>

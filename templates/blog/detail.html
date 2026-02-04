@@ -645,6 +645,20 @@
                 <article class="article-main">
                     <div class="article-content">
                         {{ post.content|clean_markdown }}
+
+                        <!-- In-Article Affiliate Banner -->
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+                            <h4 style="margin-bottom: 10px;"><i class="fas fa-plane-departure me-2"></i>Planning Your Egypt Trip?</h4>
+                            <p style="opacity: 0.9; margin-bottom: 20px;">Book tours, hotels, and activities with free cancellation</p>
+                            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                                <a href="{% url 'tours:list' %}" class="btn" style="background: white; color: #667eea; font-weight: 600; padding: 12px 25px; border-radius: 8px;">
+                                    <i class="fas fa-compass me-2"></i>Explore Tours
+                                </a>
+                                <a href="{% url 'accommodations:search' %}" class="btn" style="background: rgba(255,255,255,0.2); color: white; font-weight: 600; padding: 12px 25px; border-radius: 8px; border: 2px solid white;">
+                                    <i class="fas fa-hotel me-2"></i>Find Hotels
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="article-footer">
@@ -762,10 +776,28 @@
                 </div>
                 {% endif %}
 
+                <!-- Travelpayouts Tours Widget -->
+                <div class="sidebar-card" style="background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%); color: white;">
+                    <h4 style="color: white; border-bottom-color: rgba(255,255,255,0.3);"><i class="fas fa-compass me-2"></i>Book Egypt Tours</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 15px;">Discover amazing experiences with free cancellation!</p>
+                    <div style="background: white; border-radius: 10px; padding: 10px;">
+                        <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=284&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+                    </div>
+                </div>
+
+                <!-- Book Hotels -->
+                <div class="sidebar-card">
+                    <h4><i class="fas fa-hotel me-2"></i>Find Hotels</h4>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Compare prices from top booking sites</p>
+                    <a href="{% url 'accommodations:search' %}" class="btn btn-primary w-100" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: none;">
+                        <i class="fas fa-search me-2"></i>Search Hotels
+                    </a>
+                </div>
+
                 <!-- Book via Klook -->
                 <div class="sidebar-card klook-card">
-                    <h4><i class="fas fa-ticket-alt me-2"></i>Book Activities</h4>
-                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Ready to explore Egypt? Book your tours and activities with Klook!</p>
+                    <h4><i class="fas fa-ticket-alt me-2"></i>More Activities</h4>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Explore more Egypt experiences on Klook!</p>
                     <a href="https://klook.tpx.li/2TiJT8NA" target="_blank" rel="noopener" class="btn btn-klook-sidebar w-100">
                         <i class="fas fa-external-link-alt me-2"></i>Book via Klook
                     </a>

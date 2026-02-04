@@ -38,6 +38,29 @@ class BlogPost(models.Model):
     featured_image = models.ImageField(upload_to='blog/', null=True, blank=True)
     image_url = models.URLField(max_length=500, blank=True, null=True, help_text="External image URL (Unsplash, etc.)")
 
+    # Video & Multimedia Support
+    video_url = models.URLField(max_length=500, blank=True, null=True, help_text="YouTube/Vimeo embed URL")
+    video_thumbnail = models.URLField(max_length=500, blank=True, null=True, help_text="Video thumbnail image")
+    is_video_post = models.BooleanField(default=False, help_text="Featured as video content")
+
+    # Content Type for variety
+    content_type = models.CharField(
+        max_length=30,
+        choices=[
+            ('article', 'Article'),
+            ('story', 'True Story'),
+            ('history', 'Historical'),
+            ('culture', 'Culture'),
+            ('guide', 'Travel Guide'),
+            ('video', 'Video Post'),
+            ('gallery', 'Photo Gallery'),
+        ],
+        default='article'
+    )
+
+    # Gallery images (JSON field for multiple images)
+    gallery_images = models.TextField(blank=True, null=True, help_text="JSON array of image URLs for galleries")
+
     meta_description = models.CharField(max_length=160, blank=True)
     meta_keywords = models.CharField(max_length=255, blank=True)
 
