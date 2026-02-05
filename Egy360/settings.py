@@ -47,8 +47,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key-replace-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# TEMPORARY: Force DEBUG=True for debugging blog 500 error
-DEBUG = True  # TEMPORARY - revert after fixing blog issue
+# Set DEBUG=False in production environment variables
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 # =============================================================================
 # ALLOWED HOSTS & SECURITY
