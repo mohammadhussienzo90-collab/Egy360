@@ -40,23 +40,30 @@ import os
 def health_check(request):
     """Basic health check for Railway"""
     import traceback
-    response = {'status': 'ok', 'version': 'v7-hotels-search', 'branch': 'main'}
+    from django.db import connection
 
-    # Add debug info if requested
-    if request.GET.get('debug') == 'db':
+    response = {'status': 'ok', 'version': 'v8-sqlite-mode', 'branch': 'main'}
+
+    # Always include DB info
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        response['db_connected'] = True
+        response['db_engine'] = connection.vendor
+    except Exception as e:
+        response['db_connected'] = False
+        response['db_error'] = str(e)
+
+    # Add blog debug info if requested
+    if request.GET.get('debug') == 'blog':
         try:
-            from blog.models import BlogPost
-            from django.db import connection
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT 1")
-            response['db_connected'] = True
-            response['db_engine'] = connection.vendor
+            from blog.models import BlogPost, BlogCategory
             response['total_posts'] = BlogPost.objects.count()
             response['published_posts'] = BlogPost.objects.filter(status='published').count()
+            response['categories'] = BlogCategory.objects.count()
         except Exception as e:
-            response['db_connected'] = False
-            response['db_error'] = str(e)
-            response['db_traceback'] = traceback.format_exc()
+            response['blog_error'] = str(e)
+            response['blog_traceback'] = traceback.format_exc()
 
     return JsonResponse(response)
 
