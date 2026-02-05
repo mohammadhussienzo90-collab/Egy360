@@ -184,8 +184,9 @@ WSGI_APPLICATION = 'Egy360.wsgi.application'
 
 try:
     import dj_database_url
-    DATABASE_URL = os.environ.get('DATABASE_URL')
-    if DATABASE_URL:
+    DATABASE_URL = os.environ.get('DATABASE_URL', '').strip().strip("'\"")
+    # Only use PostgreSQL if DATABASE_URL is a valid-looking URL
+    if DATABASE_URL and DATABASE_URL.startswith(('postgres://', 'postgresql://')):
         # Production: Use PostgreSQL from Railway
         DATABASES = {
             'default': dj_database_url.config(
@@ -194,7 +195,7 @@ try:
             )
         }
     else:
-        # Development: Use SQLite
+        # Development or no valid DATABASE_URL: Use SQLite
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',

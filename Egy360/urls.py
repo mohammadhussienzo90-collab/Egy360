@@ -39,7 +39,55 @@ import os
 
 def health_check(request):
     """Basic health check for Railway"""
-    return JsonResponse({'status': 'ok', 'version': 'v7-hotels-search', 'branch': 'main'})
+    import traceback
+    response = {'status': 'ok', 'version': 'v7-hotels-search', 'branch': 'main'}
+
+    # Add debug info if requested
+    if request.GET.get('debug') == 'db':
+        try:
+            from blog.models import BlogPost
+            from django.db import connection
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT 1")
+            response['db_connected'] = True
+            response['db_engine'] = connection.vendor
+            response['total_posts'] = BlogPost.objects.count()
+            response['published_posts'] = BlogPost.objects.filter(status='published').count()
+        except Exception as e:
+            response['db_connected'] = False
+            response['db_error'] = str(e)
+            response['db_traceback'] = traceback.format_exc()
+
+    return JsonResponse(response)
+
+def debug_db(request):
+    """Debug endpoint to test database access"""
+    import traceback
+    try:
+        from blog.models import BlogPost
+        from django.db import connection
+
+        # Test DB connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+
+        # Count posts
+        count = BlogPost.objects.count()
+        published = BlogPost.objects.filter(status='published').count()
+
+        return JsonResponse({
+            'status': 'ok',
+            'db_connected': True,
+            'total_posts': count,
+            'published_posts': published,
+            'database_engine': connection.vendor,
+        })
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }, status=500)
 
 def robots_txt(request):
     """SEO robots.txt file"""
@@ -458,6 +506,7 @@ urlpatterns = [
     path('favicon.ico', favicon, name='favicon_ico'),
     path('robots.txt', robots_txt, name='robots_txt'),
     path('health/', health_check, name='health'),
+    path('debug-db/', debug_db, name='debug_db'),
     path('seed/', seed_articles, name='seed'),
     path('seed2026/', seed_2026_articles, name='seed2026'),
     path('seed-egypt/', seed_egypt_history_articles, name='seed_egypt'),

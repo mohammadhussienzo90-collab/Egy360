@@ -159,6 +159,19 @@ class BlogListView(ListView):
     context_object_name = 'posts'
     paginate_by = 12
 
+    def dispatch(self, request, *args, **kwargs):
+        import traceback
+        import logging
+        logger = logging.getLogger(__name__)
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except Exception as e:
+            logger.error(f"BlogListView ERROR: {str(e)}")
+            logger.error(traceback.format_exc())
+            print(f"BlogListView ERROR: {str(e)}")
+            print(traceback.format_exc())
+            raise
+
     def get_queryset(self):
         queryset = BlogPost.objects.filter(status='published').order_by('-published_at', '-created_at')
         category = self.request.GET.get('category')
