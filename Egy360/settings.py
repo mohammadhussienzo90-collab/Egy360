@@ -182,34 +182,50 @@ WSGI_APPLICATION = 'Egy360.wsgi.application'
 # Uses PostgreSQL in production (Railway), SQLite for local development
 # Railway automatically provides DATABASE_URL environment variable
 
-try:
-    import dj_database_url
-    DATABASE_URL = os.environ.get('DATABASE_URL', '').strip().strip("'\"")
-    # Only use PostgreSQL if DATABASE_URL is a valid-looking URL
-    if DATABASE_URL and DATABASE_URL.startswith(('postgres://', 'postgresql://')):
-        # Production: Use PostgreSQL from Railway
-        DATABASES = {
-            'default': dj_database_url.config(
-                default=DATABASE_URL,
-                conn_max_age=0  # Disable persistent connections for Railway
-            )
-        }
-    else:
-        # Development or no valid DATABASE_URL: Use SQLite
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3'
-            }
-        }
-except Exception:
-    # Fallback to SQLite if dj_database_url fails
+# Force SQLite if USE_SQLITE is set
+USE_SQLITE = os.environ.get('USE_SQLITE', 'false').lower() in ('true', '1', 'yes')
+
+if USE_SQLITE:
+    # Force SQLite mode
+    print("USING SQLITE (forced by USE_SQLITE env var)")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3'
         }
     }
+else:
+    try:
+        import dj_database_url
+        DATABASE_URL = os.environ.get('DATABASE_URL', '').strip().strip("'\"")
+        # Only use PostgreSQL if DATABASE_URL is a valid-looking URL
+        if DATABASE_URL and DATABASE_URL.startswith(('postgres://', 'postgresql://')):
+            # Production: Use PostgreSQL from Railway
+            print(f"USING POSTGRESQL from DATABASE_URL")
+            DATABASES = {
+                'default': dj_database_url.config(
+                    default=DATABASE_URL,
+                    conn_max_age=0  # Disable persistent connections for Railway
+                )
+            }
+        else:
+            # Development or no valid DATABASE_URL: Use SQLite
+            print("USING SQLITE (no valid DATABASE_URL)")
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.sqlite3',
+                    'NAME': BASE_DIR / 'db.sqlite3'
+                }
+            }
+    except Exception as e:
+        # Fallback to SQLite if dj_database_url fails
+        print(f"USING SQLITE (exception: {e})")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3'
+            }
+        }
 
 # =============================================================================
 # PASSWORD VALIDATION
