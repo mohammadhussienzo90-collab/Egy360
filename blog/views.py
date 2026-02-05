@@ -176,6 +176,25 @@ Visit 360egy.com for the complete article with full details, images, and interac
     })
 
 
+def blog_list_test(request):
+    """Temporary test view - returns JSON to debug"""
+    try:
+        posts = list(BlogPost.objects.filter(status='published').order_by('-published_at')[:5].values('title', 'slug'))
+        categories = list(BlogCategory.objects.values('name', 'slug')[:5])
+        return JsonResponse({
+            'status': 'ok',
+            'posts': posts,
+            'categories': categories,
+            'total_posts': BlogPost.objects.count(),
+        })
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }, status=500)
+
+
 class BlogListView(ListView):
     model = BlogPost
     template_name = 'blog/list.html'
@@ -183,7 +202,6 @@ class BlogListView(ListView):
     paginate_by = 12
 
     def dispatch(self, request, *args, **kwargs):
-        import traceback
         import logging
         logger = logging.getLogger(__name__)
         try:
