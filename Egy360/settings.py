@@ -122,6 +122,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     # Custom middleware - must be first to handle health checks
     'Egy360.middleware.HealthCheckMiddleware',  # Railway health check handler
+    'Egy360.middleware.ErrorLoggingMiddleware',  # Error logging for debugging
 
     # Security middleware
     'django.middleware.security.SecurityMiddleware',  # Security enhancements
