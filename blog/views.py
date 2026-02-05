@@ -3,6 +3,29 @@ from django.views.generic import ListView, DetailView
 from django.http import JsonResponse
 from django.utils import timezone
 from .models import BlogPost, BlogCategory, BlogComment
+import traceback
+
+
+def debug_blog(request):
+    """Debug endpoint to test blog functionality"""
+    try:
+        total = BlogPost.objects.count()
+        published = BlogPost.objects.filter(status='published').count()
+        categories = BlogCategory.objects.count()
+        posts = list(BlogPost.objects.filter(status='published').values('title', 'slug')[:5])
+        return JsonResponse({
+            'status': 'ok',
+            'total_posts': total,
+            'published_posts': published,
+            'categories': categories,
+            'sample_posts': posts
+        })
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }, status=500)
 
 
 def seed_pyramid_articles(request):
