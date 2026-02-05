@@ -7,4 +7,4 @@ healthcheckPath = "/health/"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
-startCommand = "python manage.py migrate --noinput && gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
+startCommand = "python manage.py migrate --noinput && gunicorn Egy360.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120 --access-logfile - --error-logfile - --capture-output --enable-stdio-inheritance"
