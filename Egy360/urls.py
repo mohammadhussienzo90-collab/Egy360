@@ -241,8 +241,8 @@ def seed_2026_articles(request):
     return JsonResponse({'success': True, 'created': created, 'total': len(articles)})
 
 def debug_check(request):
-    """Simple debug endpoint"""
-    return JsonResponse({'status': 'ok', 'version': 'v11-blog-debug', 'branch': 'main', 'features': ['hotels-search', 'privacy', 'terms', 'paymob-ready', 'egypt-history-articles', 'luxury-articles', 'true-stories']})
+    """Simple debug endpoint - updated v12"""
+    return JsonResponse({'status': 'ok', 'version': 'v12-diagnose', 'branch': 'main', 'deploy_time': '2026-02-05-2200', 'features': ['blog-diagnose', 'hotels-search', 'privacy', 'terms']})
 
 def blog_diagnose(request):
     """Diagnose blog app issues"""
