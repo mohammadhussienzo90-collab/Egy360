@@ -242,7 +242,71 @@ def seed_2026_articles(request):
 
 def debug_check(request):
     """Simple debug endpoint"""
-    return JsonResponse({'status': 'ok', 'version': 'v10-full-content', 'branch': 'main', 'features': ['hotels-search', 'privacy', 'terms', 'paymob-ready', 'egypt-history-articles', 'luxury-articles', 'true-stories']})
+    return JsonResponse({'status': 'ok', 'version': 'v11-blog-debug', 'branch': 'main', 'features': ['hotels-search', 'privacy', 'terms', 'paymob-ready', 'egypt-history-articles', 'luxury-articles', 'true-stories']})
+
+def blog_diagnose(request):
+    """Diagnose blog app issues"""
+    import traceback
+    result = {'step': 'start', 'errors': []}
+
+    # Step 1: Try importing blog models
+    try:
+        from blog.models import BlogPost, BlogCategory
+        result['step'] = 'models_imported'
+        result['models'] = True
+    except Exception as e:
+        result['errors'].append({'step': 'import_models', 'error': str(e), 'trace': traceback.format_exc()})
+        return JsonResponse(result, status=500)
+
+    # Step 2: Try database query
+    try:
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        result['step'] = 'db_connected'
+        result['db'] = True
+    except Exception as e:
+        result['errors'].append({'step': 'db_connect', 'error': str(e), 'trace': traceback.format_exc()})
+        return JsonResponse(result, status=500)
+
+    # Step 3: Count blog posts
+    try:
+        count = BlogPost.objects.count()
+        result['step'] = 'query_success'
+        result['post_count'] = count
+    except Exception as e:
+        result['errors'].append({'step': 'query_posts', 'error': str(e), 'trace': traceback.format_exc()})
+        return JsonResponse(result, status=500)
+
+    # Step 4: Get published posts
+    try:
+        published = BlogPost.objects.filter(status='published').count()
+        result['published_count'] = published
+    except Exception as e:
+        result['errors'].append({'step': 'filter_published', 'error': str(e), 'trace': traceback.format_exc()})
+        return JsonResponse(result, status=500)
+
+    # Step 5: Try blog views import
+    try:
+        from blog import views as blog_views
+        result['step'] = 'views_imported'
+        result['views'] = True
+    except Exception as e:
+        result['errors'].append({'step': 'import_views', 'error': str(e), 'trace': traceback.format_exc()})
+        return JsonResponse(result, status=500)
+
+    # Step 6: Try to instantiate BlogListView
+    try:
+        view = blog_views.BlogListView()
+        result['step'] = 'view_instantiated'
+        result['view_class'] = str(type(view))
+    except Exception as e:
+        result['errors'].append({'step': 'instantiate_view', 'error': str(e), 'trace': traceback.format_exc()})
+        return JsonResponse(result, status=500)
+
+    result['status'] = 'ok'
+    result['step'] = 'complete'
+    return JsonResponse(result)
 
 def seed_luxury_articles(request):
     """Seed 5 luxury travel articles - access via /seed-luxury/?key=egy360seed"""
@@ -521,6 +585,7 @@ urlpatterns = [
     path('seed-stories/', seed_true_stories, name='seed_stories'),
     path('organize/', organize_all_articles, name='organize'),
     path('debug/', debug_check, name='debug'),
+    path('blog-diagnose/', blog_diagnose, name='blog_diagnose'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
