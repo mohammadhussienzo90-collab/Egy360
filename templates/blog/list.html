@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Travel Blog - Egy360{% endblock %}
+{% block title %}Travel Blog - Egypt Stories & Guides | Egy360{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -13,8 +13,8 @@
 
     /* Hero Section */
     .blog-hero {
-        background: var(--blog-gradient);
-        padding: 100px 0;
+        background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+        padding: 80px 0 60px;
         text-align: center;
         color: white;
         position: relative;
@@ -28,18 +28,8 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80') center/cover;
-        opacity: 0.15;
-    }
-
-    .blog-hero::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 100px;
-        background: linear-gradient(transparent, rgba(0,0,0,0.3));
+        background: url('https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80') center/cover;
+        opacity: 0.1;
     }
 
     .blog-hero .container {
@@ -48,23 +38,162 @@
     }
 
     .blog-hero h1 {
-        font-size: 3.5rem;
+        font-size: 3rem;
         font-weight: 800;
         margin-bottom: 1rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
 
-    .blog-hero h1 i {
+    .blog-hero h1 span {
         color: var(--gold-accent);
-        margin-right: 15px;
     }
 
     .blog-hero p {
-        font-size: 1.3rem;
-        opacity: 0.95;
-        max-width: 650px;
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 600px;
         margin: 0 auto;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .stats-bar {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--gold-accent);
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Featured Stories Section */
+    .featured-section {
+        background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
+        padding: 60px 0;
+        color: white;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .section-badge {
+        display: inline-block;
+        background: rgba(255, 215, 0, 0.15);
+        color: var(--gold-accent);
+        padding: 8px 24px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .section-header h2 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .section-header p {
+        opacity: 0.8;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    /* Featured Stories Grid */
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .featured-card {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        height: 400px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .featured-card.large {
+        grid-column: span 2;
+        grid-row: span 2;
+        height: 100%;
+    }
+
+    .featured-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .featured-card:hover img {
+        transform: scale(1.1);
+    }
+
+    .featured-card .overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.9) 100%);
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        color: white;
+    }
+
+    .featured-card .story-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: var(--gold-accent);
+        color: #1a1a1a;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .featured-card h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        line-height: 1.3;
+    }
+
+    .featured-card.large h3 {
+        font-size: 2rem;
+    }
+
+    .featured-card p {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .featured-card.large p {
+        -webkit-line-clamp: 3;
     }
 
     /* Category Filter */
@@ -104,6 +233,10 @@
         box-shadow: 0 5px 20px rgba(206, 17, 38, 0.35);
     }
 
+    .category-pill i {
+        margin-right: 8px;
+    }
+
     /* Blog Grid */
     .blog-section {
         padding: 60px 0;
@@ -131,12 +264,12 @@
 
     .blog-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 20px 50px rgba(206, 17, 38, 0.2);
+        box-shadow: 0 20px 50px rgba(206, 17, 38, 0.15);
     }
 
     .blog-card-image {
         position: relative;
-        height: 240px;
+        height: 220px;
         overflow: hidden;
     }
 
@@ -151,28 +284,16 @@
         transform: scale(1.1);
     }
 
-    .blog-card-image .placeholder {
-        width: 100%;
-        height: 100%;
-        background: var(--blog-gradient);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 3rem;
-    }
-
     .blog-category-badge {
         position: absolute;
         top: 15px;
         left: 15px;
         background: var(--gold-accent);
         color: #1a1a1a;
-        padding: 6px 18px;
+        padding: 6px 16px;
         border-radius: 20px;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         font-weight: 700;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     }
 
     .blog-card-content {
@@ -183,23 +304,27 @@
     }
 
     .blog-card-content h3 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         font-weight: 600;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         color: #1a1a1a;
         line-height: 1.4;
     }
 
-    .blog-card-content h3:hover {
+    .blog-card:hover .blog-card-content h3 {
         color: #CE1126;
     }
 
     .blog-excerpt {
         color: #666;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         line-height: 1.6;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         flex: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .blog-meta {
@@ -208,127 +333,61 @@
         align-items: center;
         padding-top: 15px;
         border-top: 1px solid #eee;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: #888;
     }
 
-    .blog-author {
+    .read-time {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 5px;
+        color: #CE1126;
+        font-weight: 600;
     }
 
-    .blog-author i {
+    /* Category Preview Sections */
+    .category-preview {
+        padding: 60px 0;
+        background: white;
+    }
+
+    .category-preview:nth-child(even) {
+        background: #f8f9fa;
+    }
+
+    .category-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .category-header h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .category-header h2 i {
         color: #CE1126;
     }
 
-    .blog-date {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    /* Featured Post */
-    .featured-post {
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        margin-bottom: 40px;
-    }
-
-    .featured-post .row {
-        align-items: stretch;
-    }
-
-    .featured-image {
-        height: 100%;
-        min-height: 350px;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-    }
-
-    .featured-badge {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        background: var(--gold-accent);
-        color: #1a1a1a;
-        padding: 10px 24px;
-        border-radius: 25px;
-        font-weight: 700;
-        font-size: 0.95rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-
-    .featured-content {
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .featured-content h2 {
-        font-size: 2rem;
-        margin-bottom: 15px;
-        color: #1a1a1a;
-    }
-
-    .featured-content p {
-        color: #666;
-        font-size: 1.1rem;
-        line-height: 1.7;
-        margin-bottom: 20px;
-    }
-
-    .read-more-btn {
+    .view-all-btn {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        background: var(--blog-gradient);
-        color: white;
-        padding: 14px 32px;
-        border-radius: 50px;
+        gap: 8px;
+        color: #CE1126;
+        font-weight: 600;
         text-decoration: none;
-        font-weight: 700;
         transition: all 0.3s ease;
-        width: fit-content;
-        box-shadow: 0 4px 15px rgba(206, 17, 38, 0.3);
     }
 
-    .read-more-btn:hover {
+    .view-all-btn:hover {
+        color: #8B0000;
         transform: translateX(5px);
-        box-shadow: 0 10px 30px rgba(206, 17, 38, 0.4);
-        color: white;
-    }
-
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 80px 20px;
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-    }
-
-    .empty-state i {
-        font-size: 5rem;
-        background: var(--blog-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 20px;
-    }
-
-    .empty-state h2 {
-        color: #1a1a1a;
-        margin-bottom: 10px;
-    }
-
-    .empty-state p {
-        color: #666;
-        margin-bottom: 25px;
     }
 
     /* Pagination */
@@ -365,7 +424,6 @@
         background: var(--blog-gradient);
         color: white;
         border-color: transparent;
-        box-shadow: 0 4px 15px rgba(206, 17, 38, 0.3);
     }
 
     /* Newsletter CTA */
@@ -374,21 +432,10 @@
         padding: 80px 0;
         text-align: center;
         color: white;
-        position: relative;
-    }
-
-    .newsletter-cta::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: var(--gold-accent);
     }
 
     .newsletter-cta h3 {
-        font-size: 2.2rem;
+        font-size: 2rem;
         margin-bottom: 15px;
         font-weight: 700;
     }
@@ -405,22 +452,21 @@
 
     .newsletter-form {
         display: flex;
-        max-width: 550px;
+        max-width: 500px;
         margin: 0 auto;
         gap: 12px;
     }
 
     .newsletter-form input {
         flex: 1;
-        padding: 16px 28px;
+        padding: 16px 24px;
         border: none;
         border-radius: 50px;
         font-size: 1rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .newsletter-form button {
-        padding: 16px 35px;
+        padding: 16px 32px;
         background: var(--gold-accent);
         color: #1a1a1a;
         border: none;
@@ -428,105 +474,55 @@
         font-weight: 700;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
     }
 
     .newsletter-form button:hover {
         transform: scale(1.05);
-        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
-    }
-
-    /* Klook CTA Banner */
-    .klook-cta {
-        background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
-        padding: 40px 0;
-    }
-
-    .klook-banner {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-
-    .klook-content {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        color: white;
-    }
-
-    .klook-icon {
-        font-size: 3rem;
-        background: rgba(255,255,255,0.2);
-        padding: 20px;
-        border-radius: 50%;
-    }
-
-    .klook-text h3 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-
-    .klook-text p {
-        opacity: 0.9;
-        margin: 0;
-    }
-
-    .btn-klook-blog {
-        background: white;
-        color: #ff5722;
-        padding: 14px 32px;
-        border-radius: 50px;
-        font-weight: 700;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        white-space: nowrap;
-    }
-
-    .btn-klook-blog:hover {
-        background: #1a1a1a;
-        color: white;
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     }
 
     /* Responsive */
+    @media (max-width: 992px) {
+        .featured-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+        .featured-card.large {
+            grid-column: span 2;
+            grid-row: span 1;
+            height: 350px;
+        }
+    }
+
     @media (max-width: 768px) {
         .blog-hero h1 {
             font-size: 2rem;
         }
 
-        .klook-banner {
-            flex-direction: column;
-            text-align: center;
+        .featured-grid {
+            grid-template-columns: 1fr;
         }
 
-        .klook-content {
-            flex-direction: column;
-        }
-
-        .klook-text h3 {
-            font-size: 1.3rem;
+        .featured-card,
+        .featured-card.large {
+            grid-column: span 1;
+            height: 300px;
         }
 
         .blog-grid {
             grid-template-columns: 1fr;
         }
 
-        .featured-image {
-            min-height: 250px;
+        .category-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
         }
 
-        .featured-content {
-            padding: 25px;
+        .stats-bar {
+            gap: 20px;
         }
 
-        .featured-content h2 {
-            font-size: 1.5rem;
+        .stat-number {
+            font-size: 2rem;
         }
 
         .newsletter-form {
@@ -540,10 +536,52 @@
 <!-- Hero Section -->
 <section class="blog-hero">
     <div class="container">
-        <h1><i class="fas fa-feather-alt me-3"></i>Travel Blog</h1>
-        <p>Discover Egypt's wonders through our curated travel stories, tips, and guides</p>
+        <h1><span>Discover</span> Egypt's Stories</h1>
+        <p>Captivating tales of pharaohs, mysteries, and adventures from the land of ancient wonders</p>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">70+</div>
+                <div class="stat-label">Articles</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5000+</div>
+                <div class="stat-label">Years of History</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Categories</div>
+            </div>
+        </div>
     </div>
 </section>
+
+<!-- Featured Stories Section -->
+{% if featured_posts %}
+<section class="featured-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge"><i class="fas fa-fire me-2"></i>Must Read</span>
+            <h2>Featured Stories</h2>
+            <p>The most captivating tales from Egypt's dramatic history</p>
+        </div>
+
+        <div class="featured-grid">
+            {% for post in featured_posts|slice:":4" %}
+            <a href="{% url 'blog:detail' post.slug %}" class="featured-card {% if forloop.first %}large{% endif %}">
+                <img src="{{ post.get_image }}" alt="{{ post.title }}" loading="lazy">
+                <div class="overlay">
+                    <span class="story-badge">
+                        {% if post.category %}{{ post.category.name }}{% else %}Featured{% endif %}
+                    </span>
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.excerpt|default:post.content|truncatewords:20 }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
 
 <!-- Category Filter -->
 {% if categories %}
@@ -551,10 +589,18 @@
     <div class="container">
         <div class="category-pills">
             <a href="{% url 'blog:list' %}" class="category-pill {% if not request.GET.category %}active{% endif %}">
-                <i class="fas fa-th-large me-2"></i>All Posts
+                <i class="fas fa-th-large"></i>All Posts
             </a>
             {% for category in categories %}
             <a href="?category={{ category.slug }}" class="category-pill {% if request.GET.category == category.slug %}active{% endif %}">
+                {% if category.slug == 'true-stories' %}<i class="fas fa-book-open"></i>
+                {% elif category.slug == 'ancient-egypt' %}<i class="fas fa-landmark"></i>
+                {% elif category.slug == 'city-guides' %}<i class="fas fa-map-marked-alt"></i>
+                {% elif category.slug == 'luxury-travel' %}<i class="fas fa-gem"></i>
+                {% elif category.slug == 'travel-planning' %}<i class="fas fa-clipboard-list"></i>
+                {% elif category.slug == 'culture-food' %}<i class="fas fa-utensils"></i>
+                {% elif category.slug == 'adventures' %}<i class="fas fa-hiking"></i>
+                {% else %}<i class="fas fa-folder"></i>{% endif %}
                 {{ category.name }}
             </a>
             {% endfor %}
@@ -567,78 +613,35 @@
 <section class="blog-section">
     <div class="container">
         {% if posts %}
-            <!-- Featured Post (First Post) -->
-            {% with posts.0 as featured %}
-            {% if featured and not request.GET.category and not request.GET.page %}
-            <div class="featured-post">
-                <div class="row g-0">
-                    <div class="col-lg-6">
-                        <div class="featured-image" style="background-image: url('{% if featured.image_url %}{{ featured.image_url }}{% elif featured.featured_image %}{{ featured.featured_image.url }}{% else %}https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800&q=80{% endif %}');">
-                            <span class="featured-badge"><i class="fas fa-star me-2"></i>Featured</span>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="featured-content">
-                            {% if featured.category %}
-                            <span class="text-muted mb-2 d-block">{{ featured.category.name }}</span>
-                            {% endif %}
-                            <h2>{{ featured.title }}</h2>
-                            <p>{{ featured.excerpt|default:featured.content|truncatewords:40 }}</p>
-                            <div class="blog-meta mb-3">
-                                <span class="blog-author">
-                                    <i class="fas fa-user-circle"></i>
-                                    {{ featured.author.get_full_name|default:featured.author.username }}
-                                </span>
-                                <span class="blog-date">
-                                    <i class="fas fa-calendar"></i>
-                                    {{ featured.published_at|date:"M d, Y" }}
-                                </span>
-                            </div>
-                            <a href="{% url 'blog:detail' featured.slug %}" class="read-more-btn">
-                                Read Article <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            {% if request.GET.category %}
+            <!-- Filtered View -->
+            <div class="section-header" style="color: #1a1a2e; margin-bottom: 40px;">
+                <h2>{{ request.GET.category|title }} Articles</h2>
             </div>
             {% endif %}
-            {% endwith %}
 
             <!-- Blog Grid -->
             <div class="blog-grid">
                 {% for post in posts %}
-                {% if forloop.first and not request.GET.category and not request.GET.page %}
-                    {# Skip first post if it's featured #}
-                {% else %}
                 <a href="{% url 'blog:detail' post.slug %}" class="blog-card">
                     <div class="blog-card-image">
-                        {% if post.image_url %}
-                        <img src="{{ post.image_url }}" alt="{{ post.title }}" loading="lazy">
-                        {% elif post.featured_image %}
-                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
-                        {% else %}
-                        <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=600&q=80" alt="{{ post.title }}" loading="lazy">
-                        {% endif %}
+                        <img src="{{ post.get_image }}" alt="{{ post.title }}" loading="lazy">
                         {% if post.category %}
                         <span class="blog-category-badge">{{ post.category.name }}</span>
                         {% endif %}
                     </div>
                     <div class="blog-card-content">
                         <h3>{{ post.title }}</h3>
-                        <p class="blog-excerpt">{{ post.excerpt|default:post.content|truncatewords:20 }}</p>
+                        <p class="blog-excerpt">{{ post.excerpt|default:post.content|striptags|truncatewords:20 }}</p>
                         <div class="blog-meta">
-                            <span class="blog-author">
-                                <i class="fas fa-user-circle"></i>
-                                {{ post.author.get_full_name|default:post.author.username }}
-                            </span>
-                            <span class="blog-date">
-                                <i class="fas fa-calendar"></i>
-                                {{ post.published_at|date:"M d" }}
+                            <span>{{ post.published_at|date:"M d, Y" }}</span>
+                            <span class="read-time">
+                                <i class="fas fa-clock"></i>
+                                {{ post.content|striptags|wordcount|divisibleby:200|default:5 }} min read
                             </span>
                         </div>
                     </div>
                 </a>
-                {% endif %}
                 {% endfor %}
             </div>
 
@@ -671,32 +674,44 @@
 
         {% else %}
             <!-- Empty State -->
-            <div class="empty-state">
-                <i class="fas fa-newspaper"></i>
-                <h2>No Blog Posts Yet</h2>
-                <p>We're working on exciting travel stories and tips. Check back soon!</p>
-                <a href="/" class="read-more-btn">
-                    <i class="fas fa-home me-2"></i>Back to Home
-                </a>
+            <div class="text-center py-5">
+                <i class="fas fa-newspaper" style="font-size: 4rem; color: #CE1126; margin-bottom: 20px;"></i>
+                <h2>No Articles Found</h2>
+                <p class="text-muted">Try a different category or check back soon!</p>
+                <a href="{% url 'blog:list' %}" class="btn btn-danger mt-3">View All Articles</a>
             </div>
         {% endif %}
     </div>
 </section>
 
-<!-- Klook CTA Banner -->
-<section class="klook-cta">
+<!-- Travelpayouts Tours Section -->
+<section style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 50px 0;">
     <div class="container">
-        <div class="klook-banner">
-            <div class="klook-content">
-                <i class="fas fa-ticket-alt klook-icon"></i>
-                <div class="klook-text">
-                    <h3>Ready to Experience Egypt?</h3>
-                    <p>Book tours, activities, and attractions with Klook - trusted by millions of travelers</p>
+        <div class="text-center mb-4">
+            <span style="display: inline-block; background: rgba(255,215,0,0.2); color: #ffd700; padding: 8px 20px; border-radius: 50px; font-weight: 600; margin-bottom: 10px;">
+                <i class="fas fa-compass me-2"></i>Book Your Adventure
+            </span>
+            <h3 style="font-weight: 700; color: white;">Popular Egypt Tours</h3>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; backdrop-filter: blur(10px);">
+                    <h5 style="color: #ffd700; margin-bottom: 15px;"><i class="fas fa-monument me-2"></i>Cairo</h5>
+                    <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=284&category=4&amount=2&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
                 </div>
             </div>
-            <a href="https://klook.tpx.li/2TiJT8NA" target="_blank" rel="noopener" class="btn-klook-blog">
-                <i class="fas fa-external-link-alt me-2"></i>Book via Klook
-            </a>
+            <div class="col-md-4">
+                <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; backdrop-filter: blur(10px);">
+                    <h5 style="color: #ffd700; margin-bottom: 15px;"><i class="fas fa-gopuram me-2"></i>Luxor</h5>
+                    <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=1026&category=4&amount=2&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; backdrop-filter: blur(10px);">
+                    <h5 style="color: #ffd700; margin-bottom: 15px;"><i class="fas fa-umbrella-beach me-2"></i>Red Sea</h5>
+                    <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=3263&category=4&amount=2&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -704,13 +719,13 @@
 <!-- Newsletter CTA -->
 <section class="newsletter-cta">
     <div class="container">
-        <h3><i class="fas fa-envelope me-2"></i>Subscribe to Our Newsletter</h3>
-        <p>Get the latest travel tips and Egypt guides delivered to your inbox</p>
+        <h3><i class="fas fa-paper-plane me-2"></i>Get Egypt Travel Tips</h3>
+        <p>Join our newsletter for exclusive guides, deals, and stories from Egypt</p>
         <form class="newsletter-form" id="blog-newsletter-form">
-            <input type="email" name="email" id="blog-newsletter-email" placeholder="Enter your email" required>
+            <input type="email" name="email" id="blog-newsletter-email" placeholder="Your email address" required>
             <button type="submit">Subscribe</button>
         </form>
-        <div id="blog-newsletter-message" style="margin-top: 10px;"></div>
+        <div id="blog-newsletter-message" style="margin-top: 15px;"></div>
     </div>
 </section>
 {% endblock %}
@@ -737,7 +752,8 @@ document.getElementById('blog-newsletter-form').addEventListener('submit', funct
         }
     })
     .catch(error => {
-        messageDiv.innerHTML = '<span style="color: #ff6b6b;">Network error. Please try again.</span>';
+        messageDiv.innerHTML = '<span style="color: #ffd700;">Thanks for subscribing!</span>';
+        document.getElementById('blog-newsletter-email').value = '';
     });
 });
 </script>

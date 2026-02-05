@@ -160,35 +160,23 @@ class BlogListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        import logging
-        logger = logging.getLogger(__name__)
-        logger.error("BlogListView.get_queryset called")
         queryset = BlogPost.objects.filter(status='published').order_by('-published_at', '-created_at')
         category = self.request.GET.get('category')
         if category:
             queryset = queryset.filter(category__slug=category)
-        logger.error(f"BlogListView queryset count: {queryset.count()}")
         return queryset
 
     def get_context_data(self, **kwargs):
-        import logging
-        logger = logging.getLogger(__name__)
-        try:
-            logger.error("BlogListView.get_context_data called")
-            context = super().get_context_data(**kwargs)
-            context['categories'] = BlogCategory.objects.filter(
-                posts__status='published'
-            ).distinct().order_by('name')
-            context['featured_posts'] = BlogPost.objects.filter(
-                status='published',
-                is_featured=True
-            ).order_by('-published_at')[:6]
-            context['recent_posts'] = BlogPost.objects.filter(status='published')[:5]
-            logger.error(f"BlogListView context ready: {len(context['featured_posts'])} featured")
-            return context
-        except Exception as e:
-            logger.error(f"BlogListView ERROR: {e}")
-            raise
+        context = super().get_context_data(**kwargs)
+        context['categories'] = BlogCategory.objects.filter(
+            posts__status='published'
+        ).distinct().order_by('name')
+        context['featured_posts'] = BlogPost.objects.filter(
+            status='published',
+            is_featured=True
+        ).order_by('-published_at')[:6]
+        context['recent_posts'] = BlogPost.objects.filter(status='published')[:5]
+        return context
 
 
 class BlogDetailView(DetailView):
