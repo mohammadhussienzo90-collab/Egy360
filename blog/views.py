@@ -202,16 +202,20 @@ class BlogListView(ListView):
     paginate_by = 12
 
     def dispatch(self, request, *args, **kwargs):
-        import logging
-        logger = logging.getLogger(__name__)
+        import sys
         try:
             return super().dispatch(request, *args, **kwargs)
         except Exception as e:
-            logger.error(f"BlogListView ERROR: {str(e)}")
-            logger.error(traceback.format_exc())
-            print(f"BlogListView ERROR: {str(e)}")
-            print(traceback.format_exc())
-            raise
+            # Print to stdout for gunicorn capture
+            print(f"BLOG_ERROR: {str(e)}", file=sys.stderr)
+            print(f"BLOG_TRACE: {traceback.format_exc()}", file=sys.stderr)
+            # Return error as JSON for debugging
+            from django.http import JsonResponse
+            return JsonResponse({
+                'error': str(e),
+                'traceback': traceback.format_exc(),
+                'view': 'BlogListView'
+            }, status=500)
 
     def get_queryset(self):
         queryset = BlogPost.objects.filter(status='published').order_by('-published_at', '-created_at')
