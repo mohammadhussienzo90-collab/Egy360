@@ -572,7 +572,180 @@ def favicon(request):
 </svg>'''
     return HttpResponse(svg_content, content_type='image/svg+xml')
 
+def setup_all(request):
+    """Setup user and seed ALL articles - access via /setup-all/?key=egy360seed"""
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from django.contrib.auth.models import User
+    from django.utils import timezone
+    from blog.models import BlogPost, BlogCategory
+
+    # Create admin user if none exists
+    if not User.objects.exists():
+        admin = User.objects.create_user('admin', 'admin@egy360.com', 'egy360admin2026')
+        admin.is_staff = True
+        admin.is_superuser = True
+        admin.save()
+
+    author = User.objects.first()
+    results = {'user': author.username, 'articles_created': 0}
+
+    # Create categories
+    categories = {}
+    cat_data = [
+        ('ancient-egypt', 'Ancient Egypt', 'Ancient Egypt wonders'),
+        ('travel-guides', 'Travel Guides', 'Comprehensive travel guides'),
+        ('egypt-history', 'Egypt History', 'Captivating Egypt history'),
+        ('luxury-travel', 'Luxury Travel', 'Luxury travel experiences'),
+        ('true-stories', 'True Stories', 'Dramatic true stories'),
+    ]
+    for slug, name, desc in cat_data:
+        cat, _ = BlogCategory.objects.get_or_create(slug=slug, defaults={'name': name, 'description': desc})
+        categories[slug] = cat
+
+    # All articles data
+    all_articles = [
+        # Pyramid articles
+        ('The Great Pyramid of Giza: 4,500 Years of Mystery', 'great-pyramid-giza-introduction', 'Discover the Great Pyramid - the only surviving Ancient Wonder.', 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200', 'ancient-egypt', True),
+        ('Building the Great Pyramid: Timeline and Workers', 'great-pyramid-history-timeline-workers', 'How long did it take? Who built it? The complete timeline.', 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200', 'ancient-egypt', False),
+        ('Great Pyramid Architecture: Impossible Precision', 'great-pyramid-architecture-precision', '99.98% symmetrical, aligned to true north - how?', 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200', 'ancient-egypt', False),
+        ("The King's Chamber: Heart of the Pyramid", 'great-pyramid-kings-chamber-secrets', 'Granite from 800km away, mysterious shafts, empty sarcophagus.', 'https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?w=1200', 'ancient-egypt', False),
+        ('How Was the Great Pyramid Built?', 'great-pyramid-construction-methods', 'No wheels, no cranes, no iron - construction methods explained.', 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200', 'ancient-egypt', False),
+        # Travel guides
+        ('7-Day Egypt Itinerary: Cairo to Abu Simbel', '7-day-egypt-itinerary-cairo-abu-simbel', 'The perfect week in Egypt - pyramids, temples, and the Nile.', 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200', 'travel-guides', True),
+        ('Best Time to Visit Egypt 2026', 'best-time-visit-egypt-2026', 'Month-by-month guide to Egypt weather and crowds.', 'https://images.unsplash.com/photo-1551634979-2b11f8c946fe?w=1200', 'travel-guides', False),
+        ('Grand Egyptian Museum 2026 Complete Guide', 'grand-egyptian-museum-2026-guide', 'Everything about GEM - the largest archaeological museum.', 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=1200', 'travel-guides', True),
+        # Egypt history
+        ('Cleopatra: The Last Pharaoh of Egypt', 'cleopatra-last-pharaoh-egypt', 'The fascinating story of Egypt most famous queen.', 'https://images.unsplash.com/photo-1608152142361-1d131f5e520e?w=1200', 'egypt-history', True),
+        ('Tutankhamun: The Boy King', 'tutankhamun-boy-king-egypt', 'The discovery that changed archaeology forever.', 'https://images.unsplash.com/photo-1595981234058-a9302fb97229?w=1200', 'egypt-history', True),
+        ('The Rosetta Stone: Key to Ancient Egypt', 'rosetta-stone-ancient-egypt', 'How a stone unlocked 3000 years of history.', 'https://images.unsplash.com/photo-1567354723472-d3e9f3f8c6b0?w=1200', 'egypt-history', False),
+        ('Nefertiti: The Beautiful Queen', 'nefertiti-beautiful-queen-egypt', 'The mysterious queen whose bust captivated the world.', 'https://images.unsplash.com/photo-1599423423927-8f77f7c5b0c8?w=1200', 'egypt-history', False),
+        ('Ramesses II: Egypt Greatest Pharaoh', 'ramesses-ii-greatest-pharaoh', 'The warrior king who built more monuments than any other.', 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200', 'egypt-history', True),
+        # Luxury travel
+        ('Luxury Nile Cruises 2026', 'luxury-nile-cruises-2026', 'The most exclusive Nile cruise experiences.', 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200', 'luxury-travel', True),
+        ('Five-Star Hotels in Cairo', 'five-star-hotels-cairo-egypt', 'The best luxury accommodations in Egypt capital.', 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200', 'luxury-travel', False),
+        ('Private Tours of the Pyramids', 'private-tours-pyramids-giza', 'Exclusive access to Egypt ancient wonders.', 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200', 'luxury-travel', False),
+        # True stories
+        ('Lost in the Desert: A Survival Story', 'lost-desert-egypt-survival', 'How a tourist survived 3 days in the Sahara.', 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1200', 'true-stories', True),
+        ('The Hidden Tomb Discovery', 'hidden-tomb-discovery-luxor', 'Amateur archaeologist finds untouched tomb.', 'https://images.unsplash.com/photo-1562679299-266d0a81c40f?w=1200', 'true-stories', True),
+    ]
+
+    for title, slug, excerpt, image, cat_slug, featured in all_articles:
+        if not BlogPost.objects.filter(slug=slug).exists():
+            content = f"<h2>{title}</h2><p>{excerpt}</p><p>This is a comprehensive article about {title.lower()}. Egypt offers incredible experiences for travelers seeking history, adventure, and culture.</p>"
+            BlogPost.objects.create(
+                title=title,
+                slug=slug,
+                excerpt=excerpt[:200],
+                content=content,
+                image_url=image,
+                author=author,
+                category=categories.get(cat_slug),
+                is_featured=featured,
+                status='published',
+                published_at=timezone.now()
+            )
+            results['articles_created'] += 1
+
+    results['total_articles'] = BlogPost.objects.count()
+    return JsonResponse(results)
+
+def seed_more_articles(request):
+    """Seed 40+ more articles - access via /seed-more/?key=egy360seed"""
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from django.contrib.auth.models import User
+    from django.utils import timezone
+    from blog.models import BlogPost, BlogCategory
+
+    author = User.objects.first()
+    if not author:
+        return JsonResponse({'error': 'No users'}, status=500)
+
+    created = 0
+
+    # Get/create categories
+    categories = {}
+    for slug, name in [('ancient-egypt', 'Ancient Egypt'), ('travel-guides', 'Travel Guides'),
+                       ('practical-tips', 'Practical Tips'), ('destinations', 'Destinations'),
+                       ('culture', 'Egyptian Culture'), ('food-drink', 'Food & Drink')]:
+        cat, _ = BlogCategory.objects.get_or_create(slug=slug, defaults={'name': name, 'description': f'{name} articles'})
+        categories[slug] = cat
+
+    more_articles = [
+        # Ancient Egypt batch
+        ("King Tutankhamun: The Boy King Who Changed History", "king-tutankhamun-boy-king-guide", "Discover the fascinating story of King Tutankhamun, Egypt's famous boy pharaoh.", "https://images.unsplash.com/photo-1562679299-266d1ab81bb4?w=1200", "ancient-egypt"),
+        ("Queen Nefertiti: The Beautiful One Has Come", "queen-nefertiti-complete-guide", "The mysterious queen whose iconic bust captivated the world.", "https://images.unsplash.com/photo-1599423423927-8f77f7c5b0c8?w=1200", "ancient-egypt"),
+        ("Ramesses II: The Great Builder Pharaoh", "ramesses-ii-great-builder", "Egypt's longest-reigning pharaoh built more monuments than any other.", "https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200", "ancient-egypt"),
+        ("Karnak Temple: The Largest Religious Complex", "karnak-temple-complete-guide", "Explore Karnak Temple, the largest ancient religious site in the world.", "https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?w=1200", "ancient-egypt"),
+        ("Valley of the Kings: Royal Tombs Guide", "valley-of-kings-complete-guide", "Everything you need to know about the royal burial ground of ancient Egypt.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "ancient-egypt"),
+        # Travel guides
+        ("Egypt Visa Guide 2026: Requirements & Application", "egypt-visa-guide-2026", "Complete guide to Egypt tourist visas - requirements, fees, and how to apply.", "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200", "practical-tips"),
+        ("Egypt Currency & Money Guide 2026", "egypt-currency-money-guide", "Egyptian Pound exchange rates, ATMs, credit cards, and tipping culture.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "practical-tips"),
+        ("What to Pack for Egypt: Complete List", "what-to-pack-egypt-checklist", "Essential packing list for Egypt - clothes, gadgets, and must-have items.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "practical-tips"),
+        ("Egypt Safety Tips for Tourists 2026", "egypt-safety-tips-tourists", "Is Egypt safe? Your complete guide to staying safe while traveling in Egypt.", "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200", "practical-tips"),
+        ("Cairo Metro Guide: Navigate Like a Local", "cairo-metro-guide-map", "How to use Cairo's metro system - lines, stations, tickets, and tips.", "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200", "practical-tips"),
+        # Destinations
+        ("Alexandria Egypt: Mediterranean Pearl Guide", "alexandria-egypt-travel-guide", "Explore Alexandria - Egypt's second city with Greek, Roman, and Egyptian heritage.", "https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200", "destinations"),
+        ("Aswan: Gateway to Nubia Complete Guide", "aswan-nubia-travel-guide", "Discover Aswan - feluccas, temples, and the gateway to Abu Simbel.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "destinations"),
+        ("Dahab: Red Sea Diving Paradise Guide", "dahab-diving-guide", "Dahab guide: World-class diving, beaches, and laid-back Sinai vibes.", "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200", "destinations"),
+        ("Siwa Oasis: Desert Paradise Guide", "siwa-oasis-complete-guide", "Explore Siwa Oasis - Egypt's most remote and magical desert destination.", "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1200", "destinations"),
+        ("Sharm El Sheikh: Red Sea Resort Guide", "sharm-el-sheikh-guide", "Complete guide to Sharm El Sheikh - beaches, diving, and nightlife.", "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200", "destinations"),
+        # Culture
+        ("Egyptian Food: 15 Dishes You Must Try", "egyptian-food-guide-dishes", "From koshari to ful medames - discover Egypt's delicious cuisine.", "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200", "food-drink"),
+        ("Ramadan in Egypt: Traveler's Guide", "ramadan-egypt-travel-guide", "What to expect traveling Egypt during Ramadan - tips and etiquette.", "https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?w=1200", "culture"),
+        ("Egyptian Wedding Traditions Explained", "egyptian-wedding-traditions", "Discover the colorful customs of Egyptian weddings.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "culture"),
+        ("Learn Egyptian Arabic: Essential Phrases", "egyptian-arabic-phrases-travelers", "50 essential Arabic phrases for your Egypt trip.", "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200", "culture"),
+        ("Egyptian Handicrafts: Shopping Guide", "egyptian-handicrafts-shopping", "Where to buy authentic Egyptian crafts - papyrus, alabaster, and more.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "culture"),
+        # More ancient
+        ("Hatshepsut: Egypt's Female Pharaoh", "hatshepsut-female-pharaoh-guide", "The remarkable story of Egypt's most successful female ruler.", "https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200", "ancient-egypt"),
+        ("The Sphinx: Guardian of the Pyramids", "sphinx-giza-complete-guide", "Mysteries of the Great Sphinx - history, theories, and visiting tips.", "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200", "ancient-egypt"),
+        ("Egyptian Mummies: Science & Mythology", "egyptian-mummies-guide", "How and why ancient Egyptians mummified their dead.", "https://images.unsplash.com/photo-1595981234058-a9302fb97229?w=1200", "ancient-egypt"),
+        ("Hieroglyphics: Reading Ancient Egyptian", "hieroglyphics-guide-basics", "Introduction to ancient Egyptian writing - symbols and meanings.", "https://images.unsplash.com/photo-1562679299-266d1ab81bb4?w=1200", "ancient-egypt"),
+        ("Egyptian Gods & Goddesses Guide", "egyptian-gods-goddesses-guide", "Meet the major deities of ancient Egypt - Ra, Isis, Osiris, and more.", "https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?w=1200", "ancient-egypt"),
+        # More travel
+        ("Nile River Cruise: Complete Guide 2026", "nile-cruise-guide-2026", "Everything about Nile cruises - best ships, routes, and what to expect.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "travel-guides"),
+        ("Egypt With Kids: Family Travel Guide", "egypt-kids-family-guide", "Tips for traveling Egypt with children - kid-friendly attractions and safety.", "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200", "travel-guides"),
+        ("Solo Female Travel in Egypt Guide", "solo-female-travel-egypt", "Complete guide for women traveling solo in Egypt - safety and tips.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "travel-guides"),
+        ("Budget Egypt: Travel Under $50/Day", "budget-egypt-travel-guide", "How to experience Egypt on a tight budget without missing the highlights.", "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200", "travel-guides"),
+        ("Egypt Photography Guide: Best Shots", "egypt-photography-guide-tips", "Photography tips for capturing Egypt's ancient wonders perfectly.", "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200", "travel-guides"),
+        # Additional
+        ("Abu Simbel: Sun Festival Guide", "abu-simbel-sun-festival-guide", "Witness the sun illuminate Ramesses II twice a year at Abu Simbel.", "https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200", "ancient-egypt"),
+        ("Luxor Temple: Night Visit Guide", "luxor-temple-night-visit", "Experience Luxor Temple illuminated at night - tips and what to see.", "https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?w=1200", "ancient-egypt"),
+        ("Egyptian Museum Cairo: Complete Guide", "egyptian-museum-cairo-guide", "Navigate the treasures of the Egyptian Museum before GEM opens.", "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=1200", "ancient-egypt"),
+        ("Hot Air Balloon Luxor Guide", "hot-air-balloon-luxor-guide", "Float over ancient Thebes at sunrise - booking and what to expect.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "travel-guides"),
+        ("Felucca Sailing on the Nile Guide", "felucca-sailing-nile-guide", "Traditional sailing on the Nile - routes, prices, and tips.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "travel-guides"),
+        ("Egyptian Coffee Culture Guide", "egyptian-coffee-culture", "Discover Egypt's coffee traditions from ahwa to Turkish coffee.", "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200", "food-drink"),
+        ("Khan El Khalili Bazaar Guide", "khan-el-khalili-shopping-guide", "Navigate Cairo's famous medieval market - shopping tips and bargaining.", "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200", "destinations"),
+        ("Coptic Cairo: Christian Heritage Tour", "coptic-cairo-christian-heritage", "Explore Cairo's ancient Christian quarter - churches, history, and tips.", "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200", "destinations"),
+        ("Islamic Cairo Walking Tour Guide", "islamic-cairo-walking-tour", "Mosques, madrasas, and medieval architecture in Historic Cairo.", "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200", "destinations"),
+        ("White Desert Egypt Camping Guide", "white-desert-camping-guide", "Camp among surreal chalk formations in Egypt's White Desert.", "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1200", "destinations"),
+    ]
+
+    for title, slug, excerpt, image, cat_slug in more_articles:
+        if not BlogPost.objects.filter(slug=slug).exists():
+            content = f"<h2>{title}</h2><p>{excerpt}</p><p>Egypt offers incredible experiences for travelers. This comprehensive guide covers everything you need to know about {title.lower()}.</p><p>From ancient wonders to modern adventures, Egypt has something for every traveler. Plan your perfect trip with our expert insights.</p>"
+            BlogPost.objects.create(
+                title=title,
+                slug=slug,
+                excerpt=excerpt[:200],
+                content=content,
+                image_url=image,
+                author=author,
+                category=categories.get(cat_slug),
+                is_featured=(created % 5 == 0),
+                status='published',
+                published_at=timezone.now()
+            )
+            created += 1
+
+    return JsonResponse({'success': True, 'created': created, 'total': BlogPost.objects.count()})
+
 urlpatterns = [
+    path('seed-more/', seed_more_articles, name='seed_more'),
+    path('setup-all/', setup_all, name='setup_all'),
     path('favicon.svg', favicon, name='favicon'),
     path('favicon.ico', favicon, name='favicon_ico'),
     path('robots.txt', robots_txt, name='robots_txt'),
