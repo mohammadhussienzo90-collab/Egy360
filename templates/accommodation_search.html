@@ -44,23 +44,28 @@
     </div>
 </div>
 
-<!-- Partner Hotels Banner -->
+<!-- Partner Tours Banner -->
 <div class="container mt-4">
     <div class="partner-banner">
         <div class="partner-content">
             <div class="partner-icon">
-                <i class="fas fa-hotel"></i>
+                <i class="fas fa-compass"></i>
             </div>
             <div class="partner-text">
-                <h4>Compare 70+ Booking Sites</h4>
-                <p>Find the best hotel deals - prices updated every minute</p>
+                <h4>Book Amazing Egypt Tours</h4>
+                <p>Skip-the-line tickets & expert local guides - Free cancellation</p>
             </div>
         </div>
-        <a href="https://search.hotellook.com/?marker=477897&locationId=12238&currency=usd"
-           target="_blank" rel="noopener" class="btn-partner affiliate-link pulse-animation"
-           data-item-type="accommodation" data-platform="hotellook">
-            <i class="fas fa-bolt me-2"></i>Search Best Prices
+        <a href="{% url 'tours:list' %}" class="btn-partner pulse-animation">
+            <i class="fas fa-bolt me-2"></i>Explore Tours
         </a>
+    </div>
+</div>
+
+<!-- Travelpayouts Widget -->
+<div class="container mt-4">
+    <div class="bg-white rounded shadow-sm p-3">
+        <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=284&category=4&amount=4&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
     </div>
 </div>
 
@@ -226,12 +231,10 @@
                 <!-- Inline Affiliate Banner after every 4 items -->
                 {% if forloop.counter == 4 %}
                 <div class="inline-affiliate-banner">
-                    <h5><i class="fas fa-fire me-2"></i>Finding the Best Deal?</h5>
-                    <p>Compare prices from Booking.com, Hotels.com, Agoda & 70+ sites instantly</p>
-                    <a href="https://search.hotellook.com/?marker=477897&locationId=12238&currency=usd"
-                       target="_blank" rel="noopener" class="btn-inline-cta affiliate-link"
-                       data-item-type="accommodation" data-platform="hotellook">
-                        <i class="fas fa-search"></i> Compare All Prices
+                    <h5><i class="fas fa-fire me-2"></i>Looking for Tours & Activities?</h5>
+                    <p>Book pyramids tours, Nile cruises, and desert safaris with free cancellation</p>
+                    <a href="{% url 'tours:list' %}" class="btn-inline-cta">
+                        <i class="fas fa-compass"></i> Explore Egypt Tours
                     </a>
                 </div>
                 {% endif %}
