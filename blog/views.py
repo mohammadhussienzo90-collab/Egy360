@@ -253,6 +253,20 @@ class BlogDetailView(DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'
 
+    def dispatch(self, request, *args, **kwargs):
+        import sys
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except Exception as e:
+            print(f"BLOG_DETAIL_ERROR: {str(e)}", file=sys.stderr)
+            print(f"BLOG_DETAIL_TRACE: {traceback.format_exc()}", file=sys.stderr)
+            return JsonResponse({
+                'error': str(e),
+                'traceback': traceback.format_exc(),
+                'view': 'BlogDetailView',
+                'slug': kwargs.get('slug', 'unknown')
+            }, status=500)
+
     def get_object(self):
         obj = super().get_object()
         obj.views_count += 1
