@@ -4,26 +4,92 @@
 {% block title %}Travel Blog - Egypt Stories & Guides | Egy360{% endblock %}
 
 {% block extra_css %}
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
 <style>
-    /* Blog Hero */
+    /* Blog Hero - Modern */
     .blog-hero {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        padding: 80px 0 60px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+        padding: 100px 0 80px;
         color: white;
         text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .blog-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1920&q=80') center/cover;
+        opacity: 0.15;
+    }
+
+    .blog-hero .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .blog-hero .hero-badge {
+        display: inline-block;
+        background: rgba(212, 175, 55, 0.2);
+        border: 1px solid rgba(212, 175, 55, 0.4);
+        color: #d4af37;
+        padding: 0.5rem 1.25rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.05em;
     }
 
     .blog-hero h1 {
-        font-size: 3rem;
-        font-weight: 700;
-        margin-bottom: 15px;
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        line-height: 1.1;
+    }
+
+    .blog-hero h1 i {
+        background: linear-gradient(135deg, #d4af37, #f4d03f);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-right: 0.5rem;
     }
 
     .blog-hero p {
-        font-size: 1.2rem;
-        opacity: 0.9;
+        font-size: 1.25rem;
+        opacity: 0.85;
         max-width: 600px;
-        margin: 0 auto;
+        margin: 0 auto 2rem;
+        line-height: 1.7;
+    }
+
+    .blog-hero .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-top: 2rem;
+    }
+
+    .blog-hero .hero-stat {
+        text-align: center;
+    }
+
+    .blog-hero .hero-stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #d4af37;
+    }
+
+    .blog-hero .hero-stat-label {
+        font-size: 0.9rem;
+        opacity: 0.7;
     }
 
     /* Category Pills */
@@ -130,44 +196,84 @@
         opacity: 0.8;
     }
 
-    /* Articles Grid */
+    /* Articles Grid - Modern */
     .articles-section {
-        padding: 50px 0;
-        background: #f8f9fa;
+        padding: 60px 0 80px;
+        background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
     }
 
     .section-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
     }
 
     .section-header h2 {
-        font-size: 1.8rem;
+        font-family: var(--font-display);
+        font-size: 2rem;
         color: #1a1a2e;
+        position: relative;
+    }
+
+    .section-header h2::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, #c41e3a, #d4af37);
+        border-radius: 2px;
     }
 
     .article-card {
         background: white;
-        border-radius: 15px;
+        border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         height: 100%;
         display: flex;
         flex-direction: column;
+        position: relative;
+    }
+
+    .article-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #c41e3a, #d4af37);
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
 
     .article-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+    }
+
+    .article-card:hover::before {
+        opacity: 1;
     }
 
     .article-image {
-        height: 200px;
+        height: 220px;
         background-size: cover;
         background-position: center;
+        position: relative;
+        transition: transform 0.5s ease;
+    }
+
+    .article-card:hover .article-image {
+        transform: scale(1.03);
+    }
+
+    .article-image-wrapper {
+        overflow: hidden;
         position: relative;
     }
 
@@ -175,67 +281,108 @@
         position: absolute;
         top: 15px;
         left: 15px;
-        background: linear-gradient(135deg, #CE1126 0%, #8B0000 100%);
+        background: rgba(26, 26, 46, 0.9);
+        backdrop-filter: blur(10px);
         color: white;
-        padding: 5px 12px;
-        border-radius: 20px;
+        padding: 6px 14px;
+        border-radius: 50px;
         font-size: 0.75rem;
         font-weight: 600;
+        letter-spacing: 0.03em;
+        z-index: 2;
+    }
+
+    .article-views {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(255, 255, 255, 0.95);
+        color: #1a1a2e;
+        padding: 5px 12px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        z-index: 2;
     }
 
     .article-body {
-        padding: 25px;
+        padding: 28px;
         flex: 1;
         display: flex;
         flex-direction: column;
     }
 
     .article-body h3 {
-        font-size: 1.2rem;
-        margin-bottom: 12px;
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        margin-bottom: 14px;
         color: #1a1a2e;
-        line-height: 1.4;
+        line-height: 1.35;
+        font-weight: 700;
     }
 
     .article-body h3 a {
         color: inherit;
         text-decoration: none;
+        transition: color 0.3s ease;
     }
 
     .article-body h3 a:hover {
-        color: #CE1126;
+        color: #c41e3a;
     }
 
     .article-excerpt {
-        color: #666;
+        color: #64748b;
         font-size: 0.95rem;
-        line-height: 1.6;
-        margin-bottom: 15px;
+        line-height: 1.7;
+        margin-bottom: 18px;
         flex: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .article-meta {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         font-size: 0.85rem;
-        color: #888;
-        padding-top: 15px;
-        border-top: 1px solid #eee;
+        color: #94a3b8;
+        padding-top: 18px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .article-meta i {
+        color: #c41e3a;
+        margin-right: 5px;
     }
 
     .read-more-btn {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        color: #CE1126;
-        font-weight: 600;
+        color: #c41e3a;
+        font-weight: 700;
         text-decoration: none;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 0.9rem;
     }
 
     .read-more-btn:hover {
-        gap: 12px;
-        color: #8B0000;
+        gap: 14px;
+        color: #9a1830;
+    }
+
+    .read-more-btn i {
+        transition: transform 0.3s ease;
+    }
+
+    .read-more-btn:hover i {
+        transform: translateX(4px);
     }
 
     /* Newsletter Banner */
@@ -399,11 +546,26 @@
 {% endblock %}
 
 {% block content %}
-<!-- Blog Hero -->
+<!-- Blog Hero - Enhanced -->
 <section class="blog-hero">
     <div class="container">
-        <h1><i class="fas fa-feather-alt me-3"></i>Egypt Travel Blog</h1>
-        <p>Discover stories, guides, and insider tips from the land of pharaohs</p>
+        <span class="hero-badge" data-aos="fade-down"><i class="fas fa-sparkles me-2"></i>Explore Egypt</span>
+        <h1 data-aos="fade-up" data-aos-delay="100"><i class="fas fa-feather-alt"></i>Egypt Travel Blog</h1>
+        <p data-aos="fade-up" data-aos-delay="200">Discover captivating stories, expert guides, and insider tips from the land of pharaohs</p>
+        <div class="hero-stats" data-aos="fade-up" data-aos-delay="300">
+            <div class="hero-stat">
+                <div class="hero-stat-number">{{ posts.paginator.count|default:'90' }}+</div>
+                <div class="hero-stat-label">Articles</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">10K+</div>
+                <div class="hero-stat-label">Readers</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">{{ categories|length|default:'10' }}</div>
+                <div class="hero-stat-label">Topics</div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -473,18 +635,23 @@
                 {% if posts %}
                 <div class="row g-4">
                     {% for post in posts %}
-                    <div class="col-md-6">
+                    <div class="col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1|stringformat:'d' }}00" data-aos-duration="600">
                         <article class="article-card">
-                            <div class="article-image" style="background-image: url('{{ post.image_url|default:'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800' }}');">
-                                {% if post.category %}
-                                <span class="article-category">{{ post.category.name }}</span>
-                                {% endif %}
+                            <div class="article-image-wrapper">
+                                <div class="article-image" style="background-image: url('{{ post.image_url|default:'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800' }}');">
+                                    {% if post.category %}
+                                    <span class="article-category">{{ post.category.name }}</span>
+                                    {% endif %}
+                                    {% if post.views_count %}
+                                    <span class="article-views"><i class="fas fa-eye"></i> {{ post.views_count }}</span>
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="article-body">
                                 <h3><a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a></h3>
                                 <p class="article-excerpt">{{ post.excerpt|truncatewords:20 }}</p>
                                 <div class="article-meta">
-                                    <span><i class="fas fa-calendar me-1"></i>{{ post.published_at|date:"M d" }}</span>
+                                    <span><i class="fas fa-calendar"></i>{{ post.published_at|date:"M d, Y" }}</span>
                                     <a href="{% url 'blog:detail' post.slug %}" class="read-more-btn">
                                         Read More <i class="fas fa-arrow-right"></i>
                                     </a>
@@ -659,7 +826,17 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- AOS Animation Library -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
+// Initialize AOS
+AOS.init({
+    duration: 600,
+    easing: 'ease-out-cubic',
+    once: true,
+    offset: 50
+});
+
 // Newsletter form
 document.getElementById('blog-newsletter-form').addEventListener('submit', function(e) {
     e.preventDefault();
