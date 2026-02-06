@@ -1,0 +1,657 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Egypt Travel FAQ - Common Questions Answered | Egy360{% endblock %}
+{% block description %}Get answers to the most common Egypt travel questions. Visa requirements, best time to visit, safety tips, currency, packing lists, and more. Plan your perfect Egypt trip.{% endblock %}
+{% block keywords %}Egypt travel FAQ, Egypt visa requirements, Egypt safety, best time to visit Egypt, Egypt currency, Egypt packing list, Egypt travel tips{% endblock %}
+
+{% block structured_data %}
+<!-- FAQ Schema for Google Rich Snippets -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "Do I need a visa to visit Egypt?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Most nationalities can obtain a visa on arrival at Egyptian airports for $25 USD, valid for 30 days. Some countries are eligible for e-visa applications online before travel. EU, US, UK, Canadian, and Australian citizens can get visa on arrival."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "What is the best time to visit Egypt?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The best time to visit Egypt is from October to April when temperatures are cooler, ranging from 20-25°C (68-77°F). Summer months (June-August) can be extremely hot, especially in Upper Egypt, with temperatures exceeding 40°C (104°F)."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Is Egypt safe for tourists?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, Egypt is generally safe for tourists. Major tourist areas like Cairo, Luxor, Aswan, and Red Sea resorts have strong security presence. Follow standard travel precautions, stay in tourist areas, and use reputable tour operators."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "What currency is used in Egypt?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The Egyptian Pound (EGP) is the official currency. US Dollars and Euros are widely accepted at hotels, tourist shops, and for tours. ATMs are available in major cities. Credit cards are accepted at hotels and larger establishments."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "How many days do I need to see Egypt?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A minimum of 7-10 days is recommended to see the highlights: Cairo and Giza (2-3 days), Luxor (2-3 days), Aswan (1-2 days), and optionally the Red Sea (2-3 days). A Nile cruise between Luxor and Aswan takes 3-4 days."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "What should I wear when visiting Egypt?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Dress modestly, especially when visiting mosques and religious sites. Women should cover shoulders and knees. Light, loose-fitting cotton clothing is best for the heat. Comfortable walking shoes are essential for ancient sites."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Can I drink tap water in Egypt?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No, it's not recommended to drink tap water in Egypt. Bottled water is inexpensive and widely available. Use bottled water for drinking and brushing teeth. Ice in tourist restaurants is usually made from purified water."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "How do I get from Cairo to Luxor?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Options include: domestic flights (1 hour, from $50), overnight sleeper train (10 hours, comfortable and scenic), or private car/bus (8-10 hours). Flights are fastest, while trains offer a unique experience of Egyptian countryside."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Do I need travel insurance for Egypt?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Travel insurance is highly recommended for any trip to Egypt. It covers medical emergencies, trip cancellations, lost luggage, and emergency evacuation. Many tour operators require proof of travel insurance before booking."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "What vaccinations do I need for Egypt?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No specific vaccinations are required to enter Egypt, but hepatitis A, typhoid, and tetanus are recommended. Consult your doctor 4-6 weeks before travel. Bring any prescription medications you need as not all are available locally."
+            }
+        }
+    ]
+}
+</script>
+
+<!-- Breadcrumb Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://360egy.com/"},
+        {"@type": "ListItem", "position": 2, "name": "FAQ", "item": "https://360egy.com/faq/"}
+    ]
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .faq-hero {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        padding: 80px 0;
+        color: white;
+        text-align: center;
+    }
+
+    .faq-hero h1 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .faq-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .faq-section {
+        padding: 60px 0;
+        background: #f8f9fa;
+    }
+
+    .faq-category {
+        margin-bottom: 50px;
+    }
+
+    .faq-category h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #CE1126;
+        color: #1a1a2e;
+    }
+
+    .faq-category h2 i {
+        color: #CE1126;
+        margin-right: 12px;
+    }
+
+    .faq-item {
+        background: white;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .faq-question {
+        padding: 20px 25px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #1a1a2e;
+        transition: all 0.3s ease;
+    }
+
+    .faq-question:hover {
+        background: #f8f9fa;
+    }
+
+    .faq-question i {
+        color: #CE1126;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-question i {
+        transform: rotate(180deg);
+    }
+
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+        max-height: 500px;
+    }
+
+    .faq-answer-content {
+        padding: 0 25px 25px;
+        color: #555;
+        line-height: 1.8;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+    }
+
+    .faq-answer-content a {
+        color: #CE1126;
+        font-weight: 500;
+    }
+
+    .faq-sidebar {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        position: sticky;
+        top: 100px;
+    }
+
+    .faq-sidebar h4 {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #CE1126;
+    }
+
+    .quick-links a {
+        display: block;
+        padding: 12px 15px;
+        color: #333;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .quick-links a:hover {
+        background: #f8f9fa;
+        padding-left: 20px;
+        color: #CE1126;
+    }
+
+    .quick-links a i {
+        margin-right: 10px;
+        color: #CE1126;
+    }
+
+    .cta-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 25px;
+        text-align: center;
+    }
+
+    .cta-card h4 {
+        margin-bottom: 15px;
+    }
+
+    .cta-card p {
+        opacity: 0.9;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .faq-hero h1 {
+            font-size: 2rem;
+        }
+
+        .faq-question {
+            font-size: 1rem;
+            padding: 15px 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav class="py-3 bg-white border-bottom" aria-label="breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'home:index' %}" style="color: #CE1126;">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">FAQ</li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="faq-hero">
+    <div class="container">
+        <h1><i class="fas fa-question-circle me-3"></i>Egypt Travel FAQ</h1>
+        <p>Everything you need to know before your Egyptian adventure</p>
+    </div>
+</section>
+
+<!-- FAQ Content -->
+<section class="faq-section">
+    <div class="container">
+        <div class="row">
+            <!-- Main FAQ Content -->
+            <div class="col-lg-8">
+                <!-- Visa & Entry -->
+                <div class="faq-category" id="visa">
+                    <h2><i class="fas fa-passport"></i>Visa & Entry Requirements</h2>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            Do I need a visa to visit Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Most nationalities can obtain a <strong>visa on arrival</strong> at Egyptian airports for <strong>$25 USD</strong>, valid for 30 days. Citizens of the EU, US, UK, Canada, Australia, Japan, and many other countries are eligible.</p>
+                                <p>You can also apply for an <a href="https://www.egyptvisa.com" target="_blank">e-visa online</a> before travel, which can be convenient for faster immigration processing.</p>
+                                <p><strong>Documents needed:</strong> Valid passport (6+ months validity), return ticket, hotel booking confirmation, and cash for visa fee.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            How long can I stay in Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>The standard tourist visa allows a <strong>30-day stay</strong>. Extensions are possible at the Mogamma building in Cairo's Tahrir Square or at immigration offices in major cities.</p>
+                                <p>Extensions typically cost around 50-100 EGP and can add 30 more days. Overstaying can result in fines when departing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Best Time to Visit -->
+                <div class="faq-category" id="timing">
+                    <h2><i class="fas fa-sun"></i>Best Time to Visit</h2>
+
+                    <div class="faq-item active">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            What is the best time to visit Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>October to April</strong> is the ideal time to visit Egypt when temperatures are comfortable (20-25°C / 68-77°F).</p>
+                                <p><strong>Peak season (December-February):</strong> Most pleasant weather, but higher prices and more crowds at popular sites.</p>
+                                <p><strong>Shoulder season (October-November, March-April):</strong> Great weather with fewer tourists and better deals.</p>
+                                <p><strong>Summer (May-September):</strong> Very hot, especially in Upper Egypt (40°C+). Good for Red Sea beach resorts with lower prices.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            Is Ramadan a good time to visit Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Ramadan offers a unique cultural experience, but be aware that many restaurants close during the day. Tourist sites remain open, and hotels cater to visitors.</p>
+                                <p>Evenings during Ramadan are magical, with Iftar feasts and festive atmospheres. It's a wonderful time to experience authentic Egyptian hospitality.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Safety -->
+                <div class="faq-category" id="safety">
+                    <h2><i class="fas fa-shield-alt"></i>Safety & Health</h2>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            Is Egypt safe for tourists?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>Yes, Egypt is generally safe for tourists.</strong> Major tourist areas including Cairo, Giza, Luxor, Aswan, and Red Sea resorts have a strong security presence.</p>
+                                <p><strong>Tips for safe travel:</strong></p>
+                                <ul>
+                                    <li>Use reputable tour operators and licensed guides</li>
+                                    <li>Stay in well-reviewed hotels</li>
+                                    <li>Avoid isolated areas at night</li>
+                                    <li>Keep valuables secure and be aware of pickpockets</li>
+                                    <li>Check travel advisories before your trip</li>
+                                </ul>
+                                <p>We recommend booking tours through <a href="{% url 'tours:list' %}">verified operators</a> for peace of mind.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            Can I drink tap water in Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>No, do not drink tap water.</strong> Bottled water is inexpensive (about 5-10 EGP) and widely available everywhere.</p>
+                                <p>Use bottled water for drinking and brushing teeth. Ice in reputable restaurants and hotels is typically made from purified water.</p>
+                                <p>Bring basic medication for stomach upsets just in case, and avoid raw vegetables washed in tap water at street food stalls.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            What vaccinations do I need for Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>No vaccinations are legally required to enter Egypt, but the following are <strong>recommended</strong>:</p>
+                                <ul>
+                                    <li>Hepatitis A and B</li>
+                                    <li>Typhoid</li>
+                                    <li>Tetanus-diphtheria</li>
+                                    <li>Routine vaccinations (MMR, flu)</li>
+                                </ul>
+                                <p>Consult your doctor or a travel clinic 4-6 weeks before departure. Bring prescription medications with original labels.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Money & Costs -->
+                <div class="faq-category" id="money">
+                    <h2><i class="fas fa-money-bill-wave"></i>Money & Costs</h2>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            What currency is used in Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>The <strong>Egyptian Pound (EGP or LE)</strong> is the official currency. US Dollars and Euros are also widely accepted at hotels, tour companies, and tourist shops.</p>
+                                <p><strong>Exchange rates:</strong> As of 2024, approximately 1 USD = 30-50 EGP (rates fluctuate).</p>
+                                <p><strong>Tips:</strong></p>
+                                <ul>
+                                    <li>ATMs are available in major cities and tourist areas</li>
+                                    <li>Credit cards accepted at hotels and upscale establishments</li>
+                                    <li>Carry small bills for tipping and small purchases</li>
+                                    <li>Exchange at banks for better rates than hotels</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            How much should I budget for Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>Budget travel:</strong> $30-50/day (hostels, local food, public transport)</p>
+                                <p><strong>Mid-range:</strong> $80-150/day (3-4 star hotels, guided tours, nice restaurants)</p>
+                                <p><strong>Luxury:</strong> $200+/day (5-star hotels, private guides, fine dining)</p>
+                                <p>Major costs include accommodation, tour guides, entrance fees (Pyramids: ~400 EGP), and internal flights if traveling long distances.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            How much should I tip in Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Tipping (baksheesh) is an important part of Egyptian culture. <strong>Guidelines:</strong></p>
+                                <ul>
+                                    <li><strong>Restaurants:</strong> 10-15% of the bill</li>
+                                    <li><strong>Tour guides:</strong> 50-100 EGP per person per day</li>
+                                    <li><strong>Drivers:</strong> 30-50 EGP per day</li>
+                                    <li><strong>Hotel staff:</strong> 10-20 EGP per service</li>
+                                    <li><strong>Bathroom attendants:</strong> 5 EGP</li>
+                                </ul>
+                                <p>Keep small bills handy for tipping throughout your trip.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Getting Around -->
+                <div class="faq-category" id="transport">
+                    <h2><i class="fas fa-plane"></i>Getting Around</h2>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            How do I get from Cairo to Luxor?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>By Flight (recommended):</strong> 1 hour, from $50 one-way. EgyptAir and Air Cairo operate multiple daily flights.</p>
+                                <p><strong>By Sleeper Train:</strong> 10 hours overnight, $80-100 for a private cabin. A comfortable and scenic way to travel.</p>
+                                <p><strong>By Bus:</strong> 8-10 hours, from $15. GoBus offers comfortable coaches with WiFi.</p>
+                                <p><strong>By Private Car:</strong> 8-10 hours, $150-200 with driver. Flexible but long.</p>
+                                <p>Book flights and trains in advance during peak season. <a href="{% url 'transportation:index' %}">Compare transport options here</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            Is Uber available in Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>Yes!</strong> Uber and Careem (local competitor) are available in Cairo and Alexandria. They're safe, affordable, and avoid the hassle of negotiating with taxi drivers.</p>
+                                <p>Payment can be by card or cash. Prices are typically 50-70% lower than tourist taxis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- What to Wear -->
+                <div class="faq-category" id="packing">
+                    <h2><i class="fas fa-suitcase"></i>What to Pack & Wear</h2>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            What should I wear when visiting Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Egypt is a relatively conservative country. <strong>Dress modestly</strong> to show respect and avoid unwanted attention:</p>
+                                <p><strong>For women:</strong></p>
+                                <ul>
+                                    <li>Cover shoulders and knees in public</li>
+                                    <li>Bring a scarf to cover head when entering mosques</li>
+                                    <li>Loose, breathable clothing is best</li>
+                                </ul>
+                                <p><strong>For men:</strong></p>
+                                <ul>
+                                    <li>Avoid shorts outside resort areas</li>
+                                    <li>Collared shirts preferred at upscale restaurants</li>
+                                </ul>
+                                <p><strong>General tips:</strong> Comfortable walking shoes, sun hat, sunglasses, and sunscreen are essential.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trip Duration -->
+                <div class="faq-category" id="duration">
+                    <h2><i class="fas fa-calendar-alt"></i>Trip Planning</h2>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            How many days do I need to see Egypt?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>A minimum of <strong>7-10 days</strong> is recommended to see Egypt's highlights:</p>
+                                <ul>
+                                    <li><strong>Cairo & Giza:</strong> 2-3 days (Pyramids, Sphinx, Egyptian Museum, Khan el-Khalili)</li>
+                                    <li><strong>Luxor:</strong> 2-3 days (Valley of the Kings, Karnak Temple, Luxor Temple)</li>
+                                    <li><strong>Aswan:</strong> 1-2 days (Philae Temple, Nubian villages, Abu Simbel day trip)</li>
+                                    <li><strong>Nile Cruise:</strong> 3-4 days (Luxor to Aswan or vice versa)</li>
+                                    <li><strong>Red Sea:</strong> 2-3 days (optional - Hurghada, Sharm El Sheikh)</li>
+                                </ul>
+                                <p>For a comprehensive experience including Alexandria and the desert, plan for 14 days.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="faq-sidebar">
+                    <h4><i class="fas fa-list me-2"></i>Quick Navigation</h4>
+                    <div class="quick-links">
+                        <a href="#visa"><i class="fas fa-passport"></i>Visa & Entry</a>
+                        <a href="#timing"><i class="fas fa-sun"></i>Best Time to Visit</a>
+                        <a href="#safety"><i class="fas fa-shield-alt"></i>Safety & Health</a>
+                        <a href="#money"><i class="fas fa-money-bill-wave"></i>Money & Costs</a>
+                        <a href="#transport"><i class="fas fa-plane"></i>Getting Around</a>
+                        <a href="#packing"><i class="fas fa-suitcase"></i>What to Pack</a>
+                        <a href="#duration"><i class="fas fa-calendar-alt"></i>Trip Planning</a>
+                    </div>
+                </div>
+
+                <div class="cta-card">
+                    <h4><i class="fas fa-compass me-2"></i>Ready to Explore?</h4>
+                    <p>Book your Egypt adventure with verified tour operators</p>
+                    <a href="{% url 'tours:list' %}" class="btn btn-light w-100" style="font-weight: 600;">
+                        Browse Tours
+                    </a>
+                </div>
+
+                <!-- Trip Planner Widget -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='trip_planner' %}
+
+                <!-- Insurance Widget -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='insurance' %}
+
+                <!-- AdSense -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='ad_sidebar' %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter CTA -->
+<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 60px 0; color: white; text-align: center;">
+    <div class="container">
+        <h2 style="margin-bottom: 15px;"><i class="fas fa-envelope-open-text me-2"></i>Still Have Questions?</h2>
+        <p style="opacity: 0.9; margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto;">Subscribe to our newsletter for more Egypt travel tips, guides, and exclusive deals!</p>
+        <a href="{% url 'home:contact' %}" class="btn btn-light btn-lg" style="font-weight: 600; margin-right: 15px;">
+            <i class="fas fa-envelope me-2"></i>Contact Us
+        </a>
+        <a href="{% url 'blog:list' %}" class="btn btn-outline-light btn-lg" style="font-weight: 600;">
+            <i class="fas fa-book me-2"></i>Read Our Blog
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleFaq(element) {
+    const item = element.closest('.faq-item');
+    const wasActive = item.classList.contains('active');
+
+    // Close all items in the same category
+    const category = item.closest('.faq-category');
+    category.querySelectorAll('.faq-item').forEach(faq => {
+        faq.classList.remove('active');
+    });
+
+    // Toggle the clicked item
+    if (!wasActive) {
+        item.classList.add('active');
+    }
+}
+
+// Smooth scroll to sections
+document.querySelectorAll('.quick-links a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+</script>
+{% endblock %}

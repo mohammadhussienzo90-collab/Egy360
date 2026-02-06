@@ -1,9 +1,77 @@
 {% comment %}
-Travelpayouts Widget Templates - UPDATED 2026
-Include these in pages where you want to show hotel/flight/tour search widgets.
+Travelpayouts Widget Templates - ENHANCED 2026
 Project ID: 477897
 Affiliate Marker: 688198
 {% endcomment %}
+
+{% comment %} ==================== HOTEL WIDGETS ==================== {% endcomment %}
+
+{% comment %} Hotel Search Form - Full Width {% endcomment %}
+{% if widget_type == 'hotel_search' or widget_type == 'hotels' %}
+<div class="tp-hotel-widget mb-4" id="tp-hotel-search-{{ city_id|default:'egypt' }}">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchType498=hotels&city_ids=5025&city_label=Egypt&default_tab=hotels&lang=en&scroll_horiz=true&promo_id=4505&campaign_id=101" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} Cairo Hotels Widget {% endcomment %}
+{% if widget_type == 'hotels_cairo' %}
+<div class="tp-hotel-widget mb-4">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeHotels=true&city=284&city_label=Cairo%2C%20Egypt&lang=en&powered_by=true&promo_id=4505&campaign_id=101" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} Luxor Hotels Widget {% endcomment %}
+{% if widget_type == 'hotels_luxor' %}
+<div class="tp-hotel-widget mb-4">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeHotels=true&city=1026&city_label=Luxor%2C%20Egypt&lang=en&powered_by=true&promo_id=4505&campaign_id=101" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} Hurghada Hotels Widget {% endcomment %}
+{% if widget_type == 'hotels_hurghada' %}
+<div class="tp-hotel-widget mb-4">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeHotels=true&city=3263&city_label=Hurghada%2C%20Egypt&lang=en&powered_by=true&promo_id=4505&campaign_id=101" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} Sharm El Sheikh Hotels Widget {% endcomment %}
+{% if widget_type == 'hotels_sharm' %}
+<div class="tp-hotel-widget mb-4">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeHotels=true&city=3262&city_label=Sharm%20El%20Sheikh%2C%20Egypt&lang=en&powered_by=true&promo_id=4505&campaign_id=101" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} Hotellook Map Widget {% endcomment %}
+{% if widget_type == 'hotel_map' %}
+<div class="tp-hotel-map-widget mb-4">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&lat={{ lat|default:'30.0444' }}&lng={{ lng|default:'31.2357' }}&zoom={{ zoom|default:'12' }}&type=map&promo_id=4505&campaign_id=101" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} ==================== FLIGHT WIDGETS ==================== {% endcomment %}
+
+{% comment %} Flight Search Form {% endcomment %}
+{% if widget_type == 'flight_search' or widget_type == 'flights' %}
+<div class="tp-flight-widget mb-4">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeFlights=true&destination=CAI&destination_label=Cairo%20International%20(CAI)&lang=en&powered_by=true&promo_id=4504&campaign_id=100" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} Cheap Flights Calendar {% endcomment %}
+{% if widget_type == 'flights_calendar' %}
+<div class="tp-flights-calendar-widget mb-4">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&destination=CAI&type=calendar&powered_by=true&promo_id=4504&campaign_id=100&lang=en" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} Popular Routes Widget {% endcomment %}
+{% if widget_type == 'flights_popular' %}
+<div class="tp-flights-popular-widget mb-4">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&destination=CAI&type=popular&powered_by=true&promo_id=4504&campaign_id=100&lang=en" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} ==================== TOUR WIDGETS ==================== {% endcomment %}
 
 {% comment %} Cairo Tours Widget {% endcomment %}
 {% if widget_type == 'tours_cairo' or widget_type == 'tours' %}
@@ -33,10 +101,17 @@ Affiliate Marker: 688198
 </div>
 {% endif %}
 
-{% comment %} Flights to Cairo Widget {% endcomment %}
-{% if widget_type == 'flights' or widget_type == 'flights_cairo' %}
-<div class="tp-flights-widget mb-4">
-    <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&destination=CAI&category=1&amount={{ amount|default:'5' }}&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+{% comment %} Aswan Tours Widget {% endcomment %}
+{% if widget_type == 'tours_aswan' %}
+<div class="tp-tours-widget mb-4">
+    <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=1027&category=4&amount={{ amount|default:'3' }}&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} Alexandria Tours Widget {% endcomment %}
+{% if widget_type == 'tours_alexandria' %}
+<div class="tp-tours-widget mb-4">
+    <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=285&category=4&amount={{ amount|default:'3' }}&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
 </div>
 {% endif %}
 
@@ -47,7 +122,79 @@ Affiliate Marker: 688198
 </div>
 {% endif %}
 
-{% comment %} Inline Hotel Search Form (Custom Styled) - Links to internal search {% endcomment %}
+{% comment %} Tours Sidebar Widget {% endcomment %}
+{% if widget_type == 'tours_sidebar' %}
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-compass me-2"></i>Popular Tours</h5>
+    </div>
+    <div class="card-body p-0">
+        <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id={{ city_id|default:'284' }}&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+    </div>
+</div>
+{% endif %}
+
+{% comment %} Full Width Tours Banner {% endcomment %}
+{% if widget_type == 'tours_banner' %}
+<div class="tp-tours-banner py-4" style="background: linear-gradient(135deg, #fff5f0 0%, #fff 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 mb-3 mb-lg-0">
+                <h3 class="mb-2"><i class="fas fa-star text-warning me-2"></i>Top Egypt Experiences</h3>
+                <p class="text-muted mb-0">Book tours & activities with free cancellation</p>
+            </div>
+            <div class="col-lg-8">
+                <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id={{ city_id|default:'284' }}&category=4&amount=4&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% comment %} ==================== CAR RENTAL WIDGETS ==================== {% endcomment %}
+
+{% comment %} Car Rental Search {% endcomment %}
+{% if widget_type == 'car_rental' or widget_type == 'cars' %}
+<div class="tp-car-widget mb-4">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeCars=true&location_name=Cairo%2C%20Egypt&lang=en&powered_by=true&promo_id=4506&campaign_id=102" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} ==================== INSURANCE WIDGETS ==================== {% endcomment %}
+
+{% comment %} Travel Insurance {% endcomment %}
+{% if widget_type == 'insurance' %}
+<div class="tp-insurance-widget mb-4">
+    <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white;">
+        <div class="card-body p-4">
+            <h4 class="mb-3"><i class="fas fa-shield-alt me-2"></i>Travel Insurance</h4>
+            <p class="mb-3">Protect your Egypt trip with comprehensive travel insurance</p>
+            <ul class="mb-3" style="font-size: 0.95rem;">
+                <li>Medical emergencies covered</li>
+                <li>Trip cancellation protection</li>
+                <li>Lost luggage coverage</li>
+                <li>24/7 emergency assistance</li>
+            </ul>
+            <a href="https://tp.media/click?shmarker=688198&promo_id=4508&source_type=banner&type=click&campaign_id=104&trs=477897" target="_blank" rel="noopener" class="btn btn-light btn-lg w-100" style="font-weight: 600;">
+                <i class="fas fa-external-link-alt me-2"></i>Get Insurance Quote
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% comment %} ==================== MULTI-SEARCH WIDGETS ==================== {% endcomment %}
+
+{% comment %} Universal Search Widget (Hotels + Flights + Tours) {% endcomment %}
+{% if widget_type == 'universal_search' or widget_type == 'all' %}
+<div class="tp-universal-widget mb-4">
+    <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchType498=all&city_ids=5025&city_label=Egypt&default_tab=hotels&lang=en&scroll_horiz=true&promo_id=4502&campaign_id=98" charset="utf-8"></script>
+</div>
+{% endif %}
+
+{% comment %} ==================== STYLED CUSTOM WIDGETS ==================== {% endcomment %}
+
+{% comment %} Inline Hotel Search Form (Custom Styled) {% endcomment %}
 {% if widget_type == 'hotel_search_inline' %}
 <div class="card border-0 shadow-sm p-4 mb-4 bg-gradient-primary text-white" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
     <h4 class="mb-3"><i class="fas fa-hotel me-2"></i>Find Your Perfect Hotel</h4>
@@ -84,31 +231,194 @@ Affiliate Marker: 688198
 </div>
 {% endif %}
 
-{% comment %} Tours Sidebar Widget {% endcomment %}
-{% if widget_type == 'tours_sidebar' %}
-<div class="card border-0 shadow-sm mb-4">
-    <div class="card-header bg-primary text-white">
-        <h5 class="mb-0"><i class="fas fa-compass me-2"></i>Popular Tours</h5>
+{% comment %} Premium Booking CTA Card {% endcomment %}
+{% if widget_type == 'booking_cta' %}
+<div class="card border-0 shadow-lg mb-4 overflow-hidden">
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; color: white;">
+        <h4 class="mb-2"><i class="fas fa-percentage me-2"></i>Exclusive Deals</h4>
+        <p class="mb-0 opacity-75">Save up to 50% on Egypt travel</p>
     </div>
-    <div class="card-body p-0">
-        <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id={{ city_id|default:'284' }}&category=4&amount=3&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+    <div class="card-body p-4">
+        <div class="d-grid gap-2">
+            <a href="https://tp.media/click?shmarker=688198&promo_id=4505&source_type=banner&type=click&campaign_id=101&trs=477897" target="_blank" rel="noopener" class="btn btn-outline-primary">
+                <i class="fas fa-hotel me-2"></i>Hotel Deals
+            </a>
+            <a href="https://tp.media/click?shmarker=688198&promo_id=4504&source_type=banner&type=click&campaign_id=100&trs=477897" target="_blank" rel="noopener" class="btn btn-outline-success">
+                <i class="fas fa-plane me-2"></i>Flight Deals
+            </a>
+            <a href="https://tpemd.com/click?shmarker=688198&promo_id=4497&source_type=banner&type=click&campaign_id=137&trs=477897" target="_blank" rel="noopener" class="btn btn-outline-warning">
+                <i class="fas fa-compass me-2"></i>Tour Deals
+            </a>
+        </div>
     </div>
 </div>
 {% endif %}
 
-{% comment %} Full Width Tours Banner {% endcomment %}
-{% if widget_type == 'tours_banner' %}
-<div class="tp-tours-banner py-4">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-4 mb-3 mb-lg-0">
-                <h3 class="mb-2"><i class="fas fa-star text-warning me-2"></i>Top Egypt Experiences</h3>
-                <p class="text-muted mb-0">Book tours & activities with free cancellation</p>
+{% comment %} Nile Cruise Special Widget {% endcomment %}
+{% if widget_type == 'nile_cruise' %}
+<div class="card border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white;">
+    <div class="card-body p-4">
+        <h4 class="mb-3"><i class="fas fa-ship me-2" style="color: #ffd700;"></i>Nile Cruises</h4>
+        <p class="mb-3 opacity-75">Experience the magic of ancient Egypt from the Nile</p>
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="text-center p-2" style="background: rgba(255,255,255,0.1); border-radius: 10px;">
+                    <small>From</small>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #ffd700;">$399</div>
+                    <small>3 nights</small>
+                </div>
             </div>
-            <div class="col-lg-8">
-                <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id={{ city_id|default:'284' }}&category=4&amount=4&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+            <div class="col-6">
+                <div class="text-center p-2" style="background: rgba(255,255,255,0.1); border-radius: 10px;">
+                    <small>From</small>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #ffd700;">$699</div>
+                    <small>7 nights</small>
+                </div>
             </div>
+        </div>
+        <a href="{% url 'tours:list' %}?category=cruises" class="btn btn-warning w-100 mt-3" style="font-weight: 600;">
+            <i class="fas fa-anchor me-2"></i>View Cruises
+        </a>
+    </div>
+</div>
+{% endif %}
+
+{% comment %} Egypt Trip Planner CTA {% endcomment %}
+{% if widget_type == 'trip_planner' %}
+<div class="card border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); color: white;">
+    <div class="card-body p-4 text-center">
+        <i class="fas fa-map-marked-alt" style="font-size: 3rem; margin-bottom: 15px;"></i>
+        <h4 class="mb-2">Plan Your Egypt Trip</h4>
+        <p class="mb-3 opacity-90">Get a personalized itinerary in minutes</p>
+        <button class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#tripPlannerModal" style="font-weight: 600;">
+            <i class="fas fa-magic me-2"></i>Start Planning
+        </button>
+    </div>
+</div>
+{% endif %}
+
+{% comment %} Compact Flight Search {% endcomment %}
+{% if widget_type == 'flights_compact' %}
+<div class="card border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;">
+    <div class="card-body p-4">
+        <h5 class="mb-3"><i class="fas fa-plane-departure me-2"></i>Flights to Egypt</h5>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="https://tp.media/r?marker=688198&trs=477897&p=4504&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FJFKCAI1" target="_blank" rel="noopener" class="btn btn-light btn-sm">NYC → Cairo</a>
+            <a href="https://tp.media/r?marker=688198&trs=477897&p=4504&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FLHRCAI1" target="_blank" rel="noopener" class="btn btn-light btn-sm">London → Cairo</a>
+            <a href="https://tp.media/r?marker=688198&trs=477897&p=4504&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FDURCAI1" target="_blank" rel="noopener" class="btn btn-light btn-sm">Dubai → Cairo</a>
+            <a href="https://tp.media/r?marker=688198&trs=477897&p=4504&u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FDXBHRG1" target="_blank" rel="noopener" class="btn btn-light btn-sm">Dubai → Hurghada</a>
         </div>
     </div>
 </div>
+{% endif %}
+
+{% comment %} ==================== ADSENSE PLACEHOLDERS ==================== {% endcomment %}
+
+{% comment %} AdSense - Responsive Banner (Top) {% endcomment %}
+{% if widget_type == 'adsense_banner' or widget_type == 'ad_top' %}
+<div class="ad-container mb-4" style="min-height: 90px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+    <!-- Google AdSense - Replace with your ad code -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <!-- Placeholder text - will be hidden when ad loads -->
+    <noscript><span style="color: #999; font-size: 0.9rem;">Advertisement</span></noscript>
+</div>
+{% endif %}
+
+{% comment %} AdSense - In-Article Ad {% endcomment %}
+{% if widget_type == 'adsense_article' or widget_type == 'ad_inline' %}
+<div class="ad-container my-4" style="min-height: 280px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+    <!-- Google AdSense - In-Article -->
+    <ins class="adsbygoogle"
+         style="display:block; text-align:center;"
+         data-ad-layout="in-article"
+         data-ad-format="fluid"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+{% endif %}
+
+{% comment %} AdSense - Sidebar Ad {% endcomment %}
+{% if widget_type == 'adsense_sidebar' or widget_type == 'ad_sidebar' %}
+<div class="ad-container mb-4" style="min-height: 250px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+    <!-- Google AdSense - Sidebar Rectangle -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:300px;height:250px"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+{% endif %}
+
+{% comment %} AdSense - Footer Banner {% endcomment %}
+{% if widget_type == 'adsense_footer' or widget_type == 'ad_footer' %}
+<div class="ad-container my-4" style="min-height: 90px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+    <!-- Google AdSense - Footer -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="horizontal"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+{% endif %}
+
+{% comment %} ==================== COMBINED MONETIZATION SECTIONS ==================== {% endcomment %}
+
+{% comment %} Full Booking Section for Homepage/Landing {% endcomment %}
+{% if widget_type == 'full_booking_section' %}
+<section class="py-5" style="background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3" style="font-weight: 700;">Book Your Egypt Adventure</h2>
+            <p class="text-muted">Compare prices from 100+ travel sites</p>
+        </div>
+
+        <!-- Booking Tabs -->
+        <ul class="nav nav-pills justify-content-center mb-4" id="bookingTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active px-4" id="hotels-tab" data-bs-toggle="pill" data-bs-target="#hotels-panel" type="button" role="tab">
+                    <i class="fas fa-hotel me-2"></i>Hotels
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4" id="flights-tab" data-bs-toggle="pill" data-bs-target="#flights-panel" type="button" role="tab">
+                    <i class="fas fa-plane me-2"></i>Flights
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4" id="tours-tab" data-bs-toggle="pill" data-bs-target="#tours-panel" type="button" role="tab">
+                    <i class="fas fa-compass me-2"></i>Tours
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4" id="cars-tab" data-bs-toggle="pill" data-bs-target="#cars-panel" type="button" role="tab">
+                    <i class="fas fa-car me-2"></i>Cars
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content bg-white rounded-4 shadow-lg p-4" id="bookingTabContent">
+            <div class="tab-pane fade show active" id="hotels-panel" role="tabpanel">
+                <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeHotels=true&city=284&city_label=Cairo%2C%20Egypt&lang=en&powered_by=true&promo_id=4505&campaign_id=101" charset="utf-8"></script>
+            </div>
+            <div class="tab-pane fade" id="flights-panel" role="tabpanel">
+                <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeFlights=true&destination=CAI&destination_label=Cairo%20International%20(CAI)&lang=en&powered_by=true&promo_id=4504&campaign_id=100" charset="utf-8"></script>
+            </div>
+            <div class="tab-pane fade" id="tours-panel" role="tabpanel">
+                <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=284&category=4&amount=6&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+            </div>
+            <div class="tab-pane fade" id="cars-panel" role="tabpanel">
+                <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeCars=true&location_name=Cairo%2C%20Egypt&lang=en&powered_by=true&promo_id=4506&campaign_id=102" charset="utf-8"></script>
+            </div>
+        </div>
+    </div>
+</section>
 {% endif %}

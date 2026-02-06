@@ -582,6 +582,24 @@
                         View All Tours
                     </a>
                 </div>
+
+                <!-- Travelpayouts Tours Widget -->
+                <div class="trending-sidebar mb-4">
+                    <h4><i class="fas fa-star me-2" style="color: #ffc107;"></i>Popular Experiences</h4>
+                    {% include 'includes/travelpayouts_widgets.html' with widget_type='tours' amount='4' %}
+                </div>
+
+                <!-- AdSense Sidebar -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='ad_sidebar' %}
+
+                <!-- Nile Cruise Widget -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='nile_cruise' %}
+
+                <!-- Flight Search Widget -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='flights_compact' %}
+
+                <!-- Travel Insurance -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='insurance' %}
             </div>
         </div>
     </div>

@@ -782,6 +782,9 @@
 
             <!-- Sidebar -->
             <aside class="article-sidebar">
+                <!-- Ad Spot - Sidebar Top -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='ad_sidebar' %}
+
                 <!-- Author Card -->
                 <div class="sidebar-card author-card">
                     <div class="author-avatar">
@@ -790,6 +793,9 @@
                     <h5 class="author-name">{{ post.author.get_full_name|default:post.author.username }}</h5>
                     <p class="author-bio">Travel enthusiast and Egypt expert sharing insights and tips for your Egyptian adventure.</p>
                 </div>
+
+                <!-- Booking CTA Card -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='booking_cta' %}
 
                 <!-- Related Posts -->
                 {% if related_posts %}
@@ -853,6 +859,15 @@
                     </form>
                     <div id="sidebar-newsletter-message" class="mt-2" style="font-size: 0.9rem;"></div>
                 </div>
+
+                <!-- Nile Cruise Widget -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='nile_cruise' %}
+
+                <!-- Travel Insurance -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='insurance' %}
+
+                <!-- Flights Compact -->
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='flights_compact' %}
             </aside>
         </div>
     </div>
