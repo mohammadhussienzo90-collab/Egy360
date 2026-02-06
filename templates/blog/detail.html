@@ -630,6 +630,116 @@
 {% endblock %}
 
 {% block content %}
+<!-- Floating Share Bar (appears on scroll) -->
+<div id="floating-share-bar" class="floating-share-bar">
+    <div class="floating-share-inner">
+        <span class="share-label"><i class="fas fa-share-alt"></i></span>
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}%3Futm_source%3Dfacebook%26utm_medium%3Dfloating" target="_blank" class="floating-share-btn facebook" onclick="trackShare('facebook_floating')">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <button class="floating-share-btn instagram" onclick="shareToInstagram()">
+            <i class="fab fa-instagram"></i>
+        </button>
+        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}%3Futm_source%3Dtwitter%26utm_medium%3Dfloating&text={{ post.title|urlencode }}" target="_blank" class="floating-share-btn twitter" onclick="trackShare('twitter_floating')">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://wa.me/?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri }}%3Futm_source%3Dwhatsapp%26utm_medium%3Dfloating" target="_blank" class="floating-share-btn whatsapp" onclick="trackShare('whatsapp_floating')">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <button class="floating-share-btn copy" onclick="copyToClipboard()">
+            <i class="fas fa-link"></i>
+        </button>
+    </div>
+</div>
+
+<style>
+.floating-share-bar {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.floating-share-bar.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.floating-share-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: white;
+    padding: 15px 10px;
+    border-radius: 30px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+}
+
+.share-label {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+}
+
+.floating-share-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.floating-share-btn:hover {
+    transform: scale(1.15);
+}
+
+.floating-share-btn.facebook { background: #1877f2; }
+.floating-share-btn.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.floating-share-btn.twitter { background: #1da1f2; }
+.floating-share-btn.whatsapp { background: #25d366; }
+.floating-share-btn.copy { background: #CE1126; }
+
+@media (max-width: 992px) {
+    .floating-share-bar {
+        left: auto;
+        right: 10px;
+        top: auto;
+        bottom: 80px;
+        transform: none;
+    }
+
+    .floating-share-inner {
+        flex-direction: row;
+        padding: 10px 15px;
+        border-radius: 50px;
+    }
+
+    .share-label {
+        display: none;
+    }
+
+    .floating-share-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+}
+</style>
+
 <!-- Breadcrumb Navigation -->
 <nav class="back-nav" aria-label="breadcrumb">
     <div class="container">
@@ -715,24 +825,93 @@
                         <div class="share-section">
                             <h5><i class="fas fa-share-alt me-2"></i>Share this article</h5>
                             <div class="share-buttons">
+                                <!-- Facebook Share -->
                                 <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}%3Futm_source%3Dfacebook%26utm_medium%3Dshare" target="_blank" class="share-btn facebook" title="Share on Facebook" onclick="trackShare('facebook')">
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
-                                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}%3Futm_source%3Dtwitter%26utm_medium%3Dshare&text={{ post.title|urlencode }}%20via%20%40360egy" target="_blank" class="share-btn twitter" title="Share on Twitter" onclick="trackShare('twitter')">
+                                <!-- Facebook Messenger -->
+                                <a href="https://www.facebook.com/dialog/send?link={{ request.build_absolute_uri }}%3Futm_source%3Dmessenger%26utm_medium%3Dshare&app_id=YOUR_FB_APP_ID&redirect_uri={{ request.build_absolute_uri }}" target="_blank" class="share-btn messenger" title="Send via Messenger" onclick="trackShare('messenger')" style="background: linear-gradient(135deg, #00B2FF, #006AFF);">
+                                    <i class="fab fa-facebook-messenger"></i>
+                                </a>
+                                <!-- Instagram (Copy for Stories) -->
+                                <button class="share-btn instagram" title="Share on Instagram" onclick="shareToInstagram()" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">
+                                    <i class="fab fa-instagram"></i>
+                                </button>
+                                <!-- Twitter/X -->
+                                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}%3Futm_source%3Dtwitter%26utm_medium%3Dshare&text={{ post.title|urlencode }}%20via%20%40360egy" target="_blank" class="share-btn twitter" title="Share on X (Twitter)" onclick="trackShare('twitter')">
                                     <i class="fab fa-twitter"></i>
                                 </a>
+                                <!-- WhatsApp -->
                                 <a href="https://wa.me/?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri }}%3Futm_source%3Dwhatsapp%26utm_medium%3Dshare" target="_blank" class="share-btn whatsapp" title="Share on WhatsApp" onclick="trackShare('whatsapp')">
                                     <i class="fab fa-whatsapp"></i>
                                 </a>
+                                <!-- Telegram -->
+                                <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}%3Futm_source%3Dtelegram%26utm_medium%3Dshare&text={{ post.title|urlencode }}" target="_blank" class="share-btn telegram" title="Share on Telegram" onclick="trackShare('telegram')" style="background: #0088cc;">
+                                    <i class="fab fa-telegram-plane"></i>
+                                </a>
+                                <!-- Pinterest -->
                                 <a href="https://pinterest.com/pin/create/button/?url={{ request.build_absolute_uri }}%3Futm_source%3Dpinterest%26utm_medium%3Dshare&media={% if post.image_url %}{{ post.image_url }}{% endif %}&description={{ post.title|urlencode }}" target="_blank" class="share-btn pinterest" title="Pin on Pinterest" onclick="trackShare('pinterest')">
                                     <i class="fab fa-pinterest-p"></i>
                                 </a>
+                                <!-- LinkedIn -->
                                 <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}%3Futm_source%3Dlinkedin%26utm_medium%3Dshare&title={{ post.title|urlencode }}" target="_blank" class="share-btn linkedin" title="Share on LinkedIn" onclick="trackShare('linkedin')">
                                     <i class="fab fa-linkedin-in"></i>
                                 </a>
+                                <!-- Copy Link -->
                                 <button class="share-btn copy" onclick="copyToClipboard()" title="Copy link">
                                     <i class="fas fa-link"></i>
                                 </button>
+                                <!-- Native Share (Mobile) -->
+                                <button class="share-btn native-share" onclick="nativeShare()" title="More sharing options" style="background: #333; display: none;" id="native-share-btn">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                            </div>
+                            <p class="mt-3 text-muted" style="font-size: 0.85rem;">
+                                <i class="fas fa-heart text-danger me-1"></i> Share this guide with friends planning an Egypt trip!
+                            </p>
+                        </div>
+
+                        <!-- Instagram Share Modal -->
+                        <div class="modal fade" id="instagramShareModal" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
+                                    <div style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); padding: 25px; text-align: center; color: white;">
+                                        <i class="fab fa-instagram" style="font-size: 3rem; margin-bottom: 10px;"></i>
+                                        <h5 class="mb-0">Share on Instagram</h5>
+                                    </div>
+                                    <div class="modal-body p-4">
+                                        <p class="text-center mb-4">Copy the link below and share it in your Instagram Story or bio!</p>
+
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" id="instagram-share-url" value="{{ request.build_absolute_uri }}?utm_source=instagram&utm_medium=share" readonly style="font-size: 0.9rem;">
+                                            <button class="btn btn-primary" onclick="copyInstagramLink()">
+                                                <i class="fas fa-copy"></i> Copy
+                                            </button>
+                                        </div>
+
+                                        <div class="d-grid gap-2">
+                                            <a href="https://www.instagram.com/" target="_blank" class="btn btn-lg" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white;">
+                                                <i class="fab fa-instagram me-2"></i> Open Instagram
+                                            </a>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <h6 class="text-center mb-3">How to share:</h6>
+                                        <ol class="text-muted" style="font-size: 0.9rem;">
+                                            <li>Copy the link above</li>
+                                            <li>Open Instagram and create a Story</li>
+                                            <li>Add a photo and use the Link sticker</li>
+                                            <li>Paste the copied link</li>
+                                        </ol>
+
+                                        <div class="text-center mt-4">
+                                            <a href="https://instagram.com/egy360travel" target="_blank" class="btn btn-outline-secondary">
+                                                <i class="fab fa-instagram me-2"></i> Follow @egy360travel
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -876,6 +1055,7 @@
 
 {% block extra_js %}
 <script>
+// Copy link to clipboard
 function copyToClipboard() {
     const shareUrl = window.location.href + '?utm_source=clipboard&utm_medium=share';
     navigator.clipboard.writeText(shareUrl).then(function() {
@@ -892,6 +1072,52 @@ function copyToClipboard() {
     });
 }
 
+// Instagram share - opens modal with instructions
+function shareToInstagram() {
+    const modal = new bootstrap.Modal(document.getElementById('instagramShareModal'));
+    modal.show();
+    trackShare('instagram_intent');
+}
+
+// Copy Instagram link
+function copyInstagramLink() {
+    const input = document.getElementById('instagram-share-url');
+    input.select();
+    navigator.clipboard.writeText(input.value).then(function() {
+        const btn = input.nextElementSibling;
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-success');
+        trackShare('instagram_copy');
+
+        setTimeout(function() {
+            btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-primary');
+        }, 3000);
+    });
+}
+
+// Native Web Share API (for mobile devices)
+function nativeShare() {
+    if (navigator.share) {
+        navigator.share({
+            title: '{{ post.title|escapejs }}',
+            text: '{{ post.excerpt|truncatewords:20|escapejs }}',
+            url: window.location.href + '?utm_source=native_share&utm_medium=share'
+        }).then(() => {
+            trackShare('native_share');
+        }).catch((error) => {
+            console.log('Share cancelled or failed:', error);
+        });
+    }
+}
+
+// Show native share button on supported devices
+if (navigator.share) {
+    document.getElementById('native-share-btn').style.display = 'flex';
+}
+
 // Track social shares for analytics
 function trackShare(platform) {
     if (typeof gtag !== 'undefined') {
@@ -902,7 +1128,62 @@ function trackShare(platform) {
             'item_id': '{{ post.slug }}'
         });
     }
+
+    // Also track as conversion
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'social_share', {
+            'event_category': 'Engagement',
+            'event_label': platform,
+            'value': 1
+        });
+    }
 }
+
+// Facebook SDK for enhanced sharing (optional - uncomment if you have FB App ID)
+/*
+window.fbAsyncInit = function() {
+    FB.init({
+        appId: 'YOUR_FB_APP_ID',
+        xfbml: true,
+        version: 'v18.0'
+    });
+};
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+function shareFacebook() {
+    FB.ui({
+        method: 'share',
+        href: window.location.href + '?utm_source=facebook&utm_medium=share',
+    }, function(response){
+        if (response && !response.error_message) {
+            trackShare('facebook_dialog');
+        }
+    });
+}
+*/
+
+// Floating share bar visibility
+window.addEventListener('scroll', function() {
+    const floatingBar = document.getElementById('floating-share-bar');
+    const articleContent = document.querySelector('.article-content');
+
+    if (articleContent) {
+        const rect = articleContent.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom > 0;
+
+        if (window.scrollY > 400 && inView) {
+            floatingBar.classList.add('visible');
+        } else {
+            floatingBar.classList.remove('visible');
+        }
+    }
+});
 
 // Sidebar newsletter form
 document.getElementById('sidebar-newsletter-form').addEventListener('submit', function(e) {
