@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.http import JsonResponse
 from django.utils import timezone
+from django.db import models
 from .models import BlogPost, BlogCategory, BlogComment
 import traceback
 
@@ -260,6 +261,105 @@ class BlogDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = self.object.comments.filter(status='approved')
-        context['recent_posts'] = BlogPost.objects.exclude(id=self.object.id)[:5]
+        post = self.object
+
+        # Comments
+        context['comments'] = post.comments.filter(status='approved')
+
+        # Smart Related Articles Algorithm
+        # Priority: Same category > Similar tags > Popular > Recent
+        related_posts = []
+
+        # 1. Same category articles
+        if post.category:
+            same_category = BlogPost.objects.filter(
+                status='published',
+                category=post.category
+            ).exclude(id=post.id).order_by('-views_count')[:3]
+            related_posts.extend(list(same_category))
+
+        # 2. Fill with popular posts if needed
+        if len(related_posts) < 5:
+            popular = BlogPost.objects.filter(
+                status='published'
+            ).exclude(id=post.id).exclude(
+                id__in=[p.id for p in related_posts]
+            ).order_by('-views_count')[:5 - len(related_posts)]
+            related_posts.extend(list(popular))
+
+        context['related_posts'] = related_posts[:5]
+
+        # Recent posts for sidebar
+        context['recent_posts'] = BlogPost.objects.filter(
+            status='published'
+        ).exclude(id=post.id).order_by('-published_at')[:5]
+
+        # Trending posts
+        context['trending_posts'] = BlogPost.objects.filter(
+            status='published'
+        ).order_by('-views_count')[:5]
+
+        # Categories for navigation
+        context['categories'] = BlogCategory.objects.filter(
+            posts__status='published'
+        ).distinct()
+
+        # Reading time calculation
+        word_count = len(post.content.split()) if post.content else 0
+        context['reading_time'] = max(1, word_count // 200)
+
+        # Next/Previous articles
+        context['next_post'] = BlogPost.objects.filter(
+            status='published',
+            published_at__gt=post.published_at
+        ).order_by('published_at').first()
+
+        context['prev_post'] = BlogPost.objects.filter(
+            status='published',
+            published_at__lt=post.published_at
+        ).order_by('-published_at').first()
+
+        # Total article count for social proof
+        context['total_articles'] = BlogPost.objects.filter(status='published').count()
+
         return context
+
+
+def pillar_egypt_guide(request):
+    """
+    SEO Pillar Page: Ultimate Egypt Travel Guide
+    This comprehensive page targets high-volume keywords
+    """
+    context = {
+        'page_title': 'Ultimate Egypt Travel Guide 2026: Everything You Need to Know',
+        'meta_description': 'Complete Egypt travel guide covering visa, costs, best time to visit, top attractions, safety tips, and insider advice. Plan your perfect Egypt trip.',
+
+        # Featured content by category
+        'pyramid_articles': BlogPost.objects.filter(
+            status='published',
+            slug__icontains='pyramid'
+        ).order_by('-views_count')[:4],
+
+        'travel_tips': BlogPost.objects.filter(
+            status='published',
+            category__slug='travel-guides'
+        ).order_by('-views_count')[:4],
+
+        'destination_articles': BlogPost.objects.filter(
+            status='published',
+            category__slug='destinations'
+        ).order_by('-views_count')[:4],
+
+        'history_articles': BlogPost.objects.filter(
+            status='published',
+            category__slug='ancient-egypt'
+        ).order_by('-views_count')[:4],
+
+        # Stats for social proof
+        'total_articles': BlogPost.objects.filter(status='published').count(),
+        'total_views': BlogPost.objects.filter(status='published').aggregate(
+            total=models.Sum('views_count')
+        )['total'] or 0,
+    }
+
+    return render(request, 'blog/pillar_egypt_guide.html', context)

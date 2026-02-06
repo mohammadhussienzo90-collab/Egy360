@@ -1,0 +1,627 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }} | Egy360{% endblock %}
+{% block description %}{{ meta_description }}{% endblock %}
+{% block keywords %}Egypt travel guide, Egypt vacation, Egypt trip planner, visit Egypt, Egypt tourism, best time Egypt, Egypt visa, Egypt budget, Cairo travel, Luxor guide, pyramids tour{% endblock %}
+
+{% block structured_data %}
+<!-- Article Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ page_title }}",
+    "description": "{{ meta_description }}",
+    "image": "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200",
+    "author": {"@type": "Organization", "name": "Egy360"},
+    "publisher": {"@type": "Organization", "name": "Egy360", "logo": {"@type": "ImageObject", "url": "https://360egy.com/static/images/logo.png"}},
+    "datePublished": "2026-01-01",
+    "dateModified": "2026-02-06"
+}
+</script>
+
+<!-- Breadcrumb Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://360egy.com/"},
+        {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://360egy.com/blog/"},
+        {"@type": "ListItem", "position": 3, "name": "Egypt Travel Guide"}
+    ]
+}
+</script>
+
+<!-- FAQ Schema for SEO -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "What is the best time to visit Egypt?",
+            "acceptedAnswer": {"@type": "Answer", "text": "October to April offers the best weather with temperatures between 20-25°C. Avoid summer (June-August) when temperatures can exceed 40°C."}
+        },
+        {
+            "@type": "Question",
+            "name": "How much does a trip to Egypt cost?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Budget travelers can spend $30-50/day, mid-range $80-150/day, and luxury travelers $200+/day. A 10-day trip typically costs $1,000-3,000 depending on style."}
+        },
+        {
+            "@type": "Question",
+            "name": "Is Egypt safe for tourists in 2026?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Yes, Egypt is safe for tourists. Major tourist areas have strong security presence. Millions of tourists visit annually without incident."}
+        }
+    ]
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .pillar-hero {
+        background: linear-gradient(135deg, rgba(26,26,46,0.95), rgba(22,33,62,0.95)),
+                    url('https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1600') center/cover;
+        padding: 100px 0 80px;
+        color: white;
+    }
+
+    .pillar-hero h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .pillar-hero .lead {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        max-width: 700px;
+    }
+
+    .stats-bar {
+        background: rgba(255,255,255,0.1);
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 30px;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ffd700;
+    }
+
+    .toc-section {
+        background: #f8f9fa;
+        padding: 40px 0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .toc-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .toc-list {
+        columns: 2;
+        column-gap: 30px;
+    }
+
+    .toc-list a {
+        display: block;
+        padding: 10px 0;
+        color: #333;
+        text-decoration: none;
+        border-bottom: 1px solid #eee;
+        transition: all 0.3s ease;
+    }
+
+    .toc-list a:hover {
+        color: #CE1126;
+        padding-left: 10px;
+    }
+
+    .toc-list a i {
+        color: #CE1126;
+        margin-right: 10px;
+    }
+
+    .content-section {
+        padding: 60px 0;
+    }
+
+    .content-section:nth-child(even) {
+        background: #f8f9fa;
+    }
+
+    .section-header {
+        margin-bottom: 40px;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        margin-bottom: 15px;
+    }
+
+    .section-header h2 i {
+        color: #CE1126;
+        margin-right: 15px;
+    }
+
+    .info-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        height: 100%;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+
+    .info-card h4 {
+        color: #1a1a2e;
+        margin-bottom: 15px;
+    }
+
+    .info-card h4 i {
+        color: #CE1126;
+        margin-right: 10px;
+    }
+
+    .quick-fact {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .quick-fact-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #CE1126, #8B0000);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+    }
+
+    .article-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    .article-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+
+    .article-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .article-card img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+    }
+
+    .article-card-body {
+        padding: 20px;
+    }
+
+    .article-card h5 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
+
+    .article-card h5 a {
+        color: #1a1a2e;
+        text-decoration: none;
+    }
+
+    .article-card h5 a:hover {
+        color: #CE1126;
+    }
+
+    .cta-section {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        padding: 60px 0;
+        color: white;
+        text-align: center;
+    }
+
+    .cta-section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .pillar-hero h1 {
+            font-size: 2rem;
+        }
+
+        .toc-list {
+            columns: 1;
+        }
+
+        .stats-bar .row > div {
+            margin-bottom: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="pillar-hero">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb" style="background: transparent;">
+                <li class="breadcrumb-item"><a href="/" style="color: #ffd700;">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'blog:list' %}" style="color: #ffd700;">Blog</a></li>
+                <li class="breadcrumb-item active text-white">Egypt Travel Guide</li>
+            </ol>
+        </nav>
+
+        <h1>Ultimate Egypt Travel Guide 2026</h1>
+        <p class="lead">Everything you need to plan the perfect Egyptian adventure. From pyramids to beaches, visa to budget - your complete resource.</p>
+
+        <div class="stats-bar">
+            <div class="row text-center">
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ total_articles|default:"96" }}+</div>
+                        <div>Travel Guides</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">50K+</div>
+                        <div>Happy Travelers</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">4.9</div>
+                        <div>Star Rating</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div>Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Table of Contents -->
+<section class="toc-section">
+    <div class="container">
+        <div class="toc-card">
+            <h3 class="mb-4"><i class="fas fa-list-ul me-2"></i>Quick Navigation</h3>
+            <div class="toc-list">
+                <a href="#planning"><i class="fas fa-map"></i>Trip Planning Essentials</a>
+                <a href="#when-to-visit"><i class="fas fa-calendar"></i>Best Time to Visit</a>
+                <a href="#visa"><i class="fas fa-passport"></i>Visa & Entry Requirements</a>
+                <a href="#budget"><i class="fas fa-wallet"></i>Budget & Costs</a>
+                <a href="#attractions"><i class="fas fa-landmark"></i>Must-See Attractions</a>
+                <a href="#pyramids"><i class="fas fa-monument"></i>Pyramids Guide</a>
+                <a href="#nile"><i class="fas fa-ship"></i>Nile Cruises</a>
+                <a href="#red-sea"><i class="fas fa-water"></i>Red Sea Beaches</a>
+                <a href="#safety"><i class="fas fa-shield-alt"></i>Safety Tips</a>
+                <a href="#culture"><i class="fas fa-mosque"></i>Culture & Etiquette</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Planning Section -->
+<section class="content-section" id="planning">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-map"></i>Trip Planning Essentials</h2>
+            <p class="text-muted">Everything you need to know before booking your Egypt trip</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="info-card">
+                    <h4><i class="fas fa-clock"></i>Ideal Duration</h4>
+                    <p>We recommend <strong>7-14 days</strong> for a comprehensive Egypt experience.</p>
+                    <ul class="mb-0">
+                        <li><strong>7 days:</strong> Cairo + Luxor highlights</li>
+                        <li><strong>10 days:</strong> Add Aswan & Nile cruise</li>
+                        <li><strong>14 days:</strong> Include Red Sea beaches</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-card">
+                    <h4><i class="fas fa-plane"></i>Getting There</h4>
+                    <p>Major airlines fly to <strong>Cairo International Airport (CAI)</strong>.</p>
+                    <ul class="mb-0">
+                        <li>Direct flights from major cities</li>
+                        <li>Budget options via Istanbul, Dubai</li>
+                        <li>Internal flights to Luxor, Aswan, Hurghada</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-card">
+                    <h4><i class="fas fa-language"></i>Language & Currency</h4>
+                    <p><strong>Arabic</strong> is official, English widely spoken in tourist areas.</p>
+                    <ul class="mb-0">
+                        <li>Currency: Egyptian Pound (EGP)</li>
+                        <li>USD/EUR accepted at hotels</li>
+                        <li>ATMs available everywhere</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust Badges -->
+        {% include 'includes/conversion_elements.html' with widget_type='trust_badges' %}
+    </div>
+</section>
+
+<!-- When to Visit -->
+<section class="content-section" id="when-to-visit">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-calendar-alt"></i>Best Time to Visit Egypt</h2>
+            <p class="text-muted">Plan your trip around the perfect weather</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="info-card">
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-3">
+                            <div style="background: linear-gradient(135deg, #11998e, #38ef7d); padding: 20px; border-radius: 12px; color: white;">
+                                <i class="fas fa-sun" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                                <h5>Peak Season</h5>
+                                <p class="mb-0">Oct - Apr</p>
+                                <small>Best weather, higher prices</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div style="background: linear-gradient(135deg, #f093fb, #f5576c); padding: 20px; border-radius: 12px; color: white;">
+                                <i class="fas fa-temperature-high" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                                <h5>Hot Season</h5>
+                                <p class="mb-0">May - Sep</p>
+                                <small>Very hot, great for Red Sea</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 20px; border-radius: 12px; color: white;">
+                                <i class="fas fa-star" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                                <h5>Sweet Spot</h5>
+                                <p class="mb-0">Mar, Oct, Nov</p>
+                                <small>Perfect balance</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='booking_cta' %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Budget Section -->
+<section class="content-section" id="budget">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-wallet"></i>Egypt Travel Budget 2026</h2>
+            <p class="text-muted">What to expect for daily costs</p>
+        </div>
+
+        {% include 'includes/conversion_elements.html' with widget_type='tour_comparison' %}
+    </div>
+</section>
+
+<!-- Pyramids Section -->
+<section class="content-section" id="pyramids">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-monument"></i>Pyramids of Giza Guide</h2>
+            <p class="text-muted">Everything about Egypt's most iconic landmarks</p>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-lg-8">
+                <div class="info-card">
+                    <h4>Visiting the Pyramids</h4>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="quick-fact">
+                                <div class="quick-fact-icon"><i class="fas fa-ticket-alt"></i></div>
+                                <div>
+                                    <strong>Entry Fee</strong>
+                                    <div class="text-muted">540 EGP (~$11 USD)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="quick-fact">
+                                <div class="quick-fact-icon"><i class="fas fa-clock"></i></div>
+                                <div>
+                                    <strong>Best Time</strong>
+                                    <div class="text-muted">Early morning (7-9 AM)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="quick-fact">
+                                <div class="quick-fact-icon"><i class="fas fa-hourglass-half"></i></div>
+                                <div>
+                                    <strong>Duration</strong>
+                                    <div class="text-muted">3-5 hours recommended</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="quick-fact">
+                                <div class="quick-fact-icon"><i class="fas fa-user-tie"></i></div>
+                                <div>
+                                    <strong>Guide</strong>
+                                    <div class="text-muted">Highly recommended</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                {% include 'includes/conversion_elements.html' with widget_type='scarcity' %}
+                {% include 'includes/travelpayouts_widgets.html' with widget_type='tours' amount='3' %}
+            </div>
+        </div>
+
+        <!-- Pyramid Articles -->
+        {% if pyramid_articles %}
+        <h4 class="mb-3">Related Pyramid Articles</h4>
+        <div class="article-grid">
+            {% for article in pyramid_articles %}
+            <div class="article-card">
+                <img src="{{ article.image_url|default:'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=400' }}" alt="{{ article.title }}">
+                <div class="article-card-body">
+                    <h5><a href="{% url 'blog:detail' article.slug %}">{{ article.title|truncatewords:10 }}</a></h5>
+                    <a href="{% url 'blog:detail' article.slug %}" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Reviews Section -->
+<section class="content-section">
+    <div class="container">
+        {% include 'includes/conversion_elements.html' with widget_type='review_highlights' %}
+    </div>
+</section>
+
+<!-- History Articles -->
+{% if history_articles %}
+<section class="content-section" id="history">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-scroll"></i>Ancient Egypt History</h2>
+            <p class="text-muted">Discover the fascinating stories of pharaohs and civilizations</p>
+        </div>
+
+        <div class="article-grid">
+            {% for article in history_articles %}
+            <div class="article-card">
+                <img src="{{ article.image_url|default:'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=400' }}" alt="{{ article.title }}">
+                <div class="article-card-body">
+                    <h5><a href="{% url 'blog:detail' article.slug %}">{{ article.title|truncatewords:10 }}</a></h5>
+                    <p class="text-muted mb-2" style="font-size: 0.85rem;">{{ article.excerpt|truncatewords:15 }}</p>
+                    <a href="{% url 'blog:detail' article.slug %}" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'blog:list' %}?category=ancient-egypt" class="btn btn-primary btn-lg">
+                <i class="fas fa-book me-2"></i>View All History Articles
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2><i class="fas fa-plane-departure me-3"></i>Ready to Explore Egypt?</h2>
+        <p class="mb-4" style="font-size: 1.2rem; opacity: 0.9;">Book your adventure today and save up to 30%</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{% url 'tours:list' %}" class="btn btn-light btn-lg" style="font-weight: 600;">
+                <i class="fas fa-compass me-2"></i>Browse Tours
+            </a>
+            <a href="{% url 'accommodations:search' %}" class="btn btn-outline-light btn-lg" style="font-weight: 600;">
+                <i class="fas fa-hotel me-2"></i>Find Hotels
+            </a>
+        </div>
+
+        <!-- Deal Banner -->
+        <div class="mt-5">
+            {% include 'includes/conversion_elements.html' with widget_type='deal_banner' deal_title='Flash Sale: 25% Off All Egypt Tours' deal_subtitle='Limited time offer - Book within 24 hours' %}
+        </div>
+    </div>
+</section>
+
+<!-- More Articles -->
+{% if travel_tips %}
+<section class="content-section">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-lightbulb"></i>Travel Tips & Advice</h2>
+            <p class="text-muted">Insider knowledge for a smooth trip</p>
+        </div>
+
+        <div class="article-grid">
+            {% for article in travel_tips %}
+            <div class="article-card">
+                <img src="{{ article.image_url|default:'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=400' }}" alt="{{ article.title }}">
+                <div class="article-card-body">
+                    <h5><a href="{% url 'blog:detail' article.slug %}">{{ article.title|truncatewords:10 }}</a></h5>
+                    <a href="{% url 'blog:detail' article.slug %}" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Newsletter -->
+<section style="background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 60px 0; color: white; text-align: center;">
+    <div class="container">
+        <i class="fas fa-envelope-open-text" style="font-size: 3rem; margin-bottom: 20px; color: #ffd700;"></i>
+        <h2>Get Weekly Egypt Travel Tips</h2>
+        <p class="mb-4" style="opacity: 0.9;">Join 10,000+ travelers getting exclusive deals and insider guides</p>
+        <form class="d-flex gap-2 justify-content-center flex-wrap" style="max-width: 500px; margin: 0 auto;">
+            <input type="email" class="form-control form-control-lg" placeholder="Enter your email" style="flex: 1; min-width: 250px; border-radius: 10px;">
+            <button type="submit" class="btn btn-warning btn-lg" style="font-weight: 600; border-radius: 10px;">
+                Subscribe
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}

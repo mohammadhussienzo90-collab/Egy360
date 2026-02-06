@@ -871,6 +871,44 @@
 
     {% block extra_js %}{% endblock %}
 
+    <!-- Floating CTA Button -->
+    <div id="floating-cta" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: none;">
+        <a href="/tours/" class="btn btn-lg" style="background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; border-radius: 50px; padding: 15px 25px; box-shadow: 0 5px 25px rgba(255,65,108,0.4); font-weight: 600; text-decoration: none;">
+            <i class="fas fa-fire me-2"></i>Hot Deals
+        </a>
+    </div>
+    <script>
+    window.addEventListener('scroll', function() {
+        const floatingCTA = document.getElementById('floating-cta');
+        if (window.scrollY > 600) {
+            floatingCTA.style.display = 'block';
+        } else {
+            floatingCTA.style.display = 'none';
+        }
+    });
+    </script>
+
+    <!-- Recently Viewed Tracking -->
+    <script>
+    (function() {
+        // Track page views for recently viewed feature
+        const pageData = {
+            url: window.location.pathname,
+            title: document.title.split(' - ')[0].substring(0, 50),
+            image: document.querySelector('meta[property="og:image"]')?.content || '',
+            timestamp: Date.now()
+        };
+
+        if (pageData.url.includes('/blog/') && pageData.url !== '/blog/') {
+            let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+            recentlyViewed = recentlyViewed.filter(item => item.url !== pageData.url);
+            recentlyViewed.unshift(pageData);
+            recentlyViewed = recentlyViewed.slice(0, 10);
+            localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+        }
+    })();
+    </script>
+
     <!--Start of Tawk.to Script - Free Live Chat Widget-->
     <!--Sign up at https://www.tawk.to/ to get your Property ID and Widget ID-->
     <!--Replace PROPERTY_ID and WIDGET_ID below with your actual IDs-->
