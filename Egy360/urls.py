@@ -743,7 +743,575 @@ def seed_more_articles(request):
 
     return JsonResponse({'success': True, 'created': created, 'total': BlogPost.objects.count()})
 
+def update_articles_content(request):
+    """Update all articles with rich, engaging content - access via /update-content/?key=egy360seed"""
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from blog.models import BlogPost
+    updated = 0
+
+    # Rich content templates for different article types
+    article_contents = {
+        # Ancient Egypt Articles
+        'great-pyramid-giza-introduction': '''
+<div class="article-hero" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px; border-radius: 20px; margin-bottom: 30px; color: white;">
+    <h2 style="font-size: 2.5em; margin-bottom: 15px;">🏛️ The Great Pyramid: 4,500 Years of Wonder</h2>
+    <p style="font-size: 1.2em; opacity: 0.9;">The only surviving wonder of the ancient world stands as humanity's greatest architectural achievement</p>
+</div>
+
+<p class="lead" style="font-size: 1.3em; line-height: 1.8; color: #2c3e50;">Standing on the Giza Plateau for over <strong>4,500 years</strong>, the Great Pyramid of Khufu isn't just Egypt's most iconic monument—it's a testament to human ambition that continues to baffle scientists, engineers, and visitors alike. Originally standing at <strong>146.6 meters</strong> (481 feet), it remained the tallest man-made structure on Earth for nearly 4,000 years.</p>
+
+<h2>🔢 Mind-Blowing Statistics</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0;">
+    <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2.5em; color: #e74c3c; font-weight: bold;">2.3M</div>
+        <div style="color: #666;">Stone Blocks</div>
+    </div>
+    <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2.5em; color: #3498db; font-weight: bold;">6.5M</div>
+        <div style="color: #666;">Tons Total Weight</div>
+    </div>
+    <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2.5em; color: #2ecc71; font-weight: bold;">20</div>
+        <div style="color: #666;">Years to Build</div>
+    </div>
+    <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2.5em; color: #9b59b6; font-weight: bold;">99.98%</div>
+        <div style="color: #666;">Precision Accuracy</div>
+    </div>
+</div>
+
+<h2>🏗️ Construction Mysteries That Still Puzzle Scientists</h2>
+<p>How did ancient Egyptians, without wheels, iron tools, or modern machinery, create something so precisely aligned that modern engineers struggle to replicate it? The pyramid is aligned to true north with an accuracy of <strong>0.05 degrees</strong>—more precise than the Royal Greenwich Observatory!</p>
+
+<h3>The Numbers Don't Add Up</h3>
+<ul style="line-height: 2;">
+    <li>🪨 Each block weighs an average of <strong>2.5 tons</strong>—some granite blocks weigh up to 80 tons</li>
+    <li>⏱️ If built in 20 years, workers placed one block every <strong>2.5 minutes</strong>, 24/7</li>
+    <li>📐 The base is level to within just <strong>2.1 centimeters</strong> across 230 meters</li>
+    <li>🧭 Aligned to the cardinal directions with incredible precision</li>
+</ul>
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 30px; margin: 40px 0; color: white; text-align: center;">
+    <h3 style="margin-bottom: 15px;">🎟️ Visit the Great Pyramid</h3>
+    <p style="opacity: 0.9; margin-bottom: 20px;">Experience this wonder in person with our expert-guided tours</p>
+    <a href="/tours/" style="background: white; color: #667eea; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block;">Book Your Pyramid Tour</a>
+</div>
+
+<h2>👁️ Inside the Great Pyramid</h2>
+<p>The interior contains three main chambers connected by narrow passages:</p>
+
+<h3>The King's Chamber</h3>
+<p>Located in the heart of the pyramid, this room contains an empty granite sarcophagus. The chamber is built entirely of <strong>Aswan granite</strong>, transported over 800 kilometers. Above it are five relieving chambers designed to distribute the immense weight.</p>
+
+<h3>The Queen's Chamber</h3>
+<p>Despite its name, this was likely never intended for a queen. Two mysterious shafts extend from this chamber—their purpose remains unknown.</p>
+
+<h3>The Grand Gallery</h3>
+<p>A magnificent corbelled hallway, 47 meters long and 8 meters high, leading to the King's Chamber. Its acoustics are so perfect that some researchers believe it had astronomical significance.</p>
+
+<h2>🌟 2026 Visitor Tips</h2>
+<ul style="line-height: 2;">
+    <li>✅ <strong>Best time to visit:</strong> Early morning (8 AM) or late afternoon to avoid crowds and heat</li>
+    <li>✅ <strong>Entry tickets:</strong> Pyramid complex entry ~$15, interior access ~$20 extra</li>
+    <li>✅ <strong>What to wear:</strong> Comfortable shoes, modest clothing, sun protection</li>
+    <li>✅ <strong>Pro tip:</strong> Book a sunrise tour for magical photos with fewer tourists</li>
+</ul>
+
+<blockquote style="background: #f8f9fa; border-left: 5px solid #e74c3c; padding: 25px; margin: 30px 0; font-style: italic; font-size: 1.2em;">
+"Man fears Time, but Time fears the Pyramids." — Ancient Arab Proverb
+</blockquote>
+''',
+
+        'king-tutankhamun-boy-king-guide': '''
+<div class="article-hero" style="background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%); padding: 40px; border-radius: 20px; margin-bottom: 30px; color: white;">
+    <h2 style="font-size: 2.5em; margin-bottom: 15px;">👑 King Tutankhamun: The Boy Who Became Immortal</h2>
+    <p style="font-size: 1.2em; opacity: 0.9;">He died at 19, was forgotten for 3,000 years, then became the most famous pharaoh in history</p>
+</div>
+
+<p class="lead" style="font-size: 1.3em; line-height: 1.8; color: #2c3e50;">On November 26, 1922, archaeologist Howard Carter peered through a small hole into a sealed chamber. When asked if he could see anything, he whispered the now-legendary words: <strong>"Yes, wonderful things."</strong> What he discovered would change our understanding of ancient Egypt forever.</p>
+
+<h2>📜 The Short Life of a Boy King</h2>
+
+<div style="background: #fff3e0; padding: 25px; border-radius: 15px; margin: 25px 0;">
+    <h3 style="color: #e65100; margin-top: 0;">Timeline of Tutankhamun</h3>
+    <ul style="line-height: 2.2;">
+        <li><strong>c. 1341 BC:</strong> Born as Tutankhaten ("Living Image of Aten")</li>
+        <li><strong>c. 1332 BC:</strong> Becomes pharaoh at age 9</li>
+        <li><strong>c. 1330 BC:</strong> Changes name to Tutankhamun, restores old gods</li>
+        <li><strong>c. 1323 BC:</strong> Dies mysteriously at age 19</li>
+        <li><strong>1922 AD:</strong> Tomb discovered by Howard Carter</li>
+    </ul>
+</div>
+
+<h2>🔍 The Discovery That Shook the World</h2>
+<p>Lord Carnarvon had funded Carter's excavations for years with no major finds. He gave Carter one final season. With just days of funding left, a water boy stumbled upon a stone step hidden beneath ancient workmen's huts.</p>
+
+<p>What they found inside was <strong>the most complete royal tomb ever discovered</strong>:</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0;">
+    <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 25px; border-radius: 15px;">
+        <h4 style="color: #c0392b;">🏺 5,398 Objects</h4>
+        <p>Catalogued over 10 years</p>
+    </div>
+    <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 25px; border-radius: 15px;">
+        <h4 style="color: #8e44ad;">⚱️ 11 kg Gold Mask</h4>
+        <p>Solid gold death mask</p>
+    </div>
+    <div style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); padding: 25px; border-radius: 15px;">
+        <h4 style="color: #2980b9;">⚰️ 110 kg Gold Coffin</h4>
+        <p>Innermost of three nested coffins</p>
+    </div>
+</div>
+
+<h2>💀 The Mummy's Curse: Fact or Fiction?</h2>
+<p>When Lord Carnarvon died just months after the tomb's opening, newspapers went wild with stories of an ancient curse. The truth?</p>
+
+<ul style="line-height: 2;">
+    <li>❌ Carter himself lived until 1939—17 years after the discovery</li>
+    <li>❌ Most team members lived normal lifespans</li>
+    <li>✅ Carnarvon died from an infected mosquito bite, worsened by a shaving cut</li>
+    <li>📰 The "curse" was largely a media sensation—great for newspaper sales!</li>
+</ul>
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 30px; margin: 40px 0; color: white; text-align: center;">
+    <h3 style="margin-bottom: 15px;">🏛️ See Tutankhamun's Treasures</h3>
+    <p style="opacity: 0.9; margin-bottom: 20px;">The complete collection moves to the Grand Egyptian Museum in 2026</p>
+    <a href="/tours/" style="background: white; color: #667eea; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block;">Book GEM Tour</a>
+</div>
+
+<h2>🧬 Modern Science Reveals the Truth</h2>
+<p>DNA analysis and CT scans have revealed fascinating details about Tut's life and death:</p>
+
+<ul style="line-height: 2;">
+    <li>🦴 He had a <strong>club foot</strong> and bone disease—over 130 walking canes were found in his tomb</li>
+    <li>🦟 He suffered from <strong>malaria</strong>—multiple strains found in his DNA</li>
+    <li>👨‍👩‍👦 His parents were <strong>siblings</strong>—inbreeding weakened his immune system</li>
+    <li>🦵 A <strong>broken leg</strong> shortly before death may have led to fatal infection</li>
+</ul>
+
+<h2>🌟 Why Tutankhamun Matters</h2>
+<p>Despite being a minor pharaoh who died young, Tut gave us an unparalleled window into ancient Egyptian life. His tomb contained everything a pharaoh needed for the afterlife—furniture, food, games, weapons, and even underwear!</p>
+
+<blockquote style="background: #f8f9fa; border-left: 5px solid #f39c12; padding: 25px; margin: 30px 0; font-style: italic; font-size: 1.2em;">
+"The treasures of Tutankhamun tell us more about daily life in ancient Egypt than any other discovery in history."
+</blockquote>
+''',
+
+        'grand-egyptian-museum-2026-guide': '''
+<div class="article-hero" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); padding: 40px; border-radius: 20px; margin-bottom: 30px; color: white;">
+    <h2 style="font-size: 2.5em; margin-bottom: 15px;">🏛️ Grand Egyptian Museum 2026: The Ultimate Guide</h2>
+    <p style="font-size: 1.2em; opacity: 0.9;">The world's largest archaeological museum opens its doors—here's everything you need to know</p>
+</div>
+
+<p class="lead" style="font-size: 1.3em; line-height: 1.8; color: #2c3e50;">After nearly two decades of construction and a <strong>$1 billion investment</strong>, the Grand Egyptian Museum (GEM) is finally welcoming visitors. Located just 2 kilometers from the Pyramids of Giza, this architectural marvel houses over <strong>100,000 artifacts</strong>—including the complete Tutankhamun collection displayed together for the first time.</p>
+
+<h2>🎯 GEM at a Glance</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0;">
+    <div style="background: #e8f5e9; padding: 25px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2.5em;">📏</div>
+        <div style="font-size: 1.5em; font-weight: bold; color: #2e7d32;">490,000 m²</div>
+        <div style="color: #666;">Total Area</div>
+    </div>
+    <div style="background: #e3f2fd; padding: 25px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2.5em;">🏺</div>
+        <div style="font-size: 1.5em; font-weight: bold; color: #1565c0;">100,000+</div>
+        <div style="color: #666;">Artifacts</div>
+    </div>
+    <div style="background: #fff3e0; padding: 25px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2.5em;">👑</div>
+        <div style="font-size: 1.5em; font-weight: bold; color: #ef6c00;">5,000+</div>
+        <div style="color: #666;">Tut Objects</div>
+    </div>
+    <div style="background: #fce4ec; padding: 25px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2.5em;">👥</div>
+        <div style="font-size: 1.5em; font-weight: bold; color: #c2185b;">5 Million</div>
+        <div style="color: #666;">Annual Visitors Expected</div>
+    </div>
+</div>
+
+<h2>✨ What Makes GEM Special</h2>
+
+<h3>1. The Grand Staircase & Ramesses II</h3>
+<p>As you enter, you're greeted by the colossal <strong>12-meter statue of Ramesses II</strong>, weighing 83 tons. Behind it, the Grand Staircase displays massive artifacts chronologically as you ascend.</p>
+
+<h3>2. Complete Tutankhamun Collection</h3>
+<p>For the first time ever, all <strong>5,398 objects</strong> from Tutankhamun's tomb will be displayed together. The Egyptian Museum could only show about 1,500—now you'll see chariots, beds, thrones, and items never before exhibited.</p>
+
+<h3>3. Pyramid Views</h3>
+<p>The museum's glass walls offer stunning views of the Giza Pyramids. The rooftop restaurant and café let you dine while gazing at the ancient wonders.</p>
+
+<h3>4. Conservation Center</h3>
+<p>Watch conservators restore ancient artifacts through glass windows in the state-of-the-art conservation labs.</p>
+
+<div style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 20px; padding: 30px; margin: 40px 0; color: white; text-align: center;">
+    <h3 style="margin-bottom: 15px;">🎟️ Book Your GEM Experience</h3>
+    <p style="opacity: 0.9; margin-bottom: 20px;">Skip-the-line tickets with expert Egyptologist guides</p>
+    <a href="/tours/" style="background: white; color: #11998e; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block;">Reserve Tickets Now</a>
+</div>
+
+<h2>🗺️ Visitor Information 2026</h2>
+
+<h3>📍 Location</h3>
+<p>Pyramids Road, Giza—just 2 km from the Great Pyramid. New metro line connects directly to the museum.</p>
+
+<h3>⏰ Hours</h3>
+<ul>
+    <li><strong>Sunday-Thursday:</strong> 9 AM - 5 PM</li>
+    <li><strong>Friday-Saturday:</strong> 9 AM - 9 PM (extended hours)</li>
+</ul>
+
+<h3>💰 Tickets (Estimated 2026)</h3>
+<ul>
+    <li><strong>General Entry:</strong> ~$25-30</li>
+    <li><strong>Tutankhamun Galleries:</strong> ~$15 additional</li>
+    <li><strong>Combined Pyramid + GEM:</strong> ~$50</li>
+</ul>
+
+<h3>⏱️ How Long to Visit</h3>
+<p>Plan for <strong>3-5 hours minimum</strong>. Serious history enthusiasts could easily spend a full day.</p>
+
+<h2>💡 Pro Tips for 2026</h2>
+<ul style="line-height: 2;">
+    <li>🌅 <strong>Go early:</strong> Arrive at opening for smaller crowds</li>
+    <li>📱 <strong>Download the app:</strong> GEM has an interactive guide app</li>
+    <li>👟 <strong>Wear comfortable shoes:</strong> The museum is massive</li>
+    <li>📸 <strong>Photography:</strong> Allowed in most areas (no flash)</li>
+    <li>🍽️ <strong>Plan for lunch:</strong> Multiple restaurants with pyramid views</li>
+</ul>
+''',
+
+        'cleopatra-last-pharaoh-egypt': '''
+<div class="article-hero" style="background: linear-gradient(135deg, #8e44ad 0%, #3498db 100%); padding: 40px; border-radius: 20px; margin-bottom: 30px; color: white;">
+    <h2 style="font-size: 2.5em; margin-bottom: 15px;">👸 Cleopatra VII: The Queen Who Shook Rome</h2>
+    <p style="font-size: 1.2em; opacity: 0.9;">Seductress? Victim? Genius politician? The truth about history's most famous queen</p>
+</div>
+
+<p class="lead" style="font-size: 1.3em; line-height: 1.8; color: #2c3e50;">Forget what Hollywood told you. Cleopatra VII wasn't just beautiful—she was a <strong>brilliant strategist, polyglot scholar, and political genius</strong> who held the Roman Empire at bay for two decades. She spoke nine languages, wrote scientific treatises, and nearly created an empire spanning the Mediterranean.</p>
+
+<h2>🔥 Busting the Myths</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0;">
+    <div style="background: #ffebee; padding: 25px; border-radius: 15px;">
+        <h4 style="color: #c62828;">❌ MYTH</h4>
+        <p>Cleopatra was Egyptian</p>
+        <h4 style="color: #2e7d32; margin-top: 15px;">✅ FACT</h4>
+        <p>She was Macedonian Greek, descended from Ptolemy I, one of Alexander the Great's generals. However, she was the first Ptolemaic ruler to learn Egyptian!</p>
+    </div>
+    <div style="background: #e8f5e9; padding: 25px; border-radius: 15px;">
+        <h4 style="color: #c62828;">❌ MYTH</h4>
+        <p>Her beauty was legendary</p>
+        <h4 style="color: #2e7d32; margin-top: 15px;">✅ FACT</h4>
+        <p>Ancient sources describe her charm, wit, and voice as captivating—but never mention extraordinary beauty. Her power was in her intellect.</p>
+    </div>
+</div>
+
+<h2>📚 The Educated Queen</h2>
+<p>Cleopatra was one of the most educated women of the ancient world:</p>
+<ul style="line-height: 2;">
+    <li>📖 Spoke <strong>9 languages</strong> including Egyptian, Greek, Latin, Hebrew, and Arabic</li>
+    <li>🔬 Wrote treatises on <strong>medicine, cosmetics, and science</strong></li>
+    <li>🏛️ Trained at the <strong>Library of Alexandria</strong>—the greatest library of antiquity</li>
+    <li>💰 Personally managed Egypt's economy, making it Rome's wealthiest client state</li>
+</ul>
+
+<h2>❤️ Cleopatra & Her Romans</h2>
+
+<h3>Julius Caesar (48-44 BC)</h3>
+<p>When Caesar arrived in Alexandria to settle a civil war between Cleopatra and her brother, she famously had herself smuggled into his presence <strong>rolled in a carpet</strong>. She was 21; he was 52. Their son, Caesarion, would be proclaimed the last pharaoh of Egypt.</p>
+
+<h3>Mark Antony (41-30 BC)</h3>
+<p>After Caesar's assassination, Cleopatra allied with Mark Antony. Their legendary romance produced three children and nearly reshaped the ancient world. At the Battle of Actium in 31 BC, their combined fleet lost to Octavian (future Augustus Caesar).</p>
+
+<h2>💀 The Death of a Dynasty</h2>
+<p>Rather than be paraded through Rome as a trophy, Cleopatra chose death on her own terms. The famous asp bite may be legend—modern scholars suggest she likely used a quick-acting poison she had researched herself.</p>
+
+<blockquote style="background: #f8f9fa; border-left: 5px solid #8e44ad; padding: 25px; margin: 30px 0; font-style: italic; font-size: 1.2em;">
+"Age cannot wither her, nor custom stale her infinite variety." — Shakespeare, Antony and Cleopatra
+</blockquote>
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 30px; margin: 40px 0; color: white; text-align: center;">
+    <h3 style="margin-bottom: 15px;">🏛️ Walk in Cleopatra's Footsteps</h3>
+    <p style="opacity: 0.9; margin-bottom: 20px;">Explore Alexandria, her legendary capital, with expert guides</p>
+    <a href="/tours/" style="background: white; color: #667eea; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block;">Alexandria Tours</a>
+</div>
+''',
+
+        'valley-of-kings-complete-guide': '''
+<div class="article-hero" style="background: linear-gradient(135deg, #b8860b 0%, #8b4513 100%); padding: 40px; border-radius: 20px; margin-bottom: 30px; color: white;">
+    <h2 style="font-size: 2.5em; margin-bottom: 15px;">⚰️ Valley of the Kings: Complete Visitor Guide 2026</h2>
+    <p style="font-size: 1.2em; opacity: 0.9;">Navigate the ancient royal necropolis like an Egyptologist</p>
+</div>
+
+<p class="lead" style="font-size: 1.3em; line-height: 1.8; color: #2c3e50;">Hidden in the barren hills of Luxor's West Bank, the <strong>Valley of the Kings</strong> contains 65 discovered tombs of Egypt's New Kingdom pharaohs. For 500 years (1539-1075 BC), this desolate valley was ancient Egypt's most sacred site—and possibly its best-kept secret.</p>
+
+<h2>🎫 2026 Visitor Essentials</h2>
+
+<div style="background: #fff8e1; padding: 30px; border-radius: 15px; margin: 25px 0;">
+    <h3 style="color: #f57f17; margin-top: 0;">Quick Facts</h3>
+    <ul style="line-height: 2.2;">
+        <li>💰 <strong>Standard ticket:</strong> ~$20 (includes 3 tombs)</li>
+        <li>👑 <strong>Tutankhamun's tomb:</strong> ~$25 extra</li>
+        <li>🏛️ <strong>Seti I or Ramesses VI:</strong> ~$20-30 extra each</li>
+        <li>⏰ <strong>Hours:</strong> 6 AM - 5 PM (winter), 6 AM - 6 PM (summer)</li>
+        <li>📸 <strong>Photography:</strong> Not allowed inside tombs</li>
+    </ul>
+</div>
+
+<h2>🏆 Top 5 Tombs to Visit</h2>
+
+<h3>1. KV62 - Tutankhamun (Extra Ticket)</h3>
+<p>The famous tomb is small but historically significant. The mummy remains inside. Worth the extra fee for the experience, though decorations are minimal compared to others.</p>
+
+<h3>2. KV17 - Seti I (Extra Ticket)</h3>
+<p>The <strong>longest and most decorated tomb</strong> in the valley. Stunning astronomical ceiling in the burial chamber. Many consider this the most beautiful tomb in Egypt.</p>
+
+<h3>3. KV9 - Ramesses VI</h3>
+<p>Incredible astronomical ceiling with the Book of Night and Book of Day. The colors remain remarkably vibrant after 3,000 years.</p>
+
+<h3>4. KV2 - Ramesses IV</h3>
+<p>One of the most accessible tombs with well-preserved hieroglyphics. Great for first-time visitors—spacious corridors and vivid wall paintings.</p>
+
+<h3>5. KV34 - Thutmose III</h3>
+<p>Climb steep stairs to reach this unique oval-shaped burial chamber with amazing painted decorations in a distinctive style.</p>
+
+<div style="background: linear-gradient(135deg, #b8860b 0%, #daa520 100%); border-radius: 20px; padding: 30px; margin: 40px 0; color: white; text-align: center;">
+    <h3 style="margin-bottom: 15px;">🎟️ Skip-the-Line Valley of Kings Tours</h3>
+    <p style="opacity: 0.9; margin-bottom: 20px;">Expert guides + priority access to the best tombs</p>
+    <a href="/tours/" style="background: white; color: #b8860b; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block;">Book Luxor Tour</a>
+</div>
+
+<h2>💡 Expert Tips</h2>
+<ul style="line-height: 2;">
+    <li>🌅 <strong>Go at opening (6 AM):</strong> Fewer crowds, cooler temperatures</li>
+    <li>🚗 <strong>Take the electric tram:</strong> Saves energy for tomb exploration</li>
+    <li>💧 <strong>Bring water:</strong> It gets extremely hot (40°C+ in summer)</li>
+    <li>👟 <strong>Wear sturdy shoes:</strong> Some tombs have steep stairs</li>
+    <li>🔦 <strong>Bring a small flashlight:</strong> Helpful for seeing details</li>
+    <li>📖 <strong>Get a guide:</strong> The stories bring the tombs to life</li>
+</ul>
+
+<h2>🔍 Why Were Pharaohs Buried Here?</h2>
+<p>After tomb robbing became rampant, pharaohs abandoned the obvious pyramids for this hidden valley. The peak above resembles a natural pyramid (the Theban Peak), and the dry climate helped preserve mummies and artifacts.</p>
+
+<blockquote style="background: #f8f9fa; border-left: 5px solid #b8860b; padding: 25px; margin: 30px 0; font-style: italic; font-size: 1.2em;">
+"I found riches in the tombs, but the real treasure was understanding how much the ancient Egyptians loved life—that's why they prepared so carefully for eternity."
+</blockquote>
+''',
+
+        '7-day-egypt-itinerary-cairo-abu-simbel': '''
+<div class="article-hero" style="background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%); padding: 40px; border-radius: 20px; margin-bottom: 30px; color: white;">
+    <h2 style="font-size: 2.5em; margin-bottom: 15px;">✈️ Perfect 7-Day Egypt Itinerary 2026</h2>
+    <p style="font-size: 1.2em; opacity: 0.9;">Cairo • Luxor • Aswan • Abu Simbel — The ultimate Egypt experience</p>
+</div>
+
+<p class="lead" style="font-size: 1.3em; line-height: 1.8; color: #2c3e50;">One week is perfect for experiencing Egypt's greatest highlights. This carefully crafted itinerary takes you from the <strong>Pyramids of Giza</strong> to the <strong>temples of Abu Simbel</strong>, balancing iconic monuments with authentic experiences. No rushing—just perfectly paced exploration.</p>
+
+<h2>📅 Day-by-Day Breakdown</h2>
+
+<div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 30px; border-radius: 20px; margin: 25px 0;">
+    <h3 style="color: #2c3e50;">Day 1: Arrive Cairo</h3>
+    <p>🛬 Arrive Cairo International Airport<br>
+    🏨 Check into hotel in Giza (pyramid views!)<br>
+    🌅 Evening: Light show at the Pyramids<br>
+    🍽️ Dinner at Pyramids-view restaurant</p>
+</div>
+
+<div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 30px; border-radius: 20px; margin: 25px 0;">
+    <h3 style="color: #2c3e50;">Day 2: Pyramids & Sphinx</h3>
+    <p>🌅 Sunrise at the Pyramids (beat the crowds!)<br>
+    🐪 Camel ride through the desert<br>
+    🦁 Great Sphinx and Valley Temple<br>
+    🏛️ Afternoon: Grand Egyptian Museum (GEM)<br>
+    🌃 Evening: Khan El Khalili Bazaar</p>
+</div>
+
+<div style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); padding: 30px; border-radius: 20px; margin: 25px 0;">
+    <h3 style="color: #2c3e50;">Day 3: Cairo Exploration</h3>
+    <p>🕌 Islamic Cairo: Al-Azhar Mosque, Citadel<br>
+    ⛪ Coptic Cairo: Hanging Church, Ben Ezra Synagogue<br>
+    🍲 Lunch: Authentic koshari experience<br>
+    ✈️ Evening flight to Luxor</p>
+</div>
+
+<div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 30px; border-radius: 20px; margin: 25px 0; color: white;">
+    <h3>Day 4: Luxor East Bank</h3>
+    <p>🎈 Optional: Hot air balloon at sunrise<br>
+    🏛️ Karnak Temple (morning, cooler)<br>
+    🏺 Luxor Museum (air-conditioned break)<br>
+    🌙 Luxor Temple at sunset (magical lighting)</p>
+</div>
+
+<div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 30px; border-radius: 20px; margin: 25px 0; color: white;">
+    <h3>Day 5: Luxor West Bank</h3>
+    <p>⚰️ Valley of the Kings (3 tombs + Tutankhamun)<br>
+    👸 Temple of Hatshepsut (Deir el-Bahari)<br>
+    🎭 Colossi of Memnon<br>
+    🚂 Evening: Sleeper train to Aswan (or fly)</p>
+</div>
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin: 25px 0; color: white;">
+    <h3>Day 6: Aswan & Abu Simbel</h3>
+    <p>🌅 Early morning: Abu Simbel tour (3-hour drive)<br>
+    🏛️ Two magnificent temples of Ramesses II<br>
+    ⛵ Afternoon: Felucca sailing on the Nile<br>
+    🏝️ Sunset: Elephantine Island<br>
+    🍽️ Nubian dinner experience</p>
+</div>
+
+<div style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); padding: 30px; border-radius: 20px; margin: 25px 0; color: white;">
+    <h3>Day 7: Aswan & Departure</h3>
+    <p>🏛️ Morning: Philae Temple (island temple)<br>
+    🌊 High Dam viewpoint<br>
+    🛒 Aswan Souk shopping<br>
+    ✈️ Flight back to Cairo → International departure</p>
+</div>
+
+<div style="background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); border-radius: 20px; padding: 30px; margin: 40px 0; color: white; text-align: center;">
+    <h3 style="margin-bottom: 15px;">📦 Get This Exact Itinerary</h3>
+    <p style="opacity: 0.9; margin-bottom: 20px;">All-inclusive packages with guides, hotels & internal flights</p>
+    <a href="/tours/" style="background: white; color: #ee0979; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block;">View 7-Day Packages</a>
+</div>
+
+<h2>💰 Budget Breakdown (Per Person)</h2>
+<div style="background: #f8f9fa; padding: 25px; border-radius: 15px;">
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 12px;"><strong>Category</strong></td>
+            <td style="padding: 12px;"><strong>Budget</strong></td>
+            <td style="padding: 12px;"><strong>Mid-Range</strong></td>
+            <td style="padding: 12px;"><strong>Luxury</strong></td>
+        </tr>
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 12px;">Hotels (6 nights)</td>
+            <td style="padding: 12px;">$180</td>
+            <td style="padding: 12px;">$450</td>
+            <td style="padding: 12px;">$1,200+</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 12px;">Internal Flights</td>
+            <td style="padding: 12px;">$200</td>
+            <td style="padding: 12px;">$200</td>
+            <td style="padding: 12px;">$400</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 12px;">Entry Fees</td>
+            <td style="padding: 12px;">$150</td>
+            <td style="padding: 12px;">$200</td>
+            <td style="padding: 12px;">$250</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 12px;">Guides & Tours</td>
+            <td style="padding: 12px;">$100</td>
+            <td style="padding: 12px;">$300</td>
+            <td style="padding: 12px;">$600</td>
+        </tr>
+        <tr style="font-weight: bold; background: #e8f5e9;">
+            <td style="padding: 12px;">TOTAL</td>
+            <td style="padding: 12px;">~$650</td>
+            <td style="padding: 12px;">~$1,200</td>
+            <td style="padding: 12px;">~$2,500+</td>
+        </tr>
+    </table>
+</div>
+''',
+
+        'egyptian-food-guide-dishes': '''
+<div class="article-hero" style="background: linear-gradient(135deg, #f39c12 0%, #d35400 100%); padding: 40px; border-radius: 20px; margin-bottom: 30px; color: white;">
+    <h2 style="font-size: 2.5em; margin-bottom: 15px;">🍽️ Egyptian Food: 15 Dishes You MUST Try</h2>
+    <p style="font-size: 1.2em; opacity: 0.9;">From street food to royal feasts — your complete Egyptian culinary guide</p>
+</div>
+
+<p class="lead" style="font-size: 1.3em; line-height: 1.8; color: #2c3e50;">Egyptian cuisine is a <strong>5,000-year-old love story</strong> with food. From the pharaohs' bread and beer to today's beloved koshari, every dish tells a story. Here are the essential Egyptian foods that will make your taste buds thank you.</p>
+
+<h2>🥇 The Essential Egyptian Dishes</h2>
+
+<div style="background: #fff8e1; padding: 30px; border-radius: 20px; margin: 25px 0;">
+    <h3 style="color: #f57f17;">1. 🍲 Koshari (كشري)</h3>
+    <p><strong>Egypt's National Dish</strong></p>
+    <p>A glorious carb-fest of rice, lentils, macaroni, and chickpeas topped with crispy fried onions and spicy tomato sauce. Street vendors pile it high for just $1-2. Vegetarian and absolutely addictive.</p>
+    <p><em>Best spot: Abou Tarek in Downtown Cairo</em></p>
+</div>
+
+<div style="background: #e8f5e9; padding: 30px; border-radius: 20px; margin: 25px 0;">
+    <h3 style="color: #2e7d32;">2. 🫘 Ful Medames (فول مدمس)</h3>
+    <p><strong>The Breakfast of Pharaohs</strong></p>
+    <p>Slow-cooked fava beans mashed with olive oil, lemon, cumin, and garlic. Served for breakfast with warm bread, it's been eaten in Egypt for over 4,000 years!</p>
+    <p><em>Pro tip: Add tahini and a boiled egg for the full experience</em></p>
+</div>
+
+<div style="background: #e3f2fd; padding: 30px; border-radius: 20px; margin: 25px 0;">
+    <h3 style="color: #1565c0;">3. 🧆 Ta'ameya (طعمية)</h3>
+    <p><strong>Egyptian Falafel (But Better)</strong></p>
+    <p>Unlike Middle Eastern falafel made with chickpeas, Egyptian ta'ameya uses fava beans—making them lighter, greener, and crispier. Stuffed in bread with tahini and salad.</p>
+    <p><em>Best at: Any street cart in Cairo, especially in Giza</em></p>
+</div>
+
+<div style="background: #fce4ec; padding: 30px; border-radius: 20px; margin: 25px 0;">
+    <h3 style="color: #c2185b;">4. 🍖 Kofta & Kebab</h3>
+    <p><strong>Grilled Meat Perfection</strong></p>
+    <p>Spiced minced meat (kofta) or chunks of marinated lamb/beef (kebab) grilled over charcoal. Served with bread, tahini, and grilled vegetables.</p>
+    <p><em>Must-try: Andrea Mariouteya in Giza for iconic outdoor grilling</em></p>
+</div>
+
+<div style="background: #f3e5f5; padding: 30px; border-radius: 20px; margin: 25px 0;">
+    <h3 style="color: #7b1fa2;">5. 🥙 Shawarma</h3>
+    <p><strong>Late-Night Fuel</strong></p>
+    <p>Marinated meat stacked on a vertical rotisserie, shaved off and wrapped in bread with tahini, pickles, and garlic sauce. The ultimate 2 AM snack.</p>
+</div>
+
+<h2>🍰 Sweet Treats</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 30px 0;">
+    <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 25px; border-radius: 15px;">
+        <h4>🍮 Om Ali</h4>
+        <p>Egypt's beloved bread pudding: layers of puff pastry, milk, cream, nuts, and raisins, baked until golden. Warm, gooey heaven.</p>
+    </div>
+    <div style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); padding: 25px; border-radius: 15px;">
+        <h4>🍯 Basbousa</h4>
+        <p>Semolina cake soaked in sweet syrup, often topped with almonds or coconut. Dense, sweet, and perfect with tea.</p>
+    </div>
+    <div style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); padding: 25px; border-radius: 15px;">
+        <h4>🥧 Konafa</h4>
+        <p>Crispy shredded phyllo dough with cream or cheese filling, drenched in sugar syrup. Especially popular during Ramadan.</p>
+    </div>
+</div>
+
+<div style="background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%); border-radius: 20px; padding: 30px; margin: 40px 0; color: white; text-align: center;">
+    <h3 style="margin-bottom: 15px;">🍴 Egyptian Food Tours</h3>
+    <p style="opacity: 0.9; margin-bottom: 20px;">Explore Cairo's best street food with local guides</p>
+    <a href="/tours/" style="background: white; color: #f39c12; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block;">Book Food Tour</a>
+</div>
+
+<h2>☕ Egyptian Drinks</h2>
+<ul style="line-height: 2.2;">
+    <li>🍵 <strong>Karkade:</strong> Hibiscus tea, served hot or cold, deep red and refreshing</li>
+    <li>☕ <strong>Ahwa:</strong> Egyptian coffee, strong and often cardamom-spiced</li>
+    <li>🥤 <strong>Fresh Juice:</strong> Mango, sugarcane, and strawberry stands everywhere</li>
+    <li>🥛 <strong>Sahlab:</strong> Warm, creamy orchid-root drink topped with nuts (winter specialty)</li>
+</ul>
+
+<blockquote style="background: #f8f9fa; border-left: 5px solid #f39c12; padding: 25px; margin: 30px 0; font-style: italic; font-size: 1.2em;">
+"In Egypt, food is love. Every meal is a celebration, every dish a story passed down through generations."
+</blockquote>
+''',
+    }
+
+    # Update articles with rich content
+    for slug, content in article_contents.items():
+        try:
+            post = BlogPost.objects.get(slug=slug)
+            post.content = content
+            post.save()
+            updated += 1
+        except BlogPost.DoesNotExist:
+            pass
+
+    return JsonResponse({'success': True, 'updated': updated, 'total': BlogPost.objects.count()})
+
 urlpatterns = [
+    path('update-content/', update_articles_content, name='update_content'),
     path('seed-more/', seed_more_articles, name='seed_more'),
     path('setup-all/', setup_all, name='setup_all'),
     path('favicon.svg', favicon, name='favicon'),
