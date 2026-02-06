@@ -8,6 +8,14 @@ from django.utils.safestring import mark_safe
 register = template.Library()
 
 
+@register.filter(name='split_tags')
+def split_tags(value):
+    """Split comma-separated tags into a list"""
+    if not value:
+        return []
+    return [tag.strip() for tag in value.split(',') if tag.strip()]
+
+
 @register.filter(name='clean_markdown')
 def clean_markdown(text):
     """Remove markdown formatting and return clean readable text as HTML"""
