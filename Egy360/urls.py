@@ -1310,6 +1310,177 @@ def update_articles_content(request):
 
     return JsonResponse({'success': True, 'updated': updated, 'total': BlogPost.objects.count()})
 
+def update_article_images(request):
+    """Update all articles with relevant, topic-specific images - access via /update-images/?key=egy360seed"""
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from blog.models import BlogPost
+    updated = 0
+
+    # Comprehensive image mapping - each article gets a unique, relevant image
+    image_map = {
+        # Great Pyramid Series
+        'great-pyramid-giza-introduction': 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200&q=80',  # Pyramids panorama
+        'great-pyramid-history-timeline-workers': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80',  # Pyramid close-up
+        'great-pyramid-architecture-precision': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80',  # Pyramid structure
+        'great-pyramid-kings-chamber-secrets': 'https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?w=1200&q=80',  # Pyramid interior
+        'great-pyramid-construction-methods': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200&q=80',  # Pyramid blocks
+
+        # Tutankhamun
+        'king-tutankhamun-boy-king-guide': 'https://images.unsplash.com/photo-1595981234058-a9302fb97229?w=1200&q=80',  # Egyptian gold/mask
+        'tutankhamun-boy-king-egypt': 'https://images.unsplash.com/photo-1595981234058-a9302fb97229?w=1200&q=80',
+
+        # Cleopatra & Queens
+        'cleopatra-last-pharaoh-egypt': 'https://images.unsplash.com/photo-1608152142361-1d131f5e520e?w=1200&q=80',  # Ancient Egypt art
+        'queen-nefertiti-complete-guide': 'https://images.unsplash.com/photo-1599423423927-8f77f7c5b0c8?w=1200&q=80',  # Egyptian queen art
+        'nefertiti-beautiful-queen-egypt': 'https://images.unsplash.com/photo-1599423423927-8f77f7c5b0c8?w=1200&q=80',
+        'hatshepsut-female-pharaoh-guide': 'https://images.unsplash.com/photo-1565967511849-76a60a516170?w=1200&q=80',  # Hatshepsut temple
+
+        # Ramesses
+        'ramesses-ii-greatest-pharaoh': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80',  # Abu Simbel
+        'ramesses-ii-great-builder': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80',
+
+        # Temples
+        'karnak-temple-complete-guide': 'https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?w=1200&q=80',  # Karnak columns
+        'luxor-temple-night-visit': 'https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?w=1200&q=80',  # Luxor temple
+        'abu-simbel-sun-festival-guide': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80',  # Abu Simbel
+
+        # Valley of Kings
+        'valley-of-kings-complete-guide': 'https://images.unsplash.com/photo-1562679299-266d1ab81bb4?w=1200&q=80',  # Valley tombs
+
+        # Sphinx
+        'sphinx-giza-complete-guide': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80',  # Sphinx
+
+        # Museum
+        'grand-egyptian-museum-2026-guide': 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=1200&q=80',  # Museum
+        'egyptian-museum-cairo-guide': 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=1200&q=80',
+
+        # Nile & Cruises
+        'luxury-nile-cruises-2026': 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200&q=80',  # Nile boat
+        'nile-cruise-guide-2026': 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200&q=80',
+        'felucca-sailing-nile-guide': 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200&q=80',  # Felucca
+
+        # Travel Guides
+        '7-day-egypt-itinerary-cairo-abu-simbel': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80',  # Egypt overview
+        '7-day-egypt-itinerary': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80',
+        'best-time-visit-egypt-2026': 'https://images.unsplash.com/photo-1551634979-2b11f8c946fe?w=1200&q=80',  # Sunny Egypt
+
+        # Destinations - Cairo
+        'cairo-metro-guide-map': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200&q=80',  # Cairo city
+        'khan-el-khalili-shopping-guide': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80',  # Market bazaar
+        'coptic-cairo-christian-heritage': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200&q=80',  # Old Cairo
+        'islamic-cairo-walking-tour': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200&q=80',  # Islamic Cairo
+
+        # Destinations - Alexandria
+        'alexandria-egypt-travel-guide': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80',  # Mediterranean coast
+
+        # Destinations - Aswan
+        'aswan-nubia-travel-guide': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80',  # Aswan Nile
+
+        # Destinations - Luxor
+        'hot-air-balloon-luxor-guide': 'https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?w=1200&q=80',  # Hot air balloon
+
+        # Red Sea & Beaches
+        'dahab-diving-guide': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&q=80',  # Underwater diving
+        'sharm-el-sheikh-guide': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&q=80',  # Red Sea beach
+
+        # Desert
+        'siwa-oasis-complete-guide': 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1200&q=80',  # Desert oasis
+        'white-desert-camping-guide': 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1200&q=80',  # White desert
+        'lost-desert-egypt-survival': 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1200&q=80',
+
+        # Luxury
+        'five-star-hotels-cairo-egypt': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80',  # Luxury hotel
+        'private-tours-pyramids-giza': 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200&q=80',
+
+        # Food & Culture
+        'egyptian-food-guide-dishes': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&q=80',  # Egyptian food
+        'egyptian-coffee-culture': 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80',  # Coffee
+        'ramadan-egypt-travel-guide': 'https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?w=1200&q=80',  # Mosque
+        'egyptian-wedding-traditions': 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80',  # Celebration
+        'egyptian-handicrafts-shopping': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80',  # Crafts
+
+        # Practical Tips
+        'egypt-visa-guide-2026': 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&q=80',  # Airport/travel
+        'egypt-currency-money-guide': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80',
+        'what-to-pack-egypt-checklist': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80',
+        'egypt-safety-tips-tourists': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80',
+        'egyptian-arabic-phrases-travelers': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80',
+
+        # Ancient Egypt Topics
+        'egyptian-mummies-guide': 'https://images.unsplash.com/photo-1595981234058-a9302fb97229?w=1200&q=80',  # Mummy/artifacts
+        'hieroglyphics-guide-basics': 'https://images.unsplash.com/photo-1562679299-266d1ab81bb4?w=1200&q=80',  # Hieroglyphics
+        'egyptian-gods-goddesses-guide': 'https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?w=1200&q=80',  # Temple carvings
+        'rosetta-stone-ancient-egypt': 'https://images.unsplash.com/photo-1567354723472-d3e9f3f8c6b0?w=1200&q=80',
+
+        # Travel Styles
+        'egypt-kids-family-guide': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80',
+        'solo-female-travel-egypt': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80',
+        'budget-egypt-travel-guide': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200&q=80',
+        'egypt-photography-guide-tips': 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200&q=80',
+
+        # Trending 2026
+        'is-egypt-safe-2026-safety-guide': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80',  # Friendly Egypt
+        'egypt-vs-morocco-comparison-2026': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80',
+        'best-instagram-spots-egypt-2026': 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200&q=80',  # Photogenic pyramid
+        'egypt-travel-costs-budget-2026': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80',
+
+        # Stories
+        'hidden-tomb-discovery-luxor': 'https://images.unsplash.com/photo-1562679299-266d1ab81bb4?w=1200&q=80',  # Tomb
+    }
+
+    # Update each article with its specific image
+    for slug, image_url in image_map.items():
+        try:
+            post = BlogPost.objects.get(slug=slug)
+            if post.image_url != image_url:
+                post.image_url = image_url
+                post.save()
+                updated += 1
+        except BlogPost.DoesNotExist:
+            pass
+
+    # For articles without specific mapping, assign based on category
+    category_images = {
+        'ancient-egypt': [
+            'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200&q=80',
+            'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80',
+            'https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?w=1200&q=80',
+            'https://images.unsplash.com/photo-1562679299-266d1ab81bb4?w=1200&q=80',
+        ],
+        'travel-guides': [
+            'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200&q=80',
+            'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200&q=80',
+        ],
+        'destinations': [
+            'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200&q=80',
+            'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80',
+        ],
+        'luxury-travel': [
+            'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80',
+            'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200&q=80',
+        ],
+        'food-drink': [
+            'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&q=80',
+            'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80',
+        ],
+    }
+
+    # Update remaining articles by category
+    for post in BlogPost.objects.all():
+        if post.slug not in image_map and post.category:
+            cat_slug = post.category.slug
+            if cat_slug in category_images:
+                images = category_images[cat_slug]
+                new_image = images[post.id % len(images)]
+                if post.image_url != new_image:
+                    post.image_url = new_image
+                    post.save()
+                    updated += 1
+
+    return JsonResponse({'success': True, 'updated': updated, 'total': BlogPost.objects.count()})
+
 def seed_trending_2026(request):
     """Seed high-traffic trending 2026 articles - access via /seed-trending/?key=egy360seed"""
     if request.GET.get('key') != 'egy360seed':
@@ -1554,6 +1725,7 @@ def seed_trending_2026(request):
     return JsonResponse({'success': True, 'created': created, 'total': BlogPost.objects.count()})
 
 urlpatterns = [
+    path('update-images/', update_article_images, name='update_images'),
     path('seed-trending/', seed_trending_2026, name='seed_trending'),
     path('update-content/', update_articles_content, name='update_content'),
     path('seed-more/', seed_more_articles, name='seed_more'),
