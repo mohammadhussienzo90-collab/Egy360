@@ -1310,7 +1310,251 @@ def update_articles_content(request):
 
     return JsonResponse({'success': True, 'updated': updated, 'total': BlogPost.objects.count()})
 
+def seed_trending_2026(request):
+    """Seed high-traffic trending 2026 articles - access via /seed-trending/?key=egy360seed"""
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from django.contrib.auth.models import User
+    from django.utils import timezone
+    from blog.models import BlogPost, BlogCategory
+
+    author = User.objects.first()
+    if not author:
+        return JsonResponse({'error': 'No users'}, status=500)
+
+    created = 0
+    cat, _ = BlogCategory.objects.get_or_create(slug='travel-guides', defaults={'name': 'Travel Guides', 'description': 'Comprehensive travel guides'})
+
+    trending_articles = [
+        {
+            'title': 'Is Egypt Safe to Visit in 2026? Complete Safety Guide',
+            'slug': 'is-egypt-safe-2026-safety-guide',
+            'excerpt': 'Everything you need to know about safety in Egypt 2026. Tourist areas, scams to avoid, women travelers, and current travel advisories.',
+            'image_url': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200',
+            'content': '''
+<div style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); padding: 30px; border-radius: 20px; margin-bottom: 30px; color: white; text-align: center;">
+    <h2 style="margin-bottom: 10px;">✅ Egypt Is Safe for Tourists in 2026</h2>
+    <p style="opacity: 0.9; margin-bottom: 0;">Millions visit safely every year. Here's what you need to know.</p>
+</div>
+
+<h2>🛡️ Current Safety Status (February 2026)</h2>
+<p>Egypt welcomes over <strong>14 million tourists annually</strong>, making it one of Africa's most visited destinations. Tourist areas including Cairo, Luxor, Aswan, and Red Sea resorts are well-protected with visible security presence.</p>
+
+<h3>What International Advisories Say</h3>
+<ul>
+    <li><strong>UK Foreign Office:</strong> Safe for most tourist areas</li>
+    <li><strong>US State Department:</strong> Exercise increased caution (Level 2 - same as France, UK)</li>
+    <li><strong>Australian Government:</strong> Exercise normal safety precautions for tourist areas</li>
+</ul>
+
+<h2>🚨 Common Scams to Avoid</h2>
+<div style="background: #fff3cd; padding: 20px; border-radius: 15px; margin: 20px 0;">
+    <h4 style="color: #856404;">Watch Out For:</h4>
+    <ul style="margin-bottom: 0;">
+        <li><strong>"Free" gifts</strong> - Nothing is free, they'll demand payment</li>
+        <li><strong>Fake guides</strong> - Only use licensed guides with ID</li>
+        <li><strong>Taxi scams</strong> - Use Uber/Careem or agree on price before</li>
+        <li><strong>"Closed today"</strong> - Attractions are open, they want commission</li>
+    </ul>
+</div>
+
+<h2>👩 Solo Female Travelers</h2>
+<p>Egypt is generally safe for solo women, but cultural awareness helps:</p>
+<ul>
+    <li>Dress modestly (shoulders and knees covered)</li>
+    <li>Ignore catcalls - don't engage</li>
+    <li>Stay in tourist areas after dark</li>
+    <li>Use ride-hailing apps instead of street taxis</li>
+</ul>
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 15px; margin: 30px 0; color: white; text-align: center;">
+    <h4>🎯 Travel with Confidence</h4>
+    <p style="opacity: 0.9;">Book verified tours with trusted local guides</p>
+    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; display: inline-block;">Browse Safe Tours</a>
+</div>
+''',
+            'is_featured': True
+        },
+        {
+            'title': 'Egypt vs Morocco: Which Should You Visit in 2026?',
+            'slug': 'egypt-vs-morocco-comparison-2026',
+            'excerpt': 'Comparing two of Africa\'s top destinations. History, beaches, costs, food, and experiences - which is right for you?',
+            'image_url': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200',
+            'content': '''
+<h2>🆚 Egypt vs Morocco: The Ultimate Comparison</h2>
+<p>Both countries offer incredible experiences, but they're quite different. Here's how to choose.</p>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0;">
+    <div style="background: #e8f5e9; padding: 25px; border-radius: 15px;">
+        <h3 style="color: #2e7d32;">🏛️ Choose Egypt If You Want:</h3>
+        <ul>
+            <li>Ancient history (5000+ years)</li>
+            <li>Pyramids, temples, tombs</li>
+            <li>Nile River cruises</li>
+            <li>Red Sea diving</li>
+            <li>More affordable</li>
+        </ul>
+    </div>
+    <div style="background: #fff3e0; padding: 25px; border-radius: 15px;">
+        <h3 style="color: #e65100;">🕌 Choose Morocco If You Want:</h3>
+        <ul>
+            <li>Medieval medinas</li>
+            <li>Sahara Desert camps</li>
+            <li>Atlas Mountains</li>
+            <li>Vibrant souks</li>
+            <li>French-influenced cuisine</li>
+        </ul>
+    </div>
+</div>
+
+<h2>💰 Cost Comparison</h2>
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr style="background: #f8f9fa;">
+        <th style="padding: 12px; text-align: left;">Category</th>
+        <th style="padding: 12px;">Egypt</th>
+        <th style="padding: 12px;">Morocco</th>
+    </tr>
+    <tr>
+        <td style="padding: 12px;">Budget hotel/night</td>
+        <td style="padding: 12px; text-align: center;">$20-40</td>
+        <td style="padding: 12px; text-align: center;">$30-50</td>
+    </tr>
+    <tr style="background: #f8f9fa;">
+        <td style="padding: 12px;">Meal</td>
+        <td style="padding: 12px; text-align: center;">$3-8</td>
+        <td style="padding: 12px; text-align: center;">$5-12</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px;">Daily budget</td>
+        <td style="padding: 12px; text-align: center; color: #27ae60; font-weight: bold;">$50-80</td>
+        <td style="padding: 12px; text-align: center;">$70-100</td>
+    </tr>
+</table>
+
+<h2>🏆 Verdict</h2>
+<p><strong>For history lovers:</strong> Egypt wins hands-down with 5,000 years of civilization.</p>
+<p><strong>For foodies:</strong> Morocco has more diverse cuisine.</p>
+<p><strong>For adventure:</strong> Both excellent - Egypt for diving, Morocco for trekking.</p>
+<p><strong>For budget:</strong> Egypt is more affordable.</p>
+''',
+            'is_featured': True
+        },
+        {
+            'title': 'Best Instagram Spots in Egypt 2026: Photo Guide',
+            'slug': 'best-instagram-spots-egypt-2026',
+            'excerpt': 'The most photogenic locations in Egypt for your Instagram feed. Pyramids, temples, deserts, and hidden gems with photography tips.',
+            'image_url': 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200',
+            'content': '''
+<h2>📸 Top 15 Instagram Spots in Egypt</h2>
+
+<h3>1. Pyramids of Giza - Multiple Angles</h3>
+<ul>
+    <li><strong>Classic shot:</strong> 9 Pyramids Lounge rooftop</li>
+    <li><strong>Sunrise:</strong> From the desert behind</li>
+    <li><strong>With camel:</strong> Best light at 7-8 AM</li>
+</ul>
+
+<h3>2. Luxor Temple at Night</h3>
+<p>The illuminated columns create magical photos. Visit after 6 PM when lights turn on.</p>
+
+<h3>3. Valley of the Kings - Tomb Interiors</h3>
+<p>Note: Photography is NOT allowed inside tombs (except with special permit).</p>
+
+<h3>4. Abu Simbel at Sunrise</h3>
+<p>The colossal statues glowing pink at dawn is unforgettable.</p>
+
+<h3>5. White Desert</h3>
+<p>Surreal chalk formations look like another planet. Best for overnight camping shots with stars.</p>
+
+<div style="background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%); padding: 25px; border-radius: 15px; margin: 30px 0; color: white; text-align: center;">
+    <h4>📷 Photography Tours</h4>
+    <p style="opacity: 0.9;">Get the best shots with local photographer guides</p>
+    <a href="/tours/" style="background: white; color: #e91e63; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; display: inline-block;">Book Photo Tour</a>
+</div>
+
+<h3>Pro Tips:</h3>
+<ul>
+    <li>🌅 <strong>Golden hour:</strong> 6-7 AM and 5-6 PM</li>
+    <li>📱 <strong>Wide angle:</strong> Essential for temples</li>
+    <li>👗 <strong>What to wear:</strong> Flowy dresses photograph beautifully</li>
+    <li>🐪 <strong>Camel photos:</strong> Agree on price BEFORE taking photo</li>
+</ul>
+''',
+            'is_featured': True
+        },
+        {
+            'title': 'Egypt Travel Costs 2026: Complete Budget Breakdown',
+            'slug': 'egypt-travel-costs-budget-2026',
+            'excerpt': 'Exactly how much does Egypt cost? Daily budgets for backpackers, mid-range, and luxury travelers with price breakdowns.',
+            'image_url': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200',
+            'content': '''
+<h2>💰 Egypt Travel Budget 2026</h2>
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0;">
+    <div style="background: #e3f2fd; padding: 25px; border-radius: 15px; text-align: center;">
+        <h3 style="color: #1565c0;">🎒 Budget</h3>
+        <p style="font-size: 2rem; font-weight: bold; color: #1565c0; margin: 10px 0;">$30-50</p>
+        <p style="color: #666;">per day</p>
+    </div>
+    <div style="background: #e8f5e9; padding: 25px; border-radius: 15px; text-align: center;">
+        <h3 style="color: #2e7d32;">🧳 Mid-Range</h3>
+        <p style="font-size: 2rem; font-weight: bold; color: #2e7d32; margin: 10px 0;">$80-150</p>
+        <p style="color: #666;">per day</p>
+    </div>
+    <div style="background: #fce4ec; padding: 25px; border-radius: 15px; text-align: center;">
+        <h3 style="color: #c2185b;">💎 Luxury</h3>
+        <p style="font-size: 2rem; font-weight: bold; color: #c2185b; margin: 10px 0;">$250+</p>
+        <p style="color: #666;">per day</p>
+    </div>
+</div>
+
+<h2>Detailed Breakdown</h2>
+<table style="width: 100%; border-collapse: collapse;">
+    <tr style="background: #f8f9fa;">
+        <th style="padding: 12px; text-align: left;">Item</th>
+        <th style="padding: 12px;">Budget</th>
+        <th style="padding: 12px;">Mid-Range</th>
+        <th style="padding: 12px;">Luxury</th>
+    </tr>
+    <tr><td style="padding: 12px;">Accommodation</td><td style="padding: 12px; text-align: center;">$10-20</td><td style="padding: 12px; text-align: center;">$50-100</td><td style="padding: 12px; text-align: center;">$200+</td></tr>
+    <tr style="background: #f8f9fa;"><td style="padding: 12px;">Food</td><td style="padding: 12px; text-align: center;">$5-10</td><td style="padding: 12px; text-align: center;">$20-40</td><td style="padding: 12px; text-align: center;">$50+</td></tr>
+    <tr><td style="padding: 12px;">Transport</td><td style="padding: 12px; text-align: center;">$5-10</td><td style="padding: 12px; text-align: center;">$20-30</td><td style="padding: 12px; text-align: center;">$50+</td></tr>
+    <tr style="background: #f8f9fa;"><td style="padding: 12px;">Activities</td><td style="padding: 12px; text-align: center;">$10-15</td><td style="padding: 12px; text-align: center;">$30-50</td><td style="padding: 12px; text-align: center;">$100+</td></tr>
+</table>
+
+<h2>Money-Saving Tips</h2>
+<ul>
+    <li>💵 <strong>Exchange money in Egypt</strong> - better rates than home</li>
+    <li>🍽️ <strong>Eat local</strong> - koshari is $1, amazing street food everywhere</li>
+    <li>🚇 <strong>Use Cairo Metro</strong> - only $0.30 per ride</li>
+    <li>🎫 <strong>Buy combo tickets</strong> - save on entry fees</li>
+</ul>
+''',
+            'is_featured': False
+        }
+    ]
+
+    for article in trending_articles:
+        if not BlogPost.objects.filter(slug=article['slug']).exists():
+            BlogPost.objects.create(
+                title=article['title'],
+                slug=article['slug'],
+                excerpt=article['excerpt'],
+                content=article['content'],
+                image_url=article['image_url'],
+                author=author,
+                category=cat,
+                is_featured=article['is_featured'],
+                status='published',
+                published_at=timezone.now()
+            )
+            created += 1
+
+    return JsonResponse({'success': True, 'created': created, 'total': BlogPost.objects.count()})
+
 urlpatterns = [
+    path('seed-trending/', seed_trending_2026, name='seed_trending'),
     path('update-content/', update_articles_content, name='update_content'),
     path('seed-more/', seed_more_articles, name='seed_more'),
     path('setup-all/', setup_all, name='setup_all'),

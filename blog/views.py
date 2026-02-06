@@ -234,6 +234,16 @@ class BlogListView(ListView):
             is_featured=True
         ).order_by('-published_at')[:6]
         context['recent_posts'] = BlogPost.objects.filter(status='published')[:5]
+
+        # New context for enhanced blog list
+        context['current_category'] = self.request.GET.get('category', '')
+        context['featured_post'] = BlogPost.objects.filter(
+            status='published',
+            is_featured=True
+        ).order_by('-published_at').first()
+        context['trending_posts'] = BlogPost.objects.filter(
+            status='published'
+        ).order_by('-views_count', '-published_at')[:5]
         return context
 
 

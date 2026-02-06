@@ -3,58 +3,712 @@
 
 {% block title %}Travel Blog - Egypt Stories & Guides | Egy360{% endblock %}
 
-{% block content %}
-<!-- Minimal Blog Template - Debug Version -->
-<div class="container py-5">
-    <h1 class="text-center mb-4">Egypt Travel Blog</h1>
-    <p class="text-center text-muted mb-5">Discover stories and guides from the land of pharaohs</p>
+{% block extra_css %}
+<style>
+    /* Blog Hero */
+    .blog-hero {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        padding: 80px 0 60px;
+        color: white;
+        text-align: center;
+    }
 
-    {% if posts %}
-    <div class="row g-4">
-        {% for post in posts %}
-        <div class="col-md-4">
-            <div class="card h-100">
-                <img src="{{ post.image_url|default:'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800' }}"
-                     class="card-img-top"
-                     alt="{{ post.title }}"
-                     style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ post.title }}</h5>
-                    <p class="card-text text-muted">{{ post.excerpt|truncatewords:20 }}</p>
-                    <a href="{% url 'blog:detail' post.slug %}" class="btn btn-primary">Read More</a>
+    .blog-hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .blog-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Category Pills */
+    .category-section {
+        background: #f8f9fa;
+        padding: 20px 0;
+        border-bottom: 1px solid #eee;
+        position: sticky;
+        top: 70px;
+        z-index: 100;
+    }
+
+    .category-pills {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 5px 0;
+        scrollbar-width: none;
+    }
+
+    .category-pills::-webkit-scrollbar {
+        display: none;
+    }
+
+    .category-pill {
+        padding: 10px 20px;
+        background: white;
+        border: 2px solid #ddd;
+        border-radius: 50px;
+        font-weight: 600;
+        color: #333;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all 0.3s ease;
+    }
+
+    .category-pill:hover, .category-pill.active {
+        background: linear-gradient(135deg, #CE1126 0%, #8B0000 100%);
+        color: white;
+        border-color: transparent;
+    }
+
+    .category-pill i {
+        margin-right: 8px;
+    }
+
+    /* Featured Article */
+    .featured-section {
+        padding: 50px 0;
+        background: white;
+    }
+
+    .featured-card {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 40px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 20px;
+        overflow: hidden;
+        color: white;
+    }
+
+    .featured-image {
+        height: 400px;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .featured-content {
+        padding: 40px 40px 40px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .featured-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        color: #1a1a2e;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        width: fit-content;
+    }
+
+    .featured-content h2 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        line-height: 1.3;
+    }
+
+    .featured-content p {
+        opacity: 0.9;
+        margin-bottom: 25px;
+        line-height: 1.7;
+    }
+
+    .featured-meta {
+        display: flex;
+        gap: 20px;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    /* Articles Grid */
+    .articles-section {
+        padding: 50px 0;
+        background: #f8f9fa;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+        color: #1a1a2e;
+    }
+
+    .article-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .article-image {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .article-category {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: linear-gradient(135deg, #CE1126 0%, #8B0000 100%);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .article-body {
+        padding: 25px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .article-body h3 {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+        color: #1a1a2e;
+        line-height: 1.4;
+    }
+
+    .article-body h3 a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .article-body h3 a:hover {
+        color: #CE1126;
+    }
+
+    .article-excerpt {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        flex: 1;
+    }
+
+    .article-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: #888;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+    }
+
+    .read-more-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #CE1126;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .read-more-btn:hover {
+        gap: 12px;
+        color: #8B0000;
+    }
+
+    /* Newsletter Banner */
+    .newsletter-banner {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 60px 0;
+        color: white;
+        text-align: center;
+    }
+
+    .newsletter-banner h3 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .newsletter-banner p {
+        opacity: 0.9;
+        margin-bottom: 25px;
+    }
+
+    .newsletter-form {
+        display: flex;
+        max-width: 500px;
+        margin: 0 auto;
+        gap: 10px;
+    }
+
+    .newsletter-form input {
+        flex: 1;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1rem;
+    }
+
+    .newsletter-form button {
+        padding: 15px 30px;
+        background: white;
+        color: #667eea;
+        border: none;
+        border-radius: 50px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .newsletter-form button:hover {
+        transform: scale(1.05);
+    }
+
+    /* Trending Sidebar */
+    .trending-sidebar {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        position: sticky;
+        top: 150px;
+    }
+
+    .trending-sidebar h4 {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #CE1126;
+    }
+
+    .trending-item {
+        display: flex;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+    }
+
+    .trending-item:last-child {
+        border-bottom: none;
+    }
+
+    .trending-item:hover {
+        transform: translateX(5px);
+    }
+
+    .trending-number {
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, #CE1126 0%, #8B0000 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .trending-content h6 {
+        font-size: 0.95rem;
+        margin-bottom: 5px;
+        color: #1a1a2e;
+        line-height: 1.4;
+    }
+
+    .trending-content span {
+        font-size: 0.8rem;
+        color: #888;
+    }
+
+    /* Pagination */
+    .pagination-wrapper {
+        padding: 40px 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .pagination .page-link {
+        border: none;
+        padding: 12px 18px;
+        margin: 0 5px;
+        border-radius: 10px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .pagination .page-item.active .page-link {
+        background: linear-gradient(135deg, #CE1126 0%, #8B0000 100%);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .featured-card {
+            grid-template-columns: 1fr;
+        }
+
+        .featured-image {
+            height: 250px;
+        }
+
+        .featured-content {
+            padding: 30px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .blog-hero h1 {
+            font-size: 2rem;
+        }
+
+        .newsletter-form {
+            flex-direction: column;
+        }
+
+        .newsletter-form button {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Blog Hero -->
+<section class="blog-hero">
+    <div class="container">
+        <h1><i class="fas fa-feather-alt me-3"></i>Egypt Travel Blog</h1>
+        <p>Discover stories, guides, and insider tips from the land of pharaohs</p>
+    </div>
+</section>
+
+<!-- Category Navigation -->
+<section class="category-section">
+    <div class="container">
+        <div class="category-pills">
+            <a href="{% url 'blog:list' %}" class="category-pill {% if not current_category %}active{% endif %}">
+                <i class="fas fa-globe"></i>All Articles
+            </a>
+            <a href="?category=ancient-egypt" class="category-pill {% if current_category == 'ancient-egypt' %}active{% endif %}">
+                <i class="fas fa-landmark"></i>Ancient Egypt
+            </a>
+            <a href="?category=travel-guides" class="category-pill {% if current_category == 'travel-guides' %}active{% endif %}">
+                <i class="fas fa-map-marked-alt"></i>Travel Guides
+            </a>
+            <a href="?category=destinations" class="category-pill {% if current_category == 'destinations' %}active{% endif %}">
+                <i class="fas fa-map-pin"></i>Destinations
+            </a>
+            <a href="?category=practical-tips" class="category-pill {% if current_category == 'practical-tips' %}active{% endif %}">
+                <i class="fas fa-lightbulb"></i>Tips & Advice
+            </a>
+            <a href="?category=food-drink" class="category-pill {% if current_category == 'food-drink' %}active{% endif %}">
+                <i class="fas fa-utensils"></i>Food & Culture
+            </a>
+            <a href="?category=luxury-travel" class="category-pill {% if current_category == 'luxury-travel' %}active{% endif %}">
+                <i class="fas fa-gem"></i>Luxury Travel
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Article -->
+{% if featured_post %}
+<section class="featured-section">
+    <div class="container">
+        <div class="featured-card">
+            <div class="featured-image" style="background-image: url('{{ featured_post.image_url|default:'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200' }}');"></div>
+            <div class="featured-content">
+                <span class="featured-badge"><i class="fas fa-star me-1"></i>Featured Article</span>
+                <h2>{{ featured_post.title }}</h2>
+                <p>{{ featured_post.excerpt|truncatewords:30 }}</p>
+                <div class="featured-meta">
+                    <span><i class="fas fa-calendar me-1"></i>{{ featured_post.published_at|date:"M d, Y" }}</span>
+                    <span><i class="fas fa-eye me-1"></i>{{ featured_post.views_count|default:0 }} views</span>
+                </div>
+                <a href="{% url 'blog:detail' featured_post.slug %}" class="btn btn-light mt-4" style="width: fit-content; font-weight: 600;">
+                    Read Article <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Articles Grid -->
+<section class="articles-section">
+    <div class="container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <div class="section-header">
+                    <h2>{% if current_category %}{{ current_category|title }} Articles{% else %}Latest Articles{% endif %}</h2>
+                    <span class="text-muted">{{ posts.paginator.count }} articles</span>
+                </div>
+
+                {% if posts %}
+                <div class="row g-4">
+                    {% for post in posts %}
+                    <div class="col-md-6">
+                        <article class="article-card">
+                            <div class="article-image" style="background-image: url('{{ post.image_url|default:'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800' }}');">
+                                {% if post.category %}
+                                <span class="article-category">{{ post.category.name }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="article-body">
+                                <h3><a href="{% url 'blog:detail' post.slug %}">{{ post.title }}</a></h3>
+                                <p class="article-excerpt">{{ post.excerpt|truncatewords:20 }}</p>
+                                <div class="article-meta">
+                                    <span><i class="fas fa-calendar me-1"></i>{{ post.published_at|date:"M d" }}</span>
+                                    <a href="{% url 'blog:detail' post.slug %}" class="read-more-btn">
+                                        Read More <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if is_paginated %}
+                <div class="pagination-wrapper">
+                    <nav>
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}{% if current_category %}&category={{ current_category }}{% endif %}">{{ num }}</a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-newspaper fa-4x text-muted mb-4"></i>
+                    <h2>No Articles Yet</h2>
+                    <p class="text-muted">Check back soon for amazing Egypt travel content!</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Trending Articles -->
+                <div class="trending-sidebar mb-4">
+                    <h4><i class="fas fa-fire me-2" style="color: #ff6b35;"></i>Trending Now</h4>
+                    {% for post in trending_posts|slice:":5" %}
+                    <a href="{% url 'blog:detail' post.slug %}" class="trending-item">
+                        <span class="trending-number">{{ forloop.counter }}</span>
+                        <div class="trending-content">
+                            <h6>{{ post.title|truncatewords:8 }}</h6>
+                            <span><i class="fas fa-eye me-1"></i>{{ post.views_count|default:0 }} views</span>
+                        </div>
+                    </a>
+                    {% empty %}
+                    {% for post in posts|slice:":5" %}
+                    <a href="{% url 'blog:detail' post.slug %}" class="trending-item">
+                        <span class="trending-number">{{ forloop.counter }}</span>
+                        <div class="trending-content">
+                            <h6>{{ post.title|truncatewords:8 }}</h6>
+                            <span><i class="fas fa-calendar me-1"></i>{{ post.published_at|date:"M d" }}</span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+
+                <!-- Trip Planner CTA -->
+                <div class="trending-sidebar mb-4" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;">
+                    <h4 style="color: white; border-bottom-color: rgba(255,255,255,0.3);"><i class="fas fa-route me-2"></i>Plan Your Trip</h4>
+                    <p style="opacity: 0.9; margin-bottom: 20px;">Use our interactive trip planner to build your perfect Egypt itinerary!</p>
+                    <a href="#trip-planner" class="btn btn-light w-100" style="font-weight: 600;" onclick="openTripPlanner()">
+                        <i class="fas fa-magic me-2"></i>Start Planning
+                    </a>
+                </div>
+
+                <!-- Book Tours -->
+                <div class="trending-sidebar" style="background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%); color: white;">
+                    <h4 style="color: white; border-bottom-color: rgba(255,255,255,0.3);"><i class="fas fa-compass me-2"></i>Book Tours</h4>
+                    <p style="opacity: 0.9; margin-bottom: 15px;">Explore Egypt with expert guides!</p>
+                    <a href="{% url 'tours:list' %}" class="btn btn-light w-100" style="font-weight: 600; color: #ff5722;">
+                        View All Tours
+                    </a>
                 </div>
             </div>
         </div>
-        {% endfor %}
     </div>
+</section>
 
-    <!-- Pagination -->
-    {% if is_paginated %}
-    <nav class="mt-5">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-            </li>
-            {% endif %}
-            <li class="page-item active">
-                <span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
-            </li>
-            {% if page_obj.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-    {% endif %}
-
-    {% else %}
-    <div class="text-center py-5">
-        <i class="fas fa-newspaper fa-4x text-muted mb-4"></i>
-        <h2>No Articles Yet</h2>
-        <p class="text-muted">Check back soon for amazing Egypt travel content!</p>
+<!-- Newsletter Banner -->
+<section class="newsletter-banner">
+    <div class="container">
+        <h3><i class="fas fa-envelope-open-text me-2"></i>Get Egypt Travel Tips</h3>
+        <p>Join 10,000+ travelers receiving weekly guides and exclusive deals</p>
+        <form class="newsletter-form" id="blog-newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit"><i class="fas fa-paper-plane me-2"></i>Subscribe</button>
+        </form>
+        <p class="mt-3" style="font-size: 0.85rem; opacity: 0.7;">No spam, unsubscribe anytime</p>
     </div>
-    {% endif %}
+</section>
+
+<!-- Trip Planner Modal -->
+<div class="modal fade" id="tripPlannerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border: none;">
+                <h5 class="modal-title"><i class="fas fa-route me-2"></i>Build Your Egypt Itinerary</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div id="trip-step-1" class="trip-step">
+                    <h5 class="mb-4">How many days are you planning?</h5>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <button class="btn btn-outline-primary trip-days" data-days="3">3-4 Days</button>
+                        <button class="btn btn-outline-primary trip-days" data-days="5">5-7 Days</button>
+                        <button class="btn btn-outline-primary trip-days" data-days="10">10-14 Days</button>
+                        <button class="btn btn-outline-primary trip-days" data-days="14">2+ Weeks</button>
+                    </div>
+                </div>
+                <div id="trip-step-2" class="trip-step d-none">
+                    <h5 class="mb-4">What interests you most?</h5>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <button class="btn btn-outline-primary trip-interest" data-interest="history"><i class="fas fa-landmark me-2"></i>Ancient History</button>
+                        <button class="btn btn-outline-primary trip-interest" data-interest="beach"><i class="fas fa-umbrella-beach me-2"></i>Beach & Diving</button>
+                        <button class="btn btn-outline-primary trip-interest" data-interest="adventure"><i class="fas fa-hiking me-2"></i>Adventure</button>
+                        <button class="btn btn-outline-primary trip-interest" data-interest="luxury"><i class="fas fa-gem me-2"></i>Luxury</button>
+                    </div>
+                </div>
+                <div id="trip-step-3" class="trip-step d-none">
+                    <h5 class="mb-4">Your Personalized Itinerary</h5>
+                    <div id="trip-result" class="p-3 bg-light rounded"></div>
+                    <a href="{% url 'tours:list' %}" class="btn btn-success w-100 mt-3">
+                        <i class="fas fa-check me-2"></i>Book This Trip
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Newsletter form
+document.getElementById('blog-newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = this.querySelector('input').value;
+    alert('Thanks for subscribing! Check your email for Egypt travel tips.');
+    this.reset();
+});
+
+// Trip Planner
+function openTripPlanner() {
+    new bootstrap.Modal(document.getElementById('tripPlannerModal')).show();
+}
+
+let tripData = {};
+
+document.querySelectorAll('.trip-days').forEach(btn => {
+    btn.addEventListener('click', function() {
+        tripData.days = this.dataset.days;
+        document.getElementById('trip-step-1').classList.add('d-none');
+        document.getElementById('trip-step-2').classList.remove('d-none');
+    });
+});
+
+document.querySelectorAll('.trip-interest').forEach(btn => {
+    btn.addEventListener('click', function() {
+        tripData.interest = this.dataset.interest;
+        generateItinerary();
+    });
+});
+
+function generateItinerary() {
+    const itineraries = {
+        'history': {
+            '3': 'Cairo (Pyramids + GEM) → Quick day trip to Saqqara',
+            '5': 'Cairo (2 days) → Luxor (2 days) → Aswan (1 day)',
+            '10': 'Cairo (3 days) → Luxor (3 days) → Aswan + Abu Simbel (2 days) → Alexandria (2 days)',
+            '14': 'Cairo (4 days) → Nile Cruise (4 days) → Aswan + Abu Simbel (3 days) → Alexandria (3 days)'
+        },
+        'beach': {
+            '3': 'Hurghada or Sharm El Sheikh - Beach & Snorkeling',
+            '5': 'Cairo (1 day) → Hurghada (4 days) - Pyramids + Beach',
+            '10': 'Cairo (2 days) → Luxor (2 days) → Hurghada (4 days) → Dahab (2 days)',
+            '14': 'Cairo (3 days) → Luxor (2 days) → Hurghada (5 days) → Dahab + Blue Hole (4 days)'
+        },
+        'adventure': {
+            '3': 'White Desert Safari from Cairo',
+            '5': 'Cairo (1 day) → White Desert (2 days) → Siwa Oasis (2 days)',
+            '10': 'Cairo (2 days) → Siwa (3 days) → White Desert (2 days) → Dahab Diving (3 days)',
+            '14': 'Cairo (2 days) → Siwa (3 days) → Bahariya + White Desert (3 days) → Sinai Trekking (3 days) → Dahab (3 days)'
+        },
+        'luxury': {
+            '3': 'Cairo - 5-Star Hotels, Private Pyramid Tours, Fine Dining',
+            '5': 'Cairo (2 days) → Luxury Nile Cruise (3 days)',
+            '10': 'Cairo (3 days) → Luxury Nile Cruise (4 days) → Aswan + Abu Simbel (3 days)',
+            '14': 'Cairo (4 days) → Luxury Nile Cruise (5 days) → Red Sea Resort (5 days)'
+        }
+    };
+
+    const result = itineraries[tripData.interest][tripData.days] || 'Custom itinerary - contact us!';
+
+    document.getElementById('trip-result').innerHTML = `
+        <h6 class="text-success mb-3"><i class="fas fa-check-circle me-2"></i>Recommended ${tripData.days}+ Day Itinerary</h6>
+        <p class="mb-0"><strong>${result}</strong></p>
+    `;
+
+    document.getElementById('trip-step-2').classList.add('d-none');
+    document.getElementById('trip-step-3').classList.remove('d-none');
+}
+</script>
 {% endblock %}
