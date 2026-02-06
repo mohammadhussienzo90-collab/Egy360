@@ -13,9 +13,11 @@ def debug_blog(request):
         total = BlogPost.objects.count()
         published = BlogPost.objects.filter(status='published').count()
         categories = BlogCategory.objects.count()
+        version = 'v3-fixed'  # Version indicator for deployment verification
         posts = list(BlogPost.objects.filter(status='published').values('title', 'slug')[:5])
         return JsonResponse({
             'status': 'ok',
+            'version': version,
             'total_posts': total,
             'published_posts': published,
             'categories': categories,
