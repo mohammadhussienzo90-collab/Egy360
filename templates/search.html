@@ -262,10 +262,10 @@
                 </div>
                 {% for article in results.articles %}
                 <div class="result-card">
-                    <h4><a href="{% url 'blog:article_detail' article.slug %}">{{ article.title }}</a></h4>
+                    <h4><a href="{% url 'blog:detail' article.slug %}">{{ article.title }}</a></h4>
                     <p>{{ article.meta_description|truncatewords:30 }}</p>
                     <div class="result-meta">
-                        <span><i class="fas fa-folder"></i>{{ article.category.name }}</span>
+                        {% if article.category %}<span><i class="fas fa-folder"></i>{{ article.category.name }}</span>{% endif %}
                         <span><i class="fas fa-calendar"></i>{{ article.published_at|date:"M d, Y" }}</span>
                     </div>
                 </div>

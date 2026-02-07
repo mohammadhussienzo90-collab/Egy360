@@ -656,9 +656,9 @@ def search(request):
     if query and len(query) >= 2:
         # Search articles
         try:
-            from blog.models import Article
-            articles = Article.objects.filter(
-                is_published=True
+            from blog.models import BlogPost
+            articles = BlogPost.objects.filter(
+                status='published'
             ).filter(
                 models.Q(title__icontains=query) |
                 models.Q(content__icontains=query) |
