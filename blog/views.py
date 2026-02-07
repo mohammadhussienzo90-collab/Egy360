@@ -206,10 +206,17 @@ class BlogListView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         import sys
+        # Auto-seed if no articles exist (Railway ephemeral storage fix)
         try:
-            # Auto-seed if no articles exist (Railway ephemeral storage fix)
             if BlogPost.objects.count() == 0:
+                print("AUTO-SEED: No articles found, seeding now...", file=sys.stderr)
                 self._auto_seed_articles()
+                print(f"AUTO-SEED: Completed. Total articles: {BlogPost.objects.count()}", file=sys.stderr)
+        except Exception as e:
+            print(f"AUTO-SEED ERROR: {str(e)}", file=sys.stderr)
+            # Continue even if seeding fails
+
+        try:
             return super().dispatch(request, *args, **kwargs)
         except Exception as e:
             # Print to stdout for gunicorn capture
