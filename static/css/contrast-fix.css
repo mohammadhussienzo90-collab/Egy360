@@ -1,408 +1,413 @@
 /* ============================================================
-   CONTRAST & READABILITY FIX - EGY360 2026
-   Ensures all text is clearly visible with proper contrast
+   BRIGHT & CLEAR FONTS - EGY360 2026
+   Vibrant, readable colors for maximum visual impact
    ============================================================ */
 
-/* ==================== HIGH CONTRAST TEXT ==================== */
+/* ==================== BODY & PARAGRAPHS ==================== */
 
-/* Body text - darker for better readability */
 body {
-    color: #1e293b !important; /* Dark slate for main text */
+    color: #1e293b !important;
+    font-weight: 400;
 }
 
-/* Paragraphs need strong contrast */
 p {
-    color: #334155 !important; /* Slate 700 - very readable */
+    color: #374151 !important;
+    line-height: 1.8;
 }
 
-/* Article excerpts - darker gray */
-.article-excerpt,
-.card-text,
-.excerpt,
-.post-excerpt {
-    color: #475569 !important; /* Slate 600 - strong contrast */
+/* ==================== BRIGHT HEADINGS ==================== */
+
+/* Main headings - Vibrant crimson/red */
+h1, .h1 {
+    color: #dc2626 !important; /* Bright red */
+    font-weight: 800 !important;
 }
 
-/* Meta information - darker than before */
-.article-meta,
-.post-meta,
-.meta,
-.text-muted {
-    color: #64748b !important; /* Slate 500 - visible but subtle */
+h2, .h2 {
+    color: #b91c1c !important; /* Rich crimson */
+    font-weight: 700 !important;
 }
 
-/* Links should be clearly visible */
-a {
-    color: #b91c1c !important; /* Darker red for links */
+h3, .h3 {
+    color: #1e40af !important; /* Bright blue */
+    font-weight: 600 !important;
 }
 
-a:hover {
-    color: #991b1b !important; /* Even darker on hover */
+h4, .h4 {
+    color: #7c3aed !important; /* Vibrant purple */
+    font-weight: 600 !important;
 }
 
-/* Headlines - pure dark for maximum impact */
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
-    color: #0f172a !important; /* Slate 900 - nearly black */
+h5, h6, .h5, .h6 {
+    color: #0891b2 !important; /* Bright cyan */
+    font-weight: 600 !important;
 }
 
-/* Section titles */
+/* Section titles - Gold gradient effect */
 .section-header h2,
-.section-title,
+.section-title {
+    color: #b91c1c !important;
+}
+
+/* Page titles */
 .page-title {
-    color: #0f172a !important;
+    color: #dc2626 !important;
 }
 
-/* ==================== WHITE TEXT ON DARK BACKGROUNDS ==================== */
+/* ==================== CARD HEADINGS ==================== */
 
-/* Hero sections with dark backgrounds */
-.blog-hero,
-.hero-modern,
-.section-dark,
-.featured-card,
-.card-dark,
-.navbar-modern {
-    color: #ffffff !important;
-}
-
-.blog-hero h1,
-.blog-hero h2,
-.blog-hero p,
-.hero-modern h1,
-.hero-modern p,
-.featured-content h2,
-.featured-content p,
-.card-dark .card-title,
-.card-dark .card-text {
-    color: #ffffff !important;
-    opacity: 1 !important; /* Remove opacity that dims text */
-}
-
-/* Hero subtitle text - ensure visibility */
-.blog-hero p,
-.hero-modern .hero-subtitle,
-.featured-content p {
-    color: #e2e8f0 !important; /* Light gray but still very visible */
-    opacity: 1 !important;
-}
-
-/* Hero stats */
-.blog-hero .hero-stat-label,
-.hero-stat-label {
-    color: #cbd5e1 !important; /* Visible light gray */
-    opacity: 1 !important;
-}
-
-.blog-hero .hero-stat-number,
-.hero-stat-number {
-    color: #fbbf24 !important; /* Bright gold */
-}
-
-/* Featured meta */
-.featured-meta,
-.featured-meta span {
-    color: #e2e8f0 !important;
-    opacity: 1 !important;
-}
-
-/* ==================== CARD IMPROVEMENTS ==================== */
-
-/* Card titles */
 .article-body h3,
 .article-body h3 a,
 .card-title,
 .card-title a {
-    color: #0f172a !important; /* Nearly black */
+    color: #1e3a5f !important; /* Deep blue - professional */
+    font-weight: 700 !important;
 }
 
 .article-body h3 a:hover,
 .card-title a:hover {
-    color: #b91c1c !important; /* Dark red on hover */
+    color: #dc2626 !important; /* Bright red on hover */
 }
 
-/* Category badges on cards */
-.article-category,
-.category-badge {
-    background: rgba(15, 23, 42, 0.95) !important; /* Darker background */
-    color: #ffffff !important;
-    font-weight: 600;
+/* ==================== LINKS - VIBRANT ==================== */
+
+a {
+    color: #dc2626 !important; /* Bright red */
+    font-weight: 500;
 }
 
-/* Views badge */
-.article-views {
-    background: #ffffff !important;
-    color: #0f172a !important;
+a:hover {
+    color: #b91c1c !important;
+    text-decoration: underline;
+}
+
+/* Read more buttons */
+.read-more-btn {
+    color: #dc2626 !important;
+    font-weight: 700 !important;
+}
+
+.read-more-btn:hover {
+    color: #991b1b !important;
+}
+
+/* ==================== ARTICLE CONTENT ==================== */
+
+.article-content h2 {
+    color: #dc2626 !important; /* Bright red */
+    border-bottom: 3px solid #dc2626 !important;
+    padding-bottom: 10px;
+}
+
+.article-content h3 {
+    color: #1e40af !important; /* Bright blue */
+}
+
+.article-content h4 {
+    color: #7c3aed !important; /* Purple */
+}
+
+.article-content p {
+    color: #374151 !important;
+}
+
+.article-content strong {
+    color: #111827 !important;
     font-weight: 700;
 }
 
-/* ==================== SIDEBAR & TRENDING ==================== */
-
-.trending-sidebar h4,
-.sidebar-title {
-    color: #0f172a !important;
+/* First paragraph - larger and bolder */
+.article-content p:first-of-type {
+    color: #1f2937 !important;
+    font-size: 1.15em;
 }
 
-.trending-content h6,
-.trending-title {
-    color: #1e293b !important;
+/* Lists */
+.article-content li {
+    color: #374151 !important;
 }
 
-.trending-content span,
-.trending-meta {
-    color: #64748b !important; /* Visible gray */
+/* ==================== EXCERPTS & META ==================== */
+
+.article-excerpt,
+.card-text,
+.excerpt {
+    color: #4b5563 !important;
 }
 
-/* ==================== NAVIGATION ==================== */
-
-/* Navbar links on dark background */
-.navbar-modern .nav-link {
-    color: #f1f5f9 !important; /* Very light for dark navbar */
+.article-meta,
+.post-meta,
+.meta {
+    color: #6b7280 !important;
 }
 
-.navbar-modern .nav-link:hover {
+.text-muted {
+    color: #6b7280 !important;
+}
+
+/* ==================== HERO SECTIONS (DARK BG) ==================== */
+
+.blog-hero,
+.hero-modern,
+.section-dark,
+.featured-card,
+.card-dark {
     color: #ffffff !important;
 }
 
+.blog-hero h1,
+.hero-modern h1 {
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.blog-hero h2,
+.featured-content h2 {
+    color: #fbbf24 !important; /* Bright gold */
+}
+
+.blog-hero p,
+.hero-modern p,
+.featured-content p {
+    color: #f3f4f6 !important;
+}
+
+.hero-stat-number {
+    color: #fbbf24 !important; /* Bright gold */
+    font-weight: 800;
+}
+
+.hero-stat-label {
+    color: #e5e7eb !important;
+}
+
+/* ==================== NAVBAR ==================== */
+
+.navbar-modern .nav-link {
+    color: #f9fafb !important;
+    font-weight: 500;
+}
+
+.navbar-modern .nav-link:hover {
+    color: #fbbf24 !important; /* Gold on hover */
+}
+
 .navbar-modern .nav-link.active {
-    color: #fbbf24 !important; /* Gold for active */
+    color: #fbbf24 !important;
 }
 
 /* ==================== BUTTONS ==================== */
 
-/* Primary buttons */
 .btn-primary,
 .btn-primary-modern {
-    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%) !important;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
     color: #ffffff !important;
+    font-weight: 600;
 }
 
-/* Read more links */
-.read-more-btn {
-    color: #b91c1c !important;
-    font-weight: 700;
+.btn-primary:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%) !important;
 }
 
-.read-more-btn:hover {
-    color: #7f1d1d !important;
+/* Gold buttons */
+.btn-gold,
+.btn-warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #1f2937 !important;
+    font-weight: 600;
 }
 
-/* Category pills */
+/* ==================== CATEGORY BADGES ==================== */
+
+.article-category,
+.category-badge {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
 .category-pill {
-    color: #1e293b !important;
-    border-color: #cbd5e1 !important;
+    color: #374151 !important;
+    border-color: #d1d5db !important;
+    font-weight: 600;
 }
 
 .category-pill:hover,
 .category-pill.active {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
     color: #ffffff !important;
-    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%) !important;
+    border-color: #dc2626 !important;
 }
 
-/* ==================== NEWSLETTER SECTION ==================== */
+/* ==================== SIDEBAR ==================== */
 
-.newsletter-banner h3,
-.newsletter-banner p {
-    color: #ffffff !important;
-    opacity: 1 !important;
+.trending-sidebar h4,
+.sidebar-title {
+    color: #dc2626 !important;
+    font-weight: 700;
 }
 
-.newsletter-form input {
-    color: #0f172a !important;
-    background: #ffffff !important;
+.trending-content h6 {
+    color: #1f2937 !important;
+    font-weight: 600;
 }
 
-.newsletter-form input::placeholder {
-    color: #64748b !important;
+.trending-content span {
+    color: #6b7280 !important;
 }
 
-/* ==================== FOOTER ==================== */
+/* ==================== TAGS ==================== */
 
-footer,
-.footer {
-    color: #e2e8f0 !important;
-}
-
-footer a,
-.footer a {
-    color: #fbbf24 !important;
-}
-
-footer a:hover,
-.footer a:hover {
-    color: #ffffff !important;
-}
-
-footer p,
-.footer p,
-footer .text-muted,
-.footer .text-muted {
-    color: #cbd5e1 !important;
-}
-
-/* ==================== BLOG DETAIL PAGE ==================== */
-
-/* Article content */
-.article-content,
-.blog-content,
-.post-content {
-    color: #1e293b !important;
-    line-height: 1.8;
-}
-
-.article-content p,
-.blog-content p,
-.post-content p {
-    color: #334155 !important;
-}
-
-.article-content h2,
-.article-content h3,
-.article-content h4 {
-    color: #0f172a !important;
-}
-
-/* Article meta on detail page */
-.article-hero-content .article-meta span,
-.article-meta-item {
-    color: #e2e8f0 !important;
-    opacity: 1 !important;
-}
-
-/* Tags */
 .tag,
 .article-tag {
-    color: #0f172a !important;
-    background: #f1f5f9 !important;
-    border: 1px solid #cbd5e1 !important;
+    color: #374151 !important;
+    background: #f3f4f6 !important;
+    border: 1px solid #d1d5db !important;
+    font-weight: 500;
 }
 
 .tag:hover,
 .article-tag:hover {
-    background: #b91c1c !important;
+    background: #dc2626 !important;
     color: #ffffff !important;
-    border-color: #b91c1c !important;
+    border-color: #dc2626 !important;
 }
 
-/* Comments section */
-.comment-author {
-    color: #0f172a !important;
-    font-weight: 600;
+/* ==================== FOOTER ==================== */
+
+footer h5 {
+    color: #fbbf24 !important; /* Bright gold */
 }
 
-.comment-date {
-    color: #64748b !important;
+footer a {
+    color: #fbbf24 !important;
 }
 
-.comment-text,
-.comment-content {
-    color: #334155 !important;
-}
-
-/* ==================== SOCIAL SHARING ==================== */
-
-.share-title {
-    color: #0f172a !important;
-}
-
-.share-btn {
+footer a:hover {
     color: #ffffff !important;
 }
 
-/* ==================== FORMS ==================== */
-
-input,
-textarea,
-select {
-    color: #0f172a !important;
+footer p,
+footer .text-white-50 {
+    color: #d1d5db !important;
 }
 
-input::placeholder,
-textarea::placeholder {
-    color: #94a3b8 !important;
+/* ==================== NEWSLETTER ==================== */
+
+.newsletter-banner h3 {
+    color: #ffffff !important;
+    font-weight: 700;
 }
 
-label {
-    color: #1e293b !important;
-    font-weight: 500;
+.newsletter-banner p {
+    color: #f3f4f6 !important;
 }
 
 /* ==================== BREADCRUMBS ==================== */
 
 .breadcrumb-item {
-    color: #64748b !important;
+    color: #6b7280 !important;
 }
 
 .breadcrumb-item.active {
-    color: #0f172a !important;
+    color: #dc2626 !important;
+    font-weight: 600;
 }
 
 .breadcrumb-item a {
-    color: #b91c1c !important;
+    color: #1e40af !important;
 }
 
-/* ==================== DESTINATION & TOUR PAGES ==================== */
+/* ==================== FORMS ==================== */
 
-.destination-title,
-.tour-title {
-    color: #0f172a !important;
+label {
+    color: #1f2937 !important;
+    font-weight: 600;
 }
 
-.destination-description,
-.tour-description {
-    color: #334155 !important;
+input, textarea, select {
+    color: #1f2937 !important;
 }
+
+input::placeholder,
+textarea::placeholder {
+    color: #9ca3af !important;
+}
+
+/* ==================== PRICES ==================== */
 
 .price,
 .tour-price {
-    color: #0f172a !important;
+    color: #059669 !important; /* Green for prices */
     font-weight: 700;
 }
 
-/* ==================== ACCESSIBILITY IMPROVEMENTS ==================== */
+/* ==================== SPECIAL ELEMENTS ==================== */
 
-/* Focus states for keyboard navigation */
-a:focus,
-button:focus,
-input:focus,
-textarea:focus,
-select:focus {
-    outline: 3px solid #b91c1c !important;
-    outline-offset: 2px;
+/* Star ratings */
+.rating,
+.stars {
+    color: #f59e0b !important; /* Gold stars */
 }
 
-/* High contrast mode support */
-@media (prefers-contrast: high) {
+/* Success messages */
+.alert-success {
+    color: #065f46 !important;
+}
+
+/* Error messages */
+.alert-danger {
+    color: #991b1b !important;
+}
+
+/* Info boxes */
+.alert-info {
+    color: #1e40af !important;
+}
+
+/* ==================== COMMENTS ==================== */
+
+.comment-author {
+    color: #1e40af !important;
+    font-weight: 600;
+}
+
+.comment-date {
+    color: #6b7280 !important;
+}
+
+.comment-text {
+    color: #374151 !important;
+}
+
+/* ==================== MOBILE OPTIMIZATION ==================== */
+
+@media (max-width: 768px) {
     body {
-        color: #000000 !important;
+        font-size: 1rem !important;
     }
 
-    p, .article-excerpt, .card-text {
-        color: #000000 !important;
+    h1, .h1 {
+        font-size: 1.75rem !important;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h2, .h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .article-content {
+        font-size: 1rem !important;
+    }
+}
+
+/* ==================== PRINT STYLES ==================== */
+
+@media print {
+    * {
         color: #000000 !important;
     }
 
     a {
-        color: #7f1d1d !important;
         text-decoration: underline !important;
-    }
-}
-
-/* ==================== MOBILE IMPROVEMENTS ==================== */
-
-@media (max-width: 768px) {
-    /* Larger text on mobile for readability */
-    body {
-        font-size: 1.05rem !important;
-    }
-
-    .article-excerpt {
-        font-size: 1rem !important;
-    }
-
-    .article-meta {
-        font-size: 0.9rem !important;
     }
 }
