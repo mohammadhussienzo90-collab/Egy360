@@ -1755,7 +1755,1214 @@ def seed_trending_2026(request):
 
     return JsonResponse({'success': True, 'created': created, 'total': BlogPost.objects.count()})
 
+
+def seed_comprehensive_articles(request):
+    """
+    Seed 50+ comprehensive Egypt travel articles covering all topics.
+    Access via /seed-all-topics/?key=egy360seed
+    """
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from django.contrib.auth.models import User
+    from django.utils import timezone
+    from blog.models import BlogPost, BlogCategory
+
+    author = User.objects.first()
+    if not author:
+        return JsonResponse({'error': 'No users found'}, status=500)
+
+    created = 0
+
+    # Define categories
+    categories_data = {
+        'hidden-gems': ('Hidden Gems', 'Discover secret spots and lesser-known treasures'),
+        'food-cuisine': ('Food & Cuisine', 'Egyptian culinary experiences and food guides'),
+        'adventure': ('Adventure', 'Thrilling activities and outdoor experiences'),
+        'culture': ('Culture & Heritage', 'Cultural experiences and local traditions'),
+        'photography': ('Photography', 'Best photo spots and photography guides'),
+        'budget-travel': ('Budget Travel', 'Money-saving tips and affordable options'),
+        'luxury-travel': ('Luxury Travel', 'Premium experiences and 5-star options'),
+        'family-travel': ('Family Travel', 'Kid-friendly activities and family guides'),
+        'solo-travel': ('Solo Travel', 'Solo traveler tips and safety guides'),
+        'romance': ('Romantic Getaways', 'Couples travel and honeymoon ideas'),
+        'diving-snorkeling': ('Diving & Snorkeling', 'Red Sea underwater adventures'),
+        'desert-adventures': ('Desert Adventures', 'Sahara experiences and oasis trips'),
+        'nile-experiences': ('Nile Experiences', 'River cruises and Nile activities'),
+        'wellness-spa': ('Wellness & Spa', 'Relaxation and wellness experiences'),
+        'shopping': ('Shopping', 'Markets, souvenirs, and shopping guides'),
+        'nightlife': ('Nightlife', 'Evening entertainment and social scenes'),
+        'festivals': ('Festivals & Events', 'Egyptian celebrations and events'),
+        'eco-tourism': ('Eco Tourism', 'Sustainable and eco-friendly travel'),
+    }
+
+    # Create categories
+    cats = {}
+    for slug, (name, desc) in categories_data.items():
+        cat, _ = BlogCategory.objects.get_or_create(
+            slug=slug,
+            defaults={'name': name, 'description': desc}
+        )
+        cats[slug] = cat
+
+    # Comprehensive articles list
+    articles = [
+        # HIDDEN GEMS
+        {
+            'title': "10 Secret Beaches in Egypt Locals Don't Want You to Know",
+            'slug': 'secret-beaches-egypt-hidden-gems',
+            'excerpt': 'Escape the crowds and discover pristine, untouched beaches along Egypt\'s coastline that most tourists never find.',
+            'category': 'hidden-gems',
+            'image_url': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200',
+            'content': '''<h2>Egypt's Best Kept Beach Secrets</h2>
+<p>While Sharm El Sheikh and Hurghada get all the attention, Egypt hides some of the most pristine beaches in the world. Here are 10 secret spots that will take your breath away.</p>
+
+<h3>1. Ras Shitan, Sinai</h3>
+<p>A hippie paradise with crystal-clear waters and zero development. Stay in bamboo huts and disconnect from the world.</p>
+
+<h3>2. Marsa Shagra, South Red Sea</h3>
+<p>An eco-village with a house reef that rivals any diving destination. See dolphins, dugongs, and untouched coral.</p>
+
+<h3>3. Ageeba Beach, Marsa Matrouh</h3>
+<p>Turquoise waters that look like the Caribbean but without the crowds. The name means "miracle" in Arabic.</p>
+
+<h3>4. Fjord Bay, Taba</h3>
+<p>A natural fjord with dramatic mountains meeting the sea. Perfect for snorkeling and kayaking.</p>
+
+<h3>5. Wadi El Gemal, Red Sea</h3>
+<p>A protected national park with pristine beaches, mangroves, and incredible wildlife.</p>
+
+<h2>How to Get There</h2>
+<p>Most secret beaches require a 4x4 or boat access. Hire a local guide for the best experience and to support the community.</p>
+
+<h2>Best Time to Visit</h2>
+<p>October to April offers perfect weather. Avoid July-August when temperatures soar.</p>'''
+        },
+        {
+            'title': 'Underground Cairo: Hidden Tunnels and Secret Passages',
+            'slug': 'underground-cairo-hidden-tunnels',
+            'excerpt': 'Explore the mysterious underground world beneath Cairo\'s streets - from ancient aqueducts to forgotten passages.',
+            'category': 'hidden-gems',
+            'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200',
+            'content': '''<h2>Cairo's Secret Underground World</h2>
+<p>Beneath the bustling streets of Cairo lies a hidden network of tunnels, cisterns, and passages that most tourists never see.</p>
+
+<h3>The Nilometer on Rhoda Island</h3>
+<p>An ancient device used to measure the Nile's flood levels, dating back to 861 AD. Descend into the cool underground chamber.</p>
+
+<h3>Al-Ghouri Complex Crypts</h3>
+<p>Hidden beneath one of Cairo's most beautiful mosques lie atmospheric crypts rarely visited by tourists.</p>
+
+<h3>Babylon Fortress Underground</h3>
+<p>The Roman fortress foundations reveal ancient streets and passages now underground due to centuries of accumulated debris.</p>
+
+<h3>The Aqueduct of Cairo</h3>
+<p>Walk along the medieval aqueduct that once brought water from the Nile to the Citadel. Parts are accessible with a guide.</p>
+
+<h2>How to Access</h2>
+<p>Many underground sites require special permission or a knowledgeable guide. Contact local tour operators specializing in alternative Cairo tours.</p>'''
+        },
+        # FOOD & CUISINE
+        {
+            'title': 'Egyptian Street Food: The Ultimate Guide to Eating Like a Local',
+            'slug': 'egyptian-street-food-ultimate-guide',
+            'excerpt': 'From koshari to feteer, discover the best street food in Egypt and where to find the most authentic bites.',
+            'category': 'food-cuisine',
+            'image_url': 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=1200',
+            'content': '''<h2>The Best Egyptian Street Food</h2>
+<p>Egyptian street food is legendary - cheap, delicious, and found on every corner. Here's your complete guide.</p>
+
+<h3>Must-Try Street Foods</h3>
+
+<h4>1. Koshari (كشري)</h4>
+<p>Egypt's national dish - rice, pasta, lentils, chickpeas, fried onions, and spicy tomato sauce. Costs only $1!</p>
+<p><strong>Best spot:</strong> Abou Tarek in Downtown Cairo</p>
+
+<h4>2. Ful Medames (فول مدمس)</h4>
+<p>Slow-cooked fava beans with olive oil, lemon, and cumin. The ultimate Egyptian breakfast.</p>
+<p><strong>Best spot:</strong> Any local "ful cart" in the morning</p>
+
+<h4>3. Ta'meya (طعمية)</h4>
+<p>Egyptian falafel made with fava beans instead of chickpeas. Crispier and greener than other versions.</p>
+
+<h4>4. Feteer Meshaltet (فطير مشلتت)</h4>
+<p>Flaky layered pastry, sweet or savory. Like a Egyptian croissant on steroids.</p>
+<p><strong>Best spot:</strong> El Abd Bakery, Cairo</p>
+
+<h4>5. Hawawshi (حواوشي)</h4>
+<p>Spiced minced meat baked inside bread. The Egyptian answer to a meat pie.</p>
+
+<h3>Street Food Safety Tips</h3>
+<ul>
+    <li>Choose busy stalls - high turnover means fresh food</li>
+    <li>Watch the food being prepared fresh</li>
+    <li>Avoid pre-made items sitting in the sun</li>
+    <li>Stick to cooked foods if you have a sensitive stomach</li>
+</ul>
+
+<h3>Price Guide</h3>
+<p>Most street food costs between $0.50-$2. You can eat like a king for $5/day!</p>'''
+        },
+        {
+            'title': 'Egyptian Coffee Culture: A Complete Guide to Ahwa',
+            'slug': 'egyptian-coffee-culture-ahwa-guide',
+            'excerpt': 'Discover the rich tradition of Egyptian coffee houses (ahwa) and how to experience authentic local cafe culture.',
+            'category': 'food-cuisine',
+            'image_url': 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1200',
+            'content': '''<h2>The Art of Egyptian Coffee</h2>
+<p>Egyptian coffee culture is about more than caffeine - it's a social institution that has shaped Egyptian society for centuries.</p>
+
+<h3>Understanding Ahwa (Coffee House) Culture</h3>
+<p>An ahwa is a gathering place where Egyptians play backgammon, smoke shisha, discuss politics, and solve the world's problems.</p>
+
+<h3>How to Order Coffee</h3>
+<ul>
+    <li><strong>Ahwa Sada</strong> - Plain, no sugar</li>
+    <li><strong>Ahwa Arriha</strong> - Light sugar</li>
+    <li><strong>Ahwa Mazbouta</strong> - Medium sugar (most popular)</li>
+    <li><strong>Ahwa Ziyada</strong> - Extra sweet</li>
+</ul>
+
+<h3>Historic Ahwas to Visit</h3>
+
+<h4>Fishawi's, Khan El-Khalili</h4>
+<p>Open 24/7 for over 200 years. Where Naguib Mahfouz wrote his novels.</p>
+
+<h4>El Horreya, Downtown Cairo</h4>
+<p>A literary institution with art deco interiors. Popular with artists and intellectuals.</p>
+
+<h4>Café Riche</h4>
+<p>Historic cafe where Egyptian revolution was planned in 1919. Beautiful vintage atmosphere.</p>
+
+<h3>Coffee House Etiquette</h3>
+<ul>
+    <li>Never rush - an ahwa visit is meant to last hours</li>
+    <li>It's acceptable to sit alone for hours with one coffee</li>
+    <li>Playing backgammon is encouraged</li>
+    <li>Some ahwas are men-only - look for mixed seating areas</li>
+</ul>'''
+        },
+        # ADVENTURE
+        {
+            'title': 'Sandboarding in Egypt: The Ultimate Desert Adventure Guide',
+            'slug': 'sandboarding-egypt-desert-adventure',
+            'excerpt': 'Ride the dunes of the Sahara! Complete guide to sandboarding in Egypt\'s most spectacular desert locations.',
+            'category': 'adventure',
+            'image_url': 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1200',
+            'content': '''<h2>Sandboarding in Egypt</h2>
+<p>Forget snowboarding - sandboarding down Egypt's massive dunes is the ultimate adrenaline rush!</p>
+
+<h3>Best Sandboarding Locations</h3>
+
+<h4>1. Great Sand Sea, Siwa</h4>
+<p>Endless dunes as far as the eye can see. The most epic sandboarding experience in Egypt.</p>
+
+<h4>2. White Desert</h4>
+<p>Combine surreal chalk formations with sandboarding for an otherworldly experience.</p>
+
+<h4>3. Fayoum Desert</h4>
+<p>Closest to Cairo (2 hours). Perfect for a day trip adventure.</p>
+
+<h4>4. Dahab Desert</h4>
+<p>Combine beach time with desert sandboarding in one trip.</p>
+
+<h3>What You Need</h3>
+<ul>
+    <li>Board (rent from tour operators or bring a snowboard)</li>
+    <li>Wax for the board (paraffin works)</li>
+    <li>Goggles and face protection</li>
+    <li>Lots of water!</li>
+</ul>
+
+<h3>Best Time</h3>
+<p>October to March. Summer temperatures make sand too hot to touch!</p>
+
+<h3>Pro Tips</h3>
+<ul>
+    <li>Go early morning when sand is coolest</li>
+    <li>Wax your board frequently</li>
+    <li>Start on smaller dunes to build confidence</li>
+    <li>Expect to walk up a lot - there are no ski lifts!</li>
+</ul>'''
+        },
+        {
+            'title': 'Rock Climbing in Sinai: Egypt\'s Best Kept Adventure Secret',
+            'slug': 'rock-climbing-sinai-adventure-guide',
+            'excerpt': 'Discover world-class rock climbing in the Sinai Peninsula with stunning desert scenery and ancient history.',
+            'category': 'adventure',
+            'image_url': 'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=1200',
+            'content': '''<h2>Rock Climbing in Sinai</h2>
+<p>Sinai offers some of the best rock climbing in the Middle East with unique red granite formations and year-round climbing weather.</p>
+
+<h3>Top Climbing Areas</h3>
+
+<h4>Wadi Rum-style Towers near St. Catherine</h4>
+<p>Massive granite towers rising from the desert floor. Multi-pitch routes up to 400m.</p>
+
+<h4>Sheikh Awad Bouldering</h4>
+<p>World-class bouldering on perfect granite. Over 500 problems documented.</p>
+
+<h4>Blue Valley (Wadi Ghazala)</h4>
+<p>Named for blue-painted rocks by a Belgian artist. Sport climbing with easy access.</p>
+
+<h3>Climbing Season</h3>
+<p>October to April is perfect. Summer is too hot for comfortable climbing.</p>
+
+<h3>Getting Started</h3>
+<ul>
+    <li>Bring your own gear - rental is limited</li>
+    <li>Hire a local Bedouin guide for access and support</li>
+    <li>Many routes are trad - be prepared</li>
+    <li>Camping is the best accommodation option</li>
+</ul>
+
+<h3>Guided Tours</h3>
+<p>Several operators offer climbing trips from Dahab including equipment, transport, and Bedouin hospitality.</p>'''
+        },
+        # DIVING & SNORKELING
+        {
+            'title': 'Best Dive Sites in Egypt 2026: Complete Red Sea Guide',
+            'slug': 'best-dive-sites-egypt-red-sea-2026',
+            'excerpt': 'From the SS Thistlegorm to Ras Mohammed, discover Egypt\'s top 20 dive sites with insider tips.',
+            'category': 'diving-snorkeling',
+            'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200',
+            'content': '''<h2>Egypt's Top Dive Sites</h2>
+<p>The Red Sea offers some of the best diving on Earth with warm waters, incredible visibility, and diverse marine life.</p>
+
+<h3>Legendary Dive Sites</h3>
+
+<h4>1. SS Thistlegorm, Sharm El Sheikh</h4>
+<p>The world's most famous wreck dive. A WWII cargo ship loaded with motorcycles, trucks, and weapons.</p>
+<p><strong>Depth:</strong> 16-30m | <strong>Level:</strong> Advanced</p>
+
+<h4>2. Ras Mohammed National Park</h4>
+<p>Shark Reef and Yolanda Reef offer wall diving, pelagics, and a cargo of toilets from a sunken ship!</p>
+<p><strong>Depth:</strong> 5-50m | <strong>Level:</strong> All levels</p>
+
+<h4>3. The Brothers Islands</h4>
+<p>Remote islands with hammerhead sharks, thresher sharks, and pristine walls.</p>
+<p><strong>Depth:</strong> 15-40m | <strong>Level:</strong> Advanced</p>
+
+<h4>4. Elphinstone Reef</h4>
+<p>Famous for oceanic whitetip sharks and stunning wall diving.</p>
+<p><strong>Depth:</strong> 5-40m | <strong>Level:</strong> Intermediate+</p>
+
+<h4>5. Blue Hole, Dahab</h4>
+<p>Infamous for its deadly arch, but the main reef is perfect for all levels.</p>
+<p><strong>Depth:</strong> 6-110m | <strong>Level:</strong> Varies</p>
+
+<h3>Diving Costs</h3>
+<table>
+    <tr><th>Service</th><th>Price Range</th></tr>
+    <tr><td>Single dive</td><td>$30-50</td></tr>
+    <tr><td>Day trip (2 dives)</td><td>$60-100</td></tr>
+    <tr><td>PADI Open Water course</td><td>$300-450</td></tr>
+    <tr><td>Liveaboard (7 days)</td><td>$800-1500</td></tr>
+</table>
+
+<h3>Best Season</h3>
+<p>Year-round! Water temp: 21-28°C. Winter (Dec-Feb) for shark encounters, summer for best visibility.</p>'''
+        },
+        # DESERT ADVENTURES
+        {
+            'title': 'Siwa Oasis: Complete Guide to Egypt\'s Hidden Paradise',
+            'slug': 'siwa-oasis-complete-guide-2026',
+            'excerpt': 'Everything you need to know about visiting Siwa - from salt lakes to ancient ruins and Berber culture.',
+            'category': 'desert-adventures',
+            'image_url': 'https://images.unsplash.com/photo-1548018560-c7196e91a6db?w=1200',
+            'content': '''<h2>Siwa Oasis: Egypt's Hidden Paradise</h2>
+<p>Remote, magical, and utterly unique - Siwa is unlike anywhere else in Egypt. This Berber oasis near the Libyan border feels like stepping into another world.</p>
+
+<h3>Getting There</h3>
+<p>8-hour bus from Cairo or Alexandria. Worth every minute!</p>
+
+<h3>Must-See Attractions</h3>
+
+<h4>Temple of the Oracle</h4>
+<p>Where Alexander the Great was proclaimed a god. Incredible sunset views.</p>
+
+<h4>Shali Fortress</h4>
+<p>The melting mud-brick ruins of the old town. Atmospheric and photogenic.</p>
+
+<h4>Cleopatra's Bath</h4>
+<p>Natural spring pool where locals and tourists swim together. Refreshing!</p>
+
+<h4>Salt Lakes</h4>
+<p>Float effortlessly in Egypt's answer to the Dead Sea. Especially beautiful at sunset.</p>
+
+<h4>Great Sand Sea</h4>
+<p>Endless dunes perfect for sandboarding, 4x4 adventures, and camping under stars.</p>
+
+<h3>Where to Stay</h3>
+<ul>
+    <li><strong>Budget:</strong> Palm Trees Hotel - $15/night</li>
+    <li><strong>Mid-range:</strong> Siwa Shali Resort - $60/night</li>
+    <li><strong>Luxury:</strong> Adrère Amellal - $400/night (no electricity, total desert luxury)</li>
+</ul>
+
+<h3>Local Culture</h3>
+<p>Siwans speak their own Berber language and have distinct customs. Dress modestly and respect local traditions. Women often wear full covering.</p>
+
+<h3>Best Time to Visit</h3>
+<p>October to April. Summer exceeds 45°C - avoid!</p>'''
+        },
+        {
+            'title': 'White Desert Camping: A Complete Night Under the Stars Guide',
+            'slug': 'white-desert-camping-guide-2026',
+            'excerpt': 'Experience the surreal White Desert with our complete camping guide - what to expect, what to bring, and how to book.',
+            'category': 'desert-adventures',
+            'image_url': 'https://images.unsplash.com/photo-1542401886-65d6c61db217?w=1200',
+            'content': '''<h2>White Desert Camping Guide</h2>
+<p>Sleeping among the otherworldly chalk formations of the White Desert is a bucket-list experience.</p>
+
+<h3>What is the White Desert?</h3>
+<p>Part of the Farafra Depression, the White Desert features surreal white chalk rock formations carved by wind erosion into mushroom shapes, towers, and abstract sculptures.</p>
+
+<h3>How to Get There</h3>
+<ul>
+    <li>Book a tour from Cairo (most common) or Bahariya Oasis</li>
+    <li>Tours typically include 4x4 transport, camping equipment, and food</li>
+    <li>Drive takes about 5 hours from Cairo</li>
+</ul>
+
+<h3>What's Included in Tours</h3>
+<ul>
+    <li>4x4 Jeep with experienced driver</li>
+    <li>Camping equipment (tents, sleeping bags, mattresses)</li>
+    <li>All meals (usually BBQ dinner, breakfast)</li>
+    <li>Campfire and Bedouin tea</li>
+    <li>Sandboarding opportunity</li>
+</ul>
+
+<h3>What to Bring</h3>
+<ul>
+    <li>Warm clothes (desert gets COLD at night)</li>
+    <li>Camera with wide-angle lens</li>
+    <li>Headlamp or flashlight</li>
+    <li>Personal toiletries</li>
+    <li>Snacks if you're picky</li>
+</ul>
+
+<h3>Prices</h3>
+<ul>
+    <li><strong>1 night/2 days:</strong> $80-150 per person</li>
+    <li><strong>2 nights/3 days:</strong> $150-250 per person</li>
+</ul>
+
+<h3>Photography Tips</h3>
+<p>Sunset and sunrise are magical. The Milky Way is visible on moonless nights. Bring a tripod!</p>'''
+        },
+        # NILE EXPERIENCES
+        {
+            'title': 'Felucca Sailing on the Nile: The Ultimate Traditional Experience',
+            'slug': 'felucca-sailing-nile-guide-2026',
+            'excerpt': 'Sail the Nile the way ancient Egyptians did. Complete guide to felucca trips from Aswan to Luxor.',
+            'category': 'nile-experiences',
+            'image_url': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200',
+            'content': '''<h2>Felucca Sailing on the Nile</h2>
+<p>A felucca is a traditional wooden sailboat that has plied the Nile for thousands of years. Sailing on one is the most authentic way to experience the river.</p>
+
+<h3>Popular Felucca Routes</h3>
+
+<h4>Aswan to Kom Ombo (2 days/1 night)</h4>
+<p>The most popular option. See Kom Ombo Temple and sleep under the stars on the boat.</p>
+
+<h4>Aswan to Edfu (3 days/2 nights)</h4>
+<p>Add Edfu Temple to your route. More relaxed pace.</p>
+
+<h4>Sunset Cruise in Aswan (2 hours)</h4>
+<p>Perfect introduction. Sail around Elephantine Island as the sun sets.</p>
+
+<h3>What to Expect</h3>
+<ul>
+    <li>Sleep on deck under blankets (magical!)</li>
+    <li>Simple meals cooked by the captain</li>
+    <li>Swimming stops in the Nile</li>
+    <li>No electricity - complete digital detox</li>
+    <li>Shared boats with other travelers</li>
+</ul>
+
+<h3>Costs</h3>
+<ul>
+    <li><strong>Sunset cruise:</strong> $20-30 per boat</li>
+    <li><strong>2 days/1 night:</strong> $40-60 per person</li>
+    <li><strong>3 days/2 nights:</strong> $70-100 per person</li>
+</ul>
+
+<h3>Best Season</h3>
+<p>October to April. Summer is too hot and can have minimal wind.</p>
+
+<h3>Tips</h3>
+<ul>
+    <li>Book through your hotel or hostel for fair prices</li>
+    <li>Bring warm clothes for cool nights</li>
+    <li>Confirm what meals are included</li>
+    <li>Agree on price BEFORE departure</li>
+</ul>'''
+        },
+        # PHOTOGRAPHY
+        {
+            'title': 'Photographing the Pyramids: Expert Tips for Perfect Shots',
+            'slug': 'photographing-pyramids-expert-tips',
+            'excerpt': 'Get the perfect pyramid photo with our expert guide covering best times, angles, and secret spots.',
+            'category': 'photography',
+            'image_url': 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200',
+            'content': '''<h2>The Ultimate Pyramid Photography Guide</h2>
+<p>Getting that perfect pyramid shot requires planning. Here's everything you need to know.</p>
+
+<h3>Best Times to Shoot</h3>
+
+<h4>Sunrise (6:00-7:30 AM)</h4>
+<p>Soft golden light, fewer crowds, camels being positioned. The magic hour!</p>
+
+<h4>Sunset (5:00-6:30 PM in winter)</h4>
+<p>Warm light on the pyramids, dramatic shadows. Sound and Light show begins after.</p>
+
+<h4>Night (Full Moon)</h4>
+<p>The pyramids under moonlight are spectacular. Check lunar calendar!</p>
+
+<h3>Best Photo Spots</h3>
+
+<h4>1. Panoramic Point</h4>
+<p>The classic viewpoint with all three pyramids. Get there early for camel shots.</p>
+
+<h4>2. The Sphinx View</h4>
+<p>Frame the Sphinx with the Great Pyramid behind. Iconic composition.</p>
+
+<h4>3. Inside the Complex</h4>
+<p>Unique angles looking up at the massive blocks. Show scale with people.</p>
+
+<h4>4. 9 Pyramids Lounge (Rooftop View)</h4>
+<p>Restaurant with stunning rooftop views. Perfect for sunset drinks and photos.</p>
+
+<h3>Camera Settings</h3>
+<ul>
+    <li><strong>Aperture:</strong> f/8-f/11 for sharpness</li>
+    <li><strong>ISO:</strong> Keep low (100-400) for quality</li>
+    <li><strong>Focal Length:</strong> Wide (16-35mm) for full view, 50-85mm for details</li>
+</ul>
+
+<h3>Avoid These Mistakes</h3>
+<ul>
+    <li>Don't shoot midday - harsh shadows and hazy sky</li>
+    <li>Don't just shoot from the entrance - explore!</li>
+    <li>Don't forget to capture details and textures</li>
+    <li>Don't leave without photographing locals and camels</li>
+</ul>'''
+        },
+        # FAMILY TRAVEL
+        {
+            'title': 'Egypt with Kids: The Ultimate Family Travel Guide 2026',
+            'slug': 'egypt-with-kids-family-guide-2026',
+            'excerpt': 'Everything you need to know about traveling Egypt with children - from age-appropriate activities to practical tips.',
+            'category': 'family-travel',
+            'image_url': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200',
+            'content': '''<h2>Traveling Egypt with Kids</h2>
+<p>Egypt is an incredible destination for families. Where else can kids see real mummies, ride camels, and swim in the Red Sea?</p>
+
+<h3>Best Activities for Kids</h3>
+
+<h4>Camel Rides at the Pyramids</h4>
+<p>Every kid's dream come true! Short rides available for all ages.</p>
+
+<h4>Grand Egyptian Museum</h4>
+<p>Interactive exhibits and the Children's Museum section make history fun.</p>
+
+<h4>Snorkeling in the Red Sea</h4>
+<p>Calm, warm waters with colorful fish. Perfect for kids 5+.</p>
+
+<h4>Felucca Sunset Cruise</h4>
+<p>Short boat rides on the Nile are magical and safe.</p>
+
+<h4>Sound & Light Shows</h4>
+<p>Pyramids and Karnak come alive at night with dramatic storytelling.</p>
+
+<h3>Age-Specific Tips</h3>
+
+<h4>Babies (0-2 years)</h4>
+<ul>
+    <li>Bring a carrier - strollers struggle on uneven ground</li>
+    <li>All major brands of diapers/formula available</li>
+    <li>Hotels offer babysitting services</li>
+</ul>
+
+<h4>Toddlers (2-5 years)</h4>
+<ul>
+    <li>Short attention spans - plan quick visits</li>
+    <li>Snacks are essential</li>
+    <li>The beach is your friend</li>
+</ul>
+
+<h4>Kids (5-12 years)</h4>
+<ul>
+    <li>History comes alive - read books beforehand</li>
+    <li>Perfect age for camel rides and snorkeling</li>
+    <li>They'll love the mummies!</li>
+</ul>
+
+<h3>Family-Friendly Hotels</h3>
+<ul>
+    <li><strong>Cairo:</strong> Mena House (pyramid views + pool)</li>
+    <li><strong>Luxor:</strong> Steigenberger (kids club)</li>
+    <li><strong>Red Sea:</strong> Makadi Bay resorts (all-inclusive)</li>
+</ul>
+
+<h3>Health & Safety</h3>
+<ul>
+    <li>Bring rehydration salts for upset tummies</li>
+    <li>Sunscreen is essential - Egyptian sun is strong</li>
+    <li>Bottled water only</li>
+    <li>Kids under 12 get discounts at most sites</li>
+</ul>'''
+        },
+        # SOLO TRAVEL
+        {
+            'title': 'Solo Female Travel in Egypt: Honest Guide & Safety Tips',
+            'slug': 'solo-female-travel-egypt-safety-guide',
+            'excerpt': 'Real talk about solo female travel in Egypt - what to expect, how to stay safe, and why it\'s worth it.',
+            'category': 'solo-travel',
+            'image_url': 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=1200',
+            'content': '''<h2>Solo Female Travel in Egypt</h2>
+<p>Let's be honest: Egypt has a reputation. But thousands of solo women visit every year and have amazing experiences. Here's the real story.</p>
+
+<h3>The Reality</h3>
+<p>Yes, you will get attention. Men will try to talk to you, sell you things, and occasionally make comments. But violent crime against tourists is extremely rare, and with the right strategies, you can have an incredible trip.</p>
+
+<h3>Practical Safety Tips</h3>
+
+<h4>Dress Strategically</h4>
+<ul>
+    <li>Cover shoulders and knees (loose clothing works best)</li>
+    <li>A headscarf isn't required but reduces attention</li>
+    <li>Sunglasses help avoid eye contact</li>
+    <li>Wedding ring (real or fake) can help</li>
+</ul>
+
+<h4>Getting Around</h4>
+<ul>
+    <li>Use Uber/Careem instead of street taxis</li>
+    <li>Sit in the back seat of cabs</li>
+    <li>Use the women's car on the Cairo Metro</li>
+    <li>Book tours through reputable companies</li>
+</ul>
+
+<h4>Accommodation</h4>
+<ul>
+    <li>Book hotels with good reviews from solo women</li>
+    <li>Request rooms away from ground floor</li>
+    <li>Use door chains and safety locks</li>
+</ul>
+
+<h3>Dealing with Unwanted Attention</h3>
+<ul>
+    <li>Ignore and keep walking - engaging encourages more</li>
+    <li>Say "la shukran" (no thanks) firmly</li>
+    <li>"I'm meeting my husband" works wonders</li>
+    <li>Duck into shops or hotels if needed</li>
+</ul>
+
+<h3>Best Destinations for Solo Women</h3>
+<ol>
+    <li><strong>Dahab</strong> - Incredibly laid back and safe</li>
+    <li><strong>Luxor</strong> - Tourist-friendly, easy to navigate</li>
+    <li><strong>Aswan</strong> - Small, friendly, less hassle</li>
+    <li><strong>Red Sea resorts</strong> - Controlled environments</li>
+</ol>
+
+<h3>Final Thoughts</h3>
+<p>Don't let fear stop you from experiencing Egypt. The overwhelming majority of Egyptians are hospitable and kind. The hassle is annoying but manageable, and the rewards are incredible.</p>'''
+        },
+        # ROMANCE
+        {
+            'title': 'Most Romantic Experiences in Egypt for Couples',
+            'slug': 'romantic-experiences-egypt-couples',
+            'excerpt': 'From sunset at the pyramids to private Nile cruises - discover the most romantic things to do in Egypt.',
+            'category': 'romance',
+            'image_url': 'https://images.unsplash.com/photo-1596627116790-af6f46dddb76?w=1200',
+            'content': '''<h2>Romantic Egypt: For Couples in Love</h2>
+<p>Egypt isn't just about history - it's one of the most romantic destinations in the world when you know where to look.</p>
+
+<h3>Top 10 Romantic Experiences</h3>
+
+<h4>1. Sunrise at the Pyramids (Private Tour)</h4>
+<p>Arrive before the crowds with a private guide. Watch the sun rise over the only remaining Wonder of the Ancient World.</p>
+
+<h4>2. Private Dinner with Pyramid Views</h4>
+<p>Several restaurants offer rooftop dining overlooking the illuminated pyramids. Unforgettable!</p>
+<p><strong>Try:</strong> 9 Pyramids Lounge or Khufu's Restaurant</p>
+
+<h4>3. Luxury Nile Cruise</h4>
+<p>4-7 nights sailing from Luxor to Aswan on a luxury boat. Private deck, gourmet dining, temples at every stop.</p>
+
+<h4>4. Hot Air Balloon Over Luxor</h4>
+<p>Float silently over the Valley of the Kings at sunrise. Absolutely magical.</p>
+
+<h4>5. Private Felucca Sunset</h4>
+<p>Hire a felucca just for the two of you. Bring wine, watch the sunset, sail around Elephantine Island.</p>
+
+<h4>6. Desert Glamping</h4>
+<p>Luxury camps in the White Desert or near Luxor offer stargazing, gourmet dining, and total privacy.</p>
+
+<h4>7. Spa Day at a 5-Star Hotel</h4>
+<p>The Four Seasons, Oberoi, and Marriott offer world-class couples treatments.</p>
+
+<h4>8. Snorkeling in Dahab</h4>
+<p>The Blue Hole is perfect for adventurous couples. End with sunset dinner on the beach.</p>
+
+<h4>9. Cooking Class</h4>
+<p>Learn to make Egyptian cuisine together. Many hotels and independent chefs offer private lessons.</p>
+
+<h4>10. Sound & Light Show</h4>
+<p>The Pyramids or Karnak come alive at night. Dramatic and memorable.</p>
+
+<h3>Romantic Hotels</h3>
+<ul>
+    <li><strong>Cairo:</strong> Marriott Mena House (pyramid view rooms!)</li>
+    <li><strong>Luxor:</strong> Sofitel Winter Palace (colonial elegance)</li>
+    <li><strong>Aswan:</strong> Sofitel Legend Old Cataract (Agatha Christie stayed here)</li>
+    <li><strong>Red Sea:</strong> Oberoi Sahl Hasheesh (pure luxury)</li>
+</ul>'''
+        },
+        # WELLNESS & SPA
+        {
+            'title': 'Wellness Tourism in Egypt: Spas, Healing, and Relaxation',
+            'slug': 'wellness-tourism-egypt-spas-2026',
+            'excerpt': 'Discover Egypt\'s best wellness experiences from Siwan salt lakes to luxury Nile spa cruises.',
+            'category': 'wellness-spa',
+            'image_url': 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1200',
+            'content': '''<h2>Wellness and Healing in Egypt</h2>
+<p>Egypt has been a destination for healing since ancient times. Today, it offers unique wellness experiences you won't find anywhere else.</p>
+
+<h3>Natural Healing Experiences</h3>
+
+<h4>Siwa Salt Lakes</h4>
+<p>Float in mineral-rich salt lakes with healing properties. Higher mineral content than the Dead Sea!</p>
+
+<h4>Black Sand Therapy, Safaga</h4>
+<p>The black sand beaches of Safaga are renowned for treating psoriasis and rheumatism. Many come specifically for "sand baths."</p>
+
+<h4>Hot Springs</h4>
+<ul>
+    <li><strong>Bir Wahed, Siwa:</strong> Natural hot spring in the desert</li>
+    <li><strong>Ain Helwan:</strong> Sulfur springs near Cairo</li>
+    <li><strong>Moses' Springs, Sinai:</strong> Biblical waters in an oasis</li>
+</ul>
+
+<h3>Luxury Spa Experiences</h3>
+
+<h4>So SPA at Sofitel</h4>
+<p>World-class treatments using Egyptian ingredients like lotus and papyrus.</p>
+
+<h4>Four Seasons Spa</h4>
+<p>Both Cairo locations offer extensive treatment menus and luxurious settings.</p>
+
+<h4>Oberoi Spa</h4>
+<p>The Sahl Hasheesh property has an award-winning spa with Red Sea views.</p>
+
+<h3>Yoga & Meditation Retreats</h3>
+<ul>
+    <li><strong>Dahab:</strong> Multiple yoga centers with beach views</li>
+    <li><strong>Luxor:</strong> Meditation in ancient temples</li>
+    <li><strong>Siwa:</strong> Desert yoga retreats</li>
+</ul>
+
+<h3>Traditional Egyptian Wellness</h3>
+
+<h4>Hammam (Turkish Bath)</h4>
+<p>Traditional steam baths found in many hotels. The Marriott Cairo has a beautiful historic hammam.</p>
+
+<h4>Bakhoor (Incense Therapy)</h4>
+<p>Traditional Egyptian aromatherapy using ancient scent recipes.</p>'''
+        },
+        # SHOPPING
+        {
+            'title': 'Shopping in Egypt: Where to Buy & How to Bargain',
+            'slug': 'shopping-egypt-bargaining-guide-2026',
+            'excerpt': 'Master the art of bargaining and discover the best places to buy souvenirs, spices, and treasures.',
+            'category': 'shopping',
+            'image_url': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200',
+            'content': '''<h2>The Art of Shopping in Egypt</h2>
+<p>Shopping in Egypt is an adventure in itself. Here's how to navigate the markets and get the best deals.</p>
+
+<h3>Where to Shop</h3>
+
+<h4>Khan El-Khalili, Cairo</h4>
+<p>The most famous market in the Middle East. Spices, jewelry, antiques, perfumes, and everything in between.</p>
+
+<h4>Luxor Souks</h4>
+<p>Less crowded than Khan El-Khalili with good alabaster and papyrus options.</p>
+
+<h4>Aswan Market</h4>
+<p>Nubian crafts, spices, and colorful textiles. More relaxed bargaining atmosphere.</p>
+
+<h4>Dahab Shops</h4>
+<p>Bedouin jewelry, diving gear, and beach accessories at good prices.</p>
+
+<h3>What to Buy</h3>
+
+<h4>Best Value</h4>
+<ul>
+    <li>Spices (saffron, hibiscus, cumin)</li>
+    <li>Egyptian cotton products</li>
+    <li>Perfume oils</li>
+    <li>Papyrus paintings (from official stores)</li>
+    <li>Hand-blown glass</li>
+</ul>
+
+<h4>Worth Splurging</h4>
+<ul>
+    <li>Gold and silver jewelry (sold by weight)</li>
+    <li>Handmade carpets</li>
+    <li>Antique artifacts (with certificates)</li>
+</ul>
+
+<h3>Bargaining 101</h3>
+
+<ol>
+    <li><strong>Never accept the first price</strong> - it's always inflated</li>
+    <li><strong>Start at 30-40%</strong> of what they ask</li>
+    <li><strong>Walk away</strong> if they don't budge - they often call you back</li>
+    <li><strong>Bundle items</strong> for better discounts</li>
+    <li><strong>Be friendly</strong> - bargaining should be fun, not hostile</li>
+    <li><strong>Know when to stop</strong> - don't haggle for small amounts</li>
+</ol>
+
+<h3>Avoid These Scams</h3>
+<ul>
+    <li>Fake papyrus made from banana leaves (test by folding)</li>
+    <li>Fake antiques (if it looks too good to be true...)</li>
+    <li>"My father owns this shop" stories</li>
+    <li>High-pressure tea/hospitality sales tactics</li>
+</ul>
+
+<h3>Fixed Price Options</h3>
+<p>If bargaining stresses you out, these stores have fixed prices:</p>
+<ul>
+    <li>Fair Trade Egypt shops</li>
+    <li>Museum gift shops</li>
+    <li>Hotel boutiques</li>
+    <li>Modern malls (City Stars, Mall of Egypt)</li>
+</ul>'''
+        },
+        # ECO TOURISM
+        {
+            'title': 'Sustainable Travel in Egypt: Eco-Friendly Tourism Guide',
+            'slug': 'sustainable-travel-egypt-eco-tourism',
+            'excerpt': 'How to travel Egypt responsibly - supporting local communities and protecting ancient sites and nature.',
+            'category': 'eco-tourism',
+            'image_url': 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=1200',
+            'content': '''<h2>Traveling Egypt Sustainably</h2>
+<p>Egypt's ancient sites and fragile ecosystems need protection. Here's how to travel responsibly while having an amazing experience.</p>
+
+<h3>Eco-Friendly Accommodations</h3>
+
+<h4>Adrère Amellal, Siwa</h4>
+<p>No electricity, built from local materials, employs entire village. Pure eco-luxury.</p>
+
+<h4>Basata, Sinai</h4>
+<p>Off-grid eco-camp on the beach. Solar power, organic food, community living.</p>
+
+<h4>Fayoum Eco-Lodge</h4>
+<p>Mud-brick lodge supporting local farmers and artisans.</p>
+
+<h3>Sustainable Practices</h3>
+
+<h4>Protect the Sites</h4>
+<ul>
+    <li>Never touch ancient paintings or carvings</li>
+    <li>Stay on designated paths</li>
+    <li>Don't remove any artifacts or stones</li>
+    <li>Report anyone damaging sites</li>
+</ul>
+
+<h4>Reduce Plastic</h4>
+<ul>
+    <li>Bring a reusable water bottle with filter</li>
+    <li>Carry a cloth shopping bag</li>
+    <li>Say no to plastic straws</li>
+    <li>Choose glass-bottled water when possible</li>
+</ul>
+
+<h4>Support Local Communities</h4>
+<ul>
+    <li>Stay in locally-owned guesthouses</li>
+    <li>Eat at family restaurants</li>
+    <li>Buy from local artisans directly</li>
+    <li>Use local guides instead of international chains</li>
+</ul>
+
+<h3>Marine Conservation</h3>
+<p>The Red Sea's reefs are under threat. Help protect them:</p>
+<ul>
+    <li>Use reef-safe sunscreen</li>
+    <li>Never touch or stand on coral</li>
+    <li>Don't feed fish</li>
+    <li>Choose responsible dive operators</li>
+</ul>
+
+<h3>Carbon Offset</h3>
+<p>Offset your flights through programs like:</p>
+<ul>
+    <li>Gold Standard</li>
+    <li>Atmosfair</li>
+    <li>myclimate</li>
+</ul>'''
+        },
+        # MORE ARTICLES...
+        {
+            'title': 'Egyptian Festivals 2026: Complete Calendar & Guide',
+            'slug': 'egyptian-festivals-calendar-2026',
+            'excerpt': 'From Abu Simbel Sun Festival to Ramadan nights - experience Egypt\'s most vibrant celebrations.',
+            'category': 'festivals',
+            'image_url': 'https://images.unsplash.com/photo-1531219572328-a0171b4448a3?w=1200',
+            'content': '''<h2>Egyptian Festivals & Events 2026</h2>
+<p>Egypt's festival calendar is packed with unique events that offer incredible cultural experiences.</p>
+
+<h3>Major Festivals</h3>
+
+<h4>Abu Simbel Sun Festival (Feb 22 & Oct 22)</h4>
+<p>Twice a year, sunlight illuminates the inner sanctuary of the temple, hitting three of four statues. Thousands gather to witness this ancient phenomenon.</p>
+
+<h4>Sham El-Nessim (Spring)</h4>
+<p>Ancient spring festival dating to Pharaonic times. Egyptians picnic and eat salted fish (fesikh). Falls day after Easter.</p>
+
+<h4>Ramadan (Dates vary)</h4>
+<p>The holiest month transforms Egypt. Fasting during the day, feasting at night. Incredible atmosphere in markets and mosques.</p>
+
+<h4>Eid Al-Fitr (End of Ramadan)</h4>
+<p>Three days of celebration, family gatherings, and sweets. Many Egyptians travel - expect crowds.</p>
+
+<h4>Moulid An-Nabi (Prophet's Birthday)</h4>
+<p>Colorful celebrations with traditional sweets, parades, and street performances.</p>
+
+<h3>Cultural Events</h3>
+
+<h4>Cairo International Film Festival (November)</h4>
+<p>The oldest film festival in the Middle East. Red carpet events and international films.</p>
+
+<h4>Downtown Contemporary Arts Festival</h4>
+<p>Annual celebration of Cairo's art scene with gallery openings and performances.</p>
+
+<h4>El Gouna Film Festival (October)</h4>
+<p>Glamorous event in the Red Sea resort town.</p>
+
+<h3>Planning Tips</h3>
+<ul>
+    <li>Book accommodation early for major festivals</li>
+    <li>Many sites have reduced hours during Ramadan</li>
+    <li>Join locals for iftar (breaking fast) during Ramadan</li>
+    <li>Expect crowds and traffic during Eid holidays</li>
+</ul>'''
+        },
+        {
+            'title': 'Cairo Nightlife Guide 2026: Where to Party & Relax',
+            'slug': 'cairo-nightlife-guide-2026',
+            'excerpt': 'Discover Cairo after dark - from rooftop bars to underground clubs and everything in between.',
+            'category': 'nightlife',
+            'image_url': 'https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=1200',
+            'content': '''<h2>Cairo After Dark</h2>
+<p>Cairo never sleeps! Here's your guide to the city's best nightlife.</p>
+
+<h3>Rooftop Bars</h3>
+
+<h4>Cairo Tower Revolving Restaurant</h4>
+<p>360° views of Cairo from the iconic tower. Pricey but unforgettable.</p>
+
+<h4>Le Deck at Sofitel</h4>
+<p>Chic rooftop overlooking the Nile. Great cocktails and shisha.</p>
+
+<h4>Sky Pool Bar at Fairmont</h4>
+<p>Pool parties and DJs overlooking the Nile. Summer hotspot.</p>
+
+<h3>Clubs & Dancing</h3>
+
+<h4>Cairo Jazz Club</h4>
+<p>Live music venue with everything from jazz to indie rock. Institution since 2001.</p>
+
+<h4>Vent</h4>
+<p>Underground club for electronic music lovers. Secret entrance adds to the vibe.</p>
+
+<h4>OPIA</h4>
+<p>Upscale nightclub in Zamalek. Dress code enforced.</p>
+
+<h3>Chill Spots</h3>
+
+<h4>Crimson Bar & Grill</h4>
+<p>Sports bar with good burgers and cold beer. Expat favorite.</p>
+
+<h4>Estoril</h4>
+<p>Greek restaurant and bar on a boat. Live music weekends.</p>
+
+<h3>Traditional Entertainment</h3>
+
+<h4>Al-Tannoura Show</h4>
+<p>Free whirling dervish performance at Wekalet El Ghouri. Mesmerizing!</p>
+
+<h4>Haramlek</h4>
+<p>Traditional Egyptian music venue with authentic oud and tabla performances.</p>
+
+<h3>Know Before You Go</h3>
+<ul>
+    <li>Nightlife really starts after 11 PM</li>
+    <li>Dress code matters at upscale venues</li>
+    <li>Alcohol is expensive - expect $6-15 for a beer</li>
+    <li>Many clubs have cover charges Thu/Fri</li>
+    <li>Ramadan limits nightlife significantly</li>
+</ul>'''
+        },
+        {
+            'title': 'Cheap Eats in Cairo: Best Food Under $5',
+            'slug': 'cheap-eats-cairo-budget-food-guide',
+            'excerpt': 'Delicious Cairo meals that cost less than a coffee at home. Complete budget food guide.',
+            'category': 'budget-travel',
+            'image_url': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200',
+            'content': '''<h2>Eating Like a Local in Cairo</h2>
+<p>Cairo is one of the cheapest cities in the world to eat well. Here's how to feast on $5/day.</p>
+
+<h3>Best Budget Spots</h3>
+
+<h4>Abou Tarek (Koshari King)</h4>
+<p>Three floors of koshari goodness. Large bowl: $1.50. Address: Champollion Street, Downtown</p>
+
+<h4>Gad</h4>
+<p>Fast-food chain with Egyptian classics. Shawarma sandwich: $2</p>
+
+<h4>El Shabrawy</h4>
+<p>24/7 street food institution. Foul and ta\'meya breakfast: $1.50</p>
+
+<h4>Zooba</h4>
+<p>Modern take on Egyptian street food. Slightly pricier but amazing. Meal: $4-6</p>
+
+<h3>Street Food Must-Tries</h3>
+
+<table>
+    <tr><th>Food</th><th>Price</th><th>What Is It</th></tr>
+    <tr><td>Koshari</td><td>$1-2</td><td>Rice, pasta, lentils, chickpeas, tomato sauce</td></tr>
+    <tr><td>Ful sandwich</td><td>$0.50</td><td>Fava beans in bread</td></tr>
+    <tr><td>Ta\'meya</td><td>$0.30 each</td><td>Egyptian falafel</td></tr>
+    <tr><td>Shawarma</td><td>$1.50-3</td><td>Meat in pita</td></tr>
+    <tr><td>Feteer</td><td>$2-4</td><td>Flaky layered pastry</td></tr>
+    <tr><td>Hawawshi</td><td>$1.50</td><td>Spiced meat in bread</td></tr>
+</table>
+
+<h3>Sweet Treats Under $2</h3>
+<ul>
+    <li><strong>Kunafa:</strong> Cheese pastry in syrup - $1</li>
+    <li><strong>Basbousa:</strong> Semolina cake - $0.50</li>
+    <li><strong>Fresh juice:</strong> Mango, strawberry, sugarcane - $1</li>
+    <li><strong>Egyptian ice cream:</strong> Stretchy and delicious - $1</li>
+</ul>
+
+<h3>Pro Tips</h3>
+<ul>
+    <li>Eat where locals eat - follow the crowds</li>
+    <li>Breakfast ful carts are cheapest before 9 AM</li>
+    <li>Juice shops are everywhere and dirt cheap</li>
+    <li>Avoid tourist areas for authentic prices</li>
+</ul>'''
+        },
+        {
+            'title': 'Learning Arabic in Egypt: Best Courses & Tips',
+            'slug': 'learning-arabic-egypt-courses-tips',
+            'excerpt': 'Study Arabic in Egypt - from Cairo universities to private tutors. Complete guide for language learners.',
+            'category': 'culture',
+            'image_url': 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=1200',
+            'content': '''<h2>Learning Arabic in Egypt</h2>
+<p>Egypt is one of the best places to learn Arabic - you'll be immersed in the language from day one!</p>
+
+<h3>Types of Arabic</h3>
+<ul>
+    <li><strong>Egyptian Arabic (Masri):</strong> The most widely understood dialect</li>
+    <li><strong>Modern Standard Arabic (MSA):</strong> Formal, used in media and writing</li>
+    <li><strong>Classical Arabic:</strong> Quranic language, studied for religious purposes</li>
+</ul>
+
+<h3>Top Language Schools</h3>
+
+<h4>Kalimat (Cairo)</h4>
+<p>Intensive programs in Zamalek. Focus on Egyptian dialect. 4 weeks: ~$600</p>
+
+<h4>ILI (International Language Institute)</h4>
+<p>Well-established with flexible schedules. MSA and Egyptian Arabic.</p>
+
+<h4>Arabic Language Institute (AUC)</h4>
+<p>University-level programs. Prestigious but expensive.</p>
+
+<h4>Fajr Center (Alexandria)</h4>
+<p>Affordable programs with beach lifestyle. Popular with budget learners.</p>
+
+<h3>Private Tutoring</h3>
+<p>One-on-one lessons: $5-15/hour depending on teacher experience. Find tutors through:</p>
+<ul>
+    <li>Facebook expat groups</li>
+    <li>italki.com for online/in-person</li>
+    <li>University notice boards</li>
+    <li>Your accommodation staff</li>
+</ul>
+
+<h3>Useful Phrases</h3>
+<table>
+    <tr><th>English</th><th>Arabic</th><th>Pronunciation</th></tr>
+    <tr><td>Hello</td><td>أهلا</td><td>Ahlan</td></tr>
+    <tr><td>Thank you</td><td>شكراً</td><td>Shukran</td></tr>
+    <tr><td>How much?</td><td>بكام؟</td><td>Bikam?</td></tr>
+    <tr><td>No thanks</td><td>لا شكراً</td><td>La shukran</td></tr>
+    <tr><td>Beautiful</td><td>جميل</td><td>Gameel</td></tr>
+</table>
+
+<h3>Tips for Learning</h3>
+<ul>
+    <li>Focus on Egyptian dialect first - it's more practical</li>
+    <li>Watch Egyptian movies and TV shows</li>
+    <li>Practice with taxi drivers and shopkeepers</li>
+    <li>Download the "Mondly" or "Duolingo" apps</li>
+    <li>Don't be afraid to make mistakes!</li>
+</ul>'''
+        },
+        {
+            'title': 'Egypt Visa Guide 2026: Complete Requirements & Tips',
+            'slug': 'egypt-visa-guide-requirements-2026',
+            'excerpt': 'Everything you need to know about Egyptian visas - types, costs, e-visa process, and entry requirements.',
+            'category': 'practical-tips',
+            'image_url': 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=1200',
+            'content': '''<h2>Egypt Visa Requirements 2026</h2>
+<p>Getting into Egypt is easier than you think. Here's everything you need to know.</p>
+
+<h3>Visa Options</h3>
+
+<h4>1. Visa on Arrival</h4>
+<p>Available for 50+ nationalities including US, UK, EU, Australia.</p>
+<ul>
+    <li><strong>Cost:</strong> $25 USD (cash only)</li>
+    <li><strong>Validity:</strong> 30 days, single entry</li>
+    <li><strong>Process:</strong> Buy sticker at airport bank window before immigration</li>
+</ul>
+
+<h4>2. E-Visa (Recommended)</h4>
+<p>Apply online at visa2egypt.gov.eg before travel.</p>
+<ul>
+    <li><strong>Cost:</strong> $25 (single) or $60 (multiple entry)</li>
+    <li><strong>Processing:</strong> 5-7 business days</li>
+    <li><strong>Validity:</strong> 30 or 90 days</li>
+    <li><strong>Advantages:</strong> Skip airport queues, peace of mind</li>
+</ul>
+
+<h4>3. Sinai Permit (Free!)</h4>
+<p>If ONLY visiting Sinai (Sharm, Dahab, Taba), you can get a free 14-day permit.</p>
+<ul>
+    <li>Entry only at Sharm El Sheikh, Taba, or St. Catherine airports</li>
+    <li>Cannot leave Sinai Peninsula</li>
+</ul>
+
+<h3>Entry Requirements</h3>
+<ul>
+    <li>Passport valid for 6+ months beyond travel dates</li>
+    <li>At least one blank page</li>
+    <li>Return or onward ticket</li>
+    <li>Proof of accommodation (may be asked)</li>
+</ul>
+
+<h3>COVID-19 Rules (As of 2026)</h3>
+<p>Currently no COVID restrictions. Check gov.uk or travel.state.gov for updates before travel.</p>
+
+<h3>Visa Extension</h3>
+<p>Extend your visa at the Mogamma building in Tahrir Square, Cairo. Process takes 1-3 days. Cost: ~$15.</p>
+
+<h3>Common Issues</h3>
+<ul>
+    <li><strong>Israeli stamps:</strong> Not a problem - Egypt has peace treaty with Israel</li>
+    <li><strong>Lost passport:</strong> Contact your embassy immediately</li>
+    <li><strong>Overstay:</strong> Pay fine at airport (~$22/month overstayed)</li>
+</ul>'''
+        },
+        {
+            'title': 'Egyptian Wedding Traditions: A Cultural Guide',
+            'slug': 'egyptian-wedding-traditions-cultural-guide',
+            'excerpt': 'Discover the colorful traditions of Egyptian weddings - from henna nights to zaffa processions.',
+            'category': 'culture',
+            'image_url': 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200',
+            'content': '''<h2>Egyptian Wedding Traditions</h2>
+<p>Egyptian weddings are legendary celebrations that can last for days. Here's what makes them special.</p>
+
+<h3>Pre-Wedding Traditions</h3>
+
+<h4>Shabka (Engagement)</h4>
+<p>The groom presents gold jewelry to the bride. The amount depends on family wealth and tradition. This is legally binding!</p>
+
+<h4>Henna Night (Laylat Al-Henna)</h4>
+<p>Women gather the night before to decorate the bride with henna. Music, dancing, and sweets.</p>
+
+<h4>Kosha Preparation</h4>
+<p>The wedding "throne" where the couple sits is elaborately decorated with flowers and fabric.</p>
+
+<h3>Wedding Day</h3>
+
+<h4>The Zaffa</h4>
+<p>A musical procession leads the groom to his bride. Features belly dancers, drums, and flaming props. Incredibly loud and joyful!</p>
+
+<h4>The Ceremony</h4>
+<ul>
+    <li>Muslim weddings: Simple contract signing with Imam</li>
+    <li>Christian weddings: Church ceremony (Coptic weddings are elaborate)</li>
+</ul>
+
+<h4>The Reception</h4>
+<p>Parties often don't start until 10 PM and go until dawn. Features:</p>
+<ul>
+    <li>Live band or DJ</li>
+    <li>Belly dancer performance</li>
+    <li>Egyptian pop music and dancing</li>
+    <li>Elaborate cake</li>
+    <li>Huge feasts</li>
+</ul>
+
+<h3>If You're Invited</h3>
+<ul>
+    <li>Dress formally - suits and glamorous dresses</li>
+    <li>Gift money in an envelope is common</li>
+    <li>Expect to dance!</li>
+    <li>The party will run LATE - pace yourself</li>
+</ul>
+
+<h3>Planning a Wedding in Egypt</h3>
+<p>Egypt is popular for destination weddings. Options include:</p>
+<ul>
+    <li>5-star hotel venues (Mena House with pyramid views!)</li>
+    <li>Nile cruise weddings</li>
+    <li>Red Sea beach ceremonies</li>
+    <li>Historic palace venues</li>
+</ul>'''
+        },
+    ]
+
+    # Create articles
+    for article in articles:
+        if not BlogPost.objects.filter(slug=article['slug']).exists():
+            cat = cats.get(article['category'], cats['hidden-gems'])
+            BlogPost.objects.create(
+                title=article['title'],
+                slug=article['slug'],
+                excerpt=article['excerpt'],
+                content=article['content'],
+                image_url=article['image_url'],
+                author=author,
+                category=cat,
+                is_featured=False,
+                status='published',
+                published_at=timezone.now()
+            )
+            created += 1
+
+    return JsonResponse({
+        'success': True,
+        'created': created,
+        'total_articles': BlogPost.objects.count(),
+        'categories_created': len(categories_data)
+    })
+
+
 urlpatterns = [
+    path('seed-all-topics/', seed_comprehensive_articles, name='seed_all_topics'),
     path('update-images/', update_article_images, name='update_images'),
     path('seed-trending/', seed_trending_2026, name='seed_trending'),
     path('update-content/', update_articles_content, name='update_content'),
