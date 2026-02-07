@@ -304,6 +304,37 @@ def blog_diagnose(request):
         result['errors'].append({'step': 'instantiate_view', 'error': str(e), 'trace': traceback.format_exc()})
         return JsonResponse(result, status=500)
 
+    # Step 7: Try to render blog detail template
+    try:
+        from django.template import loader
+        from blog.models import BlogPost, BlogCategory
+
+        post = BlogPost.objects.filter(status='published').first()
+        if post:
+            context = {
+                'post': post,
+                'comments': [],
+                'related_posts': list(BlogPost.objects.filter(status='published').exclude(id=post.id)[:3]),
+                'recent_posts': list(BlogPost.objects.filter(status='published')[:5]),
+                'trending_posts': list(BlogPost.objects.filter(status='published').order_by('-views_count')[:5]),
+                'categories': list(BlogCategory.objects.all()),
+                'reading_time': max(1, len(post.content.split()) // 200) if post.content else 1,
+                'next_post': None,
+                'prev_post': None,
+                'total_articles': 92,
+                'request': request,
+            }
+            t = loader.get_template('blog/detail.html')
+            html = t.render(context)
+            result['template_test'] = f'SUCCESS - {len(html)} chars rendered'
+            result['deploy_version'] = 'v4-template-fix'
+        else:
+            result['template_test'] = 'No published posts to test'
+    except Exception as e:
+        result['template_test'] = 'FAILED'
+        result['template_error'] = str(e)
+        result['template_trace'] = traceback.format_exc()
+
     result['status'] = 'ok'
     result['step'] = 'complete'
     return JsonResponse(result)
