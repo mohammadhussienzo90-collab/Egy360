@@ -260,7 +260,8 @@ class BlogListView(ListView):
         now = timezone.now()
         for article in articles_data:
             category = BlogCategory.objects.filter(slug=article['category']).first()
-            BlogPost.objects.get_or_create(
+            # Use update_or_create to ensure rich content replaces old short content
+            BlogPost.objects.update_or_create(
                 slug=article['slug'],
                 defaults={
                     'title': article['title'],
