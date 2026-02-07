@@ -9,6 +9,7 @@ urlpatterns = [
     path('test/', views.blog_list_test, name='test'),
     path('debug/', views.debug_blog, name='debug'),
     path('seed-pyramids/', views.seed_pyramid_articles, name='seed-pyramids'),
+    path('seed-rich/', views.seed_rich_articles, name='seed-rich'),
 
     # SEO Pillar Pages - High-value landing pages
     path('egypt-travel-guide/', views.pillar_egypt_guide, name='egypt_guide'),

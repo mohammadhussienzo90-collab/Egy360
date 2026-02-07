@@ -179,6 +179,77 @@ Visit 360egy.com for the complete article with full details, images, and interac
     })
 
 
+def seed_rich_articles(request):
+    """
+    Seed articles with rich content and images.
+    Access via: /blog/seed-rich/?key=egy360seed
+    """
+    # Simple security check
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from django.contrib.auth.models import User
+
+    # Create categories
+    categories_data = [
+        ('ancient-egypt', 'Ancient Egypt', 'Explore pyramids, temples, and pharaohs'),
+        ('travel-guides', 'Travel Guides', 'Complete Egypt travel guides'),
+        ('destinations', 'Destinations', 'Egyptian cities and attractions'),
+        ('tips-advice', 'Tips & Advice', 'Travel tips for Egypt'),
+        ('food-culture', 'Food & Culture', 'Egyptian cuisine and traditions'),
+        ('red-sea', 'Red Sea', 'Beaches, diving, and resorts'),
+    ]
+
+    for slug, name, desc in categories_data:
+        BlogCategory.objects.get_or_create(slug=slug, defaults={'name': name, 'description': desc})
+
+    # Get author
+    author = User.objects.filter(is_superuser=True).first()
+    if not author:
+        author = User.objects.first()
+    if not author:
+        return JsonResponse({'error': 'No users found'}, status=500)
+
+    now = timezone.now()
+
+    # Get the rich articles from BlogListView
+    view = BlogListView()
+    articles_data = view._get_rich_articles_data()
+
+    created = 0
+    updated = 0
+
+    for article in articles_data:
+        category = BlogCategory.objects.filter(slug=article['category']).first()
+        post, was_created = BlogPost.objects.update_or_create(
+            slug=article['slug'],
+            defaults={
+                'title': article['title'],
+                'author': author,
+                'category': category,
+                'excerpt': article['excerpt'],
+                'content': article['content'],
+                'image_url': article['image'],
+                'meta_description': article['excerpt'][:155],
+                'status': 'published',
+                'is_featured': article['featured'],
+                'published_at': now,
+            }
+        )
+        if was_created:
+            created += 1
+        else:
+            updated += 1
+
+    return JsonResponse({
+        'success': True,
+        'created': created,
+        'updated': updated,
+        'total': len(articles_data),
+        'message': f'Created {created}, updated {updated} rich articles with images'
+    })
+
+
 def blog_list_test(request):
     """Temporary test view - returns JSON to debug"""
     try:
