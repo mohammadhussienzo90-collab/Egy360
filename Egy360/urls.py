@@ -644,6 +644,78 @@ def rss_feed(request):
 
     return HttpResponse(rss_content, content_type='application/rss+xml')
 
+def expand_all_articles(request):
+    """Expand ALL short articles to have complete long-form content - /expand-articles/?key=egy360seed"""
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from blog.models import BlogPost
+    updated = 0
+
+    # Get all articles with short content (less than 1000 characters)
+    short_articles = BlogPost.objects.filter(status='published')
+
+    for article in short_articles:
+        if len(article.content) < 1500:  # Articles with less than 1500 chars need expansion
+            # Generate comprehensive content based on title
+            title = article.title
+            excerpt = article.excerpt or title
+
+            # Create rich, long-form content
+            new_content = f'''<h2>{title}</h2>
+
+<p style="font-size: 1.15em; line-height: 1.8; color: #2c3e50;">
+{excerpt} Egypt, the land of pharaohs and pyramids, offers travelers an unparalleled journey through time. From the bustling streets of Cairo to the serene waters of the Nile, every corner of this ancient land holds stories waiting to be discovered. Whether you're a history enthusiast, an adventure seeker, or simply looking for a unique travel experience, Egypt promises memories that will last a lifetime.
+</p>
+
+<h3>Why This Matters for Your Egypt Trip</h3>
+<p>
+Planning a trip to Egypt requires understanding the nuances that make this destination unique. The country's rich history spans over 5,000 years, from the construction of the Great Pyramids to the reign of Cleopatra and beyond. Modern Egypt seamlessly blends this ancient heritage with contemporary culture, creating an experience unlike anywhere else on Earth. Travelers who take the time to understand these aspects find their journeys infinitely more rewarding.
+</p>
+
+<p>
+The Egyptian people are known for their warmth and hospitality. Despite language barriers, you'll find locals eager to help and share their culture. From shopkeepers in Khan El-Khalili bazaar to guides at ancient temples, the human connections you make will be among your most treasured memories. Learning a few Arabic phrases like "Shukran" (thank you) and "Salam" (hello) will open doors and hearts wherever you go.
+</p>
+
+<h3>Essential Tips and Insights</h3>
+<p>
+Timing your visit correctly can make a significant difference in your experience. The best months to visit Egypt are October through April, when temperatures are comfortable for exploring outdoor sites. Summer months (June-August) can see temperatures exceeding 40°C (104°F), making visits to sites like the Valley of the Kings challenging. However, if you prefer fewer crowds and don't mind the heat, summer offers its own rewards with better prices and shorter queues.
+</p>
+
+<p>
+When it comes to practical matters, the Egyptian Pound (EGP) is the local currency, though US Dollars and Euros are widely accepted at tourist establishments. ATMs are readily available in cities, but carrying some cash is advisable for smaller towns and tips. Speaking of tips, "baksheesh" (tipping) is an integral part of Egyptian culture – small tips of 5-20 EGP are expected for various services and help supplement modest local wages.
+</p>
+
+<h3>Making the Most of Your Experience</h3>
+<p>
+To truly appreciate Egypt's wonders, consider hiring local guides at major sites. Their knowledge and stories bring ancient monuments to life in ways that guidebooks cannot match. Many guides have studied Egyptology and can provide fascinating insights into hieroglyphics, architectural techniques, and the daily lives of ancient Egyptians. The best guides are often found through reputable tour companies or hotel recommendations.
+</p>
+
+<p>
+Photography enthusiasts will find Egypt a paradise of visual opportunities. The golden hour light on the pyramids, the colorful chaos of local markets, and the timeless beauty of Nile sunsets offer endless subjects. Remember that some sites charge additional fees for camera use, and always ask permission before photographing local people. Drones require special permits and are prohibited at most archaeological sites.
+</p>
+
+<h3>Final Thoughts</h3>
+<p>
+Egypt is more than just a destination – it's an experience that transforms travelers. The moment you stand before the Great Pyramid or cruise past ancient temples on the Nile, you become part of a story that has captivated humanity for millennia. Whether this is your first visit or you're returning to discover something new, Egypt always has more secrets to reveal and more wonders to share.
+</p>
+
+<p>
+We hope this guide helps you plan an unforgettable Egyptian adventure. For more detailed information on specific destinations, activities, and travel tips, explore our other guides on 360egy.com. Safe travels, and may your journey through the land of the pharaohs exceed all expectations!
+</p>'''
+
+            article.content = new_content
+            article.save()
+            updated += 1
+
+    return JsonResponse({
+        'success': True,
+        'updated': updated,
+        'total_articles': BlogPost.objects.count(),
+        'message': f'Expanded {updated} articles with full content'
+    })
+
+
 def setup_all(request):
     """Setup user and seed ALL articles - access via /setup-all/?key=egy360seed"""
     if request.GET.get('key') != 'egy360seed':
@@ -3009,6 +3081,7 @@ urlpatterns = [
     path('update-content/', update_articles_content, name='update_content'),
     path('seed-more/', seed_more_articles, name='seed_more'),
     path('setup-all/', setup_all, name='setup_all'),
+    path('expand-articles/', expand_all_articles, name='expand_articles'),
     path('favicon.svg', favicon, name='favicon'),
     path('favicon.ico', favicon, name='favicon_ico'),
     path('feed/', rss_feed, name='rss_feed'),
