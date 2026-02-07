@@ -32,11 +32,14 @@ def clean_markdown(text):
     text = text.replace('\\`', '`')
     text = text.replace('\\|', '|')
 
-    # Remove markdown headers (## ### etc) at start of lines
-    text = re.sub(r'^#{1,6}\s*', '', text, flags=re.MULTILINE)
+    # Convert markdown headers to HTML headings
+    text = re.sub(r'^#### (.+)$', r'<h4>\1</h4>', text, flags=re.MULTILINE)
+    text = re.sub(r'^### (.+)$', r'<h3>\1</h3>', text, flags=re.MULTILINE)
+    text = re.sub(r'^## (.+)$', r'<h2>\1</h2>', text, flags=re.MULTILINE)
+    text = re.sub(r'^# (.+)$', r'<h1>\1</h1>', text, flags=re.MULTILINE)
 
-    # Remove bold markers **text** -> text
-    text = re.sub(r'\*\*([^*]+)\*\*', r'\1', text)
+    # Convert bold markers **text** -> <strong>text</strong>
+    text = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', text)
 
     # Remove italic markers *text* -> text
     text = re.sub(r'\*([^*]+)\*', r'\1', text)
@@ -47,8 +50,40 @@ def clean_markdown(text):
     # Remove _text_ -> text (but not mid-word underscores)
     text = re.sub(r'(?<![a-zA-Z])_([^_]+)_(?![a-zA-Z])', r'\1', text)
 
+    # Convert markdown images ![alt](url) -> <img> tags
+    text = re.sub(
+        r'!\[([^\]]*)\]\(([^)]+)\)',
+        r'<img src="\2" alt="\1" class="img-fluid rounded my-3" style="max-width: 100%; height: auto;">',
+        text
+    )
+
     # Remove markdown links [text](url) -> text
     text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+
+    # Convert markdown list items to HTML list items
+    # First, find blocks of list items and wrap them in <ul>
+    def convert_lists(text):
+        lines = text.split('\n')
+        result = []
+        in_list = False
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith('- '):
+                if not in_list:
+                    result.append('<ul class="article-list">')
+                    in_list = True
+                content = stripped[2:]
+                result.append(f'<li>{content}</li>')
+            else:
+                if in_list:
+                    result.append('</ul>')
+                    in_list = False
+                result.append(line)
+        if in_list:
+            result.append('</ul>')
+        return '\n'.join(result)
+
+    text = convert_lists(text)
 
     # Remove markdown table separators
     text = re.sub(r'^\s*\|[-:| ]+\|\s*$', '', text, flags=re.MULTILINE)
@@ -95,14 +130,19 @@ def clean_markdown(text):
     lines = [line.strip() for line in lines]
     text = '\n'.join(lines)
 
-    # Convert to HTML paragraphs
+    # Convert to HTML paragraphs (but skip elements already in HTML tags)
     paragraphs = text.split('\n\n')
     html_parts = []
     for p in paragraphs:
         p = p.strip()
         if p:
-            # Convert single newlines to <br>
-            p = p.replace('\n', '<br>')
-            html_parts.append(f'<p>{p}</p>')
+            # Check if this paragraph starts with an HTML tag (h1-h4, ul, img, etc.)
+            if re.match(r'^<(h[1-4]|ul|ol|li|img|div|blockquote)', p):
+                # Already HTML, don't wrap in <p>
+                html_parts.append(p)
+            else:
+                # Convert single newlines to <br>
+                p = p.replace('\n', '<br>')
+                html_parts.append(f'<p>{p}</p>')
 
     return mark_safe('\n'.join(html_parts))
