@@ -603,6 +603,47 @@ def favicon(request):
 </svg>'''
     return HttpResponse(svg_content, content_type='image/svg+xml')
 
+@cache_control(max_age=1800)
+def rss_feed(request):
+    """Generate RSS feed for blog articles - helps with content syndication"""
+    from blog.models import BlogPost
+    from django.utils import timezone
+
+    posts = BlogPost.objects.filter(status='published').order_by('-published_at')[:20]
+
+    items = []
+    for post in posts:
+        pub_date = post.published_at.strftime('%a, %d %b %Y %H:%M:%S +0000') if post.published_at else timezone.now().strftime('%a, %d %b %Y %H:%M:%S +0000')
+        items.append(f'''
+        <item>
+            <title><![CDATA[{post.title}]]></title>
+            <link>https://360egy.com/blog/{post.slug}/</link>
+            <description><![CDATA[{post.excerpt or post.title}]]></description>
+            <pubDate>{pub_date}</pubDate>
+            <guid>https://360egy.com/blog/{post.slug}/</guid>
+            <category><![CDATA[{post.category.name if post.category else 'Travel'}]]></category>
+        </item>''')
+
+    rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>360egy - Egypt Travel Blog</title>
+        <link>https://360egy.com/blog/</link>
+        <description>Discover Egypt with expert travel guides, tips, and insider knowledge. From pyramids to beaches, ancient temples to modern Cairo.</description>
+        <language>en-us</language>
+        <lastBuildDate>{timezone.now().strftime('%a, %d %b %Y %H:%M:%S +0000')}</lastBuildDate>
+        <atom:link href="https://360egy.com/feed/" rel="self" type="application/rss+xml"/>
+        <image>
+            <url>https://360egy.com/static/images/logo.png</url>
+            <title>360egy</title>
+            <link>https://360egy.com</link>
+        </image>
+        {''.join(items)}
+    </channel>
+</rss>'''
+
+    return HttpResponse(rss_content, content_type='application/rss+xml')
+
 def setup_all(request):
     """Setup user and seed ALL articles - access via /setup-all/?key=egy360seed"""
     if request.GET.get('key') != 'egy360seed':
@@ -2970,6 +3011,8 @@ urlpatterns = [
     path('setup-all/', setup_all, name='setup_all'),
     path('favicon.svg', favicon, name='favicon'),
     path('favicon.ico', favicon, name='favicon_ico'),
+    path('feed/', rss_feed, name='rss_feed'),
+    path('rss/', rss_feed, name='rss'),
     path('robots.txt', robots_txt, name='robots_txt'),
     path('health/', health_check, name='health'),
     path('debug-db/', debug_db, name='debug_db'),

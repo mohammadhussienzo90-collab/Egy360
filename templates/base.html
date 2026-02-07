@@ -731,6 +731,7 @@
                         <a href="https://instagram.com/egy360travel" target="_blank" rel="noopener" class="text-white" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
                         <a href="https://tiktok.com/@egy360travel" target="_blank" rel="noopener" class="text-white" title="Follow us on TikTok"><i class="fab fa-tiktok"></i></a>
                         <a href="https://pinterest.com/egy360travel" target="_blank" rel="noopener" class="text-white" title="Follow us on Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="/feed/" target="_blank" rel="noopener" class="text-white" title="RSS Feed"><i class="fas fa-rss"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6">
@@ -880,19 +881,47 @@
 
     {% block extra_js %}{% endblock %}
 
-    <!-- Floating CTA Button -->
+    <!-- Floating Share Bar (Left Side) -->
+    <div id="floating-share" style="position: fixed; left: 15px; top: 50%; transform: translateY(-50%); z-index: 1000; display: none;">
+        <div style="display: flex; flex-direction: column; gap: 8px; background: white; padding: 10px; border-radius: 30px; box-shadow: 0 5px 25px rgba(0,0,0,0.15);">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://360egy.com" target="_blank" style="width: 40px; height: 40px; background: #1877f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: transform 0.2s;" title="Share on Facebook" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/intent/tweet?url=https://360egy.com&text=Plan your Egypt trip with 360egy" target="_blank" style="width: 40px; height: 40px; background: #1da1f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: transform 0.2s;" title="Share on Twitter" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-twitter"></i></a>
+            <a href="https://wa.me/?text=Check out this amazing Egypt travel guide: https://360egy.com" target="_blank" style="width: 40px; height: 40px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: transform 0.2s;" title="Share on WhatsApp" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://pinterest.com/pin/create/button/?url=https://360egy.com&description=Egypt Travel Guide" target="_blank" style="width: 40px; height: 40px; background: #e60023; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: transform 0.2s;" title="Pin on Pinterest" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-pinterest-p"></i></a>
+            <a href="mailto:?subject=Egypt Travel Guide&body=Check out this amazing Egypt travel resource: https://360egy.com" style="width: 40px; height: 40px; background: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: transform 0.2s;" title="Share via Email" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
+
+    <!-- Floating CTA Button (Right Side) -->
     <div id="floating-cta" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: none;">
         <a href="/tours/" class="btn btn-lg" style="background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; border-radius: 50px; padding: 15px 25px; box-shadow: 0 5px 25px rgba(255,65,108,0.4); font-weight: 600; text-decoration: none;">
             <i class="fas fa-fire me-2"></i>Hot Deals
         </a>
     </div>
+
+    <!-- Back to Top Button -->
+    <div id="back-to-top" style="position: fixed; bottom: 80px; right: 20px; z-index: 1000; display: none;">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="width: 50px; height: 50px; background: linear-gradient(135deg, #1a1a2e, #16213e); color: #d4af37; border: none; border-radius: 50%; box-shadow: 0 5px 20px rgba(0,0,0,0.2); cursor: pointer; font-size: 1.2rem;" title="Back to Top">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+    </div>
     <script>
     window.addEventListener('scroll', function() {
         const floatingCTA = document.getElementById('floating-cta');
-        if (window.scrollY > 600) {
+        const floatingShare = document.getElementById('floating-share');
+        const backToTop = document.getElementById('back-to-top');
+
+        if (window.scrollY > 400) {
             floatingCTA.style.display = 'block';
+            backToTop.style.display = 'block';
+            // Only show share bar on desktop
+            if (window.innerWidth > 992) {
+                floatingShare.style.display = 'block';
+            }
         } else {
             floatingCTA.style.display = 'none';
+            floatingShare.style.display = 'none';
+            backToTop.style.display = 'none';
         }
     });
     </script>
