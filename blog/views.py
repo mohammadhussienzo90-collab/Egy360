@@ -290,9 +290,13 @@ class BlogListView(ListView):
 
 The Great Pyramid of Giza is the oldest and largest of the three pyramids on the Giza plateau. Built around 2560 BCE for Pharaoh Khufu, it stood as the tallest man-made structure in the world for over 3,800 years. Today, it remains one of the most visited monuments on Earth and the only surviving Wonder of the Ancient World.
 
+![The Great Pyramid at sunset](https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800)
+
 ### Why Visit the Great Pyramid?
 
 Standing before the Great Pyramid is a life-changing experience. The sheer size is overwhelming - it covers 13 acres and contains over 2.3 million stone blocks. Each block weighs between 2.5 to 15 tons. The precision of construction is remarkable, with the base being level to within just 2.1 centimeters across its entire length.
+
+![Close-up view of pyramid stones](https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800)
 
 ### Key Facts You Should Know
 
@@ -305,6 +309,8 @@ Standing before the Great Pyramid is a life-changing experience. The sheer size 
 ### Best Time to Visit
 
 The best months to visit are October through April when temperatures are comfortable. Arrive early in the morning, ideally at 8 AM when the site opens, to avoid crowds and the midday heat. The site gets very busy between 10 AM and 2 PM.
+
+![Camels near the pyramids](https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800)
 
 ### Ticket Prices 2026
 
@@ -323,6 +329,8 @@ The best months to visit are October through April when temperatures are comfort
 
 ### What to See Nearby
 
+![The Sphinx with pyramids in background](https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800)
+
 While at Giza, don't miss the Sphinx, the Pyramid of Khafre, the Pyramid of Menkaure, and the Solar Boat Museum. The Sound and Light Show in the evening is also spectacular.
 
 The Great Pyramid continues to inspire wonder and mystery. Whether you're a history enthusiast, a photographer, or simply a curious traveler, this ancient monument will leave you speechless."""
@@ -338,9 +346,13 @@ The Great Pyramid continues to inspire wonder and mystery. Whether you're a hist
 
 Egypt is a year-round destination, but choosing the right time to visit can make a huge difference in your experience. The weather, crowd levels, and prices vary significantly throughout the year. This guide will help you plan the perfect Egypt trip.
 
+![Beautiful Egyptian temple at golden hour](https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800)
+
 ### Understanding Egypt's Climate
 
 Egypt has a desert climate with hot, dry summers and mild winters. The country experiences very little rainfall, with most areas receiving less than 80mm per year. However, temperatures can vary dramatically between regions.
+
+![Luxor Temple illuminated at night](https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800)
 
 ### Season-by-Season Breakdown
 
@@ -407,7 +419,11 @@ Visit during shoulder season (March-May or September-November) for the best comb
 
 Cairo, the capital of Egypt, is a city of contrasts where ancient history meets modern life. With over 20 million people, it's the largest city in Africa and the Arab world. This bustling metropolis offers endless things to see and do.
 
+![Cairo cityscape with mosques and minarets](https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800)
+
 ### Top 20 Must-Do Experiences in Cairo
+
+![Khan El-Khalili bazaar](https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800)
 
 **1. Visit the Pyramids of Giza**
 The iconic pyramids are just outside Cairo. Start early to beat the crowds and heat. Don't miss the Sphinx and the Sound and Light Show.
@@ -491,7 +507,11 @@ From rooftop bars to traditional ahwas (coffeehouses), Cairo comes alive at nigh
 
 Luxor Temple is one of the most beautiful and well-preserved ancient monuments in Egypt. Located on the east bank of the Nile in the heart of modern Luxor, this temple has been a place of worship for over 3,400 years - from ancient Egyptian times through Roman rule to Islamic and even Christian periods.
 
+![Luxor Temple columns at night](https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800)
+
 ### History of Luxor Temple
+
+![Ancient hieroglyphics on temple walls](https://images.unsplash.com/photo-1565967511849-76a60a516170?w=800)
 
 The temple was primarily built by two pharaohs: Amenhotep III (who built the inner temple around 1390 BCE) and Ramesses II (who added the outer court, entrance pylons, and obelisks around 1250 BCE). Unlike other temples dedicated to gods, Luxor Temple was dedicated to the rejuvenation of kingship.
 
@@ -554,7 +574,11 @@ Luxor Temple remains one of Egypt's most impressive monuments. Standing among th
 
 The Red Sea is one of the world's top diving destinations, famous for crystal-clear waters, vibrant coral reefs, and incredible marine life. With visibility often exceeding 30 meters and water temperatures between 21-28°C year-round, Egypt offers perfect diving conditions for beginners and experts alike.
 
+![Colorful coral reef in the Red Sea](https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800)
+
 ### Why the Red Sea is Special
+
+![Tropical fish swimming near coral](https://images.unsplash.com/photo-1559825481-12a05cc00344?w=800)
 
 The Red Sea is a unique body of water. It has:
 - No rivers flowing into it (keeping water clear)
@@ -636,7 +660,11 @@ Controversial but stunning wreck of a ferry that sank in 1991. Now an artificial
 
 Egyptian street food is delicious, affordable, and found everywhere. From busy Cairo streets to small village stalls, the same beloved dishes have been feeding Egyptians for generations. Here are 15 dishes you absolutely must try.
 
+![Delicious Egyptian koshari dish](https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=800)
+
 ### The Essential Egyptian Dishes
+
+![Fresh Egyptian falafel (ta'ameya)](https://images.unsplash.com/photo-1593001874117-c99c800e3eb7?w=800)
 
 **1. Koshari (Egypt's National Dish)**
 A hearty mix of rice, macaroni, lentils, chickpeas, and crispy fried onions, topped with spicy tomato sauce and garlic vinegar. Filling, cheap, and completely vegan. Every Egyptian has their favorite koshari shop.
@@ -723,7 +751,11 @@ Creamy rice pudding flavored with rose water and topped with pistachios.
 
 Hurghada is Egypt's most popular Red Sea resort town, offering beautiful beaches, world-class diving, and endless sunshine. With hundreds of resorts ranging from budget-friendly to ultra-luxury, finding the right one can be overwhelming. This guide will help you choose the perfect resort.
 
+![Beautiful Hurghada beach with crystal clear water](https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800)
+
 ### Understanding Hurghada's Layout
+
+![Luxury resort pool overlooking the Red Sea](https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=800)
 
 Hurghada stretches about 40km along the coast and is divided into several areas:
 
@@ -833,7 +865,11 @@ Hurghada offers something for everyone. Whether you're seeking relaxation, adven
 
 The Valley of the Kings is one of the most famous archaeological sites in the world. Hidden in the desert hills on the west bank of the Nile near Luxor, this valley served as the royal burial ground for pharaohs and nobles of the New Kingdom (1550-1070 BCE). Over 60 tombs have been discovered here, including the legendary tomb of Tutankhamun.
 
+![Valley of the Kings entrance](https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800)
+
 ### Why Was This Valley Chosen?
+
+![Ancient tomb paintings](https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?w=800)
 
 After centuries of pyramid building, pharaohs realized that obvious tombs attracted robbers. They chose this remote valley because:
 - The pyramid-shaped mountain (al-Qurn) symbolized the primordial mound
@@ -918,7 +954,11 @@ The Valley of the Kings offers an unforgettable glimpse into ancient Egyptian be
 
 Egypt is one of the best-value destinations in the world. With careful planning, you can see ancient wonders, enjoy delicious food, and have amazing experiences on a tight budget. Here's how to make your money go further.
 
+![Budget-friendly street food in Egypt](https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800)
+
 ### Daily Budget Breakdown
+
+![Affordable local transport in Cairo](https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800)
 
 **Tight Budget ($30-40/day)**
 - Accommodation: $8-15 (hostel or budget hotel)
@@ -1036,7 +1076,11 @@ Egypt rewards budget travelers with incredible experiences at unbeatable prices.
 
 A Nile cruise is the most magical way to experience ancient Egypt. Drifting along the world's longest river, visiting temples and tombs, and watching timeless village life pass by - it's an experience unlike any other. This guide covers everything you need to plan your perfect cruise.
 
+![Luxury Nile cruise ship at sunset](https://images.unsplash.com/photo-1600697395453-e89e8a097d3a?w=800)
+
 ### Why Take a Nile Cruise?
+
+![Traditional felucca sailboat on the Nile](https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800)
 
 - **Convenience**: Your hotel moves with you between sites
 - **Scenery**: Beautiful views of the Nile, farms, and villages
@@ -1163,7 +1207,11 @@ The Nile cruise is often the highlight of any Egypt trip. Watching the sunset ov
 
 Abu Simbel is home to two of the most impressive temples in Egypt, carved directly into a mountainside by Ramesses II over 3,200 years ago. The four colossal statues guarding the entrance are among the most iconic images of ancient Egypt. This guide covers everything you need to plan your visit.
 
+![Colossal statues at Abu Simbel temple](https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?w=800)
+
 ### The History of Abu Simbel
+
+![Interior of Abu Simbel with ancient carvings](https://images.unsplash.com/photo-1565967511849-76a60a516170?w=800)
 
 Ramesses II built these temples around 1264 BCE to:
 - Commemorate his victory at the Battle of Kadesh
@@ -1254,7 +1302,11 @@ Abu Simbel is a long journey from anywhere, but the temples are absolutely worth
 
 Sharm El Sheikh, located at the southern tip of the Sinai Peninsula, is Egypt's premier beach resort destination. Known for world-class diving, beautiful beaches, and year-round sunshine, "Sharm" attracts millions of visitors every year. This guide will help you plan the perfect vacation.
 
+![Stunning Sharm El Sheikh beach and resort](https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=800)
+
 ### Understanding Sharm's Areas
+
+![Crystal clear waters for diving](https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800)
 
 **Naama Bay**
 - The heart of Sharm
@@ -1404,7 +1456,11 @@ Sharm El Sheikh offers the perfect combination of relaxation, adventure, and nat
 
 "Is Egypt safe?" is one of the most common questions travelers ask. The short answer is yes - millions of tourists visit Egypt every year without incident. However, like any destination, it pays to be informed and prepared. This guide provides honest, practical safety information.
 
+![Tourists safely exploring the pyramids](https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800)
+
 ### Current Safety Situation
+
+![Friendly local Egyptians](https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800)
 
 Egypt has invested heavily in tourism security since 2011. Today, popular tourist areas have:
 - Heavy police and security presence
@@ -1533,7 +1589,11 @@ Use common sense, stay informed, and don't let fear prevent you from experiencin
 
 The Egyptian Museum in Tahrir Square is home to the world's largest collection of ancient Egyptian artifacts - over 120,000 items spanning 5,000 years of history. From Tutankhamun's golden treasures to royal mummies, this museum is an essential stop for anyone interested in ancient Egypt.
 
+![The Egyptian Museum facade](https://images.unsplash.com/photo-1565967511849-76a60a516170?w=800)
+
 ### Museum Overview
+
+![Ancient Egyptian artifacts on display](https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800)
 
 **Location**: Tahrir Square, Downtown Cairo
 **Opening Hours**: 9 AM - 5 PM daily (until 9 PM on Fridays)
@@ -1668,7 +1728,11 @@ The Egyptian Museum remains one of the world's great museums. Despite aging faci
 
 Aswan is Egypt's sunniest southern city, where the Nile flows through golden sand and granite islands. Less hectic than Cairo and more relaxed than Luxor, Aswan offers a unique blend of ancient temples, Nubian culture, and natural beauty. It's also the gateway to Abu Simbel and Lake Nasser.
 
+![Beautiful Nile view in Aswan](https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800)
+
 ### Why Visit Aswan?
+
+![Colorful Nubian village](https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800)
 
 - **Beautiful Setting**: The Nile at its most scenic
 - **Nubian Culture**: Vibrant, colorful heritage
@@ -1801,7 +1865,11 @@ Aswan is many travelers' favorite Egyptian city - the combination of natural bea
 
 The White Desert is one of Egypt's most otherworldly landscapes - a surreal world of brilliant white chalk formations sculpted by wind into mushrooms, towers, and fantastical shapes. Camping under a blanket of stars among these ancient rock sculptures is an unforgettable experience.
 
+![Surreal white chalk formations in the desert](https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=800)
+
 ### What is the White Desert?
+
+![Desert camping under the stars](https://images.unsplash.com/photo-1504851149312-7a075b496cc7?w=800)
 
 Located in the Western Desert about 500km southwest of Cairo, the White Desert (Sahara el-Beyda) is a national park protecting unique geological formations. Millions of years ago, this area was a seabed. The chalk and limestone deposits, eroded by wind over millennia, have created an alien landscape unlike anywhere else on Earth.
 
@@ -1937,7 +2005,11 @@ Camping in the White Desert is one of those travel experiences that stays with y
 
 Alexandria is Egypt's second-largest city and its window to the Mediterranean world. Founded by Alexander the Great in 331 BCE, this city was once the intellectual capital of the ancient world, home to the legendary Library and the Pharos Lighthouse. Today, Alexandria offers a different Egypt - breezy, cosmopolitan, and flavored with Greek, Italian, and French influences.
 
+![Alexandria waterfront and Mediterranean Sea](https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800)
+
 ### Why Visit Alexandria?
+
+![The new Bibliotheca Alexandrina](https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800)
 
 - **Different Atmosphere**: Mediterranean vibes unlike anywhere else in Egypt
 - **Ancient History**: Cleopatra's city, once rivaling Rome
@@ -2089,7 +2161,11 @@ Alexandria offers a different side of Egypt - more Mediterranean, more cosmopoli
 
 The ahwa (coffee house) is the heart of Egyptian social life. For centuries, men have gathered in these establishments to drink coffee and tea, smoke shisha, play backgammon, watch football, and discuss everything from politics to philosophy. Understanding Egyptian coffee culture gives you insight into the Egyptian soul.
 
+![Traditional Egyptian coffee house](https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800)
+
 ### History of Egyptian Coffee Houses
+
+![Turkish coffee being poured](https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800)
 
 Coffee arrived in Egypt from Yemen in the 16th century and quickly became central to social life. The traditional ahwa has changed little since then:
 - Simple furniture (often plastic or wooden chairs)
