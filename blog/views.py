@@ -203,18 +203,22 @@ def seed_rich_articles(request):
     for slug, name, desc in categories_data:
         BlogCategory.objects.get_or_create(slug=slug, defaults={'name': name, 'description': desc})
 
-    # Get author
+    # Get or create author
+    if not User.objects.exists():
+        User.objects.create_superuser('admin', 'admin@360egy.com', 'admin360egy')
+
     author = User.objects.filter(is_superuser=True).first()
     if not author:
         author = User.objects.first()
-    if not author:
-        return JsonResponse({'error': 'No users found'}, status=500)
 
     now = timezone.now()
 
-    # Get the rich articles from BlogListView
-    view = BlogListView()
-    articles_data = view._get_rich_articles_data()
+    # Get the rich articles - create a temporary view instance
+    try:
+        view = BlogListView()
+        articles_data = view._get_rich_articles_data()
+    except Exception as e:
+        return JsonResponse({'error': f'Failed to get articles data: {str(e)}'}, status=500)
 
     created = 0
     updated = 0
