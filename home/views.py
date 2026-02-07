@@ -15,6 +15,7 @@ from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from django.db import models
 import json
 
 logger = logging.getLogger(__name__)
@@ -520,3 +521,196 @@ def get_platform_stats(request):
         }
         cache.set('platform_stats', stats, 3600)  # Cache for 1 hour
     return JsonResponse(stats)
+
+
+def help_center(request):
+    """Help center page with common questions and support options"""
+    help_topics = [
+        {
+            'title': 'Booking Tours',
+            'icon': 'fa-map-marked-alt',
+            'questions': [
+                {'q': 'How do I book a tour?', 'a': 'Browse our tours section, select your preferred tour, choose your dates, and complete the booking through our secure payment system.'},
+                {'q': 'Can I modify my booking?', 'a': 'Yes, you can modify most bookings up to 48 hours before the tour date. Contact us for assistance.'},
+                {'q': 'What payment methods are accepted?', 'a': 'We accept all major credit cards, PayPal, and bank transfers for tour bookings.'},
+            ]
+        },
+        {
+            'title': 'Hotels & Accommodations',
+            'icon': 'fa-hotel',
+            'questions': [
+                {'q': 'How do hotel bookings work?', 'a': 'We partner with major booking platforms like Booking.com and Agoda to find you the best rates. Click through to complete your booking on their secure sites.'},
+                {'q': 'Are the hotel prices final?', 'a': 'Prices shown are the best available rates at the time of search. Final prices are confirmed on the booking platform.'},
+                {'q': 'Can I get a refund?', 'a': 'Refund policies depend on the hotel and rate type. Check the cancellation policy before booking.'},
+            ]
+        },
+        {
+            'title': 'Flights',
+            'icon': 'fa-plane',
+            'questions': [
+                {'q': 'How do I search for flights?', 'a': 'Use our flight search tool to compare prices from 100+ airlines. Enter your departure city, destination, and dates to see available options.'},
+                {'q': 'Is it safe to book through Egy360?', 'a': 'Yes! We partner with trusted booking platforms. All payments are processed securely through our partners.'},
+                {'q': 'Can I book multi-city flights?', 'a': 'Yes, our flight search supports one-way, round-trip, and multi-city bookings.'},
+            ]
+        },
+        {
+            'title': 'Travel Insurance',
+            'icon': 'fa-shield-halved',
+            'questions': [
+                {'q': 'Do I need travel insurance?', 'a': 'We highly recommend travel insurance for all Egypt trips. It covers medical emergencies, trip cancellations, and lost luggage.'},
+                {'q': 'What does travel insurance cover?', 'a': 'Most policies cover medical expenses, trip cancellation, baggage loss, and emergency evacuation.'},
+                {'q': 'When should I buy insurance?', 'a': 'Purchase travel insurance as soon as you book your trip for maximum coverage.'},
+            ]
+        },
+        {
+            'title': 'Account & Technical',
+            'icon': 'fa-user-cog',
+            'questions': [
+                {'q': 'Do I need an account to book?', 'a': 'No account is required. However, creating an account helps you track bookings and receive exclusive deals.'},
+                {'q': 'The website is not loading properly', 'a': 'Try clearing your browser cache, disabling ad blockers, or using a different browser. Contact us if issues persist.'},
+                {'q': 'How do I unsubscribe from emails?', 'a': 'Click the unsubscribe link at the bottom of any email, or contact us directly.'},
+            ]
+        },
+    ]
+
+    context = {
+        'page_title': 'Help Center - Egy360',
+        'meta_description': 'Get help with booking tours, hotels, and flights on Egy360. Find answers to common questions about Egypt travel.',
+        'help_topics': help_topics,
+    }
+    return render(request, 'help.html', context)
+
+
+def careers(request):
+    """Careers page showing job opportunities"""
+    job_openings = [
+        {
+            'title': 'Content Writer - Egypt Travel',
+            'location': 'Remote',
+            'type': 'Full-time / Part-time',
+            'description': 'Create engaging travel guides, destination articles, and SEO-optimized content about Egypt tourism.',
+            'requirements': [
+                'Excellent English writing skills',
+                'Knowledge of Egypt history, culture, and tourism',
+                'Experience with SEO content writing',
+                'Ability to research and fact-check information',
+            ],
+        },
+        {
+            'title': 'Social Media Manager',
+            'location': 'Remote',
+            'type': 'Part-time',
+            'description': 'Manage our social media presence across Instagram, Facebook, Twitter, and TikTok.',
+            'requirements': [
+                'Experience managing travel/tourism social accounts',
+                'Knowledge of social media analytics and growth strategies',
+                'Creative content creation skills',
+                'Experience with Canva or similar design tools',
+            ],
+        },
+        {
+            'title': 'Tour Guide Partner',
+            'location': 'Cairo, Luxor, Aswan, Hurghada',
+            'type': 'Freelance',
+            'description': 'Partner with us as a licensed tour guide to provide exceptional experiences to our customers.',
+            'requirements': [
+                'Valid Egyptian tour guide license',
+                'Fluency in English (other languages a plus)',
+                'Excellent customer service skills',
+                'Knowledge of Egyptian history and culture',
+            ],
+        },
+        {
+            'title': 'Hotel Partnership Manager',
+            'location': 'Cairo / Remote',
+            'type': 'Full-time',
+            'description': 'Build and manage relationships with hotels across Egypt to secure exclusive deals for our platform.',
+            'requirements': [
+                'Experience in hospitality or travel industry',
+                'Strong negotiation and relationship-building skills',
+                'Knowledge of Egyptian hotel market',
+                'Business development experience',
+            ],
+        },
+    ]
+
+    context = {
+        'page_title': 'Careers at Egy360 - Join Our Team',
+        'meta_description': 'Join the Egy360 team! We\'re hiring content writers, social media managers, tour guides, and more. Work remotely and help travelers discover Egypt.',
+        'job_openings': job_openings,
+    }
+    return render(request, 'careers.html', context)
+
+
+def search(request):
+    """Site-wide search functionality"""
+    query = request.GET.get('q', '').strip()
+    results = {
+        'articles': [],
+        'tours': [],
+        'accommodations': [],
+        'destinations': [],
+    }
+    total_results = 0
+
+    if query and len(query) >= 2:
+        # Search articles
+        try:
+            from blog.models import Article
+            articles = Article.objects.filter(
+                is_published=True
+            ).filter(
+                models.Q(title__icontains=query) |
+                models.Q(content__icontains=query) |
+                models.Q(meta_description__icontains=query)
+            )[:10]
+            results['articles'] = list(articles)
+            total_results += len(results['articles'])
+        except Exception as e:
+            logger.warning(f"Article search error: {e}")
+
+        # Search tours
+        try:
+            tours = Tour.objects.filter(
+                is_active=True
+            ).filter(
+                models.Q(title__icontains=query) |
+                models.Q(description__icontains=query)
+            )[:10]
+            results['tours'] = list(tours)
+            total_results += len(results['tours'])
+        except Exception as e:
+            logger.warning(f"Tour search error: {e}")
+
+        # Search accommodations
+        try:
+            accommodations = Accommodation.objects.filter(
+                is_active=True
+            ).filter(
+                models.Q(name__icontains=query) |
+                models.Q(description__icontains=query)
+            )[:10]
+            results['accommodations'] = list(accommodations)
+            total_results += len(results['accommodations'])
+        except Exception as e:
+            logger.warning(f"Accommodation search error: {e}")
+
+        # Search destinations
+        try:
+            destinations = City.objects.filter(
+                models.Q(name__icontains=query) |
+                models.Q(description__icontains=query)
+            )[:10]
+            results['destinations'] = list(destinations)
+            total_results += len(results['destinations'])
+        except Exception as e:
+            logger.warning(f"Destination search error: {e}")
+
+    context = {
+        'page_title': f'Search Results for "{query}" - Egy360' if query else 'Search - Egy360',
+        'meta_description': f'Search results for {query} on Egy360 - Find tours, hotels, and travel guides for Egypt.',
+        'query': query,
+        'results': results,
+        'total_results': total_results,
+    }
+    return render(request, 'search.html', context)

@@ -34,6 +34,11 @@ urlpatterns = [
     # Lead magnet
     path('free-egypt-guide/', views.lead_magnet_page, name='lead-magnet'),
 
+    # Help, Careers, and Search
+    path('help/', views.help_center, name='help'),
+    path('careers/', views.careers, name='careers'),
+    path('search/', views.search, name='search'),
+
     # API endpoints
     path('api/newsletter/', views.newsletter_subscribe, name='newsletter-subscribe'),
     path('api/lead-magnet/', views.lead_magnet_download, name='lead-magnet-api'),

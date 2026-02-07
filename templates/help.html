@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .help-hero {
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        padding: 80px 0;
+        color: white;
+    }
+
+    .help-hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .help-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+
+    .search-box {
+        max-width: 600px;
+        margin: 30px auto 0;
+    }
+
+    .search-box input {
+        padding: 15px 25px;
+        border-radius: 50px;
+        border: none;
+        font-size: 1.1rem;
+        width: 100%;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .help-section {
+        padding: 80px 0;
+        background: #f8f9fa;
+    }
+
+    .help-topic {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .topic-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .topic-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.3rem;
+    }
+
+    .topic-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #1e3a5f;
+    }
+
+    .faq-item {
+        margin-bottom: 15px;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .faq-question {
+        padding: 15px 20px;
+        background: #f9fafb;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .faq-question:hover {
+        background: #f3f4f6;
+    }
+
+    .faq-question i {
+        transition: transform 0.3s;
+    }
+
+    .faq-item.active .faq-question i {
+        transform: rotate(180deg);
+    }
+
+    .faq-answer {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 15px 20px;
+        max-height: 500px;
+    }
+
+    .faq-answer p {
+        color: #6b7280;
+        margin: 0;
+        line-height: 1.7;
+    }
+
+    .contact-cta {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        padding: 60px 0;
+        color: white;
+        text-align: center;
+    }
+
+    .contact-cta h2 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .contact-cta p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-bottom: 25px;
+    }
+
+    .contact-cta .btn {
+        background: white;
+        color: #dc2626;
+        padding: 12px 35px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .contact-cta .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 768px) {
+        .help-hero h1 {
+            font-size: 2rem;
+        }
+
+        .help-topic {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="help-hero">
+    <div class="container text-center">
+        <h1><i class="fas fa-life-ring me-3"></i>Help Center</h1>
+        <p>Find answers to common questions about booking tours, hotels, and flights in Egypt</p>
+        <div class="search-box">
+            <input type="text" id="helpSearch" placeholder="Search for help..." onkeyup="filterFAQs()">
+        </div>
+    </div>
+</section>
+
+<section class="help-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                {% for topic in help_topics %}
+                <div class="help-topic">
+                    <div class="topic-header">
+                        <div class="topic-icon">
+                            <i class="fas {{ topic.icon }}"></i>
+                        </div>
+                        <h2>{{ topic.title }}</h2>
+                    </div>
+                    {% for item in topic.questions %}
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span>{{ item.q }}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>{{ item.a }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-cta">
+    <div class="container">
+        <h2>Still Need Help?</h2>
+        <p>Our support team is available 24/7 to assist you with any questions</p>
+        <a href="{% url 'home:contact' %}" class="btn">
+            <i class="fas fa-envelope me-2"></i>Contact Support
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleFAQ(element) {
+    const faqItem = element.parentElement;
+    faqItem.classList.toggle('active');
+}
+
+function filterFAQs() {
+    const searchTerm = document.getElementById('helpSearch').value.toLowerCase();
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+        const answer = item.querySelector('.faq-answer p').textContent.toLowerCase();
+
+        if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+            item.style.display = 'block';
+            if (searchTerm.length > 2) {
+                item.classList.add('active');
+            }
+        } else {
+            item.style.display = searchTerm.length > 0 ? 'none' : 'block';
+        }
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,335 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .careers-hero {
+        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+        padding: 100px 0;
+        color: white;
+        text-align: center;
+    }
+
+    .careers-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .careers-hero p {
+        font-size: 1.3rem;
+        opacity: 0.95;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .benefits-section {
+        padding: 80px 0;
+        background: white;
+    }
+
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .benefit-card {
+        text-align: center;
+        padding: 30px;
+        border-radius: 15px;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+
+    .benefit-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .benefit-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        color: white;
+        font-size: 1.8rem;
+    }
+
+    .benefit-card h4 {
+        color: #1f2937;
+        margin-bottom: 10px;
+    }
+
+    .benefit-card p {
+        color: #6b7280;
+        font-size: 0.95rem;
+    }
+
+    .jobs-section {
+        padding: 80px 0;
+        background: #f8f9fa;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem;
+        color: #1f2937;
+        margin-bottom: 15px;
+    }
+
+    .section-header p {
+        color: #6b7280;
+        font-size: 1.1rem;
+    }
+
+    .job-card {
+        background: white;
+        border-radius: 20px;
+        padding: 35px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+
+    .job-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+
+    .job-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .job-title {
+        font-size: 1.5rem;
+        color: #1f2937;
+        margin: 0;
+    }
+
+    .job-meta {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .job-badge {
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .badge-location {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .badge-type {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .job-description {
+        color: #4b5563;
+        margin-bottom: 20px;
+        line-height: 1.7;
+    }
+
+    .requirements h5 {
+        color: #374151;
+        margin-bottom: 12px;
+        font-size: 1rem;
+    }
+
+    .requirements ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .requirements li {
+        padding: 6px 0;
+        color: #6b7280;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .requirements li i {
+        color: #7c3aed;
+    }
+
+    .apply-btn {
+        margin-top: 25px;
+        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 50px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .apply-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
+        color: white;
+    }
+
+    .cta-section {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        color: white;
+        text-align: center;
+    }
+
+    .cta-section h2 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .cta-section p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        margin-bottom: 25px;
+    }
+
+    .cta-section .btn {
+        background: white;
+        color: #dc2626;
+        padding: 12px 35px;
+        border-radius: 50px;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .careers-hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .job-header {
+            flex-direction: column;
+        }
+
+        .job-card {
+            padding: 25px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="careers-hero">
+    <div class="container">
+        <h1><i class="fas fa-rocket me-3"></i>Join Our Team</h1>
+        <p>Help travelers discover the magic of Egypt. Work remotely, make an impact, and be part of something extraordinary.</p>
+    </div>
+</section>
+
+<section class="benefits-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Why Work With Us</h2>
+            <p>Enjoy flexibility, growth, and meaningful work</p>
+        </div>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h4>Remote Work</h4>
+                <p>Work from anywhere in the world with flexible hours</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Growth Opportunities</h4>
+                <p>Develop your skills and advance your career</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-plane"></i>
+                </div>
+                <h4>Travel Perks</h4>
+                <p>Discounts on tours and travel experiences in Egypt</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h4>Great Team</h4>
+                <p>Work with passionate people who love Egypt</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="jobs-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Open Positions</h2>
+            <p>Find your next opportunity with Egy360</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                {% for job in job_openings %}
+                <div class="job-card">
+                    <div class="job-header">
+                        <h3 class="job-title">{{ job.title }}</h3>
+                        <div class="job-meta">
+                            <span class="job-badge badge-location">
+                                <i class="fas fa-map-marker-alt me-1"></i>{{ job.location }}
+                            </span>
+                            <span class="job-badge badge-type">
+                                <i class="fas fa-clock me-1"></i>{{ job.type }}
+                            </span>
+                        </div>
+                    </div>
+                    <p class="job-description">{{ job.description }}</p>
+                    <div class="requirements">
+                        <h5>Requirements:</h5>
+                        <ul>
+                            {% for req in job.requirements %}
+                            <li><i class="fas fa-check"></i> {{ req }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <a href="mailto:careers@360egy.com?subject=Application: {{ job.title }}" class="btn apply-btn">
+                        <i class="fas fa-paper-plane me-2"></i>Apply Now
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <h2>Don't See a Perfect Fit?</h2>
+        <p>Send us your resume anyway! We're always looking for talented people.</p>
+        <a href="mailto:careers@360egy.com?subject=General Application" class="btn">
+            <i class="fas fa-envelope me-2"></i>Send Your Resume
+        </a>
+    </div>
+</section>
+{% endblock %}

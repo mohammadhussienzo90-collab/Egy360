@@ -1,0 +1,376 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .search-hero {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        padding: 60px 0;
+        color: white;
+    }
+
+    .search-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .search-form {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .search-input-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-input-group input {
+        flex: 1;
+        padding: 15px 25px;
+        border-radius: 50px;
+        border: none;
+        font-size: 1.1rem;
+    }
+
+    .search-input-group button {
+        padding: 15px 30px;
+        border-radius: 50px;
+        background: white;
+        color: #dc2626;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .search-input-group button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .results-section {
+        padding: 60px 0;
+        background: #f8f9fa;
+        min-height: 400px;
+    }
+
+    .results-summary {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .results-summary h2 {
+        font-size: 1.3rem;
+        color: #374151;
+        margin: 0;
+    }
+
+    .results-summary span {
+        color: #dc2626;
+        font-weight: 700;
+    }
+
+    .result-category {
+        margin-bottom: 40px;
+    }
+
+    .category-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .category-header i {
+        color: #dc2626;
+        font-size: 1.3rem;
+    }
+
+    .category-header h3 {
+        font-size: 1.4rem;
+        color: #1f2937;
+        margin: 0;
+    }
+
+    .category-header .count {
+        background: #dc2626;
+        color: white;
+        padding: 3px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .result-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+
+    .result-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .result-card h4 {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+    }
+
+    .result-card h4 a {
+        color: #1e3a5f;
+        text-decoration: none;
+    }
+
+    .result-card h4 a:hover {
+        color: #dc2626;
+    }
+
+    .result-card p {
+        color: #6b7280;
+        margin-bottom: 10px;
+        line-height: 1.6;
+    }
+
+    .result-meta {
+        display: flex;
+        gap: 15px;
+        font-size: 0.9rem;
+        color: #9ca3af;
+    }
+
+    .result-meta i {
+        margin-right: 5px;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 15px;
+    }
+
+    .no-results i {
+        font-size: 4rem;
+        color: #d1d5db;
+        margin-bottom: 20px;
+    }
+
+    .no-results h3 {
+        color: #374151;
+        margin-bottom: 10px;
+    }
+
+    .no-results p {
+        color: #6b7280;
+        margin-bottom: 25px;
+    }
+
+    .suggestions {
+        margin-top: 30px;
+        padding: 20px;
+        background: #fef3c7;
+        border-radius: 10px;
+    }
+
+    .suggestions h4 {
+        color: #92400e;
+        margin-bottom: 15px;
+    }
+
+    .suggestions ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .suggestions li a {
+        display: inline-block;
+        padding: 8px 16px;
+        background: white;
+        border-radius: 20px;
+        color: #dc2626;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .suggestions li a:hover {
+        background: #dc2626;
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .search-input-group {
+            flex-direction: column;
+        }
+
+        .search-input-group button {
+            width: 100%;
+        }
+
+        .search-hero h1 {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="search-hero">
+    <div class="container text-center">
+        <h1><i class="fas fa-search me-3"></i>Search Egy360</h1>
+        <form class="search-form" method="get" action="{% url 'home:search' %}">
+            <div class="search-input-group">
+                <input type="text" name="q" value="{{ query }}" placeholder="Search tours, hotels, destinations, articles..." autofocus>
+                <button type="submit">
+                    <i class="fas fa-search me-2"></i>Search
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="results-section">
+    <div class="container">
+        {% if query %}
+        <div class="results-summary">
+            <h2>Found <span>{{ total_results }}</span> results for "{{ query }}"</h2>
+        </div>
+
+        {% if total_results > 0 %}
+            {% if results.articles %}
+            <div class="result-category">
+                <div class="category-header">
+                    <i class="fas fa-newspaper"></i>
+                    <h3>Travel Articles</h3>
+                    <span class="count">{{ results.articles|length }}</span>
+                </div>
+                {% for article in results.articles %}
+                <div class="result-card">
+                    <h4><a href="{% url 'blog:article_detail' article.slug %}">{{ article.title }}</a></h4>
+                    <p>{{ article.meta_description|truncatewords:30 }}</p>
+                    <div class="result-meta">
+                        <span><i class="fas fa-folder"></i>{{ article.category.name }}</span>
+                        <span><i class="fas fa-calendar"></i>{{ article.published_at|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if results.tours %}
+            <div class="result-category">
+                <div class="category-header">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Tours & Experiences</h3>
+                    <span class="count">{{ results.tours|length }}</span>
+                </div>
+                {% for tour in results.tours %}
+                <div class="result-card">
+                    <h4><a href="{% url 'tours:detail' tour.slug %}">{{ tour.title }}</a></h4>
+                    <p>{{ tour.description|truncatewords:25 }}</p>
+                    <div class="result-meta">
+                        <span><i class="fas fa-clock"></i>{{ tour.duration }}</span>
+                        <span><i class="fas fa-dollar-sign"></i>From ${{ tour.price }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if results.accommodations %}
+            <div class="result-category">
+                <div class="category-header">
+                    <i class="fas fa-hotel"></i>
+                    <h3>Hotels & Accommodations</h3>
+                    <span class="count">{{ results.accommodations|length }}</span>
+                </div>
+                {% for hotel in results.accommodations %}
+                <div class="result-card">
+                    <h4><a href="{% url 'accommodations:detail' hotel.slug %}">{{ hotel.name }}</a></h4>
+                    <p>{{ hotel.description|truncatewords:25 }}</p>
+                    <div class="result-meta">
+                        <span><i class="fas fa-map-marker-alt"></i>{{ hotel.city }}</span>
+                        <span><i class="fas fa-star"></i>{{ hotel.rating }} stars</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if results.destinations %}
+            <div class="result-category">
+                <div class="category-header">
+                    <i class="fas fa-globe-africa"></i>
+                    <h3>Destinations</h3>
+                    <span class="count">{{ results.destinations|length }}</span>
+                </div>
+                {% for city in results.destinations %}
+                <div class="result-card">
+                    <h4><a href="{% url 'destinations:city_detail' city.slug %}">{{ city.name }}</a></h4>
+                    <p>{{ city.description|truncatewords:25 }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        {% else %}
+        <div class="no-results">
+            <i class="fas fa-search"></i>
+            <h3>No results found for "{{ query }}"</h3>
+            <p>Try adjusting your search terms or browse our popular content below</p>
+        </div>
+
+        <div class="suggestions">
+            <h4><i class="fas fa-lightbulb me-2"></i>Popular Searches:</h4>
+            <ul>
+                <li><a href="?q=pyramids">Pyramids</a></li>
+                <li><a href="?q=luxor">Luxor</a></li>
+                <li><a href="?q=red sea">Red Sea</a></li>
+                <li><a href="?q=cairo">Cairo</a></li>
+                <li><a href="?q=nile cruise">Nile Cruise</a></li>
+                <li><a href="?q=diving">Diving</a></li>
+                <li><a href="?q=desert">Desert</a></li>
+            </ul>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="no-results">
+            <i class="fas fa-search"></i>
+            <h3>Start Your Search</h3>
+            <p>Enter keywords above to find tours, hotels, articles, and destinations</p>
+        </div>
+
+        <div class="suggestions">
+            <h4><i class="fas fa-lightbulb me-2"></i>Popular Searches:</h4>
+            <ul>
+                <li><a href="?q=pyramids">Pyramids</a></li>
+                <li><a href="?q=luxor">Luxor</a></li>
+                <li><a href="?q=red sea">Red Sea</a></li>
+                <li><a href="?q=cairo hotels">Cairo Hotels</a></li>
+                <li><a href="?q=nile cruise">Nile Cruise</a></li>
+                <li><a href="?q=diving">Diving</a></li>
+                <li><a href="?q=desert safari">Desert Safari</a></li>
+                <li><a href="?q=aswan">Aswan</a></li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
