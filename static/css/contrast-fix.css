@@ -1,0 +1,408 @@
+/* ============================================================
+   CONTRAST & READABILITY FIX - EGY360 2026
+   Ensures all text is clearly visible with proper contrast
+   ============================================================ */
+
+/* ==================== HIGH CONTRAST TEXT ==================== */
+
+/* Body text - darker for better readability */
+body {
+    color: #1e293b !important; /* Dark slate for main text */
+}
+
+/* Paragraphs need strong contrast */
+p {
+    color: #334155 !important; /* Slate 700 - very readable */
+}
+
+/* Article excerpts - darker gray */
+.article-excerpt,
+.card-text,
+.excerpt,
+.post-excerpt {
+    color: #475569 !important; /* Slate 600 - strong contrast */
+}
+
+/* Meta information - darker than before */
+.article-meta,
+.post-meta,
+.meta,
+.text-muted {
+    color: #64748b !important; /* Slate 500 - visible but subtle */
+}
+
+/* Links should be clearly visible */
+a {
+    color: #b91c1c !important; /* Darker red for links */
+}
+
+a:hover {
+    color: #991b1b !important; /* Even darker on hover */
+}
+
+/* Headlines - pure dark for maximum impact */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    color: #0f172a !important; /* Slate 900 - nearly black */
+}
+
+/* Section titles */
+.section-header h2,
+.section-title,
+.page-title {
+    color: #0f172a !important;
+}
+
+/* ==================== WHITE TEXT ON DARK BACKGROUNDS ==================== */
+
+/* Hero sections with dark backgrounds */
+.blog-hero,
+.hero-modern,
+.section-dark,
+.featured-card,
+.card-dark,
+.navbar-modern {
+    color: #ffffff !important;
+}
+
+.blog-hero h1,
+.blog-hero h2,
+.blog-hero p,
+.hero-modern h1,
+.hero-modern p,
+.featured-content h2,
+.featured-content p,
+.card-dark .card-title,
+.card-dark .card-text {
+    color: #ffffff !important;
+    opacity: 1 !important; /* Remove opacity that dims text */
+}
+
+/* Hero subtitle text - ensure visibility */
+.blog-hero p,
+.hero-modern .hero-subtitle,
+.featured-content p {
+    color: #e2e8f0 !important; /* Light gray but still very visible */
+    opacity: 1 !important;
+}
+
+/* Hero stats */
+.blog-hero .hero-stat-label,
+.hero-stat-label {
+    color: #cbd5e1 !important; /* Visible light gray */
+    opacity: 1 !important;
+}
+
+.blog-hero .hero-stat-number,
+.hero-stat-number {
+    color: #fbbf24 !important; /* Bright gold */
+}
+
+/* Featured meta */
+.featured-meta,
+.featured-meta span {
+    color: #e2e8f0 !important;
+    opacity: 1 !important;
+}
+
+/* ==================== CARD IMPROVEMENTS ==================== */
+
+/* Card titles */
+.article-body h3,
+.article-body h3 a,
+.card-title,
+.card-title a {
+    color: #0f172a !important; /* Nearly black */
+}
+
+.article-body h3 a:hover,
+.card-title a:hover {
+    color: #b91c1c !important; /* Dark red on hover */
+}
+
+/* Category badges on cards */
+.article-category,
+.category-badge {
+    background: rgba(15, 23, 42, 0.95) !important; /* Darker background */
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Views badge */
+.article-views {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-weight: 700;
+}
+
+/* ==================== SIDEBAR & TRENDING ==================== */
+
+.trending-sidebar h4,
+.sidebar-title {
+    color: #0f172a !important;
+}
+
+.trending-content h6,
+.trending-title {
+    color: #1e293b !important;
+}
+
+.trending-content span,
+.trending-meta {
+    color: #64748b !important; /* Visible gray */
+}
+
+/* ==================== NAVIGATION ==================== */
+
+/* Navbar links on dark background */
+.navbar-modern .nav-link {
+    color: #f1f5f9 !important; /* Very light for dark navbar */
+}
+
+.navbar-modern .nav-link:hover {
+    color: #ffffff !important;
+}
+
+.navbar-modern .nav-link.active {
+    color: #fbbf24 !important; /* Gold for active */
+}
+
+/* ==================== BUTTONS ==================== */
+
+/* Primary buttons */
+.btn-primary,
+.btn-primary-modern {
+    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%) !important;
+    color: #ffffff !important;
+}
+
+/* Read more links */
+.read-more-btn {
+    color: #b91c1c !important;
+    font-weight: 700;
+}
+
+.read-more-btn:hover {
+    color: #7f1d1d !important;
+}
+
+/* Category pills */
+.category-pill {
+    color: #1e293b !important;
+    border-color: #cbd5e1 !important;
+}
+
+.category-pill:hover,
+.category-pill.active {
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%) !important;
+}
+
+/* ==================== NEWSLETTER SECTION ==================== */
+
+.newsletter-banner h3,
+.newsletter-banner p {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.newsletter-form input {
+    color: #0f172a !important;
+    background: #ffffff !important;
+}
+
+.newsletter-form input::placeholder {
+    color: #64748b !important;
+}
+
+/* ==================== FOOTER ==================== */
+
+footer,
+.footer {
+    color: #e2e8f0 !important;
+}
+
+footer a,
+.footer a {
+    color: #fbbf24 !important;
+}
+
+footer a:hover,
+.footer a:hover {
+    color: #ffffff !important;
+}
+
+footer p,
+.footer p,
+footer .text-muted,
+.footer .text-muted {
+    color: #cbd5e1 !important;
+}
+
+/* ==================== BLOG DETAIL PAGE ==================== */
+
+/* Article content */
+.article-content,
+.blog-content,
+.post-content {
+    color: #1e293b !important;
+    line-height: 1.8;
+}
+
+.article-content p,
+.blog-content p,
+.post-content p {
+    color: #334155 !important;
+}
+
+.article-content h2,
+.article-content h3,
+.article-content h4 {
+    color: #0f172a !important;
+}
+
+/* Article meta on detail page */
+.article-hero-content .article-meta span,
+.article-meta-item {
+    color: #e2e8f0 !important;
+    opacity: 1 !important;
+}
+
+/* Tags */
+.tag,
+.article-tag {
+    color: #0f172a !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+.tag:hover,
+.article-tag:hover {
+    background: #b91c1c !important;
+    color: #ffffff !important;
+    border-color: #b91c1c !important;
+}
+
+/* Comments section */
+.comment-author {
+    color: #0f172a !important;
+    font-weight: 600;
+}
+
+.comment-date {
+    color: #64748b !important;
+}
+
+.comment-text,
+.comment-content {
+    color: #334155 !important;
+}
+
+/* ==================== SOCIAL SHARING ==================== */
+
+.share-title {
+    color: #0f172a !important;
+}
+
+.share-btn {
+    color: #ffffff !important;
+}
+
+/* ==================== FORMS ==================== */
+
+input,
+textarea,
+select {
+    color: #0f172a !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+label {
+    color: #1e293b !important;
+    font-weight: 500;
+}
+
+/* ==================== BREADCRUMBS ==================== */
+
+.breadcrumb-item {
+    color: #64748b !important;
+}
+
+.breadcrumb-item.active {
+    color: #0f172a !important;
+}
+
+.breadcrumb-item a {
+    color: #b91c1c !important;
+}
+
+/* ==================== DESTINATION & TOUR PAGES ==================== */
+
+.destination-title,
+.tour-title {
+    color: #0f172a !important;
+}
+
+.destination-description,
+.tour-description {
+    color: #334155 !important;
+}
+
+.price,
+.tour-price {
+    color: #0f172a !important;
+    font-weight: 700;
+}
+
+/* ==================== ACCESSIBILITY IMPROVEMENTS ==================== */
+
+/* Focus states for keyboard navigation */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 3px solid #b91c1c !important;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    body {
+        color: #000000 !important;
+    }
+
+    p, .article-excerpt, .card-text {
+        color: #000000 !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        color: #000000 !important;
+    }
+
+    a {
+        color: #7f1d1d !important;
+        text-decoration: underline !important;
+    }
+}
+
+/* ==================== MOBILE IMPROVEMENTS ==================== */
+
+@media (max-width: 768px) {
+    /* Larger text on mobile for readability */
+    body {
+        font-size: 1.05rem !important;
+    }
+
+    .article-excerpt {
+        font-size: 1rem !important;
+    }
+
+    .article-meta {
+        font-size: 0.9rem !important;
+    }
+}
