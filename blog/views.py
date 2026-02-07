@@ -207,6 +207,9 @@ class BlogListView(ListView):
     def dispatch(self, request, *args, **kwargs):
         import sys
         try:
+            # Auto-seed if no articles exist (Railway ephemeral storage fix)
+            if BlogPost.objects.count() == 0:
+                self._auto_seed_articles()
             return super().dispatch(request, *args, **kwargs)
         except Exception as e:
             # Print to stdout for gunicorn capture
@@ -219,6 +222,107 @@ class BlogListView(ListView):
                 'traceback': traceback.format_exc(),
                 'view': 'BlogListView'
             }, status=500)
+
+    def _auto_seed_articles(self):
+        """Auto-seed articles when database is empty (Railway ephemeral fix)"""
+        from django.contrib.auth.models import User
+        from django.utils import timezone
+
+        # Create admin user if needed
+        if not User.objects.exists():
+            User.objects.create_superuser('admin', 'admin@360egy.com', 'admin360egy')
+
+        author = User.objects.first()
+
+        # Create categories
+        categories_data = [
+            ('ancient-egypt', 'Ancient Egypt', 'Explore pyramids, temples, and pharaohs'),
+            ('travel-guides', 'Travel Guides', 'Complete Egypt travel guides'),
+            ('destinations', 'Destinations', 'Egyptian cities and attractions'),
+            ('tips-advice', 'Tips & Advice', 'Travel tips for Egypt'),
+            ('food-culture', 'Food & Culture', 'Egyptian cuisine and traditions'),
+            ('red-sea', 'Red Sea', 'Beaches, diving, and resorts'),
+        ]
+
+        for slug, name, desc in categories_data:
+            BlogCategory.objects.get_or_create(slug=slug, defaults={'name': name, 'description': desc})
+
+        # Create articles
+        articles = [
+            ('The Great Pyramid of Giza: Complete Visitor Guide 2026', 'great-pyramid-giza-guide', 'ancient-egypt',
+             'Discover everything about the Great Pyramid - the last surviving Wonder of the Ancient World. Complete guide with tips, tickets, and best times to visit.',
+             'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200', True),
+            ('Best Time to Visit Egypt in 2026', 'best-time-visit-egypt-2026', 'travel-guides',
+             'Planning your Egypt trip? Learn the best months to visit, weather patterns, and how to avoid crowds at major attractions.',
+             'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200', True),
+            ('Cairo Travel Guide: Top 20 Things to Do', 'cairo-travel-guide-things-to-do', 'destinations',
+             'Explore Cairo like a local! From the Egyptian Museum to Khan El Khalili bazaar, discover the best attractions in Egypt\'s capital.',
+             'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200', True),
+            ('Luxor Temple: Ancient Thebes Guide', 'luxor-temple-ancient-thebes-guide', 'ancient-egypt',
+             'Walk through 3,400 years of history at Luxor Temple. Complete guide to visiting this magnificent ancient Egyptian temple.',
+             'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200', False),
+            ('Red Sea Diving: Best Sites in Egypt', 'red-sea-diving-best-sites-egypt', 'red-sea',
+             'Discover world-class diving in the Red Sea. From the SS Thistlegorm wreck to Ras Mohammed, explore Egypt\'s underwater paradise.',
+             'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200', True),
+            ('Egyptian Street Food: 15 Must-Try Dishes', 'egyptian-street-food-must-try', 'food-culture',
+             'From koshari to ful medames, discover the authentic flavors of Egyptian street food. Where to find the best local eats.',
+             'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=1200', False),
+            ('Hurghada Beach Resorts: Complete Guide', 'hurghada-beach-resorts-guide', 'red-sea',
+             'Find the perfect beach resort in Hurghada. Compare prices, amenities, and locations for your Red Sea vacation.',
+             'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200', False),
+            ('Valley of the Kings: Tomb Explorer Guide', 'valley-of-kings-tomb-guide', 'ancient-egypt',
+             'Explore the burial place of pharaohs. Complete guide to visiting the Valley of the Kings, including which tombs to see.',
+             'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200', True),
+            ('Egypt on a Budget: How to Travel for $50/Day', 'egypt-budget-travel-guide', 'tips-advice',
+             'Yes, you can explore Egypt affordably! Budget tips for accommodation, food, transport, and attractions.',
+             'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200', False),
+            ('Nile Cruise: Luxor to Aswan Journey', 'nile-cruise-luxor-aswan', 'travel-guides',
+             'Experience the magic of a Nile cruise. Everything you need to know about cruising from Luxor to Aswan.',
+             'https://images.unsplash.com/photo-1600697395453-e89e8a097d3a?w=1200', True),
+            ('Abu Simbel Temples: Complete Visitor Guide', 'abu-simbel-temples-guide', 'ancient-egypt',
+             'Marvel at Ramesses II\'s greatest monument. How to visit Abu Simbel, including the famous sun festival dates.',
+             'https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?w=1200', False),
+            ('Sharm El Sheikh: Ultimate Resort Guide', 'sharm-el-sheikh-resort-guide', 'red-sea',
+             'Plan your perfect Sharm El Sheikh vacation. Best resorts, beaches, diving spots, and nightlife.',
+             'https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=1200', False),
+            ('Is Egypt Safe? 2026 Travel Safety Guide', 'is-egypt-safe-2026-guide', 'tips-advice',
+             'Get the facts about traveling in Egypt. Safety tips, areas to visit, and what to expect as a tourist.',
+             'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200', True),
+            ('Egyptian Museum Cairo: Treasures Guide', 'egyptian-museum-cairo-treasures', 'destinations',
+             'Home to Tutankhamun\'s gold. Complete guide to the Egyptian Museum\'s most important artifacts and galleries.',
+             'https://images.unsplash.com/photo-1565967511849-76a60a516170?w=1200', False),
+            ('Aswan: Gateway to Nubia Guide', 'aswan-gateway-nubia-guide', 'destinations',
+             'Discover Aswan\'s temples, Nubian villages, and the beautiful Nile. Complete travel guide to southern Egypt.',
+             'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200', False),
+            ('White Desert Egypt: Camping Adventure', 'white-desert-egypt-camping', 'travel-guides',
+             'Experience the surreal White Desert. Guide to camping among chalk formations under starry skies.',
+             'https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=1200', False),
+            ('Alexandria: Mediterranean Egypt Guide', 'alexandria-mediterranean-egypt-guide', 'destinations',
+             'Explore Egypt\'s second city. From the new Library to seafood restaurants, discover Alexandria\'s charms.',
+             'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1200', False),
+            ('Egyptian Coffee Culture: A Local Experience', 'egyptian-coffee-culture-guide', 'food-culture',
+             'Experience ahwa like a local. Guide to Egyptian coffee houses, traditions, and the best cafes.',
+             'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1200', False),
+        ]
+
+        now = timezone.now()
+        for title, slug, cat_slug, excerpt, img, featured in articles:
+            category = BlogCategory.objects.filter(slug=cat_slug).first()
+            BlogPost.objects.get_or_create(
+                slug=slug,
+                defaults={
+                    'title': title,
+                    'author': author,
+                    'category': category,
+                    'excerpt': excerpt,
+                    'content': f"## {title}\n\n{excerpt}\n\nThis comprehensive guide covers everything you need to know. Egypt offers incredible experiences for every type of traveler.",
+                    'image_url': img,
+                    'meta_description': excerpt[:155],
+                    'status': 'published',
+                    'is_featured': featured,
+                    'published_at': now,
+                }
+            )
 
     def get_queryset(self):
         queryset = BlogPost.objects.filter(status='published').order_by('-published_at', '-created_at')
