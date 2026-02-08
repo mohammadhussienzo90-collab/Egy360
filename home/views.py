@@ -714,3 +714,560 @@ def search(request):
         'total_results': total_results,
     }
     return render(request, 'search.html', context)
+
+
+def seed_all_content(request):
+    """
+    Seed all content: tours, hotels, and destinations.
+    Access via: /seed-content/?key=egy360seed
+    """
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from destinations.models import Country, City, Attraction
+    from accommodations.models import Accommodation
+    from tours.models import Tour
+
+    results = {
+        'destinations': {'created': 0, 'updated': 0},
+        'hotels': {'created': 0, 'updated': 0},
+        'tours': {'created': 0, 'updated': 0},
+    }
+
+    # ============ SEED DESTINATIONS ============
+    # Create Egypt country
+    egypt, _ = Country.objects.get_or_create(
+        code='EGY',
+        defaults={
+            'name': 'Egypt',
+            'description': 'The land of pharaohs, pyramids, and ancient wonders.',
+            'flag_emoji': '🇪🇬'
+        }
+    )
+
+    cities_data = [
+        {
+            'name': 'Cairo',
+            'slug': 'cairo',
+            'description': 'Cairo, the capital of Egypt, is a sprawling metropolis where ancient history meets modern life. Home to the iconic Pyramids of Giza and the Sphinx, Cairo offers world-class museums, vibrant bazaars, and a rich cultural tapestry spanning over 5,000 years of civilization.',
+            'population': 21000000,
+            'is_popular': True,
+            'is_capital': True,
+            'has_airport': True,
+            'best_time_to_visit': 'October to April',
+            'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200',
+            'attractions': [
+                {'name': 'Pyramids of Giza', 'slug': 'pyramids-of-giza', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True,
+                 'description': 'The last surviving Wonder of the Ancient World. These magnificent structures have stood for over 4,500 years.',
+                 'admission_fee': 200, 'visit_duration': '3-4 hours', 'image_url': 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800'},
+                {'name': 'Egyptian Museum', 'slug': 'egyptian-museum', 'type': 'museum', 'is_must_see': True,
+                 'description': 'Home to the world\'s largest collection of ancient Egyptian artifacts, including Tutankhamun\'s treasures.',
+                 'admission_fee': 200, 'visit_duration': '2-3 hours', 'image_url': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800'},
+                {'name': 'Khan El-Khalili Bazaar', 'slug': 'khan-el-khalili', 'type': 'market', 'is_must_see': True,
+                 'description': 'Cairo\'s famous 14th-century bazaar. Shop for spices, jewelry, souvenirs, and experience authentic Egyptian culture.',
+                 'admission_fee': 0, 'visit_duration': '2-3 hours', 'image_url': 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800'},
+            ]
+        },
+        {
+            'name': 'Luxor',
+            'slug': 'luxor',
+            'description': 'Luxor is the world\'s greatest open-air museum. Once ancient Thebes, capital of the pharaohs, Luxor houses the Valley of the Kings, Karnak Temple, and countless treasures from Egypt\'s golden age.',
+            'population': 500000,
+            'is_popular': True,
+            'has_airport': True,
+            'best_time_to_visit': 'October to March',
+            'image_url': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200',
+            'attractions': [
+                {'name': 'Valley of the Kings', 'slug': 'valley-of-kings', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True,
+                 'description': 'The royal burial ground of Egypt\'s pharaohs for 500 years. Over 60 tombs including Tutankhamun\'s.',
+                 'admission_fee': 300, 'visit_duration': '3-4 hours', 'image_url': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800'},
+                {'name': 'Karnak Temple', 'slug': 'karnak-temple', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True,
+                 'description': 'The largest ancient religious complex in the world. 2,000 years of construction by generations of pharaohs.',
+                 'admission_fee': 200, 'visit_duration': '2-3 hours', 'image_url': 'https://images.unsplash.com/photo-1565967511849-76a60a516170?w=800'},
+                {'name': 'Luxor Temple', 'slug': 'luxor-temple', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True,
+                 'description': 'Beautiful temple in the heart of Luxor, particularly stunning when illuminated at night.',
+                 'admission_fee': 200, 'visit_duration': '1-2 hours', 'image_url': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800'},
+            ]
+        },
+        {
+            'name': 'Aswan',
+            'slug': 'aswan',
+            'description': 'Aswan is Egypt\'s sunniest southern city, known for its beautiful Nile scenery, Nubian culture, and gateway to Abu Simbel. Felucca sailing at sunset and visits to Philae Temple are must-do experiences.',
+            'population': 300000,
+            'is_popular': True,
+            'has_airport': True,
+            'best_time_to_visit': 'October to April',
+            'image_url': 'https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?w=1200',
+            'attractions': [
+                {'name': 'Abu Simbel Temples', 'slug': 'abu-simbel', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True,
+                 'description': 'Ramesses II\'s magnificent rock-cut temples, relocated in a UNESCO engineering marvel.',
+                 'admission_fee': 300, 'visit_duration': '2-3 hours', 'image_url': 'https://images.unsplash.com/photo-1600697395453-e89e8a097d3a?w=800'},
+                {'name': 'Philae Temple', 'slug': 'philae-temple', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True,
+                 'description': 'Beautiful island temple dedicated to goddess Isis, rescued from the rising waters of the Aswan Dam.',
+                 'admission_fee': 200, 'visit_duration': '2-3 hours', 'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800'},
+            ]
+        },
+        {
+            'name': 'Hurghada',
+            'slug': 'hurghada',
+            'description': 'Hurghada is Egypt\'s premier Red Sea resort destination. World-class diving, beautiful beaches, all-inclusive resorts, and year-round sunshine make it perfect for beach holidays.',
+            'population': 250000,
+            'is_popular': True,
+            'has_airport': True,
+            'best_time_to_visit': 'March to May, September to November',
+            'image_url': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200',
+            'attractions': [
+                {'name': 'Giftun Islands', 'slug': 'giftun-islands', 'type': 'natural', 'is_must_see': True,
+                 'description': 'Protected marine park with pristine beaches, crystal-clear waters, and excellent snorkeling.',
+                 'admission_fee': 100, 'visit_duration': 'Full day', 'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800'},
+                {'name': 'Red Sea Coral Reefs', 'slug': 'red-sea-reefs', 'type': 'natural', 'is_must_see': True,
+                 'description': 'Some of the world\'s best diving and snorkeling with vibrant coral and diverse marine life.',
+                 'admission_fee': 0, 'visit_duration': '2-4 hours', 'image_url': 'https://images.unsplash.com/photo-1559825481-12a05cc00344?w=800'},
+            ]
+        },
+        {
+            'name': 'Sharm El Sheikh',
+            'slug': 'sharm-el-sheikh',
+            'description': 'Sharm El Sheikh sits at the tip of the Sinai Peninsula, offering world-famous diving at Ras Mohammed National Park, luxury resorts, and the stunning Thistlegorm wreck.',
+            'population': 100000,
+            'is_popular': True,
+            'has_airport': True,
+            'best_time_to_visit': 'Year-round, best March to May',
+            'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200',
+            'attractions': [
+                {'name': 'Ras Mohammed National Park', 'slug': 'ras-mohammed', 'type': 'natural', 'is_must_see': True,
+                 'description': 'World-renowned marine park with spectacular diving, shark reef, and pristine coral walls.',
+                 'admission_fee': 100, 'visit_duration': 'Full day', 'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800'},
+                {'name': 'Naama Bay', 'slug': 'naama-bay', 'type': 'beach', 'is_must_see': True,
+                 'description': 'The heart of Sharm\'s nightlife and entertainment, with shops, restaurants, and beach activities.',
+                 'admission_fee': 0, 'visit_duration': '2-3 hours', 'image_url': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800'},
+            ]
+        },
+        {
+            'name': 'Alexandria',
+            'slug': 'alexandria',
+            'description': 'Alexandria, Egypt\'s Mediterranean jewel, was founded by Alexander the Great. Known for the legendary ancient library, Roman catacombs, and beautiful Corniche seaside promenade.',
+            'population': 5000000,
+            'is_popular': True,
+            'has_airport': True,
+            'best_time_to_visit': 'March to May, September to November',
+            'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200',
+            'attractions': [
+                {'name': 'Bibliotheca Alexandrina', 'slug': 'bibliotheca-alexandrina', 'type': 'modern', 'is_must_see': True,
+                 'description': 'Modern tribute to the ancient Library of Alexandria. Stunning architecture and cultural center.',
+                 'admission_fee': 70, 'visit_duration': '2-3 hours', 'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800'},
+                {'name': 'Catacombs of Kom el Shoqafa', 'slug': 'catacombs-kom-el-shoqafa', 'type': 'archaeological', 'is_must_see': True,
+                 'description': 'Roman-era catacombs featuring unique blend of Egyptian, Greek, and Roman art.',
+                 'admission_fee': 80, 'visit_duration': '1-2 hours', 'image_url': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800'},
+            ]
+        },
+    ]
+
+    for city_data in cities_data:
+        attractions = city_data.pop('attractions', [])
+        city, created = City.objects.update_or_create(
+            slug=city_data['slug'],
+            defaults={**city_data, 'country': egypt}
+        )
+        if created:
+            results['destinations']['created'] += 1
+        else:
+            results['destinations']['updated'] += 1
+
+        # Create attractions
+        for attr_data in attractions:
+            Attraction.objects.update_or_create(
+                slug=attr_data['slug'],
+                defaults={
+                    'city': city,
+                    'name': attr_data['name'],
+                    'attraction_type': attr_data['type'],
+                    'description': attr_data['description'],
+                    'address': f"{attr_data['name']}, {city.name}, Egypt",
+                    'admission_fee': attr_data.get('admission_fee', 0),
+                    'visit_duration': attr_data.get('visit_duration', '1-2 hours'),
+                    'is_unesco': attr_data.get('is_unesco', False),
+                    'is_must_see': attr_data.get('is_must_see', False),
+                    'image_url': attr_data.get('image_url', ''),
+                    'average_rating': 4.5,
+                    'total_reviews': 150,
+                }
+            )
+
+    # ============ SEED HOTELS ============
+    hotels_data = [
+        {
+            'name': 'Marriott Mena House Cairo',
+            'slug': 'marriott-mena-house-cairo',
+            'accommodation_type': 'hotel',
+            'city': 'Cairo',
+            'address': '6 Pyramids Road, Giza',
+            'star_rating': 5,
+            'price_per_night': 250,
+            'description': 'Historic luxury hotel with direct views of the Pyramids of Giza. Once a royal hunting lodge, now offering world-class amenities, multiple restaurants, and an unbeatable location at the foot of the pyramids.',
+            'image_url': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200',
+            'is_featured': True,
+            'average_rating': 4.8,
+            'total_reviews': 2500,
+        },
+        {
+            'name': 'Four Seasons Cairo at Nile Plaza',
+            'slug': 'four-seasons-nile-plaza',
+            'accommodation_type': 'hotel',
+            'city': 'Cairo',
+            'address': '1089 Corniche El Nil, Garden City',
+            'star_rating': 5,
+            'price_per_night': 350,
+            'description': 'Elegant luxury hotel on the banks of the Nile with stunning river views, world-class dining, and impeccable service. Perfect location for exploring Cairo\'s attractions.',
+            'image_url': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200',
+            'is_featured': True,
+            'average_rating': 4.9,
+            'total_reviews': 1800,
+        },
+        {
+            'name': 'Steigenberger Nile Palace Luxor',
+            'slug': 'steigenberger-nile-palace-luxor',
+            'accommodation_type': 'hotel',
+            'city': 'Luxor',
+            'address': 'Khaled Ibn El Walid Street',
+            'star_rating': 5,
+            'price_per_night': 180,
+            'description': 'Beautiful hotel on the East Bank of Luxor with panoramic Nile views, lush gardens, and easy access to Luxor Temple and Karnak. Multiple pools and excellent dining.',
+            'image_url': 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200',
+            'is_featured': True,
+            'average_rating': 4.6,
+            'total_reviews': 1200,
+        },
+        {
+            'name': 'Sofitel Winter Palace Luxor',
+            'slug': 'sofitel-winter-palace-luxor',
+            'accommodation_type': 'hotel',
+            'city': 'Luxor',
+            'address': 'Corniche El Nil Street',
+            'star_rating': 5,
+            'price_per_night': 280,
+            'description': 'Historic Victorian palace hotel where Agatha Christie wrote "Death on the Nile". Stunning gardens, timeless elegance, and royal heritage since 1886.',
+            'image_url': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200',
+            'is_featured': True,
+            'average_rating': 4.7,
+            'total_reviews': 950,
+        },
+        {
+            'name': 'Sofitel Legend Old Cataract Aswan',
+            'slug': 'sofitel-old-cataract-aswan',
+            'accommodation_type': 'hotel',
+            'city': 'Aswan',
+            'address': 'Abtal El Tahrir Street',
+            'star_rating': 5,
+            'price_per_night': 320,
+            'description': 'Legendary palace hotel perched above the Nile with breathtaking views of Elephantine Island. A favorite of royalty and celebrities since 1899.',
+            'image_url': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200',
+            'is_featured': True,
+            'average_rating': 4.8,
+            'total_reviews': 800,
+        },
+        {
+            'name': 'Oberoi Sahl Hasheesh',
+            'slug': 'oberoi-sahl-hasheesh',
+            'accommodation_type': 'resort',
+            'city': 'Hurghada',
+            'address': 'Sahl Hasheesh Bay',
+            'star_rating': 5,
+            'price_per_night': 400,
+            'description': 'Ultra-luxury beachfront resort with stunning Moorish architecture, private beach, world-class spa, and exceptional dining. The ultimate Red Sea retreat.',
+            'image_url': 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=1200',
+            'is_featured': True,
+            'average_rating': 4.9,
+            'total_reviews': 600,
+        },
+        {
+            'name': 'Sunrise Holidays Resort',
+            'slug': 'sunrise-holidays-hurghada',
+            'accommodation_type': 'resort',
+            'city': 'Hurghada',
+            'address': 'Hurghada, Red Sea',
+            'star_rating': 4,
+            'price_per_night': 85,
+            'description': 'Popular all-inclusive resort with excellent beach, multiple pools, water sports, and family-friendly facilities. Great value for a Red Sea holiday.',
+            'image_url': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200',
+            'is_featured': False,
+            'average_rating': 4.3,
+            'total_reviews': 3500,
+        },
+        {
+            'name': 'Rixos Premium Sharm El Sheikh',
+            'slug': 'rixos-premium-sharm',
+            'accommodation_type': 'resort',
+            'city': 'Sharm El Sheikh',
+            'address': 'Nabq Bay',
+            'star_rating': 5,
+            'price_per_night': 220,
+            'description': 'Ultra all-inclusive luxury resort with private beach, multiple restaurants, aqua park, and world-class entertainment. Perfect for families and couples.',
+            'image_url': 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=1200',
+            'is_featured': True,
+            'average_rating': 4.7,
+            'total_reviews': 2200,
+        },
+        {
+            'name': 'Four Seasons Resort Sharm El Sheikh',
+            'slug': 'four-seasons-sharm',
+            'accommodation_type': 'resort',
+            'city': 'Sharm El Sheikh',
+            'address': '1 Four Seasons Boulevard',
+            'star_rating': 5,
+            'price_per_night': 450,
+            'description': 'Exclusive beachfront resort with private pools, exceptional dining, and direct access to pristine coral reefs. The epitome of luxury on the Red Sea.',
+            'image_url': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200',
+            'is_featured': True,
+            'average_rating': 4.9,
+            'total_reviews': 450,
+        },
+        {
+            'name': 'Steigenberger Cecil Hotel Alexandria',
+            'slug': 'steigenberger-cecil-alexandria',
+            'accommodation_type': 'hotel',
+            'city': 'Alexandria',
+            'address': '16 Saad Zaghloul Square',
+            'star_rating': 4,
+            'price_per_night': 120,
+            'description': 'Historic hotel in the heart of Alexandria overlooking the Mediterranean. Classic elegance, rich history, and prime location on the famous Corniche.',
+            'image_url': 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200',
+            'is_featured': False,
+            'average_rating': 4.4,
+            'total_reviews': 900,
+        },
+    ]
+
+    for hotel_data in hotels_data:
+        hotel, created = Accommodation.objects.update_or_create(
+            slug=hotel_data['slug'],
+            defaults={
+                **hotel_data,
+                'is_active': True,
+                'is_verified': True,
+                'total_rooms': 200,
+            }
+        )
+        if created:
+            results['hotels']['created'] += 1
+        else:
+            results['hotels']['updated'] += 1
+
+    # ============ SEED TOURS ============
+    tours_data = [
+        {
+            'name': 'Pyramids of Giza & Sphinx Day Tour',
+            'slug': 'pyramids-giza-sphinx-day-tour',
+            'tour_type': 'cultural',
+            'description': 'Experience the wonder of the ancient world! Visit the Great Pyramids of Giza, marvel at the Sphinx, and explore the Solar Boat Museum. Includes expert Egyptologist guide, hotel pickup, and traditional Egyptian lunch.',
+            'highlights': 'Great Pyramid of Khufu|Pyramid of Khafre|Pyramid of Menkaure|The Great Sphinx|Solar Boat Museum|Panoramic photo stops',
+            'duration_days': 1,
+            'departure_city': 'Cairo',
+            'destinations': ['Giza', 'Pyramids'],
+            'price_per_person': 75,
+            'difficulty_level': 'easy',
+            'includes': ['Hotel pickup & drop-off', 'Air-conditioned vehicle', 'Egyptologist guide', 'Lunch', 'All entrance fees', 'Bottled water'],
+            'excludes': ['Camel rides (optional)', 'Gratuities', 'Personal expenses'],
+            'languages': ['English', 'Spanish', 'French', 'German', 'Arabic'],
+            'image_url': 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=1200',
+            'is_featured': True,
+            'average_rating': 4.8,
+            'total_reviews': 3500,
+        },
+        {
+            'name': 'Luxor Full Day Tour from Cairo by Flight',
+            'slug': 'luxor-day-tour-from-cairo-flight',
+            'tour_type': 'cultural',
+            'description': 'Fly to Luxor for an unforgettable day exploring ancient Thebes. Visit the Valley of the Kings, Temple of Hatshepsut, Colossi of Memnon, Karnak Temple, and Luxor Temple. Includes flights, meals, and expert guide.',
+            'highlights': 'Valley of the Kings|Temple of Hatshepsut|Colossi of Memnon|Karnak Temple|Luxor Temple|Round-trip flights',
+            'duration_days': 1,
+            'departure_city': 'Cairo',
+            'destinations': ['Luxor', 'Valley of the Kings', 'Karnak'],
+            'price_per_person': 350,
+            'difficulty_level': 'moderate',
+            'includes': ['Round-trip flights Cairo-Luxor', 'Hotel transfers', 'Egyptologist guide', 'Lunch', 'All entrance fees', 'Air-conditioned vehicle'],
+            'excludes': ['Tomb of Tutankhamun (optional)', 'Gratuities', 'Personal expenses'],
+            'languages': ['English', 'Spanish', 'French', 'German'],
+            'image_url': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200',
+            'is_featured': True,
+            'average_rating': 4.7,
+            'total_reviews': 1200,
+        },
+        {
+            'name': '4-Day Nile Cruise: Luxor to Aswan',
+            'slug': 'nile-cruise-luxor-aswan-4-days',
+            'tour_type': 'cruise',
+            'description': 'Sail the legendary Nile aboard a 5-star cruise ship. Visit Luxor\'s temples, Edfu, Kom Ombo, and Aswan\'s highlights. All meals, entertainment, and guided tours included.',
+            'highlights': 'Luxor Temple|Karnak Temple|Valley of the Kings|Edfu Temple|Kom Ombo Temple|Philae Temple|High Dam|5-star cruise ship',
+            'duration_days': 4,
+            'duration_nights': 3,
+            'departure_city': 'Luxor',
+            'destinations': ['Luxor', 'Edfu', 'Kom Ombo', 'Aswan'],
+            'price_per_person': 450,
+            'difficulty_level': 'easy',
+            'includes': ['3 nights cruise accommodation', 'Full board meals', 'All temple visits', 'Egyptologist guide', 'Entertainment on board'],
+            'excludes': ['Flights to/from Luxor', 'Abu Simbel excursion', 'Gratuities', 'Drinks'],
+            'languages': ['English', 'German', 'French', 'Spanish', 'Italian'],
+            'image_url': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200',
+            'is_featured': True,
+            'average_rating': 4.9,
+            'total_reviews': 800,
+        },
+        {
+            'name': 'White Desert Overnight Camping Safari',
+            'slug': 'white-desert-camping-safari',
+            'tour_type': 'desert',
+            'description': 'Adventure into Egypt\'s surreal White Desert with its otherworldly chalk formations. Camp under the stars, explore Crystal Mountain, and experience authentic Bedouin hospitality.',
+            'highlights': 'White Desert National Park|Crystal Mountain|Black Desert|Bahariya Oasis|Bedouin dinner|Stargazing|4x4 desert safari',
+            'duration_days': 2,
+            'duration_nights': 1,
+            'departure_city': 'Cairo',
+            'destinations': ['Bahariya Oasis', 'White Desert', 'Black Desert'],
+            'price_per_person': 180,
+            'difficulty_level': 'moderate',
+            'includes': ['4x4 jeep safari', 'Camping equipment', 'All meals', 'Bedouin guide', 'Park fees'],
+            'excludes': ['Sleeping bag rental', 'Gratuities', 'Personal expenses'],
+            'languages': ['English', 'Arabic'],
+            'image_url': 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200',
+            'is_featured': True,
+            'average_rating': 4.8,
+            'total_reviews': 650,
+        },
+        {
+            'name': 'Red Sea Diving Day Trip - Hurghada',
+            'slug': 'red-sea-diving-hurghada',
+            'tour_type': 'diving',
+            'description': 'Discover the underwater wonders of the Red Sea. Two dives at spectacular coral reef sites, see colorful fish, and maybe dolphins! Suitable for beginners and certified divers.',
+            'highlights': 'Two dive sites|Coral reefs|Marine life|Professional PADI instructors|All equipment included|Lunch on boat',
+            'duration_days': 1,
+            'departure_city': 'Hurghada',
+            'destinations': ['Red Sea', 'Giftun Islands'],
+            'price_per_person': 75,
+            'difficulty_level': 'moderate',
+            'includes': ['2 boat dives', 'All diving equipment', 'PADI instructor', 'Lunch & snacks', 'Hotel transfers'],
+            'excludes': ['Underwater photos', 'Gratuities', 'Marine park fee ($5)'],
+            'languages': ['English', 'German', 'Russian', 'Arabic'],
+            'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200',
+            'is_featured': True,
+            'average_rating': 4.7,
+            'total_reviews': 1500,
+        },
+        {
+            'name': 'Abu Simbel Day Tour from Aswan',
+            'slug': 'abu-simbel-day-tour-aswan',
+            'tour_type': 'cultural',
+            'description': 'Visit the magnificent temples of Abu Simbel, Ramesses II\'s greatest monument. Early morning departure to witness the temples in the beautiful morning light.',
+            'highlights': 'Great Temple of Ramesses II|Temple of Nefertari|UNESCO World Heritage Site|Stunning Lake Nasser views',
+            'duration_days': 1,
+            'departure_city': 'Aswan',
+            'destinations': ['Abu Simbel'],
+            'price_per_person': 95,
+            'difficulty_level': 'easy',
+            'includes': ['Air-conditioned minibus', 'Egyptologist guide', 'Entrance fees', 'Breakfast box', 'Hotel pickup 3:30 AM'],
+            'excludes': ['Lunch', 'Gratuities', 'Personal expenses'],
+            'languages': ['English', 'French', 'Spanish', 'German'],
+            'image_url': 'https://images.unsplash.com/photo-1600697395453-e89e8a097d3a?w=1200',
+            'is_featured': True,
+            'average_rating': 4.9,
+            'total_reviews': 950,
+        },
+        {
+            'name': 'Islamic Cairo Walking Tour',
+            'slug': 'islamic-cairo-walking-tour',
+            'tour_type': 'cultural',
+            'description': 'Explore the medieval heart of Cairo. Walk through historic mosques, madrasas, and bazaars. Visit Al-Azhar Mosque, Sultan Hassan Mosque, and end at Khan El-Khalili.',
+            'highlights': 'Al-Azhar Mosque|Sultan Hassan Mosque|Al-Muizz Street|Khan El-Khalili Bazaar|Historic gates|Traditional coffee',
+            'duration_days': 1,
+            'departure_city': 'Cairo',
+            'destinations': ['Islamic Cairo', 'Khan El-Khalili'],
+            'price_per_person': 45,
+            'difficulty_level': 'easy',
+            'includes': ['Licensed guide', 'Walking tour', 'Traditional coffee', 'Mosque entrance fees'],
+            'excludes': ['Lunch', 'Shopping', 'Gratuities'],
+            'languages': ['English', 'Arabic', 'French', 'Spanish'],
+            'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200',
+            'is_featured': False,
+            'average_rating': 4.6,
+            'total_reviews': 420,
+        },
+        {
+            'name': 'Snorkeling Trip to Tiran Island',
+            'slug': 'snorkeling-tiran-island-sharm',
+            'tour_type': 'diving',
+            'description': 'Sail to the famous reefs of Tiran Island for world-class snorkeling. Crystal-clear waters, vibrant coral, and abundant marine life await. Lunch and equipment included.',
+            'highlights': 'Tiran Island reefs|Jackson Reef|Gordon Reef|Dolphins possible|Lunch on boat|All snorkeling gear',
+            'duration_days': 1,
+            'departure_city': 'Sharm El Sheikh',
+            'destinations': ['Tiran Island', 'Red Sea'],
+            'price_per_person': 55,
+            'difficulty_level': 'easy',
+            'includes': ['Boat trip', 'Snorkeling equipment', 'Lunch & drinks', 'Guide', 'Hotel transfers'],
+            'excludes': ['Underwater camera rental', 'Gratuities', 'Marine park fee'],
+            'languages': ['English', 'Russian', 'German', 'Arabic'],
+            'image_url': 'https://images.unsplash.com/photo-1559825481-12a05cc00344?w=1200',
+            'is_featured': False,
+            'average_rating': 4.5,
+            'total_reviews': 890,
+        },
+        {
+            'name': '8-Day Egypt Highlights Tour',
+            'slug': 'egypt-highlights-8-days',
+            'tour_type': 'cultural',
+            'description': 'The ultimate Egypt experience! Cairo, Pyramids, Luxor, Nile Cruise, and Aswan. Visit all major sites with expert guides, quality hotels, and seamless logistics.',
+            'highlights': 'Pyramids & Sphinx|Egyptian Museum|Luxor Temple|Valley of the Kings|Karnak|Nile Cruise|Abu Simbel option|Aswan',
+            'duration_days': 8,
+            'duration_nights': 7,
+            'departure_city': 'Cairo',
+            'destinations': ['Cairo', 'Giza', 'Luxor', 'Aswan'],
+            'price_per_person': 1200,
+            'difficulty_level': 'easy',
+            'includes': ['7 nights accommodation', 'Domestic flights', '3-night Nile cruise', 'All meals on cruise', 'Expert guides', 'All entrance fees', 'Transfers'],
+            'excludes': ['International flights', 'Visa', 'Travel insurance', 'Gratuities'],
+            'languages': ['English', 'Spanish', 'French', 'German', 'Italian'],
+            'image_url': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200',
+            'is_featured': True,
+            'average_rating': 4.9,
+            'total_reviews': 380,
+        },
+        {
+            'name': 'Alexandria Day Trip from Cairo',
+            'slug': 'alexandria-day-trip-cairo',
+            'tour_type': 'cultural',
+            'description': 'Discover Egypt\'s Mediterranean gem. Visit the Bibliotheca Alexandrina, Catacombs, Citadel of Qaitbay, and enjoy fresh seafood lunch. Experience a different side of Egypt.',
+            'highlights': 'Bibliotheca Alexandrina|Catacombs of Kom el Shoqafa|Citadel of Qaitbay|Corniche promenade|Seafood lunch|Roman Amphitheater',
+            'duration_days': 1,
+            'departure_city': 'Cairo',
+            'destinations': ['Alexandria'],
+            'price_per_person': 85,
+            'difficulty_level': 'easy',
+            'includes': ['Air-conditioned vehicle', 'Egyptologist guide', 'Entrance fees', 'Seafood lunch', 'Hotel pickup & drop-off'],
+            'excludes': ['Drinks', 'Gratuities', 'Personal expenses'],
+            'languages': ['English', 'French', 'Spanish', 'German'],
+            'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200',
+            'is_featured': False,
+            'average_rating': 4.6,
+            'total_reviews': 720,
+        },
+    ]
+
+    for tour_data in tours_data:
+        tour, created = Tour.objects.update_or_create(
+            slug=tour_data['slug'],
+            defaults={
+                **tour_data,
+                'is_active': True,
+                'min_group_size': 1,
+                'max_group_size': 15,
+                'child_discount': 25,
+            }
+        )
+        if created:
+            results['tours']['created'] += 1
+        else:
+            results['tours']['updated'] += 1
+
+    return JsonResponse({
+        'success': True,
+        'results': results,
+        'message': f"Seeded: {results['destinations']['created']+results['destinations']['updated']} destinations, {results['hotels']['created']+results['hotels']['updated']} hotels, {results['tours']['created']+results['tours']['updated']} tours"
+    })

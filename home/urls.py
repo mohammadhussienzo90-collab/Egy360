@@ -39,6 +39,9 @@ urlpatterns = [
     path('careers/', views.careers, name='careers'),
     path('search/', views.search, name='search'),
 
+    # Content seeding (admin)
+    path('seed-content/', views.seed_all_content, name='seed-content'),
+
     # API endpoints
     path('api/newsletter/', views.newsletter_subscribe, name='newsletter-subscribe'),
     path('api/lead-magnet/', views.lead_magnet_download, name='lead-magnet-api'),
