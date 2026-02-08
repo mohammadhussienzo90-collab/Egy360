@@ -12,6 +12,174 @@ class AccommodationSearchView(ListView):
     context_object_name = 'accommodations'
     paginate_by = 12
 
+    def dispatch(self, request, *args, **kwargs):
+        # Auto-seed if no accommodations exist (Railway ephemeral storage fix)
+        import sys
+        try:
+            if Accommodation.objects.count() == 0:
+                print("AUTO-SEED HOTELS: No hotels found, seeding now...", file=sys.stderr)
+                self._auto_seed_hotels()
+                print(f"AUTO-SEED HOTELS: Completed. Total hotels: {Accommodation.objects.count()}", file=sys.stderr)
+        except Exception as e:
+            print(f"AUTO-SEED HOTELS ERROR: {str(e)}", file=sys.stderr)
+        return super().dispatch(request, *args, **kwargs)
+
+    def _auto_seed_hotels(self):
+        """Auto-seed hotels when database is empty"""
+        hotels_data = [
+            {
+                'name': 'Marriott Mena House Cairo',
+                'slug': 'marriott-mena-house-cairo',
+                'accommodation_type': 'hotel',
+                'city': 'Cairo',
+                'address': '6 Pyramids Road, Giza',
+                'star_rating': 5,
+                'price_per_night': 250,
+                'description': 'Historic luxury hotel with direct views of the Pyramids of Giza. Once a royal hunting lodge, now offering world-class amenities and unbeatable location.',
+                'image_url': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200',
+                'is_featured': True,
+                'average_rating': 4.8,
+                'total_reviews': 2500,
+            },
+            {
+                'name': 'Four Seasons Cairo at Nile Plaza',
+                'slug': 'four-seasons-nile-plaza',
+                'accommodation_type': 'hotel',
+                'city': 'Cairo',
+                'address': '1089 Corniche El Nil, Garden City',
+                'star_rating': 5,
+                'price_per_night': 350,
+                'description': 'Elegant luxury hotel on the banks of the Nile with stunning river views, world-class dining, and impeccable service.',
+                'image_url': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200',
+                'is_featured': True,
+                'average_rating': 4.9,
+                'total_reviews': 1800,
+            },
+            {
+                'name': 'Steigenberger Nile Palace Luxor',
+                'slug': 'steigenberger-nile-palace-luxor',
+                'accommodation_type': 'hotel',
+                'city': 'Luxor',
+                'address': 'Khaled Ibn El Walid Street',
+                'star_rating': 5,
+                'price_per_night': 180,
+                'description': 'Beautiful hotel on the East Bank of Luxor with panoramic Nile views, lush gardens, and easy access to Luxor Temple.',
+                'image_url': 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200',
+                'is_featured': True,
+                'average_rating': 4.6,
+                'total_reviews': 1200,
+            },
+            {
+                'name': 'Sofitel Winter Palace Luxor',
+                'slug': 'sofitel-winter-palace-luxor',
+                'accommodation_type': 'hotel',
+                'city': 'Luxor',
+                'address': 'Corniche El Nil Street',
+                'star_rating': 5,
+                'price_per_night': 280,
+                'description': 'Historic Victorian palace hotel where Agatha Christie wrote "Death on the Nile". Stunning gardens and royal heritage since 1886.',
+                'image_url': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200',
+                'is_featured': True,
+                'average_rating': 4.7,
+                'total_reviews': 950,
+            },
+            {
+                'name': 'Sofitel Legend Old Cataract Aswan',
+                'slug': 'sofitel-old-cataract-aswan',
+                'accommodation_type': 'hotel',
+                'city': 'Aswan',
+                'address': 'Abtal El Tahrir Street',
+                'star_rating': 5,
+                'price_per_night': 320,
+                'description': 'Legendary palace hotel perched above the Nile with breathtaking views of Elephantine Island. A favorite of royalty since 1899.',
+                'image_url': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200',
+                'is_featured': True,
+                'average_rating': 4.8,
+                'total_reviews': 800,
+            },
+            {
+                'name': 'Oberoi Sahl Hasheesh',
+                'slug': 'oberoi-sahl-hasheesh',
+                'accommodation_type': 'resort',
+                'city': 'Hurghada',
+                'address': 'Sahl Hasheesh Bay',
+                'star_rating': 5,
+                'price_per_night': 400,
+                'description': 'Ultra-luxury beachfront resort with stunning Moorish architecture, private beach, world-class spa, and exceptional dining.',
+                'image_url': 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=1200',
+                'is_featured': True,
+                'average_rating': 4.9,
+                'total_reviews': 600,
+            },
+            {
+                'name': 'Sunrise Holidays Resort',
+                'slug': 'sunrise-holidays-hurghada',
+                'accommodation_type': 'resort',
+                'city': 'Hurghada',
+                'address': 'Hurghada, Red Sea',
+                'star_rating': 4,
+                'price_per_night': 85,
+                'description': 'Popular all-inclusive resort with excellent beach, multiple pools, water sports, and family-friendly facilities.',
+                'image_url': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200',
+                'is_featured': False,
+                'average_rating': 4.3,
+                'total_reviews': 3500,
+            },
+            {
+                'name': 'Rixos Premium Sharm El Sheikh',
+                'slug': 'rixos-premium-sharm',
+                'accommodation_type': 'resort',
+                'city': 'Sharm El Sheikh',
+                'address': 'Nabq Bay',
+                'star_rating': 5,
+                'price_per_night': 220,
+                'description': 'Ultra all-inclusive luxury resort with private beach, multiple restaurants, aqua park, and world-class entertainment.',
+                'image_url': 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=1200',
+                'is_featured': True,
+                'average_rating': 4.7,
+                'total_reviews': 2200,
+            },
+            {
+                'name': 'Four Seasons Resort Sharm El Sheikh',
+                'slug': 'four-seasons-sharm',
+                'accommodation_type': 'resort',
+                'city': 'Sharm El Sheikh',
+                'address': '1 Four Seasons Boulevard',
+                'star_rating': 5,
+                'price_per_night': 450,
+                'description': 'Exclusive beachfront resort with private pools, exceptional dining, and direct access to pristine coral reefs.',
+                'image_url': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200',
+                'is_featured': True,
+                'average_rating': 4.9,
+                'total_reviews': 450,
+            },
+            {
+                'name': 'Steigenberger Cecil Hotel Alexandria',
+                'slug': 'steigenberger-cecil-alexandria',
+                'accommodation_type': 'hotel',
+                'city': 'Alexandria',
+                'address': '16 Saad Zaghloul Square',
+                'star_rating': 4,
+                'price_per_night': 120,
+                'description': 'Historic hotel in the heart of Alexandria overlooking the Mediterranean. Classic elegance and prime location on the famous Corniche.',
+                'image_url': 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200',
+                'is_featured': False,
+                'average_rating': 4.4,
+                'total_reviews': 900,
+            },
+        ]
+
+        for hotel_data in hotels_data:
+            Accommodation.objects.update_or_create(
+                slug=hotel_data['slug'],
+                defaults={
+                    **hotel_data,
+                    'is_active': True,
+                    'is_verified': True,
+                    'total_rooms': 200,
+                }
+            )
+
     def get_queryset(self):
         queryset = Accommodation.objects.filter(is_active=True)
 
