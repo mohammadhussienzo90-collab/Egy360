@@ -127,6 +127,11 @@ def _auto_seed_all_content():
             'population': 21000000, 'is_popular': True, 'is_capital': True, 'has_airport': True,
             'best_time_to_visit': 'October to April',
             'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200',
+            'attractions': [
+                {'name': 'Pyramids of Giza', 'slug': 'pyramids-of-giza', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True, 'description': 'The last surviving Wonder of the Ancient World.', 'image_url': 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800'},
+                {'name': 'Egyptian Museum', 'slug': 'egyptian-museum', 'type': 'museum', 'is_must_see': True, 'description': "Home to the world's largest collection of ancient Egyptian artifacts.", 'image_url': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800'},
+                {'name': 'Khan El-Khalili Bazaar', 'slug': 'khan-el-khalili', 'type': 'market', 'is_must_see': True, 'description': "Cairo's famous 14th-century bazaar.", 'image_url': 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800'},
+            ]
         },
         {
             'name': 'Luxor', 'slug': 'luxor',
@@ -134,6 +139,10 @@ def _auto_seed_all_content():
             'population': 500000, 'is_popular': True, 'has_airport': True,
             'best_time_to_visit': 'October to March',
             'image_url': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200',
+            'attractions': [
+                {'name': 'Valley of the Kings', 'slug': 'valley-of-kings', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True, 'description': "The royal burial ground of Egypt's pharaohs.", 'image_url': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800'},
+                {'name': 'Karnak Temple', 'slug': 'karnak-temple', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True, 'description': 'The largest ancient religious complex in the world.', 'image_url': 'https://images.unsplash.com/photo-1565967511849-76a60a516170?w=800'},
+            ]
         },
         {
             'name': 'Aswan', 'slug': 'aswan',
@@ -141,6 +150,10 @@ def _auto_seed_all_content():
             'population': 300000, 'is_popular': True, 'has_airport': True,
             'best_time_to_visit': 'October to April',
             'image_url': 'https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?w=1200',
+            'attractions': [
+                {'name': 'Abu Simbel Temples', 'slug': 'abu-simbel', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True, 'description': "Ramesses II's magnificent rock-cut temples.", 'image_url': 'https://images.unsplash.com/photo-1600697395453-e89e8a097d3a?w=800'},
+                {'name': 'Philae Temple', 'slug': 'philae-temple', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True, 'description': 'Beautiful island temple dedicated to goddess Isis.', 'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800'},
+            ]
         },
         {
             'name': 'Hurghada', 'slug': 'hurghada',
@@ -148,6 +161,9 @@ def _auto_seed_all_content():
             'population': 250000, 'is_popular': True, 'has_airport': True,
             'best_time_to_visit': 'March to May, September to November',
             'image_url': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200',
+            'attractions': [
+                {'name': 'Giftun Islands', 'slug': 'giftun-islands', 'type': 'natural', 'is_must_see': True, 'description': 'Protected marine park with pristine beaches.', 'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800'},
+            ]
         },
         {
             'name': 'Sharm El Sheikh', 'slug': 'sharm-el-sheikh',
@@ -155,6 +171,9 @@ def _auto_seed_all_content():
             'population': 100000, 'is_popular': True, 'has_airport': True,
             'best_time_to_visit': 'Year-round, best March to May',
             'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200',
+            'attractions': [
+                {'name': 'Ras Mohammed National Park', 'slug': 'ras-mohammed', 'type': 'natural', 'is_must_see': True, 'description': 'World-renowned marine park with spectacular diving.', 'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800'},
+            ]
         },
         {
             'name': 'Alexandria', 'slug': 'alexandria',
@@ -162,14 +181,35 @@ def _auto_seed_all_content():
             'population': 5000000, 'is_popular': True, 'has_airport': True,
             'best_time_to_visit': 'March to May, September to November',
             'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200',
+            'attractions': [
+                {'name': 'Bibliotheca Alexandrina', 'slug': 'bibliotheca-alexandrina', 'type': 'modern', 'is_must_see': True, 'description': 'Modern tribute to the ancient Library of Alexandria.', 'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800'},
+            ]
         },
     ]
 
     for city_data in cities_data:
-        City.objects.update_or_create(
+        attractions_data = city_data.pop('attractions', [])
+        city, _ = City.objects.update_or_create(
             slug=city_data['slug'],
             defaults={**city_data, 'country': egypt}
         )
+        # Create attractions for this city
+        for attr in attractions_data:
+            Attraction.objects.update_or_create(
+                slug=attr['slug'],
+                defaults={
+                    'city': city,
+                    'name': attr['name'],
+                    'attraction_type': attr['type'],
+                    'description': attr['description'],
+                    'address': f"{attr['name']}, {city.name}, Egypt",
+                    'is_unesco': attr.get('is_unesco', False),
+                    'is_must_see': attr.get('is_must_see', False),
+                    'image_url': attr.get('image_url', ''),
+                    'average_rating': 4.5,
+                    'total_reviews': 150,
+                }
+            )
 
     # ============ SEED HOTELS ============
     hotels_data = [
