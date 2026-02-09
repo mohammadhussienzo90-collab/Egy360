@@ -13,15 +13,23 @@ def debug_blog(request):
         total = BlogPost.objects.count()
         published = BlogPost.objects.filter(status='published').count()
         categories = BlogCategory.objects.count()
-        version = 'v5-homepage-seed'  # Version indicator for deployment verification
+        version = 'v6-attractions'  # Version indicator for deployment verification
         posts = list(BlogPost.objects.filter(status='published').values('title', 'slug')[:5])
+
+        # Add attractions count for debugging
+        from destinations.models import Attraction, City
+        attractions_count = Attraction.objects.count()
+        cities_count = City.objects.count()
+
         return JsonResponse({
             'status': 'ok',
             'version': version,
             'total_posts': total,
             'published_posts': published,
             'categories': categories,
-            'sample_posts': posts
+            'sample_posts': posts,
+            'attractions_count': attractions_count,
+            'cities_count': cities_count,
         })
     except Exception as e:
         return JsonResponse({
@@ -29,6 +37,77 @@ def debug_blog(request):
             'error': str(e),
             'traceback': traceback.format_exc()
         }, status=500)
+
+
+def seed_attractions(request):
+    """
+    Seed attractions directly.
+    Access via: /blog/seed-attractions/?key=egy360seed
+    """
+    if request.GET.get('key') != 'egy360seed':
+        return JsonResponse({'error': 'Invalid key'}, status=403)
+
+    from destinations.models import Country, City, Attraction
+
+    # Get or create Egypt
+    egypt, _ = Country.objects.get_or_create(
+        code='EGY',
+        defaults={'name': 'Egypt', 'description': 'Land of pharaohs', 'flag_emoji': '🇪🇬'}
+    )
+
+    attractions_data = [
+        {'city_slug': 'cairo', 'name': 'Pyramids of Giza', 'slug': 'pyramids-of-giza', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True, 'description': 'The last surviving Wonder of the Ancient World.', 'image_url': 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800'},
+        {'city_slug': 'cairo', 'name': 'Egyptian Museum', 'slug': 'egyptian-museum', 'type': 'museum', 'is_must_see': True, 'description': "Home to the world's largest collection of ancient Egyptian artifacts.", 'image_url': 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800'},
+        {'city_slug': 'cairo', 'name': 'Khan El-Khalili Bazaar', 'slug': 'khan-el-khalili', 'type': 'market', 'is_must_see': True, 'description': "Cairo's famous 14th-century bazaar.", 'image_url': 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800'},
+        {'city_slug': 'luxor', 'name': 'Valley of the Kings', 'slug': 'valley-of-kings', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True, 'description': "The royal burial ground of Egypt's pharaohs.", 'image_url': 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800'},
+        {'city_slug': 'luxor', 'name': 'Karnak Temple', 'slug': 'karnak-temple', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True, 'description': 'The largest ancient religious complex in the world.', 'image_url': 'https://images.unsplash.com/photo-1565967511849-76a60a516170?w=800'},
+        {'city_slug': 'aswan', 'name': 'Abu Simbel Temples', 'slug': 'abu-simbel', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True, 'description': "Ramesses II's magnificent rock-cut temples.", 'image_url': 'https://images.unsplash.com/photo-1600697395453-e89e8a097d3a?w=800'},
+        {'city_slug': 'aswan', 'name': 'Philae Temple', 'slug': 'philae-temple', 'type': 'archaeological', 'is_unesco': True, 'is_must_see': True, 'description': 'Beautiful island temple dedicated to goddess Isis.', 'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800'},
+        {'city_slug': 'hurghada', 'name': 'Giftun Islands', 'slug': 'giftun-islands', 'type': 'natural', 'is_must_see': True, 'description': 'Protected marine park with pristine beaches.', 'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800'},
+        {'city_slug': 'sharm-el-sheikh', 'name': 'Ras Mohammed National Park', 'slug': 'ras-mohammed', 'type': 'natural', 'is_must_see': True, 'description': 'World-renowned marine park with spectacular diving.', 'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800'},
+        {'city_slug': 'alexandria', 'name': 'Bibliotheca Alexandrina', 'slug': 'bibliotheca-alexandrina', 'type': 'modern', 'is_must_see': True, 'description': 'Modern tribute to the ancient Library of Alexandria.', 'image_url': 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800'},
+    ]
+
+    created = 0
+    updated = 0
+    errors = []
+
+    for attr in attractions_data:
+        try:
+            city = City.objects.filter(slug=attr['city_slug']).first()
+            if not city:
+                errors.append(f"City not found: {attr['city_slug']}")
+                continue
+
+            _, was_created = Attraction.objects.update_or_create(
+                slug=attr['slug'],
+                defaults={
+                    'city': city,
+                    'name': attr['name'],
+                    'attraction_type': attr['type'],
+                    'description': attr['description'],
+                    'address': f"{attr['name']}, {city.name}, Egypt",
+                    'is_unesco': attr.get('is_unesco', False),
+                    'is_must_see': attr.get('is_must_see', False),
+                    'image_url': attr.get('image_url', ''),
+                    'average_rating': 4.5,
+                    'total_reviews': 150,
+                }
+            )
+            if was_created:
+                created += 1
+            else:
+                updated += 1
+        except Exception as e:
+            errors.append(f"Error creating {attr['name']}: {str(e)}")
+
+    return JsonResponse({
+        'success': True,
+        'created': created,
+        'updated': updated,
+        'total': Attraction.objects.count(),
+        'errors': errors,
+    })
 
 
 def seed_pyramid_articles(request):
