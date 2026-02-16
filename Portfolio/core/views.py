@@ -92,12 +92,17 @@ def seed_data(request):
     skills_data = [
         {'name': 'Python', 'icon': 'fab fa-python', 'category': 'backend', 'proficiency': 95},
         {'name': 'Django', 'icon': 'fas fa-cube', 'category': 'backend', 'proficiency': 90},
+        {'name': 'Django REST Framework', 'icon': 'fas fa-plug', 'category': 'backend', 'proficiency': 90},
+        {'name': 'Multi-Tenancy', 'icon': 'fas fa-layer-group', 'category': 'backend', 'proficiency': 85},
         {'name': 'JavaScript', 'icon': 'fab fa-js', 'category': 'frontend', 'proficiency': 85},
         {'name': 'HTML/CSS', 'icon': 'fab fa-html5', 'category': 'frontend', 'proficiency': 90},
+        {'name': 'Bootstrap', 'icon': 'fab fa-bootstrap', 'category': 'frontend', 'proficiency': 90},
         {'name': 'PostgreSQL', 'icon': 'fas fa-database', 'category': 'database', 'proficiency': 85},
+        {'name': 'Redis', 'icon': 'fas fa-bolt', 'category': 'database', 'proficiency': 80},
         {'name': 'SQLite', 'icon': 'fas fa-database', 'category': 'database', 'proficiency': 90},
         {'name': 'Git', 'icon': 'fab fa-git-alt', 'category': 'tools', 'proficiency': 90},
         {'name': 'Docker', 'icon': 'fab fa-docker', 'category': 'tools', 'proficiency': 75},
+        {'name': 'Celery', 'icon': 'fas fa-tasks', 'category': 'tools', 'proficiency': 80},
         {'name': 'REST APIs', 'icon': 'fas fa-plug', 'category': 'backend', 'proficiency': 90},
         {'name': 'Tailwind CSS', 'icon': 'fas fa-wind', 'category': 'frontend', 'proficiency': 85},
     ]
@@ -142,6 +147,65 @@ def seed_data(request):
             'category': 'website',
             'is_featured': True,
             'display_order': 1,
+        }
+    )
+
+    # Create RealtyHub project
+    Project.objects.update_or_create(
+        slug='realtyhub',
+        defaults={
+            'title': 'RealtyHub',
+            'tagline': 'Multi-tenant Real Estate SaaS — CRM, Pipeline & Branded Websites',
+            'description': """RealtyHub is a production-grade multi-tenant SaaS platform built for real estate companies
+            in Egypt and the Gulf region. Each tenant (company) gets a fully isolated PostgreSQL schema with their own
+            branded public website, CRM pipeline, lead management, task tracking, and analytics dashboards.
+
+            The platform features schema-per-tenant isolation via django-tenants, role-based access control (CEO, Manager,
+            Agent), a drag-and-drop Kanban pipeline board, call/WhatsApp communication logging, a dynamic form builder
+            for lead capture, and three role-based reporting dashboards with Chart.js visualizations. It supports full
+            bilingual EN/AR with RTL layout, and exposes a versioned REST API (v1) designed for a Flutter mobile app.
+
+            Built with a microservices-ready architecture including Celery for async task processing, Redis for caching
+            and message brokering, and Docker Compose for local and production deployment.""",
+            'thumbnail': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800',
+            'screenshots': [
+                'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200',
+                'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200',
+                'https://images.unsplash.com/photo-1554469384-e58fac16e23a?w=1200',
+            ],
+            'live_url': 'https://github.com/mohammadhussienzo90-collab/RealtyHub',
+            'github_url': 'https://github.com/mohammadhussienzo90-collab/RealtyHub',
+            'tech_stack': [
+                'Django',
+                'Python',
+                'PostgreSQL',
+                'django-tenants',
+                'Django REST Framework',
+                'Celery',
+                'Redis',
+                'Bootstrap 5',
+                'Chart.js',
+                'HTMX',
+                'Docker',
+                'i18n (EN/AR + RTL)',
+            ],
+            'features': [
+                'Multi-tenant architecture with schema-per-tenant isolation',
+                'Role-based CRM with Kanban pipeline board',
+                'Lead management with auto-assignment & scoring',
+                'Dynamic form builder for lead capture with embeddable widgets',
+                'Call & WhatsApp communication logging',
+                'Task management with reminders & Celery scheduling',
+                'Three role-based analytics dashboards (CEO, Manager, Agent)',
+                'Branded public website per tenant with SEO',
+                'Full bilingual support (English/Arabic) with RTL',
+                'REST API v1 with JWT auth for mobile app',
+                'CSV lead import & report export',
+                'Docker Compose deployment (web, worker, beat, Redis, PostgreSQL)',
+            ],
+            'category': 'django_app',
+            'is_featured': True,
+            'display_order': 0,
         }
     )
 
