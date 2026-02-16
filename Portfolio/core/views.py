@@ -209,4 +209,55 @@ def seed_data(request):
         }
     )
 
+    # Create ChartGen project
+    Project.objects.update_or_create(
+        slug='chartgen',
+        defaults={
+            'title': 'ChartGen',
+            'tagline': 'Instant data visualization — create beautiful charts from your data',
+            'description': """ChartGen is a web-based data visualization tool that lets you create beautiful,
+            publication-ready charts and graphs instantly. Paste your data into the interactive table, pick a
+            chart type, and download a high-quality PNG in seconds — no signup, no complexity.
+
+            The app supports six chart types (Line, Bar, Horizontal Bar, Pie, Scatter, Area) with full
+            customization of titles, axis labels, and legends. Charts are rendered server-side with Matplotlib
+            at 150 DPI using a clean Seaborn-styled theme with a curated 10-color palette. The frontend uses
+            Alpine.js for a reactive two-panel layout: data entry on the left, live chart preview on the right.
+
+            Designed to be lightweight and stateless — no database persistence needed, no user accounts required.
+            Just open, chart, and download.""",
+            'thumbnail': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
+            'screenshots': [
+                'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200',
+                'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200',
+                'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1200',
+            ],
+            'live_url': 'https://github.com/mohammadhussienzo90-collab/ChartGen',
+            'github_url': 'https://github.com/mohammadhussienzo90-collab/ChartGen',
+            'tech_stack': [
+                'Django',
+                'Python',
+                'Matplotlib',
+                'NumPy',
+                'Alpine.js',
+                'Pillow',
+                'WhiteNoise',
+                'Railway',
+            ],
+            'features': [
+                '6 chart types: Line, Bar, Horizontal Bar, Pie, Scatter, Area',
+                'Interactive data table with add/remove rows',
+                'Quick actions: Add 5 Rows, Clear All, Load Sample Data',
+                'Customizable titles, axis labels, and legends',
+                'High-quality PNG export at 150 DPI',
+                'Seaborn-styled theme with 10-color palette',
+                'Reactive two-panel UI with Alpine.js',
+                'No signup or account required — fully stateless',
+            ],
+            'category': 'django_app',
+            'is_featured': True,
+            'display_order': 2,
+        }
+    )
+
     return JsonResponse({'success': True, 'message': 'Data seeded successfully!'})
