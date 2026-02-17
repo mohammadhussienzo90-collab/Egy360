@@ -613,6 +613,33 @@ class BlogListView(ListView):
                 }
             )
 
+        # Seed additional article batches from standalone scripts
+        try:
+            from seed_articles_destinations import seed as seed_destinations
+            seed_destinations()
+        except Exception:
+            pass
+        try:
+            from seed_articles_practical import seed as seed_practical
+            seed_practical()
+        except Exception:
+            pass
+        try:
+            from seed_articles_food_gems import seed as seed_food_gems
+            seed_food_gems()
+        except Exception:
+            pass
+        try:
+            from seed_articles_adventure import seed as seed_adventure
+            seed_adventure()
+        except Exception:
+            pass
+        try:
+            from seed_articles_2026 import seed as seed_2026
+            seed_2026()
+        except Exception:
+            pass
+
     def _get_rich_articles_data(self):
         """Return articles with rich, detailed content (200+ words each)"""
         return [
