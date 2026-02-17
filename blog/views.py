@@ -520,30 +520,46 @@ def seed_new_articles(request):
     Seed the 11 new articles (destinations, practical, food, adventure, 2026).
     Access via: /blog/seed-new-articles/?key=egy360seed
     """
+    import sys, os
     if request.GET.get('key') != 'egy360seed':
         return JsonResponse({'error': 'Invalid key'}, status=403)
 
-    results = {}
-    seed_scripts = [
-        'seed_articles_destinations',
-        'seed_articles_practical',
-        'seed_articles_food_gems',
-        'seed_articles_adventure',
-        'seed_articles_2026',
-    ]
-    for script_name in seed_scripts:
-        try:
-            mod = __import__(script_name)
-            mod.seed()
-            results[script_name] = 'OK'
-        except Exception as e:
-            results[script_name] = f'{type(e).__name__}: {e}'
+    try:
+        # Ensure project root is on Python path for seed script imports
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        if project_root not in sys.path:
+            sys.path.insert(0, project_root)
 
-    return JsonResponse({
-        'success': True,
-        'results': results,
-        'total_articles': BlogPost.objects.count(),
-    })
+        results = {}
+        seed_scripts = [
+            'seed_articles_destinations',
+            'seed_articles_practical',
+            'seed_articles_food_gems',
+            'seed_articles_adventure',
+            'seed_articles_2026',
+        ]
+        for script_name in seed_scripts:
+            try:
+                # Force reimport if already cached
+                if script_name in sys.modules:
+                    del sys.modules[script_name]
+                mod = __import__(script_name)
+                mod.seed()
+                results[script_name] = 'OK'
+            except Exception as e:
+                results[script_name] = f'{type(e).__name__}: {e}'
+
+        return JsonResponse({
+            'success': True,
+            'results': results,
+            'total_articles': BlogPost.objects.count(),
+            'project_root': project_root,
+        })
+    except Exception as e:
+        return JsonResponse({
+            'error': str(e),
+            'traceback': traceback.format_exc(),
+        }, status=500)
 
 
 def blog_list_test(request):
@@ -645,6 +661,12 @@ class BlogListView(ListView):
             )
 
         # Seed additional article batches from standalone scripts
+        import os
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        if project_root not in sys.path:
+            sys.path.insert(0, project_root)
+        print(f"AUTO-SEED: project_root={project_root}, sys.path[0]={sys.path[0]}", file=sys.stderr)
+
         seed_scripts = [
             'seed_articles_destinations',
             'seed_articles_practical',
@@ -654,6 +676,8 @@ class BlogListView(ListView):
         ]
         for script_name in seed_scripts:
             try:
+                if script_name in sys.modules:
+                    del sys.modules[script_name]
                 mod = __import__(script_name)
                 mod.seed()
                 print(f"AUTO-SEED: {script_name} OK", file=sys.stderr)
