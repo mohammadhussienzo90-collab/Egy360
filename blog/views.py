@@ -7,6 +7,24 @@ from .models import BlogPost, BlogCategory, BlogComment
 import traceback
 
 
+def deploy_check(request):
+    """Minimal endpoint to verify which code version is deployed."""
+    import sys, os
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    return JsonResponse({
+        'deployed_version': 'v8-seed-fix',
+        'commit': '40e62d7',
+        'project_root': project_root,
+        'sys_path_0': sys.path[0] if sys.path else 'empty',
+        'cwd': os.getcwd(),
+        'seed_files_exist': {
+            name: os.path.exists(os.path.join(project_root, f'{name}.py'))
+            for name in ['seed_articles_destinations', 'seed_articles_practical',
+                         'seed_articles_food_gems', 'seed_articles_adventure', 'seed_articles_2026']
+        },
+    })
+
+
 def debug_blog(request):
     """Debug endpoint to test blog functionality"""
     try:
