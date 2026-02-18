@@ -113,6 +113,7 @@ INSTALLED_APPS = [
     'reviews',  # User reviews and ratings
     'tours',  # Tour packages and experiences
     'transportation',  # Flights, transfers, car rentals
+    'social_poster',  # Social media auto-posting system
 ]
 
 # =============================================================================
@@ -522,6 +523,21 @@ PAYMOB_IFRAME_ID = os.environ.get('PAYMOB_IFRAME_ID', '')
 MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY', '')
 MAILCHIMP_AUDIENCE_ID = os.environ.get('MAILCHIMP_AUDIENCE_ID', '')
 MAILCHIMP_SERVER_PREFIX = os.environ.get('MAILCHIMP_SERVER_PREFIX', '')  # e.g., 'us21'
+
+# =============================================================================
+# SOCIAL MEDIA AUTO-POSTING
+# =============================================================================
+
+SOCIAL_POSTER = {
+    'PINTEREST_APP_ID': os.environ.get('PINTEREST_APP_ID', ''),
+    'PINTEREST_APP_SECRET': os.environ.get('PINTEREST_APP_SECRET', ''),
+    'FACEBOOK_APP_ID': os.environ.get('SOCIAL_FACEBOOK_APP_ID', ''),
+    'FACEBOOK_APP_SECRET': os.environ.get('SOCIAL_FACEBOOK_APP_SECRET', ''),
+    'PINTEREST_DAILY_LIMIT': 50,
+    'FACEBOOK_DAILY_LIMIT': 25,
+    'INSTAGRAM_DAILY_LIMIT': 10,
+    'BASE_URL': os.environ.get('SITE_URL', 'https://360egy.com'),
+}
 
 # =============================================================================
 # SECURITY SETTINGS (Production)

@@ -3112,6 +3112,7 @@ urlpatterns = [
     path('blog/', include('blog.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('api/', include('api.urls')),
+    path('api/social/', include('social_poster.urls')),
 ]
 
 if settings.DEBUG:
