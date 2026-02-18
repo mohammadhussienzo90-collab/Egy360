@@ -679,7 +679,7 @@ class BlogListView(ListView):
             )
 
         # Seed additional article batches from standalone scripts
-        import os
+        import sys, os
         project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         if project_root not in sys.path:
             sys.path.insert(0, project_root)
