@@ -20,4 +20,7 @@ urlpatterns = [
 
     # API URLs
     path('', include(router.urls)),
+
+    # Short-form city URL (must be last to avoid matching api/attraction prefixes)
+    path('<slug:slug>/', views.city_detail, name='city_detail_short'),
 ]

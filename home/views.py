@@ -455,6 +455,100 @@ def social_links(request):
     return render(request, 'social_links.html', context)
 
 
+def trip_planner(request):
+    """Interactive trip planner page with wizard form."""
+    from .itinerary_data import (
+        get_cities_for_form, INTEREST_MAPPING, BUDGET_RANGES,
+        PRESET_ITINERARIES, get_affiliate_config,
+    )
+
+    cities = get_cities_for_form()
+    interests = [
+        {'key': 'history', 'label': 'History & Archaeology', 'icon': 'fa-landmark'},
+        {'key': 'adventure', 'label': 'Adventure & Outdoors', 'icon': 'fa-hiking'},
+        {'key': 'culture', 'label': 'Culture & Markets', 'icon': 'fa-mosque'},
+        {'key': 'beach', 'label': 'Beach & Relaxation', 'icon': 'fa-umbrella-beach'},
+        {'key': 'food', 'label': 'Food & Cuisine', 'icon': 'fa-utensils'},
+        {'key': 'diving', 'label': 'Diving & Snorkeling', 'icon': 'fa-water'},
+        {'key': 'romance', 'label': 'Romance & Luxury', 'icon': 'fa-heart'},
+        {'key': 'family', 'label': 'Family Friendly', 'icon': 'fa-users'},
+    ]
+    budgets = [
+        {'key': 'budget', 'label': 'Budget', 'range': '$30-60/day', 'icon': 'fa-dollar-sign'},
+        {'key': 'mid', 'label': 'Mid-Range', 'range': '$80-150/day', 'icon': 'fa-coins'},
+        {'key': 'luxury', 'label': 'Luxury', 'range': '$200-500/day', 'icon': 'fa-gem'},
+    ]
+    presets = [
+        {
+            'slug': p['slug'],
+            'name': p['name'],
+            'duration': p['duration'],
+            'destinations': [c.replace('-', ' ').title() for c in p['destinations']],
+            'description': p['description'],
+            'image': p['image'],
+        }
+        for p in PRESET_ITINERARIES.values()
+    ]
+
+    # Default widget config for Cairo (initial flight widget)
+    default_widget = get_affiliate_config('cairo')
+
+    context = {
+        'page_title': 'Egypt Trip Planner - Build Your Perfect Itinerary | Egy360',
+        'meta_description': 'Plan your perfect Egypt trip with our interactive itinerary builder. Get personalized day-by-day plans for Cairo, Luxor, Aswan, Hurghada and more.',
+        'cities': cities,
+        'interests': interests,
+        'budgets': budgets,
+        'presets': presets,
+        'default_widget': default_widget,
+    }
+    return render(request, 'trip_planner.html', context)
+
+
+@require_http_methods(["POST"])
+def trip_planner_generate(request):
+    """API endpoint to generate an itinerary from wizard selections."""
+    from .itinerary_data import generate_itinerary
+
+    try:
+        data = json.loads(request.body)
+        destinations = data.get('destinations', ['cairo'])
+        duration = min(max(int(data.get('duration', 5)), 1), 14)
+        interests = data.get('interests', ['history'])
+        budget = data.get('budget', 'mid')
+        travelers = min(max(int(data.get('travelers', 2)), 1), 20)
+        travel_dates = data.get('travel_dates', None)
+
+        if not destinations:
+            return JsonResponse(
+                {'success': False, 'error': 'Please select at least one destination.'},
+                status=400,
+            )
+
+        result = generate_itinerary(
+            destinations=destinations,
+            duration=duration,
+            interests=interests,
+            budget=budget,
+            travelers=travelers,
+            travel_dates=travel_dates,
+        )
+
+        return JsonResponse({'success': True, **result})
+
+    except json.JSONDecodeError:
+        return JsonResponse(
+            {'success': False, 'error': 'Invalid request format.'},
+            status=400,
+        )
+    except Exception as e:
+        logger.error(f"Trip planner generation error: {e}")
+        return JsonResponse(
+            {'success': False, 'error': 'Could not generate itinerary. Please try again.'},
+            status=500,
+        )
+
+
 def error_404(request, exception):
     """Custom 404 error page"""
     return render(request, '404.html', status=404)

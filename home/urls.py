@@ -21,6 +21,7 @@ urlpatterns = [
     path('hotels-search/', views.hotels_search, name='hotels-search'),
     path('insurance/', views.insurance, name='insurance'),
     path('deals/', views.deals, name='deals'),
+    path('trip-planner/', views.trip_planner, name='trip-planner'),
 
     # Legal pages
     path('privacy/', views.privacy_policy, name='privacy'),
@@ -46,5 +47,6 @@ urlpatterns = [
     path('api/newsletter/', views.newsletter_subscribe, name='newsletter-subscribe'),
     path('api/lead-magnet/', views.lead_magnet_download, name='lead-magnet-api'),
     path('api/search-autocomplete/', views.search_autocomplete, name='search-autocomplete'),
+    path('api/trip-planner/generate/', views.trip_planner_generate, name='trip-planner-generate'),
     path('api/stats/', views.get_platform_stats, name='platform-stats'),
 ]

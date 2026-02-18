@@ -1,0 +1,536 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block description %}{{ meta_description }}{% endblock %}
+{% block keywords %}Egypt trip planner, Egypt itinerary, plan Egypt trip, Egypt travel planner, Cairo itinerary, Luxor itinerary, Nile cruise planner{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/trip_planner.css' %}">
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Egy360 Egypt Trip Planner",
+    "url": "https://360egy.com/trip-planner/",
+    "description": "{{ meta_description }}",
+    "applicationCategory": "TravelApplication",
+    "operatingSystem": "Web",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="tp-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1 class="tp-hero__title">Plan Your Perfect Egypt Trip</h1>
+                <p class="tp-hero__subtitle">Build a personalized day-by-day itinerary with hotel, tour, and flight recommendations. Select your destinations, interests, and budget to get started.</p>
+                <div class="tp-hero__stats">
+                    <div class="tp-hero__stat">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>6 Destinations</span>
+                    </div>
+                    <div class="tp-hero__stat">
+                        <i class="fas fa-route"></i>
+                        <span>6 Pre-built Routes</span>
+                    </div>
+                    <div class="tp-hero__stat">
+                        <i class="fas fa-clock"></i>
+                        <span>1-14 Days</span>
+                    </div>
+                </div>
+                <a href="#wizard" class="btn btn-warning btn-lg tp-hero__cta">
+                    <i class="fas fa-magic me-2"></i>Start Planning
+                </a>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block text-center">
+                <i class="fas fa-route tp-hero__icon"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Wizard Section -->
+<section id="wizard" class="tp-wizard-section">
+    <div class="container">
+        <!-- Progress Bar -->
+        <div class="tp-progress">
+            <div class="tp-progress__bar">
+                <div class="tp-progress__fill" id="progressFill" style="width: 33%"></div>
+            </div>
+            <div class="tp-progress__steps">
+                <div class="tp-progress__step active" data-step="1">
+                    <span class="tp-progress__dot">1</span>
+                    <span class="tp-progress__label">Destinations</span>
+                </div>
+                <div class="tp-progress__step" data-step="2">
+                    <span class="tp-progress__dot">2</span>
+                    <span class="tp-progress__label">Duration</span>
+                </div>
+                <div class="tp-progress__step" data-step="3">
+                    <span class="tp-progress__dot">3</span>
+                    <span class="tp-progress__label">Preferences</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 1: Destinations -->
+        <div class="tp-step" id="step1" data-step="1">
+            <h2 class="tp-step__title">Where do you want to go?</h2>
+            <p class="tp-step__subtitle">Select one or more destinations</p>
+            <div class="row g-3" id="cityGrid">
+                {% for city in cities %}
+                <div class="col-6 col-md-4 col-lg-3">
+                    <label class="tp-city-card" data-slug="{{ city.slug }}">
+                        <input type="checkbox" name="destinations" value="{{ city.slug }}" class="tp-city-card__input">
+                        <div class="tp-city-card__inner">
+                            <img src="{{ city.image }}" alt="{{ city.name }}" class="tp-city-card__img" loading="lazy">
+                            <div class="tp-city-card__overlay">
+                                <h5 class="tp-city-card__name">{{ city.name }}</h5>
+                                <i class="fas fa-check-circle tp-city-card__check"></i>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="tp-step__nav">
+                <div></div>
+                <button class="btn btn-primary btn-lg tp-btn-next" onclick="TripPlanner.nextStep()">
+                    Next: Duration <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Duration & Dates -->
+        <div class="tp-step" id="step2" data-step="2" style="display:none;">
+            <h2 class="tp-step__title">How long is your trip?</h2>
+            <p class="tp-step__subtitle">Choose duration and optional travel dates</p>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="tp-duration-picker">
+                        <div class="tp-duration-picker__display">
+                            <span id="durationValue" class="tp-duration-picker__value">5</span>
+                            <span class="tp-duration-picker__label">days</span>
+                        </div>
+                        <input type="range" id="durationSlider" class="tp-duration-picker__slider" min="1" max="14" value="5">
+                        <div class="tp-duration-picker__labels">
+                            <span>1 day</span>
+                            <span>7 days</span>
+                            <span>14 days</span>
+                        </div>
+                    </div>
+
+                    <div class="tp-date-picker mt-4">
+                        <label class="form-label fw-semibold">Travel dates (optional)</label>
+                        <input type="date" id="travelDate" class="form-control form-control-lg">
+                        <small class="text-muted">When do you plan to arrive in Egypt?</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tp-step__nav">
+                <button class="btn btn-outline-secondary btn-lg" onclick="TripPlanner.prevStep()">
+                    <i class="fas fa-arrow-left me-2"></i> Back
+                </button>
+                <button class="btn btn-primary btn-lg tp-btn-next" onclick="TripPlanner.nextStep()">
+                    Next: Preferences <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Interests, Budget, Travelers -->
+        <div class="tp-step" id="step3" data-step="3" style="display:none;">
+            <h2 class="tp-step__title">What interests you?</h2>
+            <p class="tp-step__subtitle">Select your interests, budget level, and group size</p>
+
+            <!-- Interests -->
+            <div class="tp-interests mb-4">
+                <h5 class="mb-3">Interests</h5>
+                <div class="tp-chip-grid">
+                    {% for interest in interests %}
+                    <label class="tp-chip">
+                        <input type="checkbox" name="interests" value="{{ interest.key }}">
+                        <span class="tp-chip__inner">
+                            <i class="fas {{ interest.icon }} me-1"></i>
+                            {{ interest.label }}
+                        </span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Budget -->
+            <div class="tp-budget mb-4">
+                <h5 class="mb-3">Budget Level</h5>
+                <div class="row g-3">
+                    {% for b in budgets %}
+                    <div class="col-md-4">
+                        <label class="tp-budget-card{% if b.key == 'mid' %} tp-budget-card--selected{% endif %}">
+                            <input type="radio" name="budget" value="{{ b.key }}" {% if b.key == 'mid' %}checked{% endif %}>
+                            <div class="tp-budget-card__inner">
+                                <i class="fas {{ b.icon }} tp-budget-card__icon"></i>
+                                <h6>{{ b.label }}</h6>
+                                <small class="text-muted">{{ b.range }}</small>
+                            </div>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Travelers -->
+            <div class="tp-travelers mb-4">
+                <h5 class="mb-3">Number of Travelers</h5>
+                <div class="tp-travelers__control">
+                    <button type="button" class="btn btn-outline-secondary" onclick="TripPlanner.adjustTravelers(-1)">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <span id="travelersCount" class="tp-travelers__count">2</span>
+                    <button type="button" class="btn btn-outline-secondary" onclick="TripPlanner.adjustTravelers(1)">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="tp-step__nav">
+                <button class="btn btn-outline-secondary btn-lg" onclick="TripPlanner.prevStep()">
+                    <i class="fas fa-arrow-left me-2"></i> Back
+                </button>
+                <button class="btn btn-primary btn-lg tp-btn-generate" onclick="TripPlanner.generate()">
+                    <i class="fas fa-magic me-2"></i> Generate My Itinerary
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="tp-loading" id="loadingState" style="display:none;">
+            <div class="tp-loading__spinner"></div>
+            <h3>Building Your Perfect Itinerary...</h3>
+            <p class="text-muted">Finding the best activities, hotels, and routes for your trip</p>
+        </div>
+    </div>
+</section>
+
+<!-- Results Section -->
+<section id="results" class="tp-results" style="display:none;">
+    <div class="container">
+        <!-- Summary Header -->
+        <div class="tp-results__header" id="resultsSummary">
+            <!-- Populated by JS -->
+        </div>
+
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Flight Widget -->
+                <div class="tp-widget-card mb-4" id="flightWidget">
+                    <h4><i class="fas fa-plane me-2"></i>Find Flights</h4>
+                    <div id="flightWidgetContainer"></div>
+                </div>
+
+                <!-- Day-by-Day Timeline -->
+                <div id="itineraryTimeline">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Book Entire Trip CTA -->
+                <div class="tp-book-all" id="bookAllCta" style="display:none;">
+                    <h3><i class="fas fa-suitcase-rolling me-2"></i>Ready to Book This Trip?</h3>
+                    <p>Book flights, hotels, and tours for your entire Egypt itinerary.</p>
+                    <div class="d-flex gap-3 flex-wrap justify-content-center">
+                        <a id="bookFlightsBtn" href="#" target="_blank" rel="sponsored noopener" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plane me-2"></i>Book Flights
+                        </a>
+                        <a id="bookHotelsBtn" href="#" target="_blank" rel="sponsored noopener" class="btn btn-success btn-lg">
+                            <i class="fas fa-hotel me-2"></i>Book Hotels
+                        </a>
+                        <a id="bookToursBtn" href="#" target="_blank" rel="sponsored noopener" class="btn btn-warning btn-lg">
+                            <i class="fas fa-compass me-2"></i>Book Tours
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Insurance Widget (Sticky) -->
+                <div class="tp-sidebar-sticky">
+                    <div class="tp-insurance-card mb-4">
+                        <div class="tp-insurance-card__header">
+                            <i class="fas fa-shield-alt me-2"></i>Travel Insurance
+                        </div>
+                        <div class="tp-insurance-card__body">
+                            <p>Protect your Egypt trip from unexpected events.</p>
+                            <ul class="tp-insurance-card__list">
+                                <li><i class="fas fa-check"></i> Medical emergencies</li>
+                                <li><i class="fas fa-check"></i> Trip cancellation</li>
+                                <li><i class="fas fa-check"></i> Lost luggage</li>
+                                <li><i class="fas fa-check"></i> 24/7 assistance</li>
+                            </ul>
+                            <a href="https://tp.media/click?shmarker=688198&promo_id=4508&source_type=banner&type=click&campaign_id=104&trs=477897" target="_blank" rel="sponsored noopener" class="btn btn-success w-100" data-affiliate="true" data-item-type="insurance">
+                                <i class="fas fa-external-link-alt me-2"></i>Get Insurance Quote
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Cost Breakdown -->
+                    <div class="tp-cost-card mb-4" id="costBreakdown" style="display:none;">
+                        <h5><i class="fas fa-calculator me-2"></i>Estimated Cost</h5>
+                        <div id="costBreakdownContent"></div>
+                    </div>
+
+                    <!-- Start Over -->
+                    <button class="btn btn-outline-secondary w-100 mb-4" onclick="TripPlanner.reset()">
+                        <i class="fas fa-redo me-2"></i>Plan Another Trip
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Pre-Built Itineraries -->
+<section class="tp-presets py-5" id="presets">
+    <div class="container">
+        <h2 class="text-center mb-2">Popular Egypt Itineraries</h2>
+        <p class="text-center text-muted mb-5">Start with a tried-and-tested route, or build your own above</p>
+        <div class="row g-4">
+            {% for preset in presets %}
+            <div class="col-md-6 col-lg-4">
+                <div class="tp-preset-card">
+                    <img src="{{ preset.image }}" alt="{{ preset.name }}" class="tp-preset-card__img" loading="lazy">
+                    <div class="tp-preset-card__body">
+                        <h5 class="tp-preset-card__title">{{ preset.name }}</h5>
+                        <div class="tp-preset-card__meta">
+                            <span><i class="fas fa-clock me-1"></i>{{ preset.duration }} days</span>
+                            <span><i class="fas fa-map-marker-alt me-1"></i>{{ preset.destinations|join:", " }}</span>
+                        </div>
+                        <p class="tp-preset-card__desc">{{ preset.description }}</p>
+                        <a href="?preset={{ preset.slug }}" class="btn btn-primary w-100" onclick="TripPlanner.loadPreset('{{ preset.slug }}'); return false;">
+                            <i class="fas fa-magic me-2"></i>Use This Itinerary
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Full Booking Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3" style="font-weight: 700;">Book Your Egypt Adventure</h2>
+            <p class="text-muted">Compare prices from 100+ travel sites</p>
+        </div>
+        <ul class="nav nav-pills justify-content-center mb-4" id="bookingTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active px-4" id="tp-hotels-tab" data-bs-toggle="pill" data-bs-target="#tp-hotels-panel" type="button" role="tab">
+                    <i class="fas fa-hotel me-2"></i>Hotels
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4" id="tp-flights-tab" data-bs-toggle="pill" data-bs-target="#tp-flights-panel" type="button" role="tab">
+                    <i class="fas fa-plane me-2"></i>Flights
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4" id="tp-tours-tab" data-bs-toggle="pill" data-bs-target="#tp-tours-panel" type="button" role="tab">
+                    <i class="fas fa-compass me-2"></i>Tours
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link px-4" id="tp-cars-tab" data-bs-toggle="pill" data-bs-target="#tp-cars-panel" type="button" role="tab">
+                    <i class="fas fa-car me-2"></i>Cars
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content bg-white rounded-4 shadow-lg p-4" id="bookingTabContent2">
+            <div class="tab-pane fade show active" id="tp-hotels-panel" role="tabpanel">
+                <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeHotels=true&city=284&city_label=Cairo%2C%20Egypt&lang=en&powered_by=true&promo_id=4505&campaign_id=101" charset="utf-8"></script>
+            </div>
+            <div class="tab-pane fade" id="tp-flights-panel" role="tabpanel">
+                <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeFlights=true&destination=CAI&destination_label=Cairo%20International%20(CAI)&lang=en&powered_by=true&promo_id=4504&campaign_id=100" charset="utf-8"></script>
+            </div>
+            <div class="tab-pane fade" id="tp-tours-panel" role="tabpanel">
+                <script async src="https://tpemd.com/content?currency=USD&trs=477897&shmarker=688198&locale=en&city_id=284&category=4&amount=6&powered_by=true&campaign_id=137&promo_id=4497" charset="utf-8"></script>
+            </div>
+            <div class="tab-pane fade" id="tp-cars-panel" role="tabpanel">
+                <script async src="https://tp.media/content?currency=usd&trs=477897&shmarker=688198&searchTypeCars=true&location_name=Cairo%2C%20Egypt&lang=en&powered_by=true&promo_id=4506&campaign_id=102" charset="utf-8"></script>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEO Content -->
+<section class="tp-seo py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="mb-4">Egypt Trip Planning Guide</h2>
+
+                <h3>Best Time to Visit Egypt</h3>
+                <p>The ideal time to visit Egypt is from <strong>October to April</strong>, when temperatures are comfortable (20-25C). Summer months (June-August) can exceed 40C in Upper Egypt, though Red Sea resorts remain pleasant year-round. Ramadan dates shift annually and can affect opening hours.</p>
+
+                <h3>How Many Days Do You Need in Egypt?</h3>
+                <p>A minimum of <strong>7-10 days</strong> is recommended to see Egypt's highlights: Cairo and the Pyramids (2-3 days), Luxor temples (2-3 days), Aswan and Abu Simbel (1-2 days), and optionally the Red Sea (2-3 days). A Nile cruise from Luxor to Aswan takes 3-4 days. Our trip planner helps you optimize every day.</p>
+
+                <h3>Egypt Travel Budget</h3>
+                <p><strong>Budget travelers</strong> can explore Egypt for $30-60/day including hostels, street food, and local transport. <strong>Mid-range travelers</strong> spend $80-150/day for 4-star hotels and guided tours. <strong>Luxury travelers</strong> enjoy 5-star experiences from $200-500/day including Nile cruises and private guides.</p>
+
+                <h3>Getting Around Egypt</h3>
+                <p>Domestic flights connect Cairo with Luxor (1h), Aswan (1.5h), and Hurghada (1h). <strong>Sleeper trains</strong> run overnight between Cairo and Luxor/Aswan. The <strong>Nile cruise</strong> between Luxor and Aswan is both transport and experience. For the Red Sea, buses from Cairo take 5-6 hours.</p>
+
+                <h3>Travel Tips</h3>
+                <ul>
+                    <li>Get your <a href="/insurance/">travel insurance</a> before departure</li>
+                    <li>Most nationalities get visa on arrival ($25 USD)</li>
+                    <li>Book popular tours like Abu Simbel and hot air balloons in advance</li>
+                    <li>Carry small bills for tipping (baksheesh is customary)</li>
+                    <li>Download offline maps for areas with limited connectivity</li>
+                </ul>
+
+                <div class="tp-internal-links mt-4">
+                    <h4>Explore Our Egypt Travel Guides</h4>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <a href="/blog/" class="tp-internal-link">
+                                <i class="fas fa-book-open me-2"></i>Travel Blog & Guides
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="/destinations/" class="tp-internal-link">
+                                <i class="fas fa-map-marked-alt me-2"></i>Egypt Destinations
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="/tours/" class="tp-internal-link">
+                                <i class="fas fa-hiking me-2"></i>Tours & Activities
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="/flights/" class="tp-internal-link">
+                                <i class="fas fa-plane me-2"></i>Flights to Egypt
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Schema -->
+                <div class="tp-faq mt-5">
+                    <h3>Frequently Asked Questions</h3>
+                    <div class="accordion" id="tripPlannerFaq">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tpfaq1">
+                                    Is this trip planner free to use?
+                                </button>
+                            </h2>
+                            <div id="tpfaq1" class="accordion-collapse collapse show" data-bs-parent="#tripPlannerFaq">
+                                <div class="accordion-body">
+                                    Yes, our Egypt trip planner is completely free. It generates personalized day-by-day itineraries based on your preferences. When you're ready to book, we link to trusted booking partners.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tpfaq2">
+                                    How accurate are the cost estimates?
+                                </button>
+                            </h2>
+                            <div id="tpfaq2" class="accordion-collapse collapse" data-bs-parent="#tripPlannerFaq">
+                                <div class="accordion-body">
+                                    Cost estimates are based on average prices for each budget level and are meant as a guide. Actual costs depend on season, availability, and your specific choices. Use our booking widgets for real-time pricing.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tpfaq3">
+                                    Can I customize the generated itinerary?
+                                </button>
+                            </h2>
+                            <div id="tpfaq3" class="accordion-collapse collapse" data-bs-parent="#tripPlannerFaq">
+                                <div class="accordion-body">
+                                    The itinerary is a recommended starting point. You can adjust the activities, swap days between cities, or use it as inspiration. Each section includes booking links so you can book the parts you want.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tpfaq4">
+                                    What's the best itinerary for first-time visitors?
+                                </button>
+                            </h2>
+                            <div id="tpfaq4" class="accordion-collapse collapse" data-bs-parent="#tripPlannerFaq">
+                                <div class="accordion-body">
+                                    For first-time visitors, we recommend the "Classic Egypt" 7-day itinerary covering Cairo (3 days), Luxor (2 days), and Aswan (2 days). This covers all the must-see highlights including the Pyramids, Valley of the Kings, and Abu Simbel.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    "mainEntity": [
+                        {
+                            "@type": "Question",
+                            "name": "Is this trip planner free to use?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, our Egypt trip planner is completely free. It generates personalized day-by-day itineraries based on your preferences."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "How accurate are the cost estimates?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Cost estimates are based on average prices for each budget level and are meant as a guide. Actual costs depend on season, availability, and your specific choices."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "What's the best itinerary for first-time visitors?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "For first-time visitors, we recommend the Classic Egypt 7-day itinerary covering Cairo (3 days), Luxor (2 days), and Aswan (2 days)."
+                            }
+                        }
+                    ]
+                }
+                </script>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Pass CSRF token and preset data to JS
+    window.TRIP_PLANNER_CONFIG = {
+        csrfToken: '{{ csrf_token }}',
+        generateUrl: '{% url "home:trip-planner-generate" %}',
+        presets: {{ presets|safe }},
+    };
+</script>
+<script src="{% static 'js/trip_planner.js' %}"></script>
+{% endblock %}
