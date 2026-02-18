@@ -3111,8 +3111,8 @@ urlpatterns = [
     path('transportation/', include('transportation.urls')),
     path('blog/', include('blog.urls')),
     path('dashboard/', include('dashboard.urls')),
-    path('api/', include('api.urls')),
     path('api/social/', include('social_poster.urls')),
+    path('api/', include('api.urls')),
 ]
 
 if settings.DEBUG:
