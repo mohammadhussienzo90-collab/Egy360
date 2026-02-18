@@ -182,7 +182,7 @@ ARTICLES = [
 </table>
 
 <div style="background: #f0f7ff; border: 2px solid #1a73e8; border-radius: 10px; padding: 15px 20px; margin: 15px 0; text-align: center;">
-    <p style="margin: 0; color: #1a1a2e; font-size: 0.95em;">Ready to fly? Book your balloon ride in advance to lock in the best price — <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DLuxor%2520hot%2520air%2520balloon%26lc%3Den" rel="noopener sponsored" target="_blank" style="color: #1a73e8; font-weight: bold; text-decoration: underline;">check availability on GetYourGuide</a></p>
+    <p style="margin: 0; color: #1a1a2e; font-size: 0.95em;">Ready to fly? Book your balloon ride in advance to lock in the best price — <a href="https://tp.media/click?shmarker=688198&amp;promo_id=4497&amp;source_type=deeplink&amp;type=click&amp;campaign_id=137&amp;trs=477897&amp;url=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DLuxor%2520hot%2520air%2520balloon%26lc%3Den" rel="noopener sponsored" target="_blank" style="color: #1a73e8; font-weight: bold; text-decoration: underline;">check availability on GetYourGuide</a></p>
     <p style="font-size: 10px; color: #999; margin: 5px 0 0 0;">Affiliate link</p>
 </div>
 
@@ -387,7 +387,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Book Your Luxor Balloon Flight</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Sunrise hot air balloon rides over the Valley of the Kings — book ahead to secure your spot</p>
-    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DLuxor%2520hot%2520air%2520balloon%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Check Availability →</a>
+    <a href="https://tp.media/click?shmarker=688198&amp;promo_id=4497&amp;source_type=deeplink&amp;type=click&amp;campaign_id=137&amp;trs=477897&amp;url=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DLuxor%2520hot%2520air%2520balloon%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Check Availability →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -408,7 +408,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Luxor</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
-    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290463" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Luxor Hotels →</a>
+    <a href="https://tp.media/click?shmarker=688198&amp;promo_id=4505&amp;source_type=deeplink&amp;type=click&amp;campaign_id=101&amp;trs=477897&amp;url=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290463" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Luxor Hotels →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -843,7 +843,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Book Your Egypt Skydiving Experience</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Tandem skydives over the Pyramids — an unforgettable adrenaline rush</p>
-    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEgypt%2520skydiving%2520pyramids%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Check Availability →</a>
+    <a href="https://tp.media/click?shmarker=688198&amp;promo_id=4497&amp;source_type=deeplink&amp;type=click&amp;campaign_id=137&amp;trs=477897&amp;url=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEgypt%2520skydiving%2520pyramids%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Check Availability →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -879,7 +879,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Cairo</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
-    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
+    <a href="https://tp.media/click?shmarker=688198&amp;promo_id=4505&amp;source_type=deeplink&amp;type=click&amp;campaign_id=101&amp;trs=477897&amp;url=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 

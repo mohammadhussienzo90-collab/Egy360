@@ -89,7 +89,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Join a Guided Cairo Food Tour</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Taste authentic Egyptian street food with a local guide — from koshari to feteer</p>
-    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DCairo%2520food%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Food Tours →</a>
+    <a href="https://tp.media/click?shmarker=688198&amp;promo_id=4497&amp;source_type=deeplink&amp;type=click&amp;campaign_id=137&amp;trs=477897&amp;url=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DCairo%2520food%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Food Tours →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -272,7 +272,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Cairo</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
-    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
+    <a href="https://tp.media/click?shmarker=688198&amp;promo_id=4505&amp;source_type=deeplink&amp;type=click&amp;campaign_id=101&amp;trs=477897&amp;url=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 """
@@ -367,7 +367,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Discover Egypt's Hidden Treasures</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Expert-guided tours to off-the-beaten-path destinations across Egypt</p>
-    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEgypt%2520off%2520beaten%2520path%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Unique Tours →</a>
+    <a href="https://tp.media/click?shmarker=688198&amp;promo_id=4497&amp;source_type=deeplink&amp;type=click&amp;campaign_id=137&amp;trs=477897&amp;url=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEgypt%2520off%2520beaten%2520path%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Unique Tours →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
