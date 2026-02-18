@@ -183,7 +183,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1b5e20 0%, #43a047 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Protect Your Trip with Travel Insurance</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Cover medical emergencies, trip cancellations, and lost luggage</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=4426&amp;u=https%3A%2F%2Fwww.worldnomads.com%2F" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1b5e20; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Get a Quote →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4508&amp;u=https%3A%2F%2Fwww.worldnomads.com%2F" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1b5e20; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Get a Quote →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -505,7 +505,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Cairo</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -544,7 +544,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Egypt</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
-    <a href="https://www.aviasales.com/search/CAI1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4504&amp;u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FCAI1" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -794,7 +794,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Egypt</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
-    <a href="https://www.aviasales.com/search/CAI1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4504&amp;u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FCAI1" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -1281,7 +1281,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #6a1b9a 0%, #ab47bc 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Rent a Car in Egypt</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare car rental deals from top providers across Egypt</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=7832&amp;u=https%3A%2F%2Fwww.rentalcars.com%2F%3Fcountry%3DEgypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #6a1b9a; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Compare Car Rentals →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4506&amp;u=https%3A%2F%2Fwww.rentalcars.com%2F%3Fcountry%3DEgypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #6a1b9a; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Compare Car Rentals →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -1301,7 +1301,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Cairo</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 

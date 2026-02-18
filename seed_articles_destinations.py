@@ -46,7 +46,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Sharm El Sheikh</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
-    <a href="https://www.aviasales.com/search/CAI1SSH1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4504&amp;u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FCAI1SSH1" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -153,7 +153,7 @@ ARTICLES = [
 </table>
 
 <div style="background: #f0f7ff; border: 2px solid #1a73e8; border-radius: 10px; padding: 15px 20px; margin: 15px 0; text-align: center;">
-    <p style="margin: 0; color: #1a1a2e; font-size: 0.95em;">Planning your dives? Book your Dahab accommodation in advance to save — <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Dahab%252C+Egypt" rel="noopener sponsored" target="_blank" style="color: #1a73e8; font-weight: bold; text-decoration: underline;">compare Dahab hotel deals on Booking.com</a></p>
+    <p style="margin: 0; color: #1a1a2e; font-size: 0.95em;">Planning your dives? Book your Dahab accommodation in advance to save — <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Dahab%252C+Egypt" rel="noopener sponsored" target="_blank" style="color: #1a73e8; font-weight: bold; text-decoration: underline;">compare Dahab hotel deals on Booking.com</a></p>
     <p style="font-size: 10px; color: #999; margin: 5px 0 0 0;">Affiliate link</p>
 </div>
 
@@ -240,7 +240,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Book Dahab Tours & Activities</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Dive the Blue Hole, explore Colored Canyon, trek Mount Sinai, and more</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DDahab%2520Egypt%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Dahab Tours →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DDahab%2520Egypt%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Dahab Tours →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -275,7 +275,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Dahab</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Dahab%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Dahab Hotels →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Dahab%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Dahab Hotels →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -468,7 +468,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Hurghada</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
-    <a href="https://www.aviasales.com/search/CAI1HRG1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4504&amp;u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FCAI1HRG1" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -594,7 +594,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Book El Gouna Tours & Excursions</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Kitesurfing lessons, Giftun Island snorkelling, desert safaris, and Luxor day trips</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEl%2520Gouna%2520Egypt%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse El Gouna Tours →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEl%2520Gouna%2520Egypt%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse El Gouna Tours →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -625,7 +625,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in El Gouna</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=El+Gouna%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search El Gouna Hotels →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=El+Gouna%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search El Gouna Hotels →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -900,7 +900,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1b5e20 0%, #43a047 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Protect Your Trip with Travel Insurance</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Cover medical emergencies, trip cancellations, and lost luggage</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=4426&amp;u=https%3A%2F%2Fwww.worldnomads.com%2F" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1b5e20; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Get a Quote →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4508&amp;u=https%3A%2F%2Fwww.worldnomads.com%2F" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1b5e20; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Get a Quote →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -936,7 +936,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Book Marsa Alam Diving & Tours</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Elphinstone Reef dives, Dolphin House trips, desert safaris, and more</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DMarsa%2520Alam%2520Egypt%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Marsa Alam Tours →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DMarsa%2520Alam%2520Egypt%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Marsa Alam Tours →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -1086,7 +1086,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Marsa Alam</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Marsa+Alam%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Marsa Alam Hotels →</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Marsa+Alam%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Marsa Alam Hotels →</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 

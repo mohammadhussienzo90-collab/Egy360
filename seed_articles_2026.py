@@ -103,7 +103,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Cairo</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
-    <a href="https://www.aviasales.com/search/CAI1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights &rarr;</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4504&amp;u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FCAI1" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights &rarr;</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -133,7 +133,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Book a Grand Egyptian Museum Tour</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Skip-the-line tickets and expert Egyptologist-guided tours of the GEM</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DGrand%2520Egyptian%2520Museum%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse GEM Tours &rarr;</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DGrand%2520Egyptian%2520Museum%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse GEM Tours &rarr;</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -196,7 +196,7 @@ ARTICLES = [
 </table>
 
 <div style="background: #f0f7ff; border: 2px solid #1a73e8; border-radius: 10px; padding: 15px 20px; margin: 15px 0; text-align: center;">
-    <p style="margin: 0; color: #1a1a2e; font-size: 0.95em;">Skip the ticket queues — book your GEM entry with a guided tour package: <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DGrand%2520Egyptian%2520Museum%26lc%3Den" rel="noopener sponsored" target="_blank" style="color: #1a73e8; font-weight: bold; text-decoration: underline;">see guided tour options on GetYourGuide</a></p>
+    <p style="margin: 0; color: #1a1a2e; font-size: 0.95em;">Skip the ticket queues — book your GEM entry with a guided tour package: <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DGrand%2520Egyptian%2520Museum%26lc%3Den" rel="noopener sponsored" target="_blank" style="color: #1a73e8; font-weight: bold; text-decoration: underline;">see guided tour options on GetYourGuide</a></p>
     <p style="font-size: 10px; color: #999; margin: 5px 0 0 0;">Affiliate link</p>
 </div>
 
@@ -338,7 +338,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Giza</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Giza%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Giza Hotels &rarr;</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Giza%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Giza Hotels &rarr;</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -391,7 +391,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Book a Grand Egyptian Museum Tour</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Skip-the-line tickets and expert Egyptologist-guided tours of the GEM</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DGrand%2520Egyptian%2520Museum%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse GEM Tours &rarr;</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DGrand%2520Egyptian%2520Museum%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse GEM Tours &rarr;</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 """
@@ -418,7 +418,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Egypt</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
-    <a href="https://www.aviasales.com/search/CAI1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights &rarr;</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4504&amp;u=https%3A%2F%2Fwww.aviasales.com%2Fsearch%2FCAI1" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights &rarr;</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -492,7 +492,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Book Tours for Egypt's Top Events</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Guided packages for festivals, cultural events, and seasonal celebrations</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEgypt%2520festival%2520tour%25202026%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Event Packages &rarr;</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4497&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEgypt%2520festival%2520tour%25202026%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Event Packages &rarr;</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
@@ -778,7 +778,7 @@ ARTICLES = [
 <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Cairo</h4>
     <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
-    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels &rarr;</a>
+    <a href="https://tp.media/r?marker=688198&amp;trs=477897&amp;p=4505&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels &rarr;</a>
     <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 """
