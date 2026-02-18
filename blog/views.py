@@ -2891,15 +2891,19 @@ class BlogDetailView(DetailView):
         context['reading_time'] = max(1, word_count // 200)
 
         # Next/Previous articles
-        context['next_post'] = BlogPost.objects.filter(
-            status='published',
-            published_at__gt=post.published_at
-        ).order_by('published_at').first()
+        if post.published_at:
+            context['next_post'] = BlogPost.objects.filter(
+                status='published',
+                published_at__gt=post.published_at
+            ).order_by('published_at').first()
 
-        context['prev_post'] = BlogPost.objects.filter(
-            status='published',
-            published_at__lt=post.published_at
-        ).order_by('-published_at').first()
+            context['prev_post'] = BlogPost.objects.filter(
+                status='published',
+                published_at__lt=post.published_at
+            ).order_by('-published_at').first()
+        else:
+            context['next_post'] = None
+            context['prev_post'] = None
 
         # Total article count for social proof
         context['total_articles'] = BlogPost.objects.filter(status='published').count()

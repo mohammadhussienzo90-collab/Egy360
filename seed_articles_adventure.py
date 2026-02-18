@@ -897,11 +897,13 @@ ARTICLES = [
 ]
 
 def seed():
+    from django.utils import timezone
     admin = get_admin_user()
+    now = timezone.now()
     for data in ARTICLES:
         BlogPost.objects.update_or_create(
             slug=data['slug'],
-            defaults={**data, 'author': admin, 'status': 'published', 'content_type': 'guide'}
+            defaults={**data, 'author': admin, 'status': 'published', 'content_type': 'guide', 'published_at': now}
         )
     print(f"Seeded {len(ARTICLES)} adventure articles.")
 
