@@ -796,17 +796,18 @@
                         {{ post.content|clean_markdown }}
 
                         <!-- In-Article Affiliate Banner -->
-                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-                            <h4 style="margin-bottom: 10px;"><i class="fas fa-plane-departure me-2"></i>Planning Your Egypt Trip?</h4>
-                            <p style="opacity: 0.9; margin-bottom: 20px;">Book tours, hotels, and activities with free cancellation</p>
+                        <div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+                            <h4 style="margin-top: 0; margin-bottom: 8px;"><i class="fas fa-hotel me-2"></i>Find the Best Hotels in Egypt</h4>
+                            <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
                             <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                                <a href="{% url 'tours:list' %}" class="btn" style="background: white; color: #667eea; font-weight: 600; padding: 12px 25px; border-radius: 8px;">
-                                    <i class="fas fa-compass me-2"></i>Explore Tours
+                                <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity%3D-290692" rel="noopener sponsored" target="_blank" class="btn" style="background: white; color: #1a73e8; font-weight: 600; padding: 12px 25px; border-radius: 8px;">
+                                    <i class="fas fa-bed me-2"></i>Search Cairo Hotels
                                 </a>
-                                <a href="{% url 'accommodations:search' %}" class="btn" style="background: rgba(255,255,255,0.2); color: white; font-weight: 600; padding: 12px 25px; border-radius: 8px; border: 2px solid white;">
-                                    <i class="fas fa-hotel me-2"></i>Find Hotels
+                                <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEgypt%2520tours%26lc%3Den" rel="noopener sponsored" target="_blank" class="btn" style="background: rgba(255,255,255,0.2); color: white; font-weight: 600; padding: 12px 25px; border-radius: 8px; border: 2px solid white;">
+                                    <i class="fas fa-compass me-2"></i>Browse Tours
                                 </a>
                             </div>
+                            <p style="font-size: 11px; opacity: 0.6; margin-top: 12px; margin-bottom: 0;">Affiliate links — we earn a small commission at no extra cost to you</p>
                         </div>
                     </div>
 
@@ -1181,6 +1182,30 @@ window.addEventListener('scroll', function() {
             floatingBar.classList.add('visible');
         } else {
             floatingBar.classList.remove('visible');
+        }
+    }
+});
+
+// Track affiliate link clicks via GA4
+document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[rel*="sponsored"]');
+    if (link) {
+        var href = link.getAttribute('href') || '';
+        var program = 'other';
+        if (href.indexOf('booking.com') !== -1) program = 'booking';
+        else if (href.indexOf('aviasales') !== -1) program = 'aviasales';
+        else if (href.indexOf('getyourguide') !== -1) program = 'getyourguide';
+        else if (href.indexOf('worldnomads') !== -1) program = 'worldnomads';
+        else if (href.indexOf('rentalcars') !== -1) program = 'rentalcars';
+        if (typeof gtag === 'function') {
+            gtag('event', 'affiliate_click', {
+                'event_category': 'monetization',
+                'event_label': program,
+                'affiliate_program': program,
+                'link_url': href,
+                'article_slug': '{{ post.slug }}',
+                'article_title': '{{ post.title|escapejs }}'
+            });
         }
     }
 });

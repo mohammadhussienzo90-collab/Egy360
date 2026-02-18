@@ -181,6 +181,11 @@ ARTICLES = [
 </tr>
 </table>
 
+<div style="background: #f0f7ff; border: 2px solid #1a73e8; border-radius: 10px; padding: 15px 20px; margin: 15px 0; text-align: center;">
+    <p style="margin: 0; color: #1a1a2e; font-size: 0.95em;">Ready to fly? Book your balloon ride in advance to lock in the best price — <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DLuxor%2520hot%2520air%2520balloon%26lc%3Den" rel="noopener sponsored" target="_blank" style="color: #1a73e8; font-weight: bold; text-decoration: underline;">check availability on GetYourGuide</a></p>
+    <p style="font-size: 10px; color: #999; margin: 5px 0 0 0;">Affiliate link</p>
+</div>
+
 <p><strong>What is included in most prices:</strong> Hotel pickup and drop-off, Nile crossing by motorboat, the flight itself, and a commemorative flight certificate. <strong>Not typically included:</strong> Tips for pilot and crew (EGP 50-100 per person is customary and greatly appreciated), personal photo/video packages, travel insurance. Some premium operators include a light breakfast or professional photography -- check when booking.</p>
 
 <h2>Best Time to Fly: When to Book Your Sunrise Balloon Egypt Experience</h2>
@@ -379,10 +384,11 @@ ARTICLES = [
 </tr>
 </table>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Book Your Luxor Balloon Flight Today</h4>
-    <p style="opacity: 0.9;">Combine with temples, tombs, and Nile sunset experiences for the ultimate Luxor day</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">View Luxor Packages</a>
+<div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Book Your Luxor Balloon Flight</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Sunrise hot air balloon rides over the Valley of the Kings — book ahead to secure your spot</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DLuxor%2520hot%2520air%2520balloon%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Check Availability →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h2>Final Tips for the Perfect Hot Air Balloon Luxor Flight</h2>
@@ -398,6 +404,13 @@ ARTICLES = [
     <li><strong>Tip the crew generously</strong> -- they work through the cold desert night, handling heavy equipment in darkness, to give you this extraordinary experience. A small tip means a great deal to them.</li>
     <li><strong>Tell everyone you know to do this</strong> -- seriously. This is the kind of experience that deserves to be shared. Your friends and family will thank you for the recommendation.</li>
 </ol>
+
+<div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Luxor</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290463" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Luxor Hotels →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
 
 <div style="background: linear-gradient(135deg, #f5af19 0%, #f12711 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-bottom: 10px;">The Bottom Line</h4>
@@ -827,10 +840,11 @@ ARTICLES = [
 </tr>
 </table>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Book Your Pyramid Skydive Adventure</h4>
-    <p style="opacity: 0.9;">Combine skydiving with pyramids, museums, desert adventures, and sunset experiences for the ultimate bucket list Egypt day</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">View Adventure Packages</a>
+<div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Book Your Egypt Skydiving Experience</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Tandem skydives over the Pyramids — an unforgettable adrenaline rush</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEgypt%2520skydiving%2520pyramids%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Check Availability →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h2>Frequently Asked Questions About Skydiving Over the Pyramids</h2>
@@ -861,6 +875,13 @@ ARTICLES = [
 <p><strong>Skydiving over the Pyramids of Giza</strong> is not merely an adventure activity to check off a list. It is a perspective shift -- literally and figuratively. You will see the last remaining Wonder of the Ancient World from a vantage point that pharaohs could only dream of, from an altitude that ancient Egyptians believed was the realm of the gods. You will experience the raw, primal exhilaration of human flight above structures that have silently witnessed 4,500 years of human triumph, tragedy, and transformation. And you will land -- breathless, trembling, grinning uncontrollably -- with a story and a video that will captivate dinner tables, first dates, and social media feeds for the rest of your life.</p>
 
 <p>This is the <strong>best adventure in Egypt</strong>. This is the ultimate <strong>bucket list Egypt</strong> experience. This is the <strong>adrenaline Egypt</strong> moment that turns a great trip into a legendary one. If there is one experience in this ancient, magnificent country that justifies the word "epic" -- one experience that earns the right to be called truly, genuinely, life-changingly unforgettable -- <strong>skydiving over the Pyramids</strong> is it.</p>
+
+<div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Cairo</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
 
 <div style="background: #e8f4f8; border-left: 4px solid #2196F3; padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;">
     <strong>Final Tip:</strong> Book your <strong>skydiving Egypt</strong> adventure for early in your Egypt trip, never for the last day. Weather delays, schedule changes, and the very real desire to do it a second time all mean you will want backup days available. And here is a secret that every Pyramid skydiver discovers: after jumping over the Pyramids, you will see every other experience in Egypt through the eyes of someone who has literally flown above the ancient world. It changes everything. It elevates everything. It is the experience that makes the rest of your trip even more extraordinary.

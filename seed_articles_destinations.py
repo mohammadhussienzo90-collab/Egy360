@@ -43,6 +43,13 @@ ARTICLES = [
     <li><strong>Tour operator pickup:</strong> Many Dahab hotels and dive centers arrange seamless airport transfers. Ask when you book your accommodation.</li>
 </ul>
 
+<div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Sharm El Sheikh</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
+    <a href="https://www.aviasales.com/search/CAI1SSH1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
+
 <h3>By Bus from Cairo</h3>
 <p>The overland route from Cairo is a rite of passage for backpackers and budget travelers. Several bus companies operate the Cairo-Dahab route:</p>
 <ul>
@@ -145,6 +152,11 @@ ARTICLES = [
 <tr><td style="padding: 10px;">Snorkel set rental (day)</td><td style="padding: 10px;">100-200</td><td style="padding: 10px;">$2-4</td></tr>
 </table>
 
+<div style="background: #f0f7ff; border: 2px solid #1a73e8; border-radius: 10px; padding: 15px 20px; margin: 15px 0; text-align: center;">
+    <p style="margin: 0; color: #1a1a2e; font-size: 0.95em;">Planning your dives? Book your Dahab accommodation in advance to save — <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Dahab%252C+Egypt" rel="noopener sponsored" target="_blank" style="color: #1a73e8; font-weight: bold; text-decoration: underline;">compare Dahab hotel deals on Booking.com</a></p>
+    <p style="font-size: 10px; color: #999; margin: 5px 0 0 0;">Affiliate link</p>
+</div>
+
 <div style="background: #e8f5e9; border-left: 4px solid #4CAF50; padding: 20px; margin: 20px 0; border-radius: 0 10px 10px 0;">
     <h4 style="margin-top: 0; color: #2E7D32;">Insider Tip: How to Choose a Dive Center</h4>
     <p style="margin-bottom: 0;">Dahab has dozens of dive centers, and quality varies. Look for PADI or SSI certification, check recent reviews, and ask about instructor-to-student ratios (4:1 maximum for Open Water courses). Reputable centers include Dahab Divers, H2O Divers, Lighthouse Diving, and Poseidon Divers. Many offer free accommodation or discounts on lodging when you book a course -- always ask. The cheapest center is rarely the best; prioritize safety and small group sizes.</p>
@@ -225,10 +237,11 @@ ARTICLES = [
     <li><strong>Insider Tip:</strong> The Sinai desert sky at night, free from any light pollution, is staggering. The Milky Way arches overhead in a river of white fire, and shooting stars streak across the darkness every few minutes. If you have never seen a truly dark sky, this will redefine your understanding of the universe above.</li>
 </ul>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Ready to Explore Dahab?</h4>
-    <p style="opacity: 0.9;">Discover handpicked tours, diving packages, and desert adventures</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">View Tours & Activities</a>
+<div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Book Dahab Tours & Activities</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Dive the Blue Hole, explore Colored Canyon, trek Mount Sinai, and more</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DDahab%2520Egypt%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Dahab Tours →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h2>Where to Stay in Dahab</h2>
@@ -258,6 +271,13 @@ ARTICLES = [
 
 <h3>Long-Term Stays and Digital Nomad Life</h3>
 <p>Many travelers end up staying in Dahab for weeks or months -- the town has a magnetic pull that is difficult to explain until you feel it yourself. Monthly apartment rentals are available from <strong>3,000-8,000 EGP ($60-160 USD) per month</strong> for basic furnished flats with kitchens. Digital nomads flock to Dahab for its <strong>low cost of living</strong>, increasingly reliable internet in coworking-friendly cafes, warm climate, and an unbeatable quality of life. A full month in Dahab -- including rent, food, diving, and social life -- can cost less than a single week in many European cities.</p>
+
+<div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Dahab</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Dahab%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Dahab Hotels →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
 
 <h2>Best Restaurants and Cafes in Dahab</h2>
 
@@ -445,6 +465,13 @@ ARTICLES = [
     <li><strong>El Gouna private airstrip:</strong> For charter flights and private jets, El Gouna has its own landing strip -- the ultimate VIP arrival</li>
 </ul>
 
+<div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Hurghada</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
+    <a href="https://www.aviasales.com/search/CAI1HRG1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
+
 <h3>By Road from Cairo</h3>
 <ul>
     <li><strong>Distance:</strong> Approximately 470 km via the well-maintained Red Sea highway</li>
@@ -564,10 +591,11 @@ ARTICLES = [
     <li><strong>Atmosphere:</strong> Relaxed, genuinely local, and wonderfully unpretentious -- the perfect spot for a leisurely afternoon coffee, people-watching, or stocking up on souvenirs at honest prices</li>
 </ul>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Ready to Experience El Gouna?</h4>
-    <p style="opacity: 0.9;">Discover curated tours, excursions, and unforgettable activities</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse El Gouna Tours</a>
+<div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Book El Gouna Tours & Excursions</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Kitesurfing lessons, Giftun Island snorkelling, desert safaris, and Luxor day trips</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEl%2520Gouna%2520Egypt%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse El Gouna Tours →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h2>Where to Stay: The Finest El Gouna Egypt Hotels and Resorts</h2>
@@ -593,6 +621,13 @@ ARTICLES = [
 
 <h3>Apartments, Villas, and Long-Term Stays</h3>
 <p>El Gouna has a thriving rental market that caters to the growing community of digital nomads, remote workers, winter-sun seekers, and seasonal residents. Fully furnished apartments with lagoon or garden views are available from <strong>15,000-30,000 EGP per month (~$300-600 USD)</strong> for a one-bedroom, while spacious villas with private pools and marina access command <strong>30,000-80,000 EGP per month (~$600-1,600 USD)</strong>. Platforms like Airbnb, Booking.com, and local agencies such as El Gouna Rentals offer extensive listings.</p>
+
+<div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in El Gouna</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=El+Gouna%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search El Gouna Hotels →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
 
 <h2>Best Restaurants and Dining Experiences in El Gouna</h2>
 
@@ -862,6 +897,13 @@ ARTICLES = [
     <p style="margin-bottom: 0;"><strong>Essential etiquette:</strong> Maintain a minimum 3-metre distance at all times. Never position yourself between a dugong and the surface (they must breathe). Do not chase, touch, or attempt to ride them. Move slowly with long, gliding fin strokes -- sudden movements cause them to flee. Your reward for patience is one of the most intimate wildlife encounters Egypt offers.</p>
 </div>
 
+<div style="background: linear-gradient(135deg, #1b5e20 0%, #43a047 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Protect Your Trip with Travel Insurance</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Cover medical emergencies, trip cancellations, and lost luggage</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4426&amp;u=https%3A%2F%2Fwww.worldnomads.com%2F" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1b5e20; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Get a Quote →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
+
 <h3>Fury Shoals -- Where the Coral Grows Undisturbed</h3>
 <p>Stretching southward from Marsa Alam towards the Sudanese border, the Fury Shoals reef complex is the largest, least-visited, and arguably most pristine section of the Egyptian Red Sea coast. Day-trip boats from central Marsa Alam reach the northern sites; the southern reaches are accessible only by liveaboard -- which is precisely why the coral there looks the way coral is supposed to look.</p>
 <ul>
@@ -891,10 +933,11 @@ ARTICLES = [
     <li><strong>Access:</strong> Day trip from Port Ghalib in calm conditions: 3,500-6,000 EGP (~$70-120 USD). More reliably accessed by liveaboard.</li>
 </ul>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Ready to Explore Marsa Alam?</h4>
-    <p style="opacity: 0.9;">Browse diving trips, dugong snorkelling, desert safaris and more</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">View Marsa Alam Tours</a>
+<div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Book Marsa Alam Diving & Tours</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Elphinstone Reef dives, Dolphin House trips, desert safaris, and more</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DMarsa%2520Alam%2520Egypt%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Marsa Alam Tours →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h2>Snorkelling from Shore: No Boat Required</h2>
@@ -1038,6 +1081,13 @@ ARTICLES = [
     <h4 style="margin-top: 0; color: #1565C0;">The House Reef Test: Ask This Before You Book Any Marsa Alam Resort</h4>
     <p style="margin-bottom: 8px;">The single most important question when choosing a <strong>Marsa Alam resort</strong> is: "Can I snorkel from the beach and what will I see?" Some properties have a fringing reef beginning 10 metres from the shore with turtles, moray eels, and coral gardens. Others have a sandy slope with little to see without a boat trip. The price difference between these two types of property is often negligible -- but the quality-of-experience difference is enormous.</p>
     <p style="margin-bottom: 0;"><strong>At the best properties</strong>, you can do 3-4 meaningful snorkels per day without leaving the hotel, swim with turtles before breakfast, and spend an hour at the reef at dusk watching the transition from daytime to nocturnal species. This is one of the defining advantages of Marsa Alam over almost every other Red Sea destination -- take full advantage of it by choosing your base carefully.</p>
+</div>
+
+<div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Marsa Alam</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Marsa+Alam%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Marsa Alam Hotels →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h2>Restaurants and Dining in Marsa Alam</h2>

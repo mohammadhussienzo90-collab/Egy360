@@ -100,6 +100,13 @@ ARTICLES = [
 <h3>From Cairo International Airport</h3>
 <p>Cairo International Airport is approximately 45-60 km from the GEM. By taxi or ride-share, the journey takes 45-90 minutes depending on traffic and time of day. A private transfer booked in advance through your hotel or a reputable tour operator is strongly recommended for arriving travelers, especially those landing late at night. Many tour packages now include airport-to-GEM transfers as part of their offerings.</p>
 
+<div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Cairo</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
+    <a href="https://www.aviasales.com/search/CAI1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights &rarr;</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
+
 <h2>What Is Inside the Grand Egyptian Museum: A Journey Through 5,000 Years of Civilization</h2>
 
 <h3>The Grand Staircase and the Colossus of Ramses II</h3>
@@ -123,10 +130,11 @@ ARTICLES = [
     <li><strong>Everyday Objects</strong> -- Board games (Senet), furniture, clothing, sandals, walking canes (over 130 of them, fueling scholarly debate about the king's health), food provisions, wine jars with vintage labels, and musical instruments. These intimate objects bring the boy king vividly to life and remind us of the humanity behind the gold.</li>
 </ul>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">See All of Tutankhamun's Treasures -- Together for the First Time in History</h4>
-    <p style="opacity: 0.9;">5,398 priceless artifacts, many never before displayed to the public. This is a once-in-a-lifetime experience.</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Book GEM Tours</a>
+<div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Book a Grand Egyptian Museum Tour</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Skip-the-line tickets and expert Egyptologist-guided tours of the GEM</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DGrand%2520Egyptian%2520Museum%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse GEM Tours &rarr;</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h3>Main Galleries: A Chronological Journey Through Civilization</h3>
@@ -186,6 +194,11 @@ ARTICLES = [
 <tr style="background: #f9f9f9;"><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Students (with valid ID)</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">50% discount on all tiers</td><td style="padding: 10px; border-bottom: 1px solid #eee;">Must present valid student ID at the ticket counter; ISIC cards accepted</td></tr>
 <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Children Under 6</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">Free</td><td style="padding: 10px; border-bottom: 1px solid #eee;">Free entry with a paying adult</td></tr>
 </table>
+
+<div style="background: #f0f7ff; border: 2px solid #1a73e8; border-radius: 10px; padding: 15px 20px; margin: 15px 0; text-align: center;">
+    <p style="margin: 0; color: #1a1a2e; font-size: 0.95em;">Skip the ticket queues — book your GEM entry with a guided tour package: <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DGrand%2520Egyptian%2520Museum%26lc%3Den" rel="noopener sponsored" target="_blank" style="color: #1a73e8; font-weight: bold; text-decoration: underline;">see guided tour options on GetYourGuide</a></p>
+    <p style="font-size: 10px; color: #999; margin: 5px 0 0 0;">Affiliate link</p>
+</div>
 
 <div style="background: #fff8e1; border-left: 4px solid #f9a825; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0;">
     <strong>Money-Saving Tip:</strong> Book your <strong>Egypt museum tickets</strong> online in advance through the official GEM website. Not only does this save time in the queue, but early online booking occasionally offers a small discount. During peak tourist season (October-March) and Egyptian school holidays, walk-up tickets for Premium and VIP tiers can sell out entirely. Do not risk missing the Tutankhamun Gallery -- book ahead.
@@ -322,6 +335,13 @@ ARTICLES = [
     <strong>Accommodation Tip:</strong> Staying in Giza near the Pyramids rather than downtown Cairo saves you 30-60 minutes of traffic each way and allows you to arrive at the GEM the moment it opens. It also positions you perfectly for an early-morning Pyramids visit before the crowds arrive.
 </div>
 
+<div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Giza</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fss=Giza%2C+Egypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Giza Hotels &rarr;</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
+
 <h2>Expert Tips for the Best Grand Egyptian Museum Experience</h2>
 
 <ol>
@@ -368,10 +388,11 @@ ARTICLES = [
 <h3>What makes the GEM different from other Egyptian museums?</h3>
 <p>The <strong>Grand Egyptian Museum</strong> is the <strong>largest archaeological museum</strong> ever built, dedicated entirely to a single civilization. Its combination of 120,000+ artifacts, the complete Tutankhamun collection, cutting-edge VR technology, a world-class conservation center visible to visitors, and its location adjacent to the Pyramids of Giza makes it genuinely unique. There is no comparable institution anywhere in the world.</p>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Plan Your Grand Egyptian Museum Visit Today</h4>
-    <p style="opacity: 0.9;">Expert-guided tours with skip-the-line access to the world's largest archaeological museum</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Book Museum Tours</a>
+<div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Book a Grand Egyptian Museum Tour</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Skip-the-line tickets and expert Egyptologist-guided tours of the GEM</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DGrand%2520Egyptian%2520Museum%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse GEM Tours &rarr;</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 """
     },
@@ -392,6 +413,13 @@ ARTICLES = [
 
 <div style="background: #f0f7ff; border-left: 4px solid #2563eb; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0;">
     <strong>Important Planning Note:</strong> Egypt's event dates, especially for religious festivals like Ramadan, Eid al-Fitr, Eid al-Adha, and Coptic celebrations, are based on lunar or liturgical calendars and may shift by a day or two from the dates listed here. Always confirm exact dates closer to your travel dates through official sources. Secular festivals and film festivals typically announce confirmed dates 2-3 months in advance. Book accommodation and domestic transport early for any major event -- popular festivals cause hotels to sell out months in advance.
+</div>
+
+<div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Egypt</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
+    <a href="https://www.aviasales.com/search/CAI1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights &rarr;</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h2>Month-by-Month Egypt Events Calendar 2026</h2>
@@ -461,10 +489,11 @@ ARTICLES = [
     <li><strong>Limited Capacity:</strong> The viewing area in front of the temple fills up quickly. Arrive at least 1-2 hours before sunrise to secure a good position. Organized tours typically handle this for you.</li>
 </ul>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Witness the Abu Simbel Sun Festival -- Sells Out Months in Advance</h4>
-    <p style="opacity: 0.9;">A once-in-a-lifetime encounter with 3,200 years of astronomical precision at Ramses II's greatest temple</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Book Abu Simbel Tours Now</a>
+<div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Book Tours for Egypt's Top Events</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Guided packages for festivals, cultural events, and seasonal celebrations</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEgypt%2520festival%2520tour%25202026%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Event Packages &rarr;</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h3>March: Desert Rally, Spring Arrives, and Eid Celebrations</h3>
@@ -623,12 +652,6 @@ ARTICLES = [
     <li><strong>Booking Tip:</strong> New Year's Eve events at top hotels sell out 2-3 months in advance. Book your celebration early to avoid disappointment. Prices are at their annual peak during December 28 - January 2.</li>
 </ul>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Plan Your Egypt Trip Around the Events That Excite You Most</h4>
-    <p style="opacity: 0.9;">Custom itineraries built around Egypt's most spectacular festivals, celebrations, and cultural happenings</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Explore Tours</a>
-</div>
-
 <h2>Major Year-Round Cultural Attractions and Events</h2>
 
 <h3>Grand Egyptian Museum Exhibitions and Events</h3>
@@ -752,10 +775,11 @@ ARTICLES = [
 <h3>Free Events -- The Best Things in Egypt Cost Nothing</h3>
 <p>Many of Egypt's most memorable and authentic cultural experiences are completely free: the spellbinding Whirling Dervish shows at Al-Ghouri, communal public Iftar tables during Ramadan, the ecstatic energy of moulid celebrations, the joyful park gatherings of Sham El-Nessim, and the street festivities during Eid. Simply show up, participate respectfully, and let Egypt welcome you. These free experiences are often the ones travelers remember most vividly years later.</p>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Experience Egypt's Best Events and Festivals in 2026</h4>
-    <p style="opacity: 0.9;">Custom-planned itineraries built around the events, festivals, and celebrations that excite you most. Limited availability for Abu Simbel Sun Festival and peak-season tours -- book early.</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Plan Your Egypt 2026 Trip</a>
+<div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Cairo</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels &rarr;</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 """
     }

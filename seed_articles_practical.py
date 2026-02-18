@@ -180,6 +180,13 @@ ARTICLES = [
     </ul>
 </div>
 
+<div style="background: linear-gradient(135deg, #1b5e20 0%, #43a047 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Protect Your Trip with Travel Insurance</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Cover medical emergencies, trip cancellations, and lost luggage</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4426&amp;u=https%3A%2F%2Fwww.worldnomads.com%2F" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1b5e20; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Get a Quote →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
+
 <h2>Visa on Arrival Egypt 2026: Your Airport Fallback Option</h2>
 
 <p>Did not apply for an e-visa in advance? Booked a last-minute trip? No problem. Egypt operates one of the most reliable <strong>visa on arrival</strong> systems in the world — available at every Egyptian international airport and functioning smoothly 24 hours a day, 365 days a year. For eligible nationalities, obtaining a visa on arrival is a straightforward 4-step process that takes between 10 and 30 minutes, depending on how busy the airport is when you land.</p>
@@ -495,6 +502,13 @@ ARTICLES = [
     </tbody>
 </table>
 
+<div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Cairo</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
+
 <h2>Your Egypt Entry Checklist: Before, During &amp; After</h2>
 
 <h3>Before You Travel: Do This at Home</h3>
@@ -526,6 +540,13 @@ ARTICLES = [
     <li><strong>Keep your passport accessible</strong> — Egyptian hotels photograph it at check-in (legally required for registration), and some tourist attractions request it for ticket pricing verification.</li>
     <li><strong>Save your country's Egypt embassy address and emergency number</strong> in your phone. In Cairo, most embassies are in the Garden City and Zamalek districts.</li>
 </ul>
+
+<div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Egypt</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
+    <a href="https://www.aviasales.com/search/CAI1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
 
 <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
     <h4 style="margin-bottom: 10px;">Visa Sorted? Now Plan the Perfect Egypt Itinerary</h4>
@@ -768,6 +789,13 @@ ARTICLES = [
         <li><strong>Allow at least 2 hours for domestic check-in at Cairo International Airport.</strong> Security procedures are thorough, and the airport is large. Terminal confusion (Cairo has 3 terminals) can also add time — always confirm which terminal your flight departs from.</li>
         <li><strong>Cairo Airport transfer tip:</strong> Take Metro Line 3 directly to the airport for 8–15 EGP instead of a 150–250 EGP Uber. The Metro runs to both Terminal 1 and Terminal 2, takes about 35 minutes from downtown, and completely avoids Cairo's infamous traffic jams.</li>
     </ul>
+</div>
+
+<div style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find Cheap Flights to Egypt</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare airlines and find the best fares on Aviasales</p>
+    <a href="https://www.aviasales.com/search/CAI1?marker=688198" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #2e7d32; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Flights →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h2>Egypt Train Tickets: Rail Travel on the Oldest Railway in Africa</h2>
@@ -1250,6 +1278,13 @@ ARTICLES = [
     <p style="margin-bottom: 0;">For most tourists doing the classic Cairo–Luxor–Aswan–Red Sea circuit: <strong>do not rent a car</strong>. The combination of Egypt domestic flights, Egypt train tickets, Go Bus, Uber Egypt, and a private driver for day trips covers every major destination at lower total cost and dramatically less stress. The only compelling case for self-driving is Western Desert oasis exploration or the Sinai coastal drive — and even then, hiring a car with a local driver who knows the roads is worth the modest extra cost for peace of mind.</p>
 </div>
 
+<div style="background: linear-gradient(135deg, #6a1b9a 0%, #ab47bc 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Rent a Car in Egypt</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare car rental deals from top providers across Egypt</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=7832&amp;u=https%3A%2F%2Fwww.rentalcars.com%2F%3Fcountry%3DEgypt" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #6a1b9a; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Compare Car Rentals →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
+
 <h2>Cairo Airport Transfer and Other Egypt Airport Transport</h2>
 
 <p>Your first transport decision in Egypt happens immediately upon landing. Here is exactly what to do at each major airport — with specific costs and the best option for your situation.</p>
@@ -1262,6 +1297,13 @@ ARTICLES = [
     <li><strong>Official Airport Taxi:</strong> Fixed-rate white taxis operate from the airport taxi counter in arrivals. Expect 200–350 EGP to downtown Cairo, depending on zone and time of day. More expensive than Uber but with a fixed, agreed price — useful if you prefer not to use an app. Always use the official counter rather than accepting offers from informal drivers in the arrivals hall.</li>
     <li><strong>Hotel Shuttle:</strong> Most 4-star and 5-star hotels offer complimentary or paid airport pickup. Arrange this when booking your hotel — the cost is often nominal or included. This is the most stress-free option for families or first-time Egypt visitors.</li>
 </ul>
+
+<div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Cairo</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
+</div>
 
 <h3>Hurghada International Airport (HRG) Transfer</h3>
 <p>Hurghada Airport is compact and easy to navigate. Resort hotels are spread along a 30+ km coastal strip.</p>

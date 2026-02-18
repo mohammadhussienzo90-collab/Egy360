@@ -86,10 +86,11 @@ ARTICLES = [
 
 <p>On almost every Cairo street corner, particularly during the cooler months from November through March, you will find vendors pushing weathered wooden carts loaded with <strong>roasted sweet potatoes</strong> (<em>batata</em>) and <strong>grilled corn on the cob</strong> (<em>dhura</em>). The sweet potatoes are baked in primitive tin ovens fueled by wood chips until their mottled purple skins caramelize and crack open to reveal flesh that has become impossibly soft, sticky-sweet, and almost custard-like in texture -- no butter, no sugar needed, just pure natural sweetness concentrated by slow heat. Grilled corn is charred directly over glowing coals until the kernels blister and pop, then served with a squeeze of tangy lime and a sprinkle of coarse salt. The smoky-sweet aroma is irresistible. These cost just 5-15 EGP ($0.15-$0.50 USD) and make perfect walking snacks as you explore the city's ancient neighborhoods. Follow the smoke and the sweet, caramelized scent -- you will find a cart within minutes.</p>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Taste Egypt's Best Street Food with a Local Guide</h4>
-    <p style="opacity: 0.9;">Join a guided street food tour led by a passionate Cairo foodie -- taste 10+ dishes, visit hidden vendors, and eat like a local</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Book a Food Tour</a>
+<div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Join a Guided Cairo Food Tour</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Taste authentic Egyptian street food with a local guide — from koshari to feteer</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DCairo%2520food%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Food Tours →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h2>Popular Traditional Egyptian Dishes You Cannot Leave Without Trying</h2>
@@ -268,10 +269,11 @@ ARTICLES = [
     <li><strong>Do not rush:</strong> Meals in Egypt are social occasions meant to be savored slowly. Lingering over tea after a meal, talking and laughing with your companions, is not just acceptable -- it is expected. The longer you stay, the more welcome you are.</li>
 </ul>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Explore Egypt's Magnificent Culinary Heritage</h4>
-    <p style="opacity: 0.9;">From sizzling street carts to candlelit Nile-view dining rooms, taste every flavor of this ancient land</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">View Food Experiences</a>
+<div style="background: linear-gradient(135deg, #1a73e8 0%, #4fc3f7 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Find the Best Hotels in Cairo</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Compare prices on Booking.com — free cancellation on most rooms</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=4132&amp;u=https%3A%2F%2Fwww.booking.com%2Fsearchresults.html%3Fcity=-290692" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #1a73e8; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Search Cairo Hotels →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 """
     },
@@ -362,10 +364,11 @@ ARTICLES = [
 
 <p>The hall's 24 towering columns are beautifully decorated with astronomical carvings, zodiac figures, and hieroglyphic texts, and recent painstaking cleaning by an Egyptian-German archaeological team has revealed spectacular original paint colors that were hidden under centuries of soot, grime, and bat droppings. The results are nothing short of breathtaking: vivid blues of a lapis-lazuli sky, fiery reds and golds of divine figures, and rich greens of papyrus plants -- colors so intense and well-preserved that they look as though they were painted last week rather than two thousand years ago. The temple is just a short walk from the Nile corniche, making it an easy and rewarding stop for Nile cruise boats between Luxor and Aswan. Entry: 80 EGP (~$2.60 USD). Open daily 6 AM to 5 PM. Allow 30-45 minutes.</p>
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-    <h4 style="margin-bottom: 10px;">Explore Egypt's Secret Temples with an Expert Guide</h4>
-    <p style="opacity: 0.9;">Private, personalized tours to Dendera, Abydos, and beyond -- with an Egyptologist who brings every stone to life</p>
-    <a href="/tours/" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Book a Temple Tour</a>
+<div style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); border-radius: 15px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Discover Egypt's Hidden Treasures</h4>
+    <p style="opacity: 0.9; margin-bottom: 15px;">Expert-guided tours to off-the-beaten-path destinations across Egypt</p>
+    <a href="https://tp.media/r?marker=688198&amp;p=2074&amp;u=https%3A%2F%2Fwww.getyourguide.com%2Fs%2F%3Fq%3DEgypt%2520off%2520beaten%2520path%2520tour%26lc%3Den" rel="noopener sponsored" target="_blank" style="display: inline-block; background: white; color: #ff6f00; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold;">Browse Unique Tours →</a>
+    <p style="font-size: 11px; opacity: 0.6; margin-top: 10px; margin-bottom: 0;">Affiliate link — we earn a small commission at no extra cost to you</p>
 </div>
 
 <h2>Lesser-Known Egypt Archaeological Sites That Deserve Your Attention</h2>
