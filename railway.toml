@@ -1,6 +1,6 @@
 [build]
 builder = "nixpacks"
-buildCommand = "pip install -r requirements.txt && python manage.py collectstatic --noinput --clear"
+buildCommand = "echo 'BUILD v8-seed-fix commit 0d082f3' && pip install -r requirements.txt && python manage.py collectstatic --noinput --clear"
 
 [deploy]
 healthcheckPath = "/health/"
