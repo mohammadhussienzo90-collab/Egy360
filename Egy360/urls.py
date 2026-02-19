@@ -35,6 +35,7 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.cache import cache_control
 from django.contrib.sitemaps.views import sitemap
 from core.sitemaps import sitemaps
+from django.contrib.admin.views.decorators import staff_member_required
 import os
 
 def health_check(request):
@@ -3075,28 +3076,31 @@ def seed_comprehensive_articles(request):
 
 
 urlpatterns = [
-    path('seed-all-topics/', seed_comprehensive_articles, name='seed_all_topics'),
-    path('update-images/', update_article_images, name='update_images'),
-    path('seed-trending/', seed_trending_2026, name='seed_trending'),
-    path('update-content/', update_articles_content, name='update_content'),
-    path('seed-more/', seed_more_articles, name='seed_more'),
-    path('setup-all/', setup_all, name='setup_all'),
-    path('expand-articles/', expand_all_articles, name='expand_articles'),
+    # Public endpoints
     path('favicon.svg', favicon, name='favicon'),
     path('favicon.ico', favicon, name='favicon_ico'),
     path('feed/', rss_feed, name='rss_feed'),
     path('rss/', rss_feed, name='rss'),
     path('robots.txt', robots_txt, name='robots_txt'),
     path('health/', health_check, name='health'),
-    path('debug-db/', debug_db, name='debug_db'),
-    path('seed/', seed_articles, name='seed'),
-    path('seed2026/', seed_2026_articles, name='seed2026'),
-    path('seed-egypt/', seed_egypt_history_articles, name='seed_egypt'),
-    path('seed-luxury/', seed_luxury_articles, name='seed_luxury'),
-    path('seed-stories/', seed_true_stories, name='seed_stories'),
-    path('organize/', organize_all_articles, name='organize'),
-    path('debug/', debug_check, name='debug'),
-    path('blog-diagnose/', blog_diagnose, name='blog_diagnose'),
+
+    # Admin-only seed/debug endpoints (require staff login)
+    path('seed-all-topics/', staff_member_required(seed_comprehensive_articles), name='seed_all_topics'),
+    path('update-images/', staff_member_required(update_article_images), name='update_images'),
+    path('seed-trending/', staff_member_required(seed_trending_2026), name='seed_trending'),
+    path('update-content/', staff_member_required(update_articles_content), name='update_content'),
+    path('seed-more/', staff_member_required(seed_more_articles), name='seed_more'),
+    path('setup-all/', staff_member_required(setup_all), name='setup_all'),
+    path('expand-articles/', staff_member_required(expand_all_articles), name='expand_articles'),
+    path('debug-db/', staff_member_required(debug_db), name='debug_db'),
+    path('seed/', staff_member_required(seed_articles), name='seed'),
+    path('seed2026/', staff_member_required(seed_2026_articles), name='seed2026'),
+    path('seed-egypt/', staff_member_required(seed_egypt_history_articles), name='seed_egypt'),
+    path('seed-luxury/', staff_member_required(seed_luxury_articles), name='seed_luxury'),
+    path('seed-stories/', staff_member_required(seed_true_stories), name='seed_stories'),
+    path('organize/', staff_member_required(organize_all_articles), name='organize'),
+    path('debug/', staff_member_required(debug_check), name='debug'),
+    path('blog-diagnose/', staff_member_required(blog_diagnose), name='blog_diagnose'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('admin/', admin.site.urls),
     path('', include('home.urls')),

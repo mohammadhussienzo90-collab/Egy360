@@ -375,7 +375,15 @@ TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER', '')
 # CORS (Cross-Origin Resource Sharing)
 # =============================================================================
 
-CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (adjust for production)
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    'https://360egy.com',
+    'https://www.360egy.com',
+]
+# Also allow Railway preview deployments
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r'^https://.*\.railway\.app$',
+]
 
 # =============================================================================
 # CSRF (Cross-Site Request Forgery Protection)
