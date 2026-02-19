@@ -104,4 +104,24 @@ railway.json
 # Temporary files
 tmp/
 temp/
-*.tmpnul
+*.tmp
+nul
+
+# Root-level loose scripts (one-time seed/content generation)
+/seed_*.py
+/update_*.py
+/generate_*.py
+
+# Content/marketing docs (not part of the app)
+/CONTENT_CALENDAR*.md
+/CV_*.md
+/IMAGE_CONTENT_GUIDE.md
+/INSTAGRAM_*.md
+/MARKETING_*.md
+/MONETIZATION_*.md
+/REELS_*.md
+/SHORT_POSTS_*.md
+/SOCIAL_MEDIA_*.md
+/STRATEGIC_PLAN*.md
+/VIDEO_PRODUCTION_*.md
+/*.pdf

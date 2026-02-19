@@ -40,10 +40,22 @@ import os
 
 def health_check(request):
     """Basic health check for Railway"""
-    import traceback
+    import subprocess
     from django.db import connection
 
-    response = {'status': 'ok', 'version': 'v8-sqlite-mode', 'branch': 'main'}
+    # Get deployed commit hash
+    commit = os.environ.get('RAILWAY_GIT_COMMIT_SHA', '')
+    if not commit:
+        try:
+            result = subprocess.run(
+                ['git', 'rev-parse', '--short', 'HEAD'],
+                capture_output=True, text=True, timeout=5
+            )
+            commit = result.stdout.strip() if result.returncode == 0 else 'unknown'
+        except Exception:
+            commit = 'unknown'
+
+    response = {'status': 'ok', 'commit': commit, 'branch': 'main'}
 
     # Always include DB info
     try:
@@ -54,17 +66,6 @@ def health_check(request):
     except Exception as e:
         response['db_connected'] = False
         response['db_error'] = str(e)
-
-    # Add blog debug info if requested
-    if request.GET.get('debug') == 'blog':
-        try:
-            from blog.models import BlogPost, BlogCategory
-            response['total_posts'] = BlogPost.objects.count()
-            response['published_posts'] = BlogPost.objects.filter(status='published').count()
-            response['categories'] = BlogCategory.objects.count()
-        except Exception as e:
-            response['blog_error'] = str(e)
-            response['blog_traceback'] = traceback.format_exc()
 
     return JsonResponse(response)
 
