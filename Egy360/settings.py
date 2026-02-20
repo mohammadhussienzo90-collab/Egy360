@@ -57,7 +57,6 @@ DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
 # Hosts/domain names that this Django site can serve
 # Add your custom domain and Railway domains here
 ALLOWED_HOSTS = [
-    '*',  # Allow all hosts (Railway handles routing)
     'localhost',
     '127.0.0.1',
     '.railway.app',  # Railway deployment domains
@@ -65,6 +64,10 @@ ALLOWED_HOSTS = [
     '360egy.com',  # Production domain
     'www.360egy.com',  # www subdomain
 ]
+
+# Allow all hosts in DEBUG mode for local development
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
 
 # =============================================================================
 # APPLICATION DEFINITION

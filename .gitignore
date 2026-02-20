@@ -112,6 +112,10 @@ nul
 /update_*.py
 /generate_*.py
 
+# Non-app directories
+/Portfolio/
+/ChartGen/
+
 # Content/marketing docs (not part of the app)
 /CONTENT_CALENDAR*.md
 /CV_*.md
