@@ -13,6 +13,7 @@ urlpatterns = [
     path('seed-attractions/', views.seed_attractions, name='seed-attractions'),
     path('seed-new-articles/', views.seed_new_articles, name='seed-new-articles'),
     path('deploy-check/', views.deploy_check, name='deploy-check'),
+    path('publish-dating-2026/', views.publish_dating_2026, name='publish-dating-2026'),
 
     # SEO Pillar Pages - High-value landing pages
     path('egypt-travel-guide/', views.pillar_egypt_guide, name='egypt_guide'),
