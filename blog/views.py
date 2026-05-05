@@ -130,7 +130,7 @@ The question is: Are you still playing the game, or have you quietly left the ta
     </head>
     <body>
         <div class="success">{message}</div>
-        <div class="link"><a href="/blog/{slug}/">View Article</a></div>
+        <div class="link"><a href="/blog/{slug}/">View Article</a> | <a href="/blog/">All Articles</a></div>
     </body>
     </html>
     """)
