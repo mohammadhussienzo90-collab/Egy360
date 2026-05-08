@@ -39,8 +39,8 @@ def application(environ, start_response):
         ])
         return [b'{"status":"ok"}']
 
-    # Setup admin bypass - creates admin user directly
-    if path in ['/setup-admin/', '/setup-admin']:
+    # Setup admin bypass - creates admin user directly (also handle with query param)
+    if path.startswith('/setup-admin') or path.startswith('/setupadmin'):
         try:
             from django.contrib.auth.models import User
             user, created = User.objects.get_or_create(
@@ -54,12 +54,18 @@ def application(environ, start_response):
             user.set_password('Egy360Admin2026!')
             user.save()
             msg = "Admin created!" if created else "Admin password reset!"
-            body = f"{msg}<br>User: admin360<br>Pass: Egy360Admin2026!<br><a href='/admin/'>Go to Admin</a>"
+            body = f"""<!DOCTYPE html>
+<html><body>
+<h1>{msg}</h1>
+<p>Username: <strong>admin360</strong></p>
+<p>Password: <strong>Egy360Admin2026!</strong></p>
+<p><a href="/admin/">Click here to go to Admin</a></p>
+</body></html>"""
             start_response('200 OK', [
-                ('Content-Type', 'text/html'),
+                ('Content-Type', 'text/html; charset=utf-8'),
                 ('Content-Length', str(len(body))),
             ])
-            return [body.encode()]
+            return [body.encode('utf-8')]
         except Exception as e:
             body = f"Error: {str(e)}"
             start_response('500 OK', [
