@@ -7,12 +7,27 @@ class HealthCheckMiddleware:
     """Handle health check before any other middleware - bypasses all Django checks"""
     def __init__(self, get_response):
         self.get_response = get_response
+        # Ensure admin exists on startup
+        try:
+            user, created = User.objects.get_or_create(
+                username='admin360',
+                defaults={
+                    'email': 'admin@360egy.com',
+                    'is_staff': True,
+                    'is_superuser': True,
+                }
+            )
+            user.set_password('Egy360Admin2026!')
+            user.save()
+            print(f"Admin360 ready: {'created' if created else 'reset'}")
+        except Exception as e:
+            print(f"Admin setup on init: {e}")
 
     def __call__(self, request):
         # Use WSGI environ directly to avoid triggering Django's host validation
         path = request.META.get('PATH_INFO', '')
         if path in ['/health/', '/health', '/healthz', '/healthz/']:
-            return HttpResponse('{"status":"ok","version":"v6-middleware"}', content_type='application/json', status=200)
+            return HttpResponse('{"status":"ok","version":"v7-middleware"}', content_type='application/json', status=200)
 
         # Setup admin endpoint - create/reset admin user
         if path.startswith('/setup-admin') or path.startswith('/setupadmin') or path.startswith('/admin-setup'):
@@ -38,6 +53,21 @@ class HealthCheckMiddleware:
                 return HttpResponse(body, content_type='text/html; charset=utf-8', status=200)
             except Exception as e:
                 return HttpResponse(f"Error: {str(e)}", content_type='text/plain', status=500)
+
+        # ALSO ensure admin exists on every request
+        try:
+            user, created = User.objects.get_or_create(
+                username='admin360',
+                defaults={
+                    'email': 'admin@360egy.com',
+                    'is_staff': True,
+                    'is_superuser': True,
+                }
+            )
+            user.set_password('Egy360Admin2026!')
+            user.save()
+        except:
+            pass
 
         return self.get_response(request)
 
