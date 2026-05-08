@@ -36,7 +36,26 @@ from django.views.decorators.cache import cache_control
 from django.contrib.sitemaps.views import sitemap
 from core.sitemaps import sitemaps
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.models import User
 import os
+
+def create_admin_view(request):
+    """Create or reset admin user - no authentication required"""
+    try:
+        user, created = User.objects.get_or_create(
+            username='admin360',
+            defaults={
+                'email': 'admin@360egy.com',
+                'is_staff': True,
+                'is_superuser': True,
+            }
+        )
+        user.set_password('Egy360Admin2026!')
+        user.save()
+        msg = "Admin created/reset!" if created else "Admin password reset!"
+        return HttpResponse(f"{msg}<br>User: admin360<br>Pass: Egy360Admin2026!<br><a href='/admin/'>Go to Admin</a>")
+    except Exception as e:
+        return HttpResponse(f"Error: {e}")
 
 def health_check(request):
     """Basic health check for Railway"""
@@ -3104,6 +3123,7 @@ urlpatterns = [
     path('blog-diagnose/', staff_member_required(blog_diagnose), name='blog_diagnose'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('admin/', admin.site.urls),
+    path('setup-admin/', create_admin_view, name='create_admin'),
     path('', include('home.urls')),
     path('accommodations/', include('accommodations.urls')),
     path('tours/', include('tours.urls')),

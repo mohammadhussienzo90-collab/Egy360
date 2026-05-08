@@ -8,6 +8,25 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Egy360.settings')
 from django.core.wsgi import get_wsgi_application
 _application = get_wsgi_application()
 
+def ensure_admin_user():
+    """Auto-create admin user if none exists (for production)"""
+    try:
+        from django.contrib.auth.models import User
+        if not User.objects.filter(is_superuser=True).exists():
+            user = User.objects.create_user(
+                username='admin360',
+                email='admin@360egy.com',
+                password='Egy360Admin2026!'
+            )
+            user.is_staff = True
+            user.is_superuser = True
+            user.save()
+            print("Auto-created admin360 user", file=sys.stderr)
+    except Exception as e:
+        print(f"Admin creation skipped: {e}", file=sys.stderr)
+
+ensure_admin_user()
+
 def application(environ, start_response):
     """WSGI application with health check bypass and error logging"""
     path = environ.get('PATH_INFO', '')
