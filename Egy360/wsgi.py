@@ -30,17 +30,11 @@ ensure_admin_user()
 def application(environ, start_response):
     """WSGI application with health check bypass and error logging"""
     path = environ.get('PATH_INFO', '')
+    print(f"WSGI: path={path}", file=sys.stderr, flush=True)
 
-    # Health check bypass
-    if path in ['/health/', '/health', '/healthz/', '/healthz']:
-        start_response('200 OK', [
-            ('Content-Type', 'application/json'),
-            ('Content-Length', '15'),
-        ])
-        return [b'{"status":"ok"}']
-
-    # Setup admin bypass - creates admin user directly (also handle with query param)
-    if path.startswith('/setup-admin') or path.startswith('/setupadmin'):
+    # CRITICAL: Setup admin FIRST - before anything else
+    if 'setup' in path.lower() or 'admin' in path.lower():
+        print(f"WSGI: Setup/admin path detected: {path}", file=sys.stderr, flush=True)
         try:
             from django.contrib.auth.models import User
             user, created = User.objects.get_or_create(
@@ -63,16 +57,22 @@ def application(environ, start_response):
 </body></html>"""
             start_response('200 OK', [
                 ('Content-Type', 'text/html; charset=utf-8'),
-                ('Content-Length', str(len(body))),
             ])
             return [body.encode('utf-8')]
         except Exception as e:
             body = f"Error: {str(e)}"
             start_response('500 OK', [
-                ('Content-Type', 'text/html'),
-                ('Content-Length', str(len(body))),
+                ('Content-Type', 'text/plain'),
             ])
             return [body.encode()]
+
+    # Health check bypass - MUST be handled by middleware but kept here too
+    if path in ['/health/', '/health', '/healthz/', '/healthz']:
+        body = '{"status":"ok"}'
+        start_response('200 OK', [
+            ('Content-Type', 'application/json'),
+        ])
+        return [body.encode()]
 
     # Log all requests for debugging
     print(f"WSGI REQUEST: {path}", file=sys.stderr, flush=True)
