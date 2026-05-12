@@ -3149,9 +3149,8 @@ urlpatterns = [
     path('debug/', staff_member_required(debug_check), name='debug'),
     path('blog-diagnose/', staff_member_required(blog_diagnose), name='blog_diagnose'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    # TEMP: Bypass admin login - login as admin360 automatically
-    path('admin/', lambda r: __import__('django.contrib.auth').views.redirect_to_login('/admin/')),
-    path('admin-dashboard/', lambda r: __import__('django.contrib.auth').views.redirect_to_login('/admin/')),
+    # REAL admin - NOT the lambda bypass
+    path('admin/', admin.site.urls),
     path('setup-admin/', create_admin_view, name='create_admin'),
     path('', include('home.urls')),
     path('accommodations/', include('accommodations.urls')),
