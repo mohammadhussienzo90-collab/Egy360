@@ -19,7 +19,7 @@ class CoreConfig(AppConfig):
                 }
             )
             user.set_password('Egy360Admin2026!')
-            user.save()
+            user.save(update_fields=['password', 'email', 'is_staff', 'is_superuser'])
             print(f"Admin360 ready: {'created' if created else 'reset'}", file=sys.stderr)
         except Exception as e:
             print(f"Admin setup in ready(): {e}", file=sys.stderr)
