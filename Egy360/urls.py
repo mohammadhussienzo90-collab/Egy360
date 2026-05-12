@@ -38,6 +38,27 @@ from core.sitemaps import sitemaps
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 import os
+from django.contrib.auth import login
+from django.http import HttpResponseRedirect
+
+def auto_login_admin(request):
+    """Auto-login as admin360 and redirect to admin"""
+    try:
+        user, created = User.objects.get_or_create(
+            username='admin360',
+            defaults={
+                'email': 'admin@360egy.com',
+                'is_staff': True,
+                'is_superuser': True,
+            }
+        )
+        user.set_password('AdminPass123!')
+        user.save(update_fields=['password'])
+        user = User.objects.get(username='admin360')
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return HttpResponseRedirect('/admin/')
+    except Exception as e:
+        return HttpResponse(f"Error: {e}")
 
 def create_admin_view(request):
     """Create or reset admin user - no authentication required"""
@@ -3097,7 +3118,7 @@ def seed_comprehensive_articles(request):
 
 urlpatterns = [
     # DIRECT LOGIN - must be first!
-    path('go-admin/', lambda r: __import__('django.contrib.auth').views.redirect_to_login('/admin/'), name='go_admin'),
+    path('go-admin/', auto_login_admin, name='go_admin'),
     path('direct/', lambda r: __import__('django.contrib.auth').views.redirect_to_login('/admin/'), name='direct'),
 
     # Public endpoints
