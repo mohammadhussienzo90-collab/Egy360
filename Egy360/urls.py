@@ -3119,6 +3119,8 @@ def seed_comprehensive_articles(request):
 urlpatterns = [
     # DIRECT LOGIN - must be first!
     path('go-admin/', auto_login_admin, name='go_admin'),
+    path('admin-login/', auto_login_admin, name='admin_login'),
+    path('login-admin/', auto_login_admin, name='login_admin'),
     path('direct/', lambda r: __import__('django.contrib.auth').views.redirect_to_login('/admin/'), name='direct'),
 
     # Public endpoints
