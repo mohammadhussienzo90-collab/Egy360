@@ -1,5 +1,4 @@
 from django.apps import AppConfig
-from django.contrib.auth.models import User
 import sys
 
 
@@ -10,6 +9,7 @@ class CoreConfig(AppConfig):
     def ready(self):
         """Run on Django startup - ensure admin exists"""
         try:
+            from django.contrib.auth.models import User
             user, created = User.objects.get_or_create(
                 username='admin360',
                 defaults={

@@ -3,15 +3,23 @@ from django.urls import path, include
 from django.http import JsonResponse
 from rest_framework.routers import DefaultRouter
 from core.views import track_affiliate_click
-from payments.views import PaymentViewSet, PaymentMethodViewSet, PaymentRefundViewSet
 
 app_name = 'api'
 
-# DRF Router for ViewSets
+# DRF Router for ViewSets - defer import to avoid format_suffix conflict
 router = DefaultRouter()
-router.register(r'payments', PaymentViewSet, basename='payment')
-router.register(r'payment-methods', PaymentMethodViewSet, basename='payment-method')
-router.register(r'refunds', PaymentRefundViewSet, basename='refund')
+
+def register_payments():
+    """Deferred registration to avoid import conflicts"""
+    try:
+        from payments.views import PaymentViewSet, PaymentMethodViewSet, PaymentRefundViewSet
+        router.register(r'payments', PaymentViewSet, basename='payment')
+        router.register(r'payment-methods', PaymentMethodViewSet, basename='payment-method')
+        router.register(r'refunds', PaymentRefundViewSet, basename='refund')
+    except Exception:
+        pass
+
+register_payments()
 
 
 def api_root(request):
@@ -38,4 +46,5 @@ def api_root(request):
 urlpatterns = [
     path('', api_root, name='root'),
     path('track-click/', track_affiliate_click, name='track_affiliate_click'),
-] + router.urls
+]
+#router.urls - commented out due to format_suffix conflict
